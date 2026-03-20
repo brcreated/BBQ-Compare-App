@@ -1,0 +1,4 @@
+MISSING IMAGE
+expected_file=horizon-16-classic-smoker-gallery-6.jpg
+source_page=https://horizonsmokers.com/shop-for-smokers/ols/products/16-classic-horizon-smoker-16-cls-hrz-smk1
+slot=gallery-6

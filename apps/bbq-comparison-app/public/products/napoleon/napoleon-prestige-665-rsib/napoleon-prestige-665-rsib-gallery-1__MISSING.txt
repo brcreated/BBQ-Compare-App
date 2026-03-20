@@ -1,0 +1,4 @@
+MISSING IMAGE
+expected_file=napoleon-prestige-665-rsib-gallery-1.jpg
+source_page=https://www.napoleon.com/en/us/grills/products/gas-grills/prestige-series/prestige-665-rsib-p665vrsibpss
+slot=gallery-1

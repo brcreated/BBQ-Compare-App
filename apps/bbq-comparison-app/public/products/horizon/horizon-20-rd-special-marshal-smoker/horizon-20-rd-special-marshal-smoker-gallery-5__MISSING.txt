@@ -1,0 +1,4 @@
+MISSING IMAGE
+expected_file=horizon-20-rd-special-marshal-smoker-gallery-5.jpg
+source_page=https://horizonsmokers.com/shop-for-smokers/ols/products/20-rd-special-marshal-horizon-smoker-20-rd-spc-mrs1
+slot=gallery-5

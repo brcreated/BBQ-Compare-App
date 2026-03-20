@@ -1,0 +1,4 @@
+MISSING IMAGE
+expected_file=napoleon-built-in-700-series-38-gallery-1.jpg
+source_page=https://www.napoleon.com/en/us/grills/products/built-gas-grills/built-700-series/built-700-series-38-big38rbpss-1
+slot=gallery-1

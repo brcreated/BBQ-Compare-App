@@ -1,8 +1,0 @@
-{
-  "rules": [
-    {
-      "question": "What fuel do you prefer?",
-      "options": ["pellet", "gas", "charcoal"]
-    }
-  ]
-}

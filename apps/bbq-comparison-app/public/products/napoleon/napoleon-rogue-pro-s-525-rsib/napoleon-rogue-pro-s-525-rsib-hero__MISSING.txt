@@ -1,0 +1,4 @@
+MISSING IMAGE
+expected_file=napoleon-rogue-pro-s-525-rsib-hero.jpg
+source_page=https://www.napoleon.com/en/us/grills/products/gas-grills/rogue-pro-s-series/rogue-pro-s-525-rsib-rps525rsibpss-2
+slot=hero

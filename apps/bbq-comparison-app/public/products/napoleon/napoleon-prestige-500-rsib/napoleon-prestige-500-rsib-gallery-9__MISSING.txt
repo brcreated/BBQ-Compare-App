@@ -1,0 +1,4 @@
+MISSING IMAGE
+expected_file=napoleon-prestige-500-rsib-gallery-9.jpg
+source_page=https://www.napoleon.com/en/us/grills/products/gas-grills/prestige-series/prestige-500-rsib-p500vrsibpss
+slot=gallery-9

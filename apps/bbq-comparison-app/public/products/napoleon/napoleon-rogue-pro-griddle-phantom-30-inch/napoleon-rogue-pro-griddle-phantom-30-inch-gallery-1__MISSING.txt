@@ -1,0 +1,4 @@
+MISSING IMAGE
+expected_file=napoleon-rogue-pro-griddle-phantom-30-inch-gallery-1.jpg
+source_page=https://www.napoleon.com/en/us/grills/products/griddles/rogue-pro-griddles/rogue-pro-phantom-30-inch-griddle-rp30ftpk-phm
+slot=gallery-1

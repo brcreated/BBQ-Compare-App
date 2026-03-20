@@ -1,0 +1,4 @@
+MISSING IMAGE
+expected_file=napoleon-charcoal-premium-legend-14-charcoal-portable-gallery-4.jpg
+source_page=https://www.napoleon.com/en/us/grills/products/charcoal-grills/charcoal-premium-series/legend-14-charcoal-portable-nk14k-leg-3
+slot=gallery-4

@@ -1,0 +1,4 @@
+MISSING IMAGE
+expected_file=napoleon-rogue-pro-425-sib-stainless-hero.jpg
+source_page=https://www.napoleon.com/en/us/grills/products/gas-grills/rogue-pro-series/rogue-pro-425-sib-rp425sibpss-2
+slot=hero

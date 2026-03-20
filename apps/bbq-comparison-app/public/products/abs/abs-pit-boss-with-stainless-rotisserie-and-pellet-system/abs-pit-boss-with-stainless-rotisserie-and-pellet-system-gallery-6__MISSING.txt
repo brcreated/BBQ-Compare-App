@@ -1,0 +1,4 @@
+MISSING IMAGE
+expected_file=abs-pit-boss-with-stainless-rotisserie-and-pellet-system-gallery-6.jpg
+source_page=https://www.americanbarbecuesystems.com/product/pit-boss-with-stainless-rotisserie-and-pellet-system/
+slot=gallery-6

@@ -1,0 +1,4 @@
+MISSING IMAGE
+expected_file=napoleon-rogue-525-sb-stainless-gallery-9.jpg
+source_page=https://www.napoleon.com/en/us/grills/products/gas-grills/rogue-series/rogue-525-sb-r525sbpss-2-fb
+slot=gallery-9

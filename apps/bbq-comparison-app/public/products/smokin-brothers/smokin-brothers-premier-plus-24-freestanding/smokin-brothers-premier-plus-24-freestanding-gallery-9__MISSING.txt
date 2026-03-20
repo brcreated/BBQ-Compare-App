@@ -1,0 +1,4 @@
+MISSING IMAGE
+expected_file=smokin-brothers-premier-plus-24-freestanding-gallery-9.jpg
+source_page=https://smokinbrothers.com/product/smokin-brothers-24-premier-plus-grill/
+slot=gallery-9

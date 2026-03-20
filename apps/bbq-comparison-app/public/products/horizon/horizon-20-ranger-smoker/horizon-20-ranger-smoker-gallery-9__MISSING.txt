@@ -1,0 +1,4 @@
+MISSING IMAGE
+expected_file=horizon-20-ranger-smoker-gallery-9.jpg
+source_page=https://horizonsmokers.com/shop-for-smokers/ols/products/20-ranger-smoker-20-rng-smk1
+slot=gallery-9

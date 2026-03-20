@@ -1,0 +1,4 @@
+MISSING IMAGE
+expected_file=horizon-20-classic-smoker-gallery-8.jpg
+source_page=https://horizonsmokers.com/shop-for-smokers/ols/products/20-classic-horizon-smoker-20-cls-hrz-smk1
+slot=gallery-8

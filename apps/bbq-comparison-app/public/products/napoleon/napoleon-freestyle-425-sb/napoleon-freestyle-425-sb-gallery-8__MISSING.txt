@@ -1,0 +1,4 @@
+MISSING IMAGE
+expected_file=napoleon-freestyle-425-sb-gallery-8.jpg
+source_page=https://www.napoleon.com/en/us/grills/products/gas-grills/freestyle-series/freestyle-425-sb-f425dsbpgt-ecp
+slot=gallery-8

@@ -1,0 +1,4 @@
+MISSING IMAGE
+expected_file=abs-judge-5ft-judge-with-rotisserie-gallery-6.jpg
+source_page=https://www.americanbarbecuesystems.com/product/judge-5ft-with-stainless-rotisserie/
+slot=gallery-6

@@ -1,0 +1,4 @@
+MISSING IMAGE
+expected_file=napoleon-freestyle-365-gallery-4.jpg
+source_page=https://www.napoleon.com/en/us/grills/products/gas-grills/freestyle-series/freestyle-365-f365dpgt
+slot=gallery-4

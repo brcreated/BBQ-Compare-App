@@ -1,0 +1,4 @@
+MISSING IMAGE
+expected_file=napoleon-prestige-pro-825-rsbi-gallery-4.jpg
+source_page=https://www.napoleon.com/en/us/grills/products/gas-grills/prestige-pro-series/classic-prestige-pro-825-rsbi-pro825rsbipss-3
+slot=gallery-4

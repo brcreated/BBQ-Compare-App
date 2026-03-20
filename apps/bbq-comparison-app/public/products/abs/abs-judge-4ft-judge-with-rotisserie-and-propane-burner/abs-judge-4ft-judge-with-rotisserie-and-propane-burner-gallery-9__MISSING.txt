@@ -1,0 +1,4 @@
+MISSING IMAGE
+expected_file=abs-judge-4ft-judge-with-rotisserie-and-propane-burner-gallery-9.jpg
+source_page=https://www.americanbarbecuesystems.com/product/judge-4ft-with-stainless-rotisserie-and-propane-system/
+slot=gallery-9

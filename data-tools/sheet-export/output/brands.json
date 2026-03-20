@@ -1,0 +1,152 @@
+[
+  {
+    "id": "abs",
+    "name": "ABS",
+    "logoUrl": "",
+    "brandBackgroundUrl": "",
+    "description": "",
+    "websiteUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfa",
+    "name": "Alfa Forni",
+    "logoUrl": "",
+    "brandBackgroundUrl": "",
+    "description": "",
+    "websiteUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfresco",
+    "name": "Alfresco",
+    "logoUrl": "",
+    "brandBackgroundUrl": "",
+    "description": "",
+    "websiteUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "artisan",
+    "name": "Artisan",
+    "logoUrl": "",
+    "brandBackgroundUrl": "",
+    "description": "",
+    "websiteUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "delta-heat",
+    "name": "Delta Heat",
+    "logoUrl": "",
+    "brandBackgroundUrl": "",
+    "description": "",
+    "websiteUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gateway",
+    "name": "Gateway Drum Smokers",
+    "logoUrl": "",
+    "brandBackgroundUrl": "",
+    "description": "",
+    "websiteUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gozney",
+    "name": "Gozney",
+    "logoUrl": "",
+    "brandBackgroundUrl": "",
+    "description": "",
+    "websiteUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "halo",
+    "name": "Halo",
+    "logoUrl": "",
+    "brandBackgroundUrl": "",
+    "description": "",
+    "websiteUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "horizon",
+    "name": "Horizon Smokers",
+    "logoUrl": "",
+    "brandBackgroundUrl": "",
+    "description": "",
+    "websiteUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon",
+    "name": "Napoleon",
+    "logoUrl": "",
+    "brandBackgroundUrl": "",
+    "description": "",
+    "websiteUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "primo",
+    "name": "Primo",
+    "logoUrl": "",
+    "brandBackgroundUrl": "",
+    "description": "",
+    "websiteUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "recteq",
+    "name": "Recteq",
+    "logoUrl": "",
+    "brandBackgroundUrl": "",
+    "description": "",
+    "websiteUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "smokin-brothers",
+    "name": "Smokin Brothers",
+    "logoUrl": "",
+    "brandBackgroundUrl": "",
+    "description": "",
+    "websiteUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin-eagles",
+    "name": "Twin Eagles",
+    "logoUrl": "",
+    "brandBackgroundUrl": "",
+    "description": "",
+    "websiteUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder",
+    "name": "Yoder Smokers",
+    "logoUrl": "",
+    "brandBackgroundUrl": "",
+    "description": "",
+    "websiteUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  }
+]

@@ -1,0 +1,4 @@
+MISSING IMAGE
+expected_file=horizon-24-rd-special-marshal-smoker-gallery-8.jpg
+source_page=https://horizonsmokers.com/shop-for-smokers/ols/products/24-rd-special-marshal-horizon-smoker-24-rd-spc-mrs1
+slot=gallery-8

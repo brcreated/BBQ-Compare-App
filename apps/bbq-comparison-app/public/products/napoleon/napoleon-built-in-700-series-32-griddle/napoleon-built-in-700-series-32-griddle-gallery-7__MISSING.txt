@@ -1,0 +1,4 @@
+MISSING IMAGE
+expected_file=napoleon-built-in-700-series-32-griddle-gallery-7.jpg
+source_page=https://www.napoleon.com/en/us/grills/products/griddles/built-griddles/built-700-series-32-griddle-big32ftpss
+slot=gallery-7

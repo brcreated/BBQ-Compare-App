@@ -1,0 +1,4 @@
+MISSING IMAGE
+expected_file=napoleon-prestige-phantom-500-connected-rsib-gallery-2.jpg
+source_page=https://www.napoleon.com/en/us/grills/products/gas-grills/prestige-series/phantom-prestige-500-connected-rsib-p500vxrsibpk-phm
+slot=gallery-2

@@ -1,0 +1,4 @@
+MISSING IMAGE
+expected_file=twin-eagles-eagle-one-series-42-inch-built-in-gas-grill-standard-gallery-9.jpg
+source_page=https://www.twineagles.dometic.com/products/eagle-one-gas-grill?variant=50000350511395
+slot=gallery-9
