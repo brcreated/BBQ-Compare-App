@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   subscribe,
   getState,
@@ -82,7 +82,6 @@ export default function ComparisonView({
   brands = [],
   families = [],
   variants = [],
-  assets = [],
   specs = [],
 }) {
   const [store, setStore] = useState(getState());
@@ -111,13 +110,6 @@ export default function ComparisonView({
 
     return unsubscribe;
   }, []);
-
-  function getVariantById(id) {
-    return (
-      variants.find((variant) => String(getVariantId(variant)) === String(id)) ||
-      null
-    );
-  }
 
   function getFamilyById(id) {
     return (
@@ -194,12 +186,19 @@ export default function ComparisonView({
     return getBrandName(brand) || variant?.brand_name || variant?.brandName || "";
   }
 
+   const getVariantById = useCallback(
+    (id) =>
+      variants.find((variant) => String(getVariantId(variant)) === String(id)) ||
+      null,
+    [variants]
+  );
+
   const selectedVariants = useMemo(() => {
     return store.items.map((id) => getVariantById(id)).filter(Boolean);
-  }, [store.items, variants]);
+  }, [store.items, getVariantById]);
 
   const selectedVariantIds = useMemo(() => {
-    return selectedVariants.map((variant) => getVariantId(variant));
+    return selectedVariants.map((variant) => getVariantId(variant)).filter(Boolean);
   }, [selectedVariants]);
 
   const comparison = useMemo(() => {

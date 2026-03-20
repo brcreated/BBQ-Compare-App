@@ -227,6 +227,177 @@ function getButtonLabel(isSelected) {
   return isSelected ? "Selected" : "Compare";
 }
 
+function getSpecPriority(spec) {
+  const key = normalizeText(spec?.spec_key || spec?.spec_label || "");
+
+  if (!key) return 999;
+
+  const priorityGroups = [
+    [
+      "total cooking area",
+      "primary cooking area",
+      "cooking area",
+      "total grilling area",
+    ],
+    [
+      "max temperature",
+      "temperature range max",
+      "temperature max",
+      "temperature range",
+    ],
+    ["pellet hopper capacity", "hopper capacity", "fuel capacity"],
+    [
+      "burger capacity",
+      "brisket capacity",
+      "pork butt capacity",
+      "chicken capacity",
+      "rib rack capacity",
+    ],
+    ["product width", "width", "grill width"],
+    ["product weight", "weight"],
+  ];
+
+  for (let groupIndex = 0; groupIndex < priorityGroups.length; groupIndex += 1) {
+    if (priorityGroups[groupIndex].some((term) => key.includes(term))) {
+      return groupIndex;
+    }
+  }
+
+  return 100;
+}
+
+function sortSpecsForMerchandising(specs) {
+  return [...specs].sort((a, b) => {
+    const priorityA = getSpecPriority(a);
+    const priorityB = getSpecPriority(b);
+
+    if (priorityA !== priorityB) {
+      return priorityA - priorityB;
+    }
+
+    const labelA = normalizeText(a?.spec_label || a?.spec_key || "");
+    const labelB = normalizeText(b?.spec_label || b?.spec_key || "");
+
+    return labelA.localeCompare(labelB);
+  });
+}
+
+function getFeaturedHighlightLabel(spec) {
+  const key = normalizeText(spec?.spec_key || spec?.spec_label || "");
+
+  if (
+    key.includes("total cooking area") ||
+    key.includes("primary cooking area") ||
+    key.includes("cooking area")
+  ) {
+    return "Cooking Capacity";
+  }
+
+  if (
+    key.includes("max temperature") ||
+    key.includes("temperature range max") ||
+    key.includes("temperature max") ||
+    key.includes("temperature range")
+  ) {
+    return "Heat Performance";
+  }
+
+  if (
+    key.includes("pellet hopper capacity") ||
+    key.includes("hopper capacity") ||
+    key.includes("fuel capacity")
+  ) {
+    return "Fuel Capacity";
+  }
+
+  if (
+    key.includes("burger capacity") ||
+    key.includes("brisket capacity") ||
+    key.includes("pork butt capacity") ||
+    key.includes("chicken capacity") ||
+    key.includes("rib rack capacity")
+  ) {
+    return "Food Capacity";
+  }
+
+  if (
+    key.includes("product width") ||
+    key === "width" ||
+    key.includes("grill width")
+  ) {
+    return "Footprint";
+  }
+
+  if (key.includes("product weight") || key === "weight") {
+    return "Build Weight";
+  }
+
+  return "Featured Highlight";
+}
+
+function getGuideRecommendation({ cookingCategory, fuelType, installType, primarySpec }) {
+  const category = normalizeText(cookingCategory);
+  const fuel = normalizeText(fuelType);
+  const install = normalizeText(installType);
+  const specKey = normalizeText(primarySpec?.spec_key || primarySpec?.spec_label || "");
+
+  if (install.includes("built in")) {
+    return "Best for premium outdoor kitchen builds.";
+  }
+
+  if (install.includes("cart") || install.includes("freestanding")) {
+    return "Best for flexible patio placement.";
+  }
+
+  if (category.includes("pizza")) {
+    return "Best for fast high-heat pizza cooking.";
+  }
+
+  if (category.includes("griddle")) {
+    return "Best for crowd-friendly flat-top cooking.";
+  }
+
+  if (category.includes("charcoal")) {
+    return "Best for live-fire flavor lovers.";
+  }
+
+  if (fuel.includes("pellet")) {
+    return "Best for set-it-and-hold-it smoking.";
+  }
+
+  if (fuel.includes("gas") || fuel.includes("propane") || fuel.includes("natural gas")) {
+    return "Best for fast ignition and everyday grilling.";
+  }
+
+  if (
+    specKey.includes("total cooking area") ||
+    specKey.includes("primary cooking area") ||
+    specKey.includes("cooking area")
+  ) {
+    return "Best for shoppers focused on cooking space.";
+  }
+
+  if (
+    specKey.includes("max temperature") ||
+    specKey.includes("temperature range") ||
+    specKey.includes("temperature max")
+  ) {
+    return "Best for shoppers prioritizing heat performance.";
+  }
+
+  if (
+    specKey.includes("burger capacity") ||
+    specKey.includes("brisket capacity") ||
+    specKey.includes("pork butt capacity") ||
+    specKey.includes("chicken capacity") ||
+    specKey.includes("rib rack capacity")
+  ) {
+    return "Best for feeding bigger groups with confidence.";
+  }
+
+  return "Best for shoppers comparing premium performance.";
+}
+
 function ProductCard({
   variant,
   family,
@@ -237,6 +408,8 @@ function ProductCard({
   onSelect,
 }) {
   const [isHovered, setIsHovered] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const [isPressed, setIsPressed] = useState(false);
 
   if (!variant) return null;
 
@@ -245,11 +418,27 @@ function ProductCard({
   const brandName = getBrandName(brand, variant);
   const variantId = getVariantId(variant);
   const productTitle = buildProductTitle(familyName, variantName);
-  const visibleSpecs = Array.isArray(topSpecs) ? topSpecs.slice(0, 3) : [];
-  const primarySpec = visibleSpecs[0] || null;
-  const secondarySpecs = primarySpec ? visibleSpecs.slice(1) : visibleSpecs;
+  const merchandisedSpecs = sortSpecsForMerchandising(
+    Array.isArray(topSpecs) ? topSpecs.slice(0, 3) : []
+  );
+  const primarySpec = merchandisedSpecs[0] || null;
+  const secondarySpecs = primarySpec ? merchandisedSpecs.slice(1) : merchandisedSpecs;
+
+  const cookingCategory = getCookingCategory(variant, family);
+  const fuelType = getFuelType(variant, family);
+  const installType = getInstallType(variant);
+
   const metaChips = buildMetaChips(variant, family);
   const pricing = getPricingData(variant);
+  const recommendationLine = getGuideRecommendation({
+    cookingCategory,
+    fuelType,
+    installType,
+    primarySpec,
+  });
+
+  const isInteractive = isHovered || isFocused;
+  const isElevated = isInteractive || isSelected;
 
   const handleCardClick = () => {
     if (typeof onSelect === "function" && variantId) {
@@ -265,20 +454,33 @@ function ProductCard({
     }
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      handleCardClick();
+    }
+  };
+
   return (
     <div
       className={`product-card ${isSelected ? "selected" : ""}`}
       onClick={handleCardClick}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        setIsPressed(false);
+      }}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => {
+        setIsFocused(false);
+        setIsPressed(false);
+      }}
+      onPointerDown={() => setIsPressed(true)}
+      onPointerUp={() => setIsPressed(false)}
+      onPointerCancel={() => setIsPressed(false)}
       role="button"
       tabIndex={0}
-      onKeyDown={(event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          handleCardClick();
-        }
-      }}
+      onKeyDown={handleKeyDown}
       aria-pressed={isSelected}
       aria-label={`${
         isSelected ? "Remove from compare" : "Add to compare"
@@ -289,21 +491,28 @@ function ProductCard({
         borderRadius: "28px",
         border: isSelected
           ? "1px solid rgba(245, 158, 11, 0.42)"
-          : isHovered
+          : isInteractive
           ? "1px solid rgba(255, 255, 255, 0.18)"
           : "1px solid rgba(255, 255, 255, 0.10)",
         background:
           "linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015)), rgba(14,20,31,0.88)",
-        boxShadow: isSelected
+        boxShadow: isFocused
+          ? "0 0 0 3px rgba(245,158,11,0.28), 0 28px 70px rgba(0,0,0,0.34), 0 0 0 1px rgba(245,158,11,0.14)"
+          : isSelected
           ? "0 28px 70px rgba(0,0,0,0.34), 0 0 0 1px rgba(245,158,11,0.14), 0 0 30px rgba(245,158,11,0.10)"
-          : isHovered
+          : isInteractive
           ? "0 28px 70px rgba(0,0,0,0.34), 0 10px 24px rgba(0,0,0,0.20)"
           : "0 20px 50px rgba(0,0,0,0.28), 0 6px 18px rgba(0,0,0,0.18)",
         backdropFilter: "blur(14px)",
         WebkitBackdropFilter: "blur(14px)",
-        transform: isHovered ? "translateY(-4px)" : "translateY(0)",
+        transform: isPressed
+          ? "translateY(-1px) scale(0.997)"
+          : isInteractive
+          ? "translateY(-4px)"
+          : "translateY(0)",
         transition:
           "transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease",
+        outline: "none",
       }}
     >
       <div
@@ -313,7 +522,7 @@ function ProductCard({
           left: 0,
           top: 0,
           bottom: 0,
-          width: isSelected ? 8 : isHovered ? 5 : 0,
+          width: isSelected ? 8 : isInteractive ? 5 : 0,
           background:
             "linear-gradient(180deg, rgba(255,187,72,0.95), rgba(245,158,11,0.68))",
           boxShadow: isSelected ? "0 0 20px rgba(245,158,11,0.35)" : "none",
@@ -330,8 +539,23 @@ function ProductCard({
           pointerEvents: "none",
           background:
             "radial-gradient(circle at top right, rgba(245,158,11,0.14), transparent 24%), linear-gradient(180deg, rgba(255,255,255,0.04), transparent 26%)",
-          opacity: isHovered || isSelected ? 1 : 0.9,
+          opacity: isElevated ? 1 : 0.9,
           transition: "opacity 180ms ease",
+        }}
+      />
+
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 1,
+          borderRadius: 27,
+          pointerEvents: "none",
+          boxShadow: isFocused
+            ? "inset 0 0 0 2px rgba(245,158,11,0.24)"
+            : "none",
+          transition: "box-shadow 180ms ease",
+          zIndex: 2,
         }}
       />
 
@@ -451,7 +675,11 @@ function ProductCard({
               padding: 22,
               position: "relative",
               zIndex: 1,
-              transform: isHovered ? "scale(1.035)" : "scale(1)",
+              transform: isPressed
+                ? "scale(1.02)"
+                : isInteractive
+                ? "scale(1.035)"
+                : "scale(1)",
               transition: "transform 220ms ease",
             }}
           />
@@ -637,6 +865,40 @@ function ProductCard({
           </div>
         </div>
 
+        <div
+          style={{
+            padding: "14px 16px",
+            borderRadius: 18,
+            border: "1px solid rgba(255,255,255,0.07)",
+            background:
+              "linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)), rgba(255,255,255,0.02)",
+          }}
+        >
+          <div
+            style={{
+              color: "#f3d79b",
+              fontSize: 11,
+              fontWeight: 800,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              marginBottom: 6,
+            }}
+          >
+            Showroom Recommendation
+          </div>
+
+          <div
+            style={{
+              color: "#e7edf7",
+              fontSize: 14,
+              fontWeight: 700,
+              lineHeight: 1.45,
+            }}
+          >
+            {recommendationLine}
+          </div>
+        </div>
+
         {primarySpec ? (
           <div
             style={{
@@ -648,7 +910,7 @@ function ProductCard({
               border: "1px solid rgba(255,255,255,0.08)",
               background:
                 "linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025)), rgba(255,255,255,0.025)",
-              boxShadow: isHovered
+              boxShadow: isInteractive
                 ? "0 12px 24px rgba(0,0,0,0.12)"
                 : "0 8px 18px rgba(0,0,0,0.08)",
               transition: "box-shadow 180ms ease, background 180ms ease",
@@ -663,7 +925,7 @@ function ProductCard({
                 textTransform: "uppercase",
               }}
             >
-              Featured Highlight
+              {getFeaturedHighlightLabel(primarySpec)}
             </span>
 
             <span
@@ -714,7 +976,7 @@ function ProductCard({
                   padding: "0 14px",
                   border: "1px solid rgba(255,255,255,0.06)",
                   borderRadius: 16,
-                  background: isHovered
+                  background: isInteractive
                     ? "rgba(255,255,255,0.04)"
                     : "rgba(255,255,255,0.03)",
                   transition: "background 180ms ease",
@@ -756,7 +1018,7 @@ function ProductCard({
                 padding: "0 14px",
                 border: "1px solid rgba(255,255,255,0.06)",
                 borderRadius: 16,
-                background: isHovered
+                background: isInteractive
                   ? "rgba(255,255,255,0.04)"
                   : "rgba(255,255,255,0.03)",
                 transition: "background 180ms ease",
@@ -894,6 +1156,9 @@ function ProductCard({
             type="button"
             className={`compare-btn ${isSelected ? "active" : ""}`}
             onClick={handleCompareClick}
+            onPointerDown={(event) => event.stopPropagation()}
+            onPointerUp={(event) => event.stopPropagation()}
+            onPointerCancel={(event) => event.stopPropagation()}
             aria-pressed={isSelected}
             style={{
               minHeight: 58,
@@ -907,16 +1172,17 @@ function ProductCard({
                 : "linear-gradient(180deg, rgba(255,187,72,0.26), rgba(245,158,11,0.18)), rgba(245,158,11,0.12)",
               boxShadow: isSelected
                 ? "0 14px 28px rgba(245,158,11,0.20), 0 0 0 1px rgba(245,158,11,0.14)"
-                : isHovered
+                : isInteractive
                 ? "0 14px 28px rgba(245,158,11,0.20), inset 0 1px 0 rgba(255,255,255,0.14)"
                 : "0 12px 24px rgba(245,158,11,0.16), inset 0 1px 0 rgba(255,255,255,0.14)",
-              transform: isHovered ? "translateY(-1px)" : "translateY(0)",
+              transform: isPressed ? "scale(0.995)" : isInteractive ? "translateY(-1px)" : "translateY(0)",
               fontSize: 16,
               fontWeight: 800,
               letterSpacing: "0.01em",
               cursor: "pointer",
               transition:
                 "transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease",
+              outline: "none",
             }}
           >
             {getButtonLabel(isSelected)}
