@@ -1,19 +1,38 @@
+import React from "react";
 import { Outlet } from "react-router-dom";
 
 export default function MainLayout() {
   return (
-    <div className="app-container">
-      <header className="app-header">
-        <div className="page-container">
-          <h1 className="app-title">BBQ Comparison</h1>
-        </div>
-      </header>
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "#020617",
+        color: "#ffffff",
+      }}
+    >
+      <div
+        style={{
+          padding: "20px 24px",
+          borderBottom: "1px solid #1e293b",
+        }}
+      >
+        <h1
+          style={{
+            margin: 0,
+            fontSize: "28px",
+          }}
+        >
+          BBQ Comparison
+        </h1>
+      </div>
 
-      <main className="app-main">
-        <div className="page-container">
-          <Outlet />
-        </div>
-      </main>
+      <div
+        style={{
+          padding: "24px",
+        }}
+      >
+        <Outlet />
+      </div>
     </div>
   );
 }

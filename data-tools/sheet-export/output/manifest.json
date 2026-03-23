@@ -1,12 +1,12 @@
 {
   "version": "1",
-  "generatedAt": "2026-03-20T15:23:53.428Z",
+  "generatedAt": "2026-03-23T15:30:16.920Z",
   "datasets": {
     "brands": {
       "file": "brands.json",
-      "version": "63a0e76d56ef",
+      "version": "47b63ff4791e",
       "records": 15,
-      "hash": "63a0e76d56efc312490f2307f3b855b94786ab7ae4f5fe317f38f21ffe09c17d"
+      "hash": "47b63ff4791e0c3bc4a962b511103237183515f956af5c5d2ef83103e117fd59"
     },
     "families": {
       "file": "families.json",
@@ -16,9 +16,9 @@
     },
     "variants": {
       "file": "variants.json",
-      "version": "74e36970df90",
+      "version": "39643e7c060b",
       "records": 239,
-      "hash": "74e36970df90676da289b93e926e3a22fb8a3cf4717674c806ba68e129445b91"
+      "hash": "39643e7c060b34c6289a7a86da5bf61ed9b71f799ef2361985d8439e6f854548"
     },
     "colors": {
       "file": "colors.json",
@@ -28,9 +28,9 @@
     },
     "assets": {
       "file": "assets.json",
-      "version": "3857c3cb30c7",
-      "records": 782,
-      "hash": "3857c3cb30c7c59a4164fd38444931cae6564fbd702997b9e26401bc6eb41b5d"
+      "version": "3d30e8388e2c",
+      "records": 797,
+      "hash": "3d30e8388e2c700eff458ceb2a964c27faef89179e6bf1e7d15f783b5a5e16bb"
     },
     "specs": {
       "file": "specs.json",
