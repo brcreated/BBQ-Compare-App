@@ -7,11 +7,11 @@ export default function AboutModal({ isOpen, onClose }) {
   const [versionSource, setVersionSource] = useState("");
 
   const GITHUB_CONFIG = {
-    owner: "brcreated",
-    repo: "BBQ-Compare-App",
-    branch: "main",
-    packageJsonPath: "package.json",
-  };
+  owner: "brcreated",
+  repo: "BBQ-Compare-App",
+  branch: "main",
+  packageJsonPath: "apps/bbq-comparison-app/package.json",
+};
 
   const STORE_LOGO_URL =
     "https://bbqcompareassets.brcreated.app/assets/branding/logo.svg";
