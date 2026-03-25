@@ -11,7 +11,6 @@ import ComparePage from "./pages/ComparePage";
 import CompareMiniBar from "./components/CompareMiniBar";
 import { CatalogProvider } from "./context/CatalogContext";
 import AboutPage from "./pages/AboutPage";
-import QuizPage from "./pages/QuizPage";
 
 export default function App() {
   return (
@@ -24,7 +23,6 @@ export default function App() {
           <Route path="/brand/:brandSlug" element={<BrandResults />} />
           <Route path="/product/:productId" element={<ProductDetail />} />
           <Route path="/compare" element={<ComparePage />} />
-          <Route path="/quiz" element={<QuizPage />} />
           <Route path="/about" element={<AboutPage />} />
         </Routes>
         <CompareMiniBar />

@@ -1,7 +1,7 @@
 //AboutPage.jsx
 
 import React, { useEffect, useState } from "react";
-import BRcreatedLogo from "../components/BrcreatedLogo.jsx";
+import BRcreatedLogo from "../components/BRcreatedLogo.jsx";
 
 export default function AboutModal({ isOpen, onClose }) {
   const [version, setVersion] = useState("Loading...");
