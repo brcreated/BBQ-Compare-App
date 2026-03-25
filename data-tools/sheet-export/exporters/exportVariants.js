@@ -207,7 +207,7 @@ export function exportVariants({ sourceData, datasets }) {
         heatZones: toNumberOrNull(row.heat_zones),
         pelletHopperCapacity: toNumberOrNull(row.pellet_hopper_capacity),
 
-        supportsLP: toBoolean(row.supports_lp, null),
+        supportsPropane: toBoolean(row.supports_propane, null),
         supportsNaturalGas: toBoolean(row.supports_natural_gas, null),
         supportsCharcoal: toBoolean(row.supports_charcoal, null),
         supportsPellet: toBoolean(row.supports_pellet, null),

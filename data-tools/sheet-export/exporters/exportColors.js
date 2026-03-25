@@ -12,52 +12,29 @@ function toNumberOrNull(value) {
   return Number.isNaN(parsed) ? null : parsed;
 }
 
+function toStringOrEmpty(value) {
+  return value == null ? "" : String(value).trim();
+}
+
 export function exportColors({ sourceData }) {
-  const colorRows = sourceData.getSheetRows("colors");
-  const variantColorRows = sourceData.getSheetRows("variantColors");
+  const rows = sourceData.getSheetRows("colors");
 
-  const colorLookup = new Map(
-    colorRows
-      .filter((row) => row && row.color_id && row.color_name)
-      .map((row) => [
-        String(row.color_id).trim(),
-        {
-          colorId: String(row.color_id).trim(),
-          name: String(row.color_name).trim(),
-          swatchHex: row.color_hex ? String(row.color_hex).trim() : "",
-          imageUrl: row.image_url ? String(row.image_url).trim() : "",
-          sortOrder: toNumberOrNull(row.sort_order),
-          isActive: toBoolean(row.active, true),
-        },
-      ])
-  );
+  return rows
+    .filter((row) => {
+      if (!row) return false;
 
-  return variantColorRows
-    .filter((row) => row && row.variant_id && row.color_id)
-    .map((row) => {
-      const variantId = String(row.variant_id).trim();
-      const colorId = String(row.color_id).trim();
-      const color = colorLookup.get(colorId);
+      const colorId = toStringOrEmpty(row.color_id);
+      const colorName = toStringOrEmpty(row.color_name);
 
-      if (!color) {
-        return null;
-      }
-
-      return {
-        id: colorId,
-        variantId,
-        name: color.name,
-        swatchHex: color.swatchHex,
-        imageUrl: color.imageUrl,
-        sortOrder:
-          row.sort_order !== undefined && row.sort_order !== null && row.sort_order !== ""
-            ? toNumberOrNull(row.sort_order)
-            : color.sortOrder,
-        isActive:
-          row.active !== undefined && row.active !== null && row.active !== ""
-            ? toBoolean(row.active, true)
-            : color.isActive,
-      };
+      return Boolean(colorId && colorName);
     })
-    .filter(Boolean);
+    .map((row) => ({
+      id: toStringOrEmpty(row.color_id),
+      name: toStringOrEmpty(row.color_name),
+      family: toStringOrEmpty(row.color_family),
+      swatchHex: toStringOrEmpty(row.color_hex),
+      imageUrl: toStringOrEmpty(row.image_url),
+      sortOrder: toNumberOrNull(row.sort_order),
+      isActive: toBoolean(row.active, true),
+    }));
 }

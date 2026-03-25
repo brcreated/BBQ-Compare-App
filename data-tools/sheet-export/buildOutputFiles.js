@@ -3,6 +3,7 @@ const DATASET_FILE_NAMES = {
   families: "families.json",
   variants: "variants.json",
   colors: "colors.json",
+  variantColors: "variantColors.json",
   assets: "assets.json",
   specs: "specs.json",
   recommendationRules: "recommendationRules.json",

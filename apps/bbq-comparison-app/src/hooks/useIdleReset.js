@@ -1,13 +1,25 @@
-// src/hooks/useIdleReset.js
-
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function useIdleReset(timeout = 60000, fadeDuration = 5000) {
+export default function useIdleReset(
+  timeout = 60000,
+  fadeDurationOrOnIdle = 5000,
+  maybeOnIdle
+) {
   const navigate = useNavigate();
   const timerRef = useRef(null);
   const fadeTimerRef = useRef(null);
   const [isIdleFading, setIsIdleFading] = useState(false);
+
+  const fadeDuration =
+    typeof fadeDurationOrOnIdle === "number" ? fadeDurationOrOnIdle : 5000;
+
+  const onIdle =
+    typeof fadeDurationOrOnIdle === "function"
+      ? fadeDurationOrOnIdle
+      : typeof maybeOnIdle === "function"
+      ? maybeOnIdle
+      : null;
 
   useEffect(() => {
     const clearTimers = () => {
@@ -32,6 +44,12 @@ export default function useIdleReset(timeout = 60000, fadeDuration = 5000) {
 
       timerRef.current = setTimeout(() => {
         setIsIdleFading(false);
+
+        if (typeof onIdle === "function") {
+          onIdle();
+          return;
+        }
+
         navigate("/", { replace: true });
       }, timeout);
     };
@@ -62,7 +80,7 @@ export default function useIdleReset(timeout = 60000, fadeDuration = 5000) {
         window.removeEventListener(eventName, resetTimer);
       });
     };
-  }, [navigate, timeout, fadeDuration]);
+  }, [navigate, timeout, fadeDuration, onIdle]);
 
   return { isIdleFading };
 }

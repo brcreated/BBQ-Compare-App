@@ -2,6 +2,7 @@ import { DATASET_CONTRACTS } from "../../packages/shared-types/src/datasetContra
 import {
   createBooleanField,
   createDatasetSchema,
+  createNumberField,
   createStringField,
 } from "./schemaHelpers";
 
@@ -13,16 +14,10 @@ export const colorsSchema = createDatasetSchema({
   recordKey: contract.recordKey,
   idField: contract.idField,
 
-  dependsOn: ["variants"],
-  
+  dependsOn: [],
+
   fields: {
     ColorId: createStringField({
-      required: true,
-      nullable: false,
-      minLength: 1,
-      pattern: "^[A-Z0-9_-]+$",
-    }),
-    VariantId: createStringField({
       required: true,
       nullable: false,
       minLength: 1,
@@ -33,23 +28,29 @@ export const colorsSchema = createDatasetSchema({
       nullable: false,
       minLength: 1,
     }),
+    ColorFamily: createStringField({
+      required: false,
+      nullable: true,
+    }),
     ColorHex: createStringField({
       required: false,
       nullable: true,
       pattern: "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+    }),
+    ImageURL: createStringField({
+      required: false,
+      nullable: true,
+      minLength: 1,
+    }),
+    SortOrder: createNumberField({
+      required: false,
+      nullable: true,
+      integer: true,
+      min: 0,
     }),
     Active: createBooleanField({
       required: true,
       nullable: false,
     }),
   },
-  relationships: [
-    {
-      type: "belongsTo",
-      field: "VariantId",
-      targetDataset: "variants",
-      targetField: "VariantId",
-      required: true,
-    },
-  ],
 });

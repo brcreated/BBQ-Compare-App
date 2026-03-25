@@ -1,63 +1,147 @@
+const STORAGE_KEY = "bbq-comparison-store";
 const MAX_ITEMS = 4;
 
+function normalizeId(value) {
+  if (!value) return "";
+  return String(value).trim();
+}
+
+function extractId(itemOrId) {
+  if (typeof itemOrId === "string") return normalizeId(itemOrId);
+  if (!itemOrId || typeof itemOrId !== "object") return "";
+
+  return normalizeId(
+    itemOrId.id ||
+      itemOrId.variantId ||
+      itemOrId.productId ||
+      itemOrId.slug ||
+      itemOrId.handle ||
+      itemOrId.entityId
+  );
+}
+
+function loadInitialItems() {
+  if (typeof window === "undefined") return [];
+
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.map(extractId).filter(Boolean).slice(0, MAX_ITEMS);
+  } catch (error) {
+    console.error("Failed to load comparison store from localStorage.", error);
+    return [];
+  }
+}
+
 let state = {
-  items: [],
+  items: loadInitialItems(),
 };
 
 const listeners = new Set();
 
 function emit() {
-  const snapshot = getState();
-  listeners.forEach((listener) => listener(snapshot));
+  if (typeof window !== "undefined") {
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state.items));
+    } catch (error) {
+      console.error("Failed to persist comparison store.", error);
+    }
+  }
+
+  listeners.forEach((listener) => {
+    try {
+      listener(state);
+    } catch (error) {
+      console.error("Comparison store listener failed.", error);
+    }
+  });
 }
 
 export function getState() {
   return {
+    ...state,
     items: [...state.items],
-    count: state.items.length,
-    isFull: state.items.length >= MAX_ITEMS,
   };
 }
 
 export function subscribe(listener) {
+  if (typeof listener !== "function") {
+    return () => {};
+  }
+
   listeners.add(listener);
   return () => listeners.delete(listener);
 }
 
-export function addItem(variantId) {
-  if (!variantId) {
-    return { added: false, reason: "missing_id" };
+export function isSelected(itemOrId) {
+  const id = extractId(itemOrId);
+  return Boolean(id) && state.items.includes(id);
+}
+
+export function addItem(itemOrId) {
+  const id = extractId(itemOrId);
+
+  if (!id) {
+    return {
+      ok: false,
+      reason: "invalid",
+      items: [...state.items],
+    };
   }
 
-  if (state.items.includes(variantId)) {
-    return { added: false, reason: "duplicate" };
+  if (state.items.includes(id)) {
+    return {
+      ok: false,
+      reason: "duplicate",
+      items: [...state.items],
+    };
   }
 
   if (state.items.length >= MAX_ITEMS) {
-    return { added: false, reason: "full" };
+    return {
+      ok: false,
+      reason: "max",
+      items: [...state.items],
+    };
   }
 
   state = {
     ...state,
-    items: [...state.items, variantId],
+    items: [...state.items, id],
   };
 
   emit();
 
   return {
-    added: true,
-    reason: null,
-    count: state.items.length,
+    ok: true,
+    reason: "added",
+    items: [...state.items],
   };
 }
 
-export function removeItem(variantId) {
+export function removeItem(itemOrId) {
+  const id = extractId(itemOrId);
+
+  if (!id) {
+    return {
+      ok: false,
+      items: [...state.items],
+    };
+  }
+
   state = {
     ...state,
-    items: state.items.filter((id) => id !== variantId),
+    items: state.items.filter((item) => item !== id),
   };
 
   emit();
+
+  return {
+    ok: true,
+    items: [...state.items],
+  };
 }
 
 export function clearAll() {
@@ -67,8 +151,13 @@ export function clearAll() {
   };
 
   emit();
+
+  return {
+    ok: true,
+    items: [],
+  };
 }
 
-export function isSelected(variantId) {
-  return state.items.includes(variantId);
+export function getMaxItems() {
+  return MAX_ITEMS;
 }

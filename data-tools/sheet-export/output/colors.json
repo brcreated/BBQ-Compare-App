@@ -1,1 +1,281 @@
-[]
+[
+  {
+    "id": "stainless_steel",
+    "name": "Stainless Steel",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "black",
+    "name": "Black",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "white",
+    "name": "White",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gloss_blue",
+    "name": "Blue",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gloss_black",
+    "name": "Black",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gloss_red",
+    "name": "Red",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "matte_black",
+    "name": "Black",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "matte_charcoal",
+    "name": "Charcoal",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "matte_red",
+    "name": "Red",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "antique_red",
+    "name": "Antique Red",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "ardesia_grey",
+    "name": "Ardesia Grey",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "copper",
+    "name": "Copper",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "ruby_red",
+    "name": "Ruby Red",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "anthracite_grey",
+    "name": "Anthracite Grey",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "imperial_yellow",
+    "name": "Imperial Yellow",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "white_stone",
+    "name": "White Stone",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "wrinkle_black",
+    "name": "Black",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "bone",
+    "name": "Bone",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "olive",
+    "name": "Olive",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "orange",
+    "name": "Orange",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "silver",
+    "name": "Silver",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "red",
+    "name": "Red",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yellow",
+    "name": "Yellow",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "blue",
+    "name": "Blue",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "purple",
+    "name": "Purple",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "green",
+    "name": "Green",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "maroon",
+    "name": "Maroon",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "cerulean_blue",
+    "name": "Cerulean Blue",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "military_green",
+    "name": "Military Green",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "charcoal",
+    "name": "Charcoal",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "grey",
+    "name": "Grey",
+    "family": "",
+    "swatchHex": "",
+    "imageUrl": "",
+    "sortOrder": null,
+    "isActive": true
+  }
+]

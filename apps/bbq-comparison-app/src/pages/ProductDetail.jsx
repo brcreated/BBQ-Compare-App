@@ -1,1302 +1,1367 @@
+//ProductDetails.jsx
+
 import React, { useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import "../styles/showroom.css";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useCatalog } from "../context/CatalogContext";
+import { addItem, removeItem, isSelected, getState, subscribe } from "../state/comparisonStore";
 
-function normalizeBaseUrl(url) {
-  return String(url || "").trim().replace(/\/+$/, "");
+const pageShellStyle = {
+  minHeight: "100vh",
+  position: "relative",
+  overflow: "hidden",
+  background:
+    "radial-gradient(circle at 18% 14%, rgba(76, 110, 168, 0.09), transparent 28%), radial-gradient(circle at 82% 88%, rgba(76, 110, 168, 0.08), transparent 32%), linear-gradient(180deg, #0a0d12 0%, #0f141b 48%, #090c11 100%)",
+  color: "#f3f7ff",
+  fontFamily:
+    'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+};
+
+const containerStyle = {
+  position: "relative",
+  zIndex: 1,
+  width: "100%",
+  maxWidth: "none",
+  margin: "0 auto",
+  padding: "22px 28px 120px",
+  boxSizing: "border-box",
+};
+
+const glassCardStyle = {
+  position: "relative",
+  background: "linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.018))",
+  border: "1px solid rgba(255,255,255,0.07)",
+  boxShadow: "0 24px 60px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.04)",
+  borderRadius: 28,
+  backdropFilter: "blur(18px)",
+  overflow: "hidden",
+};
+
+const miniPillStyle = {
+  borderRadius: 999,
+  border: "1px solid rgba(121, 161, 241, 0.22)",
+  background: "rgba(67, 102, 165, 0.14)",
+  padding: "8px 12px",
+  fontSize: 12,
+  color: "#dbe8ff",
+};
+
+const COLOR_SWATCH_MAP = {
+  black: "#1a1a1a",
+  matte_black: "#1a1a1a",
+  gloss_black: "#111111",
+  charcoal: "#3d434d",
+  gray: "#7b818a",
+  grey: "#7b818a",
+  silver: "#b6bcc6",
+  stainless: "#c7ccd3",
+  stainless_steel: "#c7ccd3",
+  white: "#f4f6fa",
+  red: "#b5121b",
+  antique_red: "#9c1c1f",
+  ruby_red: "#b11e2f",
+  blue: "#244fa3",
+  cerulean_blue: "#2f6fa3",
+  orange: "#dc6c18",
+  yellow: "#d4ac18",
+  green: "#486b43",
+  military_green: "#556b4f",
+  maroon: "#6b2435",
+  purple: "#5c3d82",
+  copper: "#b36b3d",
+  bronze: "#8f633c",
+  ardesia_grey: "#5f6670",
+  anthracite_grey: "#4b5158",
+  wrinkle_black: "#1a1a1a",
+  white_stone: "#e7e3da",
+};
+
+function normalizeText(value) {
+  return value == null ? "" : String(value).trim();
 }
 
-function buildDataUrl(baseUrl, fileName) {
-  return `${baseUrl}/${fileName}`;
-}
-
-async function fetchJson(url) {
-  const response = await fetch(url, {
-    headers: {
-      Accept: "application/json",
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch ${url} (${response.status})`);
-  }
-
-  return response.json();
-}
-
-function ensureArray(data) {
-  if (Array.isArray(data)) return data;
-  if (Array.isArray(data?.items)) return data.items;
-  if (Array.isArray(data?.data)) return data.data;
-  if (Array.isArray(data?.results)) return data.results;
-  return [];
-}
-
-function readFirst(obj, keys, fallback = "") {
-  if (!obj || typeof obj !== "object") return fallback;
-
-  for (const key of keys) {
-    const value = obj[key];
-    if (value !== undefined && value !== null && value !== "") {
-      return value;
-    }
-  }
-
-  return fallback;
+function normalizeLower(value) {
+  return normalizeText(value).toLowerCase();
 }
 
 function normalizeId(value) {
-  return String(value || "")
+  return normalizeText(value).toLowerCase().replace(/[_\s]+/g, "-");
+}
+
+function toNumber(value) {
+  if (value == null || value === "") return null;
+  const parsed = Number(String(value).replace(/[^0-9.-]/g, ""));
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function formatNumber(value) {
+  const numeric = toNumber(value);
+  if (numeric == null) return "";
+  return Number.isInteger(numeric) ? String(numeric) : numeric.toFixed(1);
+}
+
+function formatInches(value) {
+  const formatted = formatNumber(value);
+  return formatted ? `${formatted} in` : "";
+}
+
+function titleize(value) {
+  return normalizeText(value)
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
     .trim()
-    .toLowerCase()
-    .replace(/%20/g, " ")
-    .replace(/[_\s]+/g, "-")
-    .replace(/-+/g, "-");
-}
-
-function matchesId(value, target) {
-  return normalizeId(value) === normalizeId(target);
-}
-
-function getVariantCandidateIds(variant) {
-  return [
-    variant?.id,
-    variant?.variant_id,
-    variant?.variantId,
-    variant?.sku,
-    variant?.handle,
-    variant?.slug,
-    variant?.productId,
-    variant?.product_id,
-    variant?.entityId,
-    variant?.entity_id,
-    variant?.name,
-    variant?.variant_name,
-    variant?.variantName,
-    variant?.title,
-    variant?.label,
-  ].filter(Boolean);
-}
-
-function findVariantByProductId(variants, productId) {
-  const normalizedTarget = normalizeId(productId);
-
-  if (!normalizedTarget) return null;
-
-  const exactMatch =
-    variants.find((variant) =>
-      getVariantCandidateIds(variant).some(
-        (candidate) => normalizeId(candidate) === normalizedTarget
-      )
-    ) || null;
-
-  if (exactMatch) return exactMatch;
-
-  const looseMatch =
-    variants.find((variant) =>
-      getVariantCandidateIds(variant).some((candidate) => {
-        const normalizedCandidate = normalizeId(candidate);
-        return (
-          normalizedCandidate.includes(normalizedTarget) ||
-          normalizedTarget.includes(normalizedCandidate)
-        );
-      })
-    ) || null;
-
-  return looseMatch;
-}
-
-function getVariantId(variant) {
-  return readFirst(variant, [
-    "id",
-    "variant_id",
-    "variantId",
-    "sku",
-    "handle",
-    "slug",
-    "productId",
-    "product_id",
-  ]);
-}
-
-function getFamilyId(variant) {
-  return readFirst(variant, ["familyId", "family_id", "family"]);
-}
-
-function getBrandId(variant) {
-  return readFirst(variant, ["brandId", "brand_id", "brand"]);
-}
-
-function findFamily(families, familyId) {
-  return (
-    families.find((family) =>
-      [family?.id, family?.family_id, family?.familyId].some((value) =>
-        matchesId(value, familyId)
-      )
-    ) || null
-  );
-}
-
-function findBrand(brands, brandId, family) {
-  const familyBrandId = readFirst(family, ["brandId", "brand_id", "brand"]);
-  const resolvedBrandId = brandId || familyBrandId;
-
-  return (
-    brands.find((brand) =>
-      [brand?.id, brand?.brand_id, brand?.brandId].some((value) =>
-        matchesId(value, resolvedBrandId)
-      )
-    ) || null
-  );
-}
-
-function filterVariantSpecs(specs, variantId) {
-  return specs.filter((spec) => {
-    const entityType = normalizeId(readFirst(spec, ["entityType", "entity_type"]));
-    const entityId = readFirst(spec, ["entityId", "entity_id"]);
-    const linkedVariantId = readFirst(spec, ["variantId", "variant_id"]);
-
-    if (matchesId(linkedVariantId, variantId)) return true;
-    if (entityType === "variant" && matchesId(entityId, variantId)) return true;
-    if (!entityType && matchesId(entityId, variantId)) return true;
-
-    return false;
-  });
-}
-
-function filterVariantAssets(assets, variantId) {
-  return assets.filter((asset) => {
-    const entityType = normalizeId(readFirst(asset, ["entityType", "entity_type"]));
-    const entityId = readFirst(asset, ["entityId", "entity_id"]);
-    const linkedVariantId = readFirst(asset, ["variantId", "variant_id"]);
-
-    if (matchesId(linkedVariantId, variantId)) return true;
-    if (entityType === "variant" && matchesId(entityId, variantId)) return true;
-    if (!entityType && matchesId(entityId, variantId)) return true;
-
-    return false;
-  });
-}
-
-function filterVariantColors(colors, variantId) {
-  return colors.filter((color) => {
-    const entityType = normalizeId(readFirst(color, ["entityType", "entity_type"]));
-    const entityId = readFirst(color, ["entityId", "entity_id"]);
-    const linkedVariantId = readFirst(color, ["variantId", "variant_id"]);
-
-    if (matchesId(linkedVariantId, variantId)) return true;
-    if (entityType === "variant" && matchesId(entityId, variantId)) return true;
-    if (!entityType && matchesId(entityId, variantId)) return true;
-
-    return false;
-  });
-}
-
-function filterBrandAssets(assets, brandId) {
-  return assets.filter((asset) => {
-    const entityType = normalizeId(readFirst(asset, ["entityType", "entity_type"]));
-    const entityId = readFirst(asset, ["entityId", "entity_id"]);
-    const linkedBrandId = readFirst(asset, ["brandId", "brand_id"]);
-
-    if (matchesId(linkedBrandId, brandId)) return true;
-    if (entityType === "brand" && matchesId(entityId, brandId)) return true;
-    if (!entityType && matchesId(entityId, brandId)) return true;
-
-    return false;
-  });
-}
-
-function getVariantName(variant) {
-  return readFirst(
-    variant,
-    ["name", "variantName", "variant_name", "title", "label"],
-    "Unknown Product"
-  );
-}
-
-function getFamilyName(family) {
-  return readFirst(family, ["name", "familyName", "family_name", "title"], "");
-}
-
-function getBrandName(brand) {
-  return readFirst(brand, ["name", "brandName", "brand_name", "title"], "");
-}
-
-function getBrandLogoField(brand) {
-  return readFirst(brand, [
-    "logoUrl",
-    "logo_url",
-    "brandLogoUrl",
-    "brand_logo_url",
-    "image",
-    "imageUrl",
-  ]);
-}
-
-function getBrandFullName(brand) {
-  return (
-    readFirst(brand, ["displayName", "display_name", "fullName", "full_name"], "") ||
-    getBrandName(brand)
-  );
+    .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
 function formatCurrency(value) {
-  if (value === null || value === undefined || value === "") return "";
-
-  const numberValue =
-    typeof value === "number" ? value : Number(String(value).replace(/[^0-9.-]/g, ""));
-
-  if (Number.isNaN(numberValue)) return "";
-
+  const numeric = toNumber(value);
+  if (numeric == null || numeric <= 0) return "";
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
     maximumFractionDigits: 0,
-  }).format(numberValue);
+  }).format(numeric);
 }
 
-function findSpecValueByKeys(specs, keys) {
-  const normalizedKeys = keys.map((key) => normalizeId(key));
-
-  const matched = specs.find((spec) => {
-    const specKey = normalizeId(readFirst(spec, ["key", "label", "name"]));
-    return normalizedKeys.some(
-      (key) => specKey === key || specKey.includes(key) || key.includes(specKey)
-    );
-  });
-
-  if (!matched) return "";
-
-  const value = readFirst(matched, ["displayValue", "display_value", "value"]);
-  const unit = readFirst(matched, ["unit"], "");
-
-  return [value, unit].filter(Boolean).join(" ");
-}
-
-function findVariantPrice(variant, specs) {
-  const directPrice = readFirst(variant, [
-    "price",
-    "msrp",
-    "basePrice",
-    "base_price",
-    "salePrice",
-    "sale_price",
-  ]);
-
-  if (directPrice !== "") {
-    const formatted = formatCurrency(directPrice);
-    if (formatted) return formatted;
+function specValue(specs, keys) {
+  for (const key of keys) {
+    const match = specs.find((spec) => normalizeLower(spec?.key) === normalizeLower(key));
+    if (match && normalizeText(match?.value)) {
+      return normalizeText(match.value);
+    }
   }
-
-  const priceSpec = specs.find((spec) => {
-    const key = normalizeId(readFirst(spec, ["key", "label", "name"]));
-    return key.includes("price") || key.includes("msrp");
-  });
-
-  if (priceSpec) {
-    const formatted = formatCurrency(
-      readFirst(priceSpec, ["value", "displayValue", "display_value"])
-    );
-    if (formatted) return formatted;
-  }
-
-  return "Call for Price";
+  return "";
 }
 
-function findFuelSummary(variant, specs) {
-  const directFuel = readFirst(variant, ["fuelType", "fuel_type", "fuel"]);
-  const supportsLP = readFirst(variant, ["supportsLP", "supportsLp", "supports_lp"]);
-  const supportsNG = readFirst(variant, [
-    "supportsNaturalGas",
-    "supports_natural_gas",
-    "supportsNg",
-  ]);
-
-  const specFuel =
-    findSpecValueByKeys(specs, ["fuel_type", "fuel", "fuel type"]) ||
-    findSpecValueByKeys(specs, ["gas_type", "gas type"]);
-
-  const lpSpec = findSpecValueByKeys(specs, ["supports_lp", "supportslp"]);
-  const ngSpec = findSpecValueByKeys(
-    specs,
-    ["supports_natural_gas", "supportsnaturalgas", "supports_ng", "supportsng"]
-  );
-
-  const normalizedFuel = String(directFuel || specFuel || "").trim();
-
-  const lpEnabled =
-    String(supportsLP || lpSpec).toLowerCase() === "true" ||
-    String(supportsLP || lpSpec).toLowerCase() === "yes";
-
-  const ngEnabled =
-    String(supportsNG || ngSpec).toLowerCase() === "true" ||
-    String(supportsNG || ngSpec).toLowerCase() === "yes";
-
-  if (lpEnabled && ngEnabled) return "Propane / Natural Gas";
-  if (lpEnabled) return "Propane";
-  if (ngEnabled) return "Natural Gas";
-  if (normalizedFuel) return normalizedFuel;
-
-  return "Fuel Info Available";
+function parseBooleanLike(value) {
+  const normalized = normalizeLower(value);
+  if (["true", "yes", "1", "active", "y"].includes(normalized)) return true;
+  if (["false", "no", "0", "inactive", "n"].includes(normalized)) return false;
+  return null;
 }
 
-function findCookingSizeSummary(variant, specs) {
-  const directSize = readFirst(variant, ["size", "sizeLabel", "size_label"]);
-  if (directSize) return directSize;
-
-  const totalArea =
-    readFirst(variant, ["totalCookingArea", "total_cooking_area"]) ||
-    findSpecValueByKeys(specs, ["total_cooking_area", "total cooking area"]);
-
-  const primaryArea =
-    readFirst(variant, ["primaryCookingArea", "primary_cooking_area"]) ||
-    findSpecValueByKeys(specs, ["primary_cooking_area", "primary cooking area"]);
-
-  const width =
-    readFirst(variant, ["productWidth", "product_width", "width"]) ||
-    findSpecValueByKeys(specs, ["product_width", "width"]);
-
-  if (totalArea) return `${totalArea} sq in total`;
-  if (primaryArea) return `${primaryArea} sq in primary`;
-  if (width) return `${width} in wide`;
-
-  return "See Specs";
+function formatTemperatureRange(minValue, maxValue) {
+  const minFormatted = formatNumber(minValue);
+  const maxFormatted = formatNumber(maxValue);
+  if (minFormatted && maxFormatted) return `${minFormatted}°–${maxFormatted}°`;
+  if (maxFormatted) return `Up to ${maxFormatted}°`;
+  if (minFormatted) return `${minFormatted}°+`;
+  return "";
 }
 
-function findInstallSummary(variant, specs) {
-  const directInstall = readFirst(variant, [
-    "installType",
-    "install_type",
-    "installationType",
-    "installation_type",
-  ]);
-
-  if (directInstall) return directInstall;
-
-  return (
-    findSpecValueByKeys(specs, ["install_type", "installation_type", "installation"]) ||
-    "Installation Info"
-  );
+function formatAreaValue(value) {
+  const formatted = formatNumber(value);
+  return formatted ? `${formatted} sq in` : "";
 }
 
-function findFactValue(variant, specs, variantKeys, specKeys, fallback = "—") {
-  const direct = readFirst(variant, variantKeys, "");
-  if (direct !== "") return String(direct);
-
-  const specValue = findSpecValueByKeys(specs, specKeys);
-  if (specValue) return specValue;
-
-  return fallback;
+function formatMadeInUsaValue(value) {
+  const booleanValue = parseBooleanLike(value);
+  if (booleanValue === true) return "Yes";
+  if (booleanValue === false) return "No";
+  return normalizeText(value) ? titleize(value) : "—";
 }
 
-function getAssetType(asset) {
-  return normalizeId(
-    readFirst(asset, ["imageType", "image_type", "assetType", "asset_type", "type"])
-  );
+function normalizeFuelLabel(value) {
+  const normalized = normalizeLower(value);
+  if (!normalized) return "";
+  if (["lp", "liquid propane", "propane"].includes(normalized)) return "Propane";
+  if (["ng", "natural gas", "natural_gas", "naturalgas"].includes(normalized)) return "Natural Gas";
+  if (normalized === "pellet") return "Pellet";
+  if (normalized === "charcoal") return "Charcoal";
+  if (normalized === "wood") return "Wood";
+  if (normalized === "electric") return "Electric";
+  if (normalized === "drum_smoker") return "Drum Smoker";
+  return titleize(value);
 }
 
-function getAssetSortOrder(asset) {
-  const raw = readFirst(asset, ["sortOrder", "sort_order"], 9999);
-  const num = Number(raw);
-  return Number.isFinite(num) ? num : 9999;
+function normalizeInstallationLabel(value) {
+  const normalized = normalizeLower(value);
+  if (!normalized) return "";
+  if (normalized.includes("built")) return "Built-In";
+  if (normalized.includes("free")) return "Freestanding";
+  return titleize(value);
 }
 
-function isAssetActive(asset) {
-  const value = readFirst(asset, ["active", "isActive", "is_active"], true);
-
-  if (typeof value === "boolean") return value;
-  const normalized = String(value).trim().toLowerCase();
-  if (!normalized) return true;
-
-  return !["false", "0", "no", "inactive"].includes(normalized);
-}
-
-function resolveAssetUrl(assetLikeValue, assetBaseUrl) {
-  const raw = String(assetLikeValue || "").trim();
+function formatDisplayValue(label, value) {
+  const raw = normalizeText(value);
   if (!raw) return "";
 
-  if (/^https?:\/\//i.test(raw)) return raw;
-  if (!assetBaseUrl) return raw.replace(/^\/+/, "");
+  const booleanValue = parseBooleanLike(raw);
+  if (booleanValue !== null) return booleanValue ? "Yes" : "No";
 
-  return `${assetBaseUrl}/${raw.replace(/^\/+/, "")}`;
+  const normalizedLabel = normalizeLower(label);
+  if (normalizedLabel.includes("width") || normalizedLabel.includes("height") || normalizedLabel.includes("depth") || normalizedLabel.includes("cutout")) {
+    const inches = formatInches(raw);
+    if (inches) return inches;
+  }
+
+  if (normalizedLabel.includes("area") || normalizedLabel.includes("surface") || normalizedLabel.includes("grilling")) {
+    const area = formatAreaValue(raw);
+    if (area) return area;
+  }
+
+  if (normalizedLabel.includes("temperature")) {
+    const numeric = formatNumber(raw);
+    if (numeric) return `${numeric}°`;
+  }
+
+  if (normalizedLabel.includes("material")) {
+    if (normalizeLower(raw) === "stainless_steel") return "Stainless Steel";
+    return titleize(raw);
+  }
+
+  if (normalizedLabel.includes("fuel")) return normalizeFuelLabel(raw);
+  if (normalizedLabel.includes("installation") || normalizedLabel.includes("install type")) return normalizeInstallationLabel(raw);
+  if (normalizedLabel.includes("category") || normalizedLabel.includes("type")) return titleize(raw);
+
+  return titleize(raw) === raw ? raw : titleize(raw);
 }
 
-function resolveAssetRecordUrl(asset, assetBaseUrl) {
-  const raw =
-    readFirst(asset, ["url", "src", "sourceUrl", "source_url"]) ||
-    readFirst(asset, ["filePath", "file_path", "path"]);
+function findPrice(product, specs) {
+  const direct =
+    product?.salePrice ||
+    product?.sale_price ||
+    product?.price ||
+    product?.mapPrice ||
+    product?.map_price ||
+    product?.msrp;
 
-  return resolveAssetUrl(raw, assetBaseUrl);
+  if (direct != null && direct !== "") {
+    const formatted = formatCurrency(direct);
+    if (formatted) return formatted;
+  }
+
+  for (const key of ["price", "sale_price", "map_price", "msrp"]) {
+    const value = specValue(specs, [key]);
+    const formatted = formatCurrency(value);
+    if (formatted) return formatted;
+  }
+
+  return "Request Pricing";
 }
 
-function getAssetAlt(asset, fallbackTitle) {
-  return (
-    readFirst(asset, ["altText", "alt_text", "title", "name"], "") ||
-    fallbackTitle ||
-    "Product image"
-  );
-}
+function findHeroAsset(assets) {
+  if (!Array.isArray(assets) || assets.length === 0) return null;
 
-function getColorId(color) {
-  return readFirst(color, ["id", "colorId", "color_id", "name", "label"]);
-}
-
-function getColorName(color) {
-  return readFirst(color, ["name", "label", "title", "displayName", "display_name"], "Color");
-}
-
-function getColorSwatch(color) {
-  return readFirst(
-    color,
-    ["hex", "hexCode", "hex_code", "swatchHex", "swatch_hex", "value"],
-    ""
-  );
-}
-
-function buildGalleryAssets(assets, assetBaseUrl, fallbackTitle) {
-  const activeAssets = assets.filter(isAssetActive);
-
-  const normalized = activeAssets
-    .map((asset, index) => {
-      const url = resolveAssetRecordUrl(asset, assetBaseUrl);
-
-      return {
-        key: `${readFirst(asset, ["id", "asset_id", "fileName", "file_name"], "asset")}-${index}`,
-        url,
-        alt: getAssetAlt(asset, fallbackTitle),
-        type: getAssetType(asset),
-        sortOrder: getAssetSortOrder(asset),
-        colorId: normalizeId(readFirst(asset, ["colorId", "color_id"])),
-      };
-    })
-    .filter((asset) => Boolean(asset.url));
-
-  const typeRank = (type) => {
-    if (type === "hero") return 0;
-    if (type === "main") return 1;
-    if (type === "gallery") return 2;
-    if (type === "logo") return 0;
-    return 3;
-  };
-
-  const sorted = normalized.sort((a, b) => {
-    const rankDiff = typeRank(a.type) - typeRank(b.type);
-    if (rankDiff !== 0) return rankDiff;
-
-    const sortDiff = a.sortOrder - b.sortOrder;
-    if (sortDiff !== 0) return sortDiff;
-
-    return a.url.localeCompare(b.url);
+  const preferred = assets.find((asset) => {
+    const imageType = normalizeLower(asset?.imageType || asset?.image_type);
+    return ["hero", "primary", "main"].includes(imageType);
   });
 
-  const deduped = [];
-  const seen = new Set();
+  return preferred || assets[0] || null;
+}
 
-  for (const asset of sorted) {
-    if (seen.has(asset.url)) continue;
-    seen.add(asset.url);
-    deduped.push(asset);
+function assetUrl(asset) {
+  if (!asset) return "";
+
+  const directUrl = normalizeText(asset?.url || asset?.imageUrl || asset?.sourceUrl || asset?.source_url);
+  if (directUrl) return directUrl;
+
+  const filePath = normalizeText(asset?.filePath || asset?.file_path);
+  if (!filePath) return "";
+
+  if (/^https?:\/\//i.test(filePath)) return filePath;
+
+  const rawBase = import.meta.env.VITE_ASSET_BASE_URL || "";
+  const base = rawBase.replace(/\/$/, "");
+  const path = filePath.replace(/^\//, "");
+  return base ? `${base}/${path}` : `/${path}`;
+}
+
+function getAssetSearchText(asset) {
+  return [
+    asset?.id,
+    asset?.assetId,
+    asset?.asset_id,
+    asset?.altText,
+    asset?.alt_text,
+    asset?.fileName,
+    asset?.file_name,
+    asset?.filePath,
+    asset?.file_path,
+    asset?.url,
+    asset?.imageUrl,
+  ]
+    .map((value) => normalizeLower(value))
+    .filter(Boolean)
+    .join(" ");
+}
+
+function getColorSwatchHex(choiceName, rawHex) {
+  const direct = normalizeText(rawHex);
+  if (direct) return direct;
+
+  const normalized = normalizeLower(choiceName).replace(/[^a-z0-9]+/g, "_");
+  return COLOR_SWATCH_MAP[normalized] || COLOR_SWATCH_MAP[normalizeLower(choiceName)] || "#d9dde5";
+}
+
+function findColorAsset(choiceName, variantAssets) {
+  const tokens = normalizeLower(choiceName)
+    .replace(/[_-]+/g, " ")
+    .split(/\s+/)
+    .filter(Boolean);
+
+  if (!tokens.length) return null;
+
+  const directColorMatch = (Array.isArray(variantAssets) ? variantAssets : []).find((asset) => {
+    const searchText = getAssetSearchText(asset);
+    return tokens.every((token) => searchText.includes(token));
+  });
+
+  if (directColorMatch) return directColorMatch;
+
+  const looseColorMatch = (Array.isArray(variantAssets) ? variantAssets : []).find((asset) => {
+    const searchText = getAssetSearchText(asset);
+    return tokens.some((token) => searchText.includes(token));
+  });
+
+  return looseColorMatch || null;
+}
+
+function buildColorChoices(variantColors, colorsById, variantAssets) {
+  return (Array.isArray(variantColors) ? variantColors : []).map((item, index) => {
+    const linkedColor =
+      colorsById?.get?.(item?.colorId) ||
+      colorsById?.get?.(item?.color_id) ||
+      null;
+
+    const name =
+      normalizeText(item?.name) ||
+      normalizeText(linkedColor?.name) ||
+      `Color ${index + 1}`;
+
+    const matchedAsset = findColorAsset(name, variantAssets);
+
+    return {
+      id: normalizeText(item?.id || item?.colorId || item?.color_id || linkedColor?.id || `color-${index}`),
+      name,
+      swatchHex: getColorSwatchHex(
+        name,
+        normalizeText(item?.swatchHex || item?.swatch_hex) ||
+          normalizeText(linkedColor?.swatchHex || linkedColor?.swatch_hex)
+      ),
+      imageUrl:
+        normalizeText(item?.imageUrl || item?.image_url) ||
+        normalizeText(linkedColor?.imageUrl || linkedColor?.image_url) ||
+        assetUrl(matchedAsset),
+    };
+  });
+}
+
+function buildHeroImages({ selectedColor, variantAssets }) {
+  const colorImageUrl = normalizeText(selectedColor?.imageUrl);
+  const heroAsset = findHeroAsset(variantAssets);
+  const heroAssetUrl = assetUrl(heroAsset);
+
+  const images = [];
+
+  if (colorImageUrl) {
+    images.push({
+      id: `color-${selectedColor.id}`,
+      url: colorImageUrl,
+      alt: `${selectedColor.name} view`,
+    });
   }
 
-  return deduped;
+  for (const asset of Array.isArray(variantAssets) ? variantAssets : []) {
+    const url = assetUrl(asset);
+    if (!url) continue;
+    if (images.some((entry) => entry.url === url)) continue;
+
+    images.push({
+      id: normalizeText(asset?.id || asset?.assetId || asset?.asset_id || url),
+      url,
+      alt: normalizeText(asset?.altText || asset?.alt_text) || "Product image",
+    });
+  }
+
+  if (images.length === 0 && heroAssetUrl) {
+    images.push({
+      id: normalizeText(heroAsset?.id || heroAssetUrl),
+      url: heroAssetUrl,
+      alt: normalizeText(heroAsset?.altText || heroAsset?.alt_text) || "Product image",
+    });
+  }
+
+  return images;
 }
 
-function normalizeTruth(value) {
-  const normalized = String(value || "").trim().toLowerCase();
-  if (["true", "yes", "1"].includes(normalized)) return "Yes";
-  if (["false", "no", "0"].includes(normalized)) return "No";
-  return String(value || "");
-}
+function buildTopCards(variant, specs) {
+  const fuel =
+    normalizeText(variant?.fuelType) ||
+    normalizeText(variant?.fuel_type) ||
+    normalizeText(variant?.defaultFuel) ||
+    specValue(specs, ["fuel_type", "fuel", "primary_fuel"]);
 
-function buildKeyFacts(variant, specs) {
-  const facts = [
-    {
-      label: "Primary Cooking Area",
-      value: findFactValue(
-        variant,
-        specs,
-        ["primaryCookingArea", "primary_cooking_area"],
-        ["primary_cooking_area", "primary cooking area"]
-      ),
-    },
-    {
-      label: "Total Cooking Area",
-      value: findFactValue(
-        variant,
-        specs,
-        ["totalCookingArea", "total_cooking_area"],
-        ["total_cooking_area", "total cooking area"]
-      ),
-    },
-    {
-      label: "Width",
-      value: findFactValue(
-        variant,
-        specs,
-        ["productWidth", "product_width", "width"],
-        ["product_width", "width"]
-      ),
-    },
-    {
-      label: "Installation",
-      value: findInstallSummary(variant, specs),
-    },
+  const width =
+    specValue(specs, ["overall_width", "width", "product_width", "cutout_width"]);
+
+  const installation =
+    normalizeText(variant?.installType) ||
+    normalizeText(variant?.install_type) ||
+    normalizeText(variant?.defaultInstallation) ||
+    specValue(specs, ["installation", "install_type", "default_installation"]);
+
+  const temperatureRange = formatTemperatureRange(
+    specValue(specs, ["temperature_range_min", "min_temp", "minimum_temperature"]),
+    specValue(specs, ["temperature_range_max", "max_temp", "maximum_temperature"])
+  );
+
+  const primaryCookingArea = formatAreaValue(
+    specValue(specs, ["primary_cooking_area", "main_cooking_area", "primary_grilling_area"])
+  );
+
+  const madeInUsa = formatMadeInUsaValue(
+    specValue(specs, ["made_in_usa", "made_in_the_usa", "usa_made", "manufactured_in_usa"])
+  );
+
+  return [
+    { label: "Fuel", value: fuel ? normalizeFuelLabel(fuel) : "—" },
+    { label: "Width", value: width ? formatInches(width) || titleize(width) : "—" },
+    { label: "Installation", value: installation ? normalizeInstallationLabel(installation) : "—" },
+    { label: "Temp Range", value: temperatureRange || "—" },
+    { label: "Primary Area", value: primaryCookingArea || "—" },
+    { label: "Made in USA", value: madeInUsa || "—" },
   ];
-
-  return facts.filter((fact) => fact.value && fact.value !== "—").slice(0, 4);
 }
 
-function buildDisplayTitle(variant, family, selectedColorName) {
-  const familyName = getFamilyName(family).trim();
-  const variantName = getVariantName(variant).trim();
-  const colorName = String(selectedColorName || "").trim();
+function buildWhyThisIsGoodChoice(variant, specs) {
+  const reasons = [];
 
-  const normFamily = normalizeId(familyName);
-  const normVariant = normalizeId(variantName);
-  const normColor = normalizeId(colorName);
+  const totalArea = specValue(specs, ["total_cooking_area", "total_grilling_area"]);
+  if (totalArea) reasons.push(`Generous cooking space with ${formatAreaValue(totalArea) || totalArea} total grilling area.`);
 
-  if (familyName && colorName) {
-    const familyAlreadyHasColor = normFamily.includes(normColor);
-    const variantLooksLikeColorOnly =
-      !!variantName &&
-      !normVariant.includes(normFamily) &&
-      (normVariant === normColor || normColor.includes(normVariant) || normVariant.includes(normColor));
+  const maxTemp = specValue(specs, ["max_temp", "temperature_range_max"]);
+  if (maxTemp) reasons.push(`Built for strong heat performance with temperatures up to ${formatNumber(maxTemp) || maxTemp}°.`);
 
-    if (!familyAlreadyHasColor) {
-      return `${familyName} ${colorName}`;
-    }
+  const material = specValue(specs, ["material", "primary_material", "construction_material"]);
+  if (material) reasons.push(`Premium build materials featuring ${formatDisplayValue("material", material)} construction.`);
 
-    if (variantLooksLikeColorOnly) {
-      return `${familyName} ${colorName}`;
-    }
-  }
+  const category =
+    normalizeText(variant?.cookingCategory) ||
+    normalizeText(variant?.category) ||
+    specValue(specs, ["cooking_category", "category"]);
+  if (category) reasons.push(`A strong fit for shoppers focused on ${titleize(category)} cooking.`);
 
-  if (familyName && variantName) {
-    if (normVariant === normFamily) return familyName;
-    if (normVariant.includes(normFamily)) return variantName;
-    if (normFamily.includes(normVariant)) return familyName;
-    return `${familyName} ${variantName}`;
-  }
-
-  return familyName || variantName || "Unknown Product";
+  return reasons.slice(0, 3);
 }
 
-function resolveBrandLogo(brand, brandAssets, assetBaseUrl) {
-  const directLogo = getBrandLogoField(brand);
-  if (directLogo) {
-    return resolveAssetUrl(directLogo, assetBaseUrl);
+function shouldHideSpecValue(key, value) {
+  const normalizedKey = normalizeLower(key);
+  const booleanValue = parseBooleanLike(value);
+
+  if (booleanValue === false && !normalizedKey.includes("made_in_usa")) return true;
+  return false;
+}
+
+function buildSpecGroups(specs) {
+  const groups = new Map();
+
+  for (const spec of Array.isArray(specs) ? specs : []) {
+    const rawValue = normalizeText(spec?.value);
+    if (!rawValue) continue;
+    if (shouldHideSpecValue(spec?.key, rawValue)) continue;
+
+    const groupName = normalizeText(spec?.group) || "Details";
+    if (!groups.has(groupName)) groups.set(groupName, []);
+
+    const label = normalizeText(spec?.label) || titleize(spec?.key || "Detail");
+    const value = formatDisplayValue(label, rawValue);
+    if (!value) continue;
+
+    groups.get(groupName).push({
+      id: normalizeText(spec?.id || `${groupName}-${spec?.key}`),
+      label,
+      value,
+    });
   }
 
-  const activeAssets = brandAssets.filter(isAssetActive);
+  return Array.from(groups.entries())
+    .map(([groupName, items]) => ({
+      groupName,
+      items,
+    }))
+    .filter((group) => group.items.length > 0);
+}
 
-  const preferred =
-    activeAssets.find((asset) => {
-      const type = getAssetType(asset);
-      return type === "logo" || type === "brand-logo" || type === "main";
-    }) || activeAssets[0];
+function scoreSimilarity(baseVariant, candidate, baseSpecs, candidateSpecs) {
+  let score = 0;
 
-  if (!preferred) return "";
+  const baseCategory = normalizeLower(baseVariant?.cookingCategory || baseVariant?.category);
+  const candidateCategory = normalizeLower(candidate?.cookingCategory || candidate?.category);
+  if (baseCategory && candidateCategory && baseCategory === candidateCategory) score += 4;
 
-  return resolveAssetRecordUrl(preferred, assetBaseUrl);
+  const baseFuel = normalizeLower(baseVariant?.fuelType || baseVariant?.fuel_type);
+  const candidateFuel = normalizeLower(candidate?.fuelType || candidate?.fuel_type);
+  if (baseFuel && candidateFuel && baseFuel === candidateFuel) score += 3;
+
+  const baseWidth = toNumber(specValue(baseSpecs, ["overall_width", "width", "product_width"]));
+  const candidateWidth = toNumber(specValue(candidateSpecs, ["overall_width", "width", "product_width"]));
+
+  if (baseWidth != null && candidateWidth != null) {
+    const diff = Math.abs(baseWidth - candidateWidth);
+    if (diff <= 2) score += 5;
+    else if (diff <= 4) score += 3;
+    else if (diff <= 8) score += 1;
+  }
+
+  return score;
+}
+
+function buildBottomCompareItems(compareIds, variants, assetsByVariantId) {
+  return (Array.isArray(compareIds) ? compareIds : [])
+    .map((selectedId) => {
+      const normalizedSelected = normalizeId(selectedId);
+
+      const variant =
+        (Array.isArray(variants) ? variants : []).find(
+          (item) => normalizeId(item?.id || item?.variantId || item?.variant_id) === normalizedSelected
+        ) ||
+        (Array.isArray(variants) ? variants : []).find(
+          (item) => normalizeId(item?.slug) === normalizedSelected
+        );
+
+      if (!variant) return null;
+
+      const variantId = variant.id || variant.variantId || variant.variant_id || "";
+      const variantAssets = assetsByVariantId.get(variantId) || [];
+      const heroAsset = findHeroAsset(variantAssets);
+
+      return {
+        id: variantId,
+        slug: variant.slug || variantId,
+        name: variant.name || variant.variantName || variant.variant_name || "Product",
+        imageUrl: assetUrl(heroAsset),
+      };
+    })
+    .filter(Boolean);
+}
+
+function ProductCard({ product, onClick }) {
+  return (
+    <button
+      type="button"
+      onClick={() => onClick(product)}
+      style={{
+        ...glassCardStyle,
+        width: "100%",
+        padding: 18,
+        textAlign: "left",
+        cursor: "pointer",
+      }}
+    >
+      <div
+        style={{
+          aspectRatio: "4 / 3",
+          borderRadius: 20,
+          overflow: "hidden",
+          background: "rgba(255,255,255,0.04)",
+          marginBottom: 14,
+          display: "grid",
+          placeItems: "center",
+        }}
+      >
+        {product.imageUrl ? (
+          <img
+            src={product.imageUrl}
+            alt={product.name}
+            style={{ width: "100%", height: "100%", objectFit: "contain" }}
+          />
+        ) : (
+          <div style={{ color: "rgba(220,230,255,0.55)", fontSize: 14 }}>
+            No image
+          </div>
+        )}
+      </div>
+
+      <div style={{ fontSize: 12, letterSpacing: "0.12em", opacity: 0.68, textTransform: "uppercase" }}>
+        {product.brandName || "Brand"}
+      </div>
+      <div style={{ fontSize: 22, fontWeight: 700, marginTop: 6 }}>{product.name}</div>
+      <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 12 }}>
+        {product.fuel ? <span style={miniPillStyle}>{normalizeFuelLabel(product.fuel)}</span> : null}
+        {product.width ? <span style={miniPillStyle}>{formatInches(product.width)}</span> : null}
+      </div>
+    </button>
+  );
+}
+
+function findBrandLogo(brand, assetsByBrandId) {
+  if (!brand) return "";
+
+  const directLogo = normalizeText(
+    brand?.logoUrl || brand?.logo_url || brand?.brandLogoUrl || brand?.brand_logo_url
+  );
+  if (directLogo) return directLogo;
+
+  const brandAssets = assetsByBrandId.get(brand.id) || [];
+  const logoAsset = brandAssets.find((asset) => {
+    const imageType = normalizeLower(asset?.imageType || asset?.image_type || asset?.type || asset?.assetType);
+    return ["logo", "brand-logo", "brand_logo"].includes(imageType);
+  }) || brandAssets[0];
+
+  return assetUrl(logoAsset);
 }
 
 export default function ProductDetail() {
-  const navigate = useNavigate();
   const { productId } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const dataBaseUrl = useMemo(
-    () => normalizeBaseUrl(import.meta.env.VITE_DATA_BASE_URL),
-    []
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [productId]);
+
+  const {
+    loading,
+    ready,
+    error,
+    variants,
+    variantById,
+    variantBySlug,
+    familyById,
+    brandById,
+    specsByVariantId,
+    assetsByVariantId,
+    colorsById,
+    variantColorsByVariantId,
+    assets = [],
+  } = useCatalog();
+
+  const [compareState, setCompareState] = useState(() => getState());
+
+  useEffect(() => {
+    return subscribe((nextState) => {
+      setCompareState(nextState);
+    });
+  }, []);
+
+  const product = useMemo(() => {
+    if (!productId) return null;
+    return variantBySlug.get(productId) || variantById.get(productId) || null;
+  }, [productId, variantBySlug, variantById]);
+
+  const productSpecs = useMemo(() => (product?.id ? specsByVariantId.get(product.id) || [] : []), [product, specsByVariantId]);
+  const productAssets = useMemo(() => (product?.id ? assetsByVariantId.get(product.id) || [] : []), [product, assetsByVariantId]);
+  const productVariantColors = useMemo(() => (product?.id ? variantColorsByVariantId.get(product.id) || [] : []), [product, variantColorsByVariantId]);
+
+  const brandAssetsByBrandId = useMemo(() => {
+    const map = new Map();
+    for (const asset of Array.isArray(assets) ? assets : []) {
+      const entityType = normalizeLower(asset?.entityType || asset?.entity_type);
+      if (entityType !== "brand") continue;
+      const entityId = normalizeText(asset?.entityId || asset?.entity_id || asset?.brandId || asset?.brand_id);
+      if (!entityId) continue;
+      if (!map.has(entityId)) map.set(entityId, []);
+      map.get(entityId).push(asset);
+    }
+    return map;
+  }, [assets]);
+
+  const colorChoices = useMemo(
+    () => buildColorChoices(productVariantColors, colorsById, productAssets),
+    [productVariantColors, colorsById, productAssets]
   );
 
-  const assetBaseUrl = useMemo(
-    () => normalizeBaseUrl(import.meta.env.VITE_ASSET_BASE_URL),
-    []
-  );
-
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [selectedColorId, setSelectedColorId] = useState("");
-
-  const [datasets, setDatasets] = useState({
-    variants: [],
-    families: [],
-    brands: [],
-    specs: [],
-    assets: [],
-    colors: [],
-  });
+  const [selectedImageId, setSelectedImageId] = useState("");
 
   useEffect(() => {
-    let isCancelled = false;
+    setSelectedColorId(colorChoices[0]?.id || "");
+    setSelectedImageId("");
+  }, [product?.id, colorChoices]);
 
-    async function loadDatasets() {
-      try {
-        setLoading(true);
-        setError("");
+  const selectedColor = useMemo(
+    () => colorChoices.find((choice) => choice.id === selectedColorId) || colorChoices[0] || null,
+    [colorChoices, selectedColorId]
+  );
 
-        if (!dataBaseUrl) {
-          throw new Error("VITE_DATA_BASE_URL is missing.");
-        }
+  const heroImages = useMemo(
+    () => buildHeroImages({ selectedColor, variantAssets: productAssets }),
+    [selectedColor, productAssets]
+  );
 
-        const [
-          variantsRaw,
-          familiesRaw,
-          brandsRaw,
-          specsRaw,
-          assetsRaw,
-          colorsRaw,
-        ] = await Promise.all([
-          fetchJson(buildDataUrl(dataBaseUrl, "variants.json")),
-          fetchJson(buildDataUrl(dataBaseUrl, "families.json")),
-          fetchJson(buildDataUrl(dataBaseUrl, "brands.json")),
-          fetchJson(buildDataUrl(dataBaseUrl, "specs.json")),
-          fetchJson(buildDataUrl(dataBaseUrl, "assets.json")),
-          fetchJson(buildDataUrl(dataBaseUrl, "colors.json")),
-        ]);
+  const selectedImage = useMemo(
+    () => heroImages.find((image) => image.id === selectedImageId) || heroImages[0] || null,
+    [heroImages, selectedImageId]
+  );
 
-        if (isCancelled) return;
+  useEffect(() => {
+    setSelectedImageId(heroImages[0]?.id || "");
+  }, [heroImages, product?.id]);
 
-        setDatasets({
-          variants: ensureArray(variantsRaw),
-          families: ensureArray(familiesRaw),
-          brands: ensureArray(brandsRaw),
-          specs: ensureArray(specsRaw),
-          assets: ensureArray(assetsRaw),
-          colors: ensureArray(colorsRaw),
-        });
-      } catch (err) {
-        if (isCancelled) return;
-        setError(err?.message || "Failed to load product datasets.");
-      } finally {
-        if (!isCancelled) {
-          setLoading(false);
-        }
-      }
+  const family = product?.familyId ? familyById.get(product.familyId) || null : null;
+  const brand = product?.brandId ? brandById.get(product.brandId) || null : null;
+  const brandLogoUrl = useMemo(() => findBrandLogo(brand, brandAssetsByBrandId), [brand, brandAssetsByBrandId]);
+
+  const topCards = useMemo(() => buildTopCards(product, productSpecs), [product, productSpecs]);
+  const whyThisIsGoodChoice = useMemo(() => buildWhyThisIsGoodChoice(product, productSpecs), [product, productSpecs]);
+  const specGroups = useMemo(() => buildSpecGroups(productSpecs), [productSpecs]);
+
+  const isInCompare = useMemo(() => {
+    if (!product) return false;
+    return isSelected(product.id) || isSelected(product.slug);
+  }, [product, compareState]);
+
+  const bottomCompareItems = useMemo(
+    () => buildBottomCompareItems(compareState?.items || [], variants || [], assetsByVariantId),
+    [compareState, variants, assetsByVariantId]
+  );
+
+  const similarProducts = useMemo(() => {
+    if (!product?.id) return [];
+
+    const baseBrandId = normalizeText(product.brandId);
+    const scored = [];
+
+    for (const candidate of Array.isArray(variants) ? variants : []) {
+      if (!candidate?.id || candidate.id === product.id) continue;
+      if (normalizeText(candidate.brandId) === baseBrandId) continue;
+
+      const candidateSpecs = specsByVariantId.get(candidate.id) || [];
+      const score = scoreSimilarity(product, candidate, productSpecs, candidateSpecs);
+      if (score <= 0) continue;
+
+      const candidateBrand = brandById.get(candidate.brandId) || null;
+      const candidateAssets = assetsByVariantId.get(candidate.id) || [];
+      const heroAsset = findHeroAsset(candidateAssets);
+
+      scored.push({
+        id: candidate.id,
+        slug: normalizeText(candidate.slug) || normalizeText(candidate.id),
+        name: normalizeText(candidate.name) || "Product",
+        brandName: normalizeText(candidateBrand?.name),
+        fuel:
+          normalizeText(candidate.fuelType) ||
+          normalizeText(candidate.fuel_type) ||
+          specValue(candidateSpecs, ["fuel_type", "fuel", "primary_fuel"]),
+        width: specValue(candidateSpecs, ["overall_width", "width", "product_width"]),
+        imageUrl: assetUrl(heroAsset),
+        score,
+      });
     }
 
-    loadDatasets();
+    return scored.sort((a, b) => b.score - a.score).slice(0, 4);
+  }, [product, variants, brandById, assetsByVariantId, specsByVariantId, productSpecs]);
 
-    return () => {
-      isCancelled = true;
-    };
-  }, [dataBaseUrl]);
-
-  const resolvedProduct = useMemo(() => {
-    const variant = findVariantByProductId(datasets.variants, productId);
-    const variantId = getVariantId(variant);
-    const family = findFamily(datasets.families, getFamilyId(variant));
-    const brand = findBrand(datasets.brands, getBrandId(variant), family);
-    const brandId = readFirst(brand, ["id", "brandId", "brand_id"]);
-    const variantSpecs = variantId ? filterVariantSpecs(datasets.specs, variantId) : [];
-    const variantAssets = variantId ? filterVariantAssets(datasets.assets, variantId) : [];
-    const variantColors = variantId ? filterVariantColors(datasets.colors, variantId) : [];
-    const brandAssets = brandId ? filterBrandAssets(datasets.assets, brandId) : [];
-
-    return {
-      variant,
-      variantId,
-      family,
-      brand,
-      variantSpecs,
-      variantAssets,
-      variantColors,
-      brandAssets,
-    };
-  }, [datasets, productId]);
-
-  const productNotFound = !loading && !error && !resolvedProduct.variant;
-
-  const normalizedColors = useMemo(() => {
-    return resolvedProduct.variantColors.map((color, index) => ({
-      key: `${getColorId(color) || "color"}-${index}`,
-      id: normalizeId(getColorId(color)),
-      name: getColorName(color),
-      swatch: getColorSwatch(color),
-    }));
-  }, [resolvedProduct.variantColors]);
-
-  useEffect(() => {
-    if (!normalizedColors.length) {
-      setSelectedColorId("");
-      return;
-    }
-
-    setSelectedColorId((current) => {
-      if (current && normalizedColors.some((color) => color.id === current)) {
-        return current;
-      }
-      return normalizedColors[0].id;
-    });
-  }, [normalizedColors]);
-
-  const selectedColorName = useMemo(() => {
-    const selected = normalizedColors.find((color) => color.id === selectedColorId);
-    return selected?.name || "";
-  }, [normalizedColors, selectedColorId]);
-
-  const displayTitle = useMemo(() => {
-    if (!resolvedProduct.variant) return productId || "Unknown Product";
-    return buildDisplayTitle(
-      resolvedProduct.variant,
-      resolvedProduct.family,
-      selectedColorName
-    );
-  }, [resolvedProduct, productId, selectedColorName]);
-
-  const displayPrice = useMemo(() => {
-    if (!resolvedProduct.variant) return "Call for Price";
-    return findVariantPrice(resolvedProduct.variant, resolvedProduct.variantSpecs);
-  }, [resolvedProduct]);
-
-  const headerBadges = useMemo(() => {
-    if (!resolvedProduct.variant) return ["Fuel Type", "Cooking Size", "Installation"];
-    return [
-      findFuelSummary(resolvedProduct.variant, resolvedProduct.variantSpecs),
-      findCookingSizeSummary(resolvedProduct.variant, resolvedProduct.variantSpecs),
-      findInstallSummary(resolvedProduct.variant, resolvedProduct.variantSpecs),
-    ];
-  }, [resolvedProduct]);
-
-  const brandLogoUrl = useMemo(() => {
-    return resolveBrandLogo(
-      resolvedProduct.brand,
-      resolvedProduct.brandAssets,
-      assetBaseUrl
-    );
-  }, [resolvedProduct.brand, resolvedProduct.brandAssets, assetBaseUrl]);
-
-  const allGalleryAssets = useMemo(() => {
-    return buildGalleryAssets(
-      resolvedProduct.variantAssets,
-      assetBaseUrl,
-      displayTitle
-    );
-  }, [resolvedProduct.variantAssets, assetBaseUrl, displayTitle]);
-
-  const galleryAssets = useMemo(() => {
-    if (!selectedColorId) return allGalleryAssets;
-
-    const matchingColorAssets = allGalleryAssets.filter(
-      (asset) => asset.colorId && asset.colorId === selectedColorId
-    );
-
-    return matchingColorAssets.length > 0 ? matchingColorAssets : allGalleryAssets;
-  }, [allGalleryAssets, selectedColorId]);
-
-  const selectedGalleryImage =
-    galleryAssets[selectedImageIndex] || galleryAssets[0] || null;
-
-  const keyFacts = useMemo(() => {
-    if (!resolvedProduct.variant) return [];
-    return buildKeyFacts(resolvedProduct.variant, resolvedProduct.variantSpecs);
-  }, [resolvedProduct]);
-
-  useEffect(() => {
-    setSelectedImageIndex(0);
-  }, [productId, selectedColorId]);
-
-  useEffect(() => {
-    if (selectedImageIndex > galleryAssets.length - 1) {
-      setSelectedImageIndex(0);
-    }
-  }, [galleryAssets, selectedImageIndex]);
-
-  function goToPreviousImage() {
-    if (galleryAssets.length <= 1) return;
-
-    setSelectedImageIndex((currentIndex) => {
-      if (currentIndex <= 0) return galleryAssets.length - 1;
-      return currentIndex - 1;
-    });
+  function handleCompareClick() {
+    if (!product || isInCompare) return;
+    addItem(product.id || product.slug);
   }
 
-  function goToNextImage() {
-    if (galleryAssets.length <= 1) return;
+  function showPrevImage() {
+    if (!heroImages.length) return;
+    const currentIndex = heroImages.findIndex((image) => image.id === selectedImage?.id);
+    const nextIndex = currentIndex <= 0 ? heroImages.length - 1 : currentIndex - 1;
+    setSelectedImageId(heroImages[nextIndex].id);
+  }
 
-    setSelectedImageIndex((currentIndex) => {
-      if (currentIndex >= galleryAssets.length - 1) return 0;
-      return currentIndex + 1;
-    });
+  function showNextImage() {
+    if (!heroImages.length) return;
+    const currentIndex = heroImages.findIndex((image) => image.id === selectedImage?.id);
+    const nextIndex = currentIndex >= heroImages.length - 1 ? 0 : currentIndex + 1;
+    setSelectedImageId(heroImages[nextIndex].id);
+  }
+
+  const backBrandSlug = normalizeText(location.state?.fromBrandSlug) || normalizeText(brand?.id);
+  const backBrandName = normalizeText(location.state?.fromBrandName) || normalizeText(brand?.name) || "Brand";
+
+  if (loading) {
+    return (
+      <main style={pageShellStyle}>
+        <div style={containerStyle}>
+          <div style={{ ...glassCardStyle, padding: 32, textAlign: "center" }}>Loading product…</div>
+        </div>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main style={pageShellStyle}>
+        <div style={containerStyle}>
+          <div style={{ ...glassCardStyle, padding: 32 }}>
+            <div style={{ fontSize: 28, fontWeight: 700, marginBottom: 12 }}>Unable to load product</div>
+            <div style={{ opacity: 0.8 }}>{error.message || "Catalog failed to load."}</div>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  if (ready && !product) {
+    return (
+      <main style={pageShellStyle}>
+        <div style={containerStyle}>
+          <div style={{ ...glassCardStyle, padding: 32 }}>
+            <div style={{ fontSize: 28, fontWeight: 700, marginBottom: 12 }}>Product Detail</div>
+            <div style={{ fontSize: 20, fontWeight: 600, marginBottom: 10 }}>The requested product could not be found.</div>
+            <div style={{ opacity: 0.72, lineHeight: 1.6 }}>Route productId: {productId}</div>
+          </div>
+        </div>
+      </main>
+    );
   }
 
   return (
-    <div className="showroom-page">
-      <div className="showroom-ambient showroom-ambient-1" />
-      <div className="showroom-ambient showroom-ambient-2" />
-      <div className="showroom-ambient showroom-ambient-3" />
+    <main style={pageShellStyle}>
+      <div className="ambient-light ambient-light-1" />
+      <div className="ambient-light ambient-light-2" />
+      <div className="ambient-light ambient-light-3" />
 
-      <div className="showroom-shell">
-        <section className="showroom-panel" style={heroPanelStyles}>
-          {loading ? (
-            <div style={stateWrapStyles}>
-              <div className="showroom-card" style={stateCardStyles}>
-                <div className="showroom-sheen" />
-                <div style={stateEyebrowStyles}>Loading</div>
-                <h1 className="showroom-title" style={stateTitleStyles}>
-                  Loading Product Data
-                </h1>
-                <div style={stateTextStyles}>
-                  Fetching the selected product and related records.
-                </div>
-              </div>
-            </div>
-          ) : error ? (
-            <div style={stateWrapStyles}>
-              <div className="showroom-card" style={stateCardStyles}>
-                <div className="showroom-sheen" />
-                <div style={stateEyebrowStyles}>Error</div>
-                <h1 className="showroom-title" style={stateTitleStyles}>
-                  Failed to Load Product Data
-                </h1>
-                <div style={stateTextStyles}>{error}</div>
-              </div>
-            </div>
-          ) : productNotFound ? (
-            <div style={stateWrapStyles}>
-              <div className="showroom-card" style={stateCardStyles}>
-                <div className="showroom-sheen" />
-                <div style={stateEyebrowStyles}>Not Found</div>
-                <h1 className="showroom-title" style={stateTitleStyles}>
-                  Product Not Found
-                </h1>
-                <div style={stateTextStyles}>
-                  No variant matched this route product ID.
-                </div>
-              </div>
-            </div>
-          ) : (
-            <>
-              <div className="showroom-card" style={heroImageCardStyles}>
-                <div className="showroom-sheen" />
+      <style>{`
+        .ambient-light {
+          position: absolute;
+          border-radius: 999px;
+          filter: blur(130px);
+          pointer-events: none;
+          opacity: 0.1;
+          animation: ambientFloat 14s ease-in-out infinite;
+        }
+        .ambient-light-1 {
+          width: 520px;
+          height: 520px;
+          top: -180px;
+          left: -120px;
+          background: #4f6691;
+          animation-delay: 0s;
+        }
+        .ambient-light-2 {
+          width: 560px;
+          height: 560px;
+          right: -180px;
+          bottom: -180px;
+          background: #3d5377;
+          animation-delay: 3s;
+        }
+        .ambient-light-3 {
+          width: 420px;
+          height: 420px;
+          top: 28%;
+          left: 42%;
+          background: #324661;
+          opacity: 0.06;
+          animation-delay: 6s;
+        }
+        @keyframes ambientFloat {
+          0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+          50% { transform: translate3d(18px, -12px, 0) scale(1.04); }
+        }
+      `}</style>
 
-                {selectedGalleryImage ? (
-                  <>
-                    <button
-                      type="button"
-                      style={{
-                        ...galleryArrowStyles,
-                        ...galleryArrowLeftStyles,
-                        ...(galleryAssets.length <= 1 ? galleryArrowDisabledStyles : {}),
-                      }}
-                      onClick={goToPreviousImage}
-                      disabled={galleryAssets.length <= 1}
-                      aria-label="Previous product image"
-                    >
-                      ‹
-                    </button>
-
-                    <img
-                      src={selectedGalleryImage.url}
-                      alt={selectedGalleryImage.alt}
-                      style={heroImageStyles}
-                    />
-
-                    <button
-                      type="button"
-                      style={{
-                        ...galleryArrowStyles,
-                        ...galleryArrowRightStyles,
-                        ...(galleryAssets.length <= 1 ? galleryArrowDisabledStyles : {}),
-                      }}
-                      onClick={goToNextImage}
-                      disabled={galleryAssets.length <= 1}
-                      aria-label="Next product image"
-                    >
-                      ›
-                    </button>
-
-                    {galleryAssets.length > 1 ? (
-                      <div style={galleryCounterStyles}>
-                        {selectedImageIndex + 1} / {galleryAssets.length}
-                      </div>
-                    ) : null}
-                  </>
-                ) : (
-                  <div style={heroImagePlaceholderStyles}>No Product Image</div>
-                )}
-              </div>
-
-              <div style={productIdentityBlockStyles}>
-                {brandLogoUrl ? (
-                  <div style={brandLogoWrapStyles}>
-                    <img
-                      src={brandLogoUrl}
-                      alt={getBrandFullName(resolvedProduct.brand) || "Brand logo"}
-                      style={brandLogoStyles}
-                    />
-                  </div>
-                ) : null}
-
-                <h1 className="showroom-title" style={productTitleStyles}>
-                  {displayTitle}
-                </h1>
-
-                <div style={priceStyles}>{displayPrice}</div>
-
-                {normalizedColors.length > 1 ? (
-                  <div style={colorSelectorWrapStyles}>
-                    <div style={colorSelectorLabelStyles}>Available Colors</div>
-
-                    <div style={colorSelectorRowStyles}>
-                      {normalizedColors.map((color) => {
-                        const isActive = color.id === selectedColorId;
-
-                        return (
-                          <button
-                            key={color.key}
-                            type="button"
-                            onClick={() => setSelectedColorId(color.id)}
-                            className="showroom-button-secondary"
-                            style={{
-                              ...colorChipStyles,
-                              ...(isActive ? colorChipActiveStyles : {}),
-                            }}
-                          >
-                            {color.swatch ? (
-                              <span
-                                style={{
-                                  ...colorSwatchStyles,
-                                  background: color.swatch,
-                                }}
-                              />
-                            ) : (
-                              <span style={colorSwatchFallbackStyles} />
-                            )}
-
-                            <span>{color.name}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ) : null}
-
-                <div style={badgeRowStyles}>
-                  {headerBadges.map((badge, index) => (
-                    <div key={`${badge}-${index}`} style={badgeStyles}>
-                      {badge}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {keyFacts.length > 0 ? (
-                <div style={keyFactsGridStyles}>
-                  {keyFacts.map((fact) => (
-                    <div
-                      key={fact.label}
-                      className="showroom-card"
-                      style={factCardStyles}
-                    >
-                      <div className="showroom-sheen" />
-                      <div style={factLabelStyles}>{fact.label}</div>
-                      <div style={factValueStyles}>{fact.value}</div>
-                    </div>
-                  ))}
-                </div>
-              ) : null}
-            </>
-          )}
-        </section>
-
-        <section className="showroom-panel" style={actionsPanelStyles}>
-          <div style={actionsRowStyles}>
+      <div style={containerStyle}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: 12,
+            flexWrap: "wrap",
+            marginBottom: 18,
+          }}
+        >
+          <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
             <button
               type="button"
-              className="showroom-button-secondary"
-              style={actionSecondaryStyles}
               onClick={() => navigate(-1)}
+              style={{
+                minWidth: 0,
+                height: 56,
+                padding: "0 22px",
+                border: "none",
+                borderRadius: 18,
+                background: "linear-gradient(180deg, #5a78a8 0%, #435d83 100%)",
+                color: "#f7fbff",
+                fontSize: "0.92rem",
+                fontWeight: 900,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                boxShadow: "0 16px 34px rgba(67, 93, 131, 0.32)",
+                cursor: "pointer",
+                whiteSpace: "nowrap",
+              }}
             >
-              Back to Results
+              Back
             </button>
 
             <button
               type="button"
-              className="showroom-button"
-              style={actionPrimaryStyles}
+              onClick={() =>
+                navigate(backBrandSlug ? `/brands/` : "/brands", {
+                  state: backBrandSlug
+                    ? {
+                        fromBrandSlug: backBrandSlug,
+                        fromBrandName: backBrandName,
+                      }
+                    : undefined,
+                })
+              }
+              style={{
+                minWidth: 0,
+                height: 56,
+                padding: "0 22px",
+                border: "none",
+                borderRadius: 18,
+                background: "linear-gradient(180deg, #5a78a8 0%, #435d83 100%)",
+                color: "#f7fbff",
+                fontSize: "0.92rem",
+                fontWeight: 900,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                boxShadow: "0 16px 34px rgba(67, 93, 131, 0.32)",
+                cursor: "pointer",
+                whiteSpace: "nowrap",
+              }}
             >
-              <span className="showroom-sheen" />
-              Add to Compare
+              Go to All Brands
             </button>
           </div>
+        </div>
+
+        <section
+          style={{
+            ...glassCardStyle,
+            padding: 24,
+            display: "grid",
+            gap: 24,
+            gridTemplateColumns: "minmax(0, 1.15fr) minmax(520px, 0.85fr)",
+            alignItems: "start",
+          }}
+        >
+          <div>
+            <div
+              style={{
+                borderRadius: 24,
+                minHeight: 620,
+                background: "linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02))",
+                border: "1px solid rgba(117, 163, 255, 0.12)",
+                overflow: "hidden",
+                display: "grid",
+                placeItems: "center",
+                padding: 28,
+                position: "relative",
+              }}
+            >
+              {heroImages.length > 1 ? (
+                <>
+                  <button
+                    type="button"
+                    onClick={showPrevImage}
+                    style={{
+                      position: "absolute",
+                      left: 18,
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      width: 48,
+                      height: 48,
+                      borderRadius: 999,
+                      border: "1px solid rgba(255,255,255,0.12)",
+                      background: "rgba(8,16,30,0.72)",
+                      color: "#fff",
+                      fontSize: 24,
+                      lineHeight: 1,
+                      cursor: "pointer",
+                      zIndex: 2,
+                    }}
+                    aria-label="Previous image"
+                  >
+                    ‹
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={showNextImage}
+                    style={{
+                      position: "absolute",
+                      right: 18,
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      width: 48,
+                      height: 48,
+                      borderRadius: 999,
+                      border: "1px solid rgba(255,255,255,0.12)",
+                      background: "rgba(8,16,30,0.72)",
+                      color: "#fff",
+                      fontSize: 24,
+                      lineHeight: 1,
+                      cursor: "pointer",
+                      zIndex: 2,
+                    }}
+                    aria-label="Next image"
+                  >
+                    ›
+                  </button>
+                </>
+              ) : null}
+
+              {selectedImage?.url ? (
+                <img
+                  src={selectedImage.url}
+                  alt={selectedImage.alt || product?.name || "Product image"}
+                  style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                />
+              ) : (
+                <div style={{ color: "rgba(220,230,255,0.55)", fontSize: 14 }}>No image</div>
+              )}
+            </div>
+          </div>
+
+          <div style={{ display: "grid", gap: 18 }}>
+            <div>
+              {brandLogoUrl ? (
+                <div style={{ minHeight: 72, display: "flex", alignItems: "center", marginBottom: 14 }}>
+                  <img
+                    src={brandLogoUrl}
+                    alt={`${brand?.name || "Brand"} logo`}
+                    style={{ maxHeight: 72, maxWidth: 280, width: "auto", height: "auto", objectFit: "contain", display: "block" }}
+                  />
+                </div>
+              ) : null}
+
+              <h1 style={{ margin: "0 0 8px", fontSize: "clamp(2.4rem, 5vw, 4rem)", lineHeight: 1, letterSpacing: "-0.04em" }}>
+                {product?.name || family?.name || "Product"}
+              </h1>
+
+              <div style={{ marginTop: 16, fontSize: 26, fontWeight: 800, color: "#9fc3ff" }}>
+                {findPrice(product, productSpecs)}
+              </div>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 10 }}>
+              {topCards.map((card) => (
+                <div
+                  key={card.label}
+                  style={{
+                    borderRadius: 16,
+                    border: "1px solid rgba(117,163,255,0.12)",
+                    background: "rgba(255,255,255,0.04)",
+                    padding: 12,
+                    minHeight: 86,
+                  }}
+                >
+                  <div style={{ fontSize: 11, letterSpacing: "0.10em", textTransform: "uppercase", opacity: 0.68 }}>
+                    {card.label}
+                  </div>
+                  <div style={{ marginTop: 8, fontSize: 16, fontWeight: 700, lineHeight: 1.25 }}>{card.value}</div>
+                </div>
+              ))}
+            </div>
+
+            {colorChoices.length ? (
+              <div>
+                <div style={{ fontSize: 13, letterSpacing: "0.12em", textTransform: "uppercase", opacity: 0.72, marginBottom: 10 }}>
+                  Colors
+                </div>
+                <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                  {colorChoices.map((choice) => (
+                    <button
+                      key={choice.id}
+                      type="button"
+                      onClick={() => {
+                        setSelectedColorId(choice.id);
+                        setSelectedImageId(`color-${choice.id}`);
+                      }}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 10,
+                        padding: "10px 14px",
+                        borderRadius: 999,
+                        border:
+                          selectedColor?.id === choice.id
+                            ? "1px solid rgba(132,178,255,0.78)"
+                            : "1px solid rgba(117,163,255,0.12)",
+                        background:
+                          selectedColor?.id === choice.id
+                            ? "rgba(73,122,255,0.18)"
+                            : "rgba(255,255,255,0.04)",
+                        color: "#eef5ff",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <span
+                        style={{
+                          width: 18,
+                          height: 18,
+                          borderRadius: "50%",
+                          background: choice.swatchHex || "#d9dde5",
+                          border: "1px solid rgba(255,255,255,0.20)",
+                          display: "inline-block",
+                          boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.08)",
+                        }}
+                      />
+                      <span style={{ fontWeight: 700 }}>{choice.name}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
+            {whyThisIsGoodChoice.length ? (
+              <div style={{ ...glassCardStyle, padding: 18 }}>
+                <div style={{ fontSize: 14, letterSpacing: "0.12em", textTransform: "uppercase", opacity: 0.74, marginBottom: 12 }}>
+                  Why This Grill Is a Good Choice
+                </div>
+                <div style={{ display: "grid", gap: 12 }}>
+                  {whyThisIsGoodChoice.map((reason) => (
+                    <div key={reason} style={{ lineHeight: 1.6, opacity: 0.92 }}>
+                      {reason}
+                    </div>
+                  ))}
+                </div>
+
+                <div style={{ marginTop: 18 }}>
+                  <button
+                    type="button"
+                    onClick={handleCompareClick}
+                    disabled={isInCompare}
+                    style={{
+                      width: "100%",
+                      minHeight: 58,
+                      borderRadius: 18,
+                      border: isInCompare
+                        ? "1px solid rgba(120,193,152,0.35)"
+                        : "none",
+                      background: isInCompare
+                        ? "rgba(80,144,104,0.22)"
+                        : "linear-gradient(180deg, #5a78a8 0%, #435d83 100%)",
+                      color: "#fff",
+                      fontSize: "0.96rem",
+                      fontWeight: 900,
+                      letterSpacing: "0.08em",
+                      textTransform: "uppercase",
+                      boxShadow: isInCompare
+                        ? "none"
+                        : "0 16px 34px rgba(67, 93, 131, 0.32)",
+                      cursor: isInCompare ? "default" : "pointer",
+                      opacity: isInCompare ? 0.95 : 1,
+                    }}
+                  >
+                    {isInCompare ? "Added to Compare" : "Add to Compare"}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <button
+                  type="button"
+                  onClick={handleCompareClick}
+                  disabled={isInCompare}
+                  style={{
+                    width: "100%",
+                    minHeight: 58,
+                    borderRadius: 18,
+                    border: isInCompare
+                      ? "1px solid rgba(120,193,152,0.35)"
+                      : "none",
+                    background: isInCompare
+                      ? "rgba(80,144,104,0.22)"
+                      : "linear-gradient(180deg, #5a78a8 0%, #435d83 100%)",
+                    color: "#fff",
+                    fontSize: "0.96rem",
+                    fontWeight: 900,
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    boxShadow: isInCompare
+                      ? "none"
+                      : "0 16px 34px rgba(67, 93, 131, 0.32)",
+                    cursor: isInCompare ? "default" : "pointer",
+                    opacity: isInCompare ? 0.95 : 1,
+                  }}
+                >
+                  {isInCompare ? "Added to Compare" : "Add to Compare"}
+                </button>
+              </div>
+            )}
+          </div>
         </section>
+
+        {specGroups.length ? (
+          <section style={{ marginTop: 22, display: "grid", gap: 18 }}>
+            {specGroups.map((group) => (
+              <div key={group.groupName} style={{ ...glassCardStyle, padding: 18 }}>
+                <div style={{ fontSize: 15, letterSpacing: "0.10em", textTransform: "uppercase", opacity: 0.72, marginBottom: 14 }}>
+                  {group.groupName}
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 12 }}>
+                  {group.items.map((item) => (
+                    <div
+                      key={item.id}
+                      style={{
+                        borderRadius: 16,
+                        border: "1px solid rgba(117,163,255,0.10)",
+                        background: "rgba(255,255,255,0.03)",
+                        padding: 14,
+                      }}
+                    >
+                      <div style={{ fontSize: 12, opacity: 0.66, marginBottom: 6 }}>{item.label}</div>
+                      <div style={{ fontSize: 17, fontWeight: 700 }}>{item.value}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </section>
+        ) : null}
+
       </div>
-    </div>
+
+      {bottomCompareItems.length >= 1 ? (
+        <div
+          style={{
+            position: "fixed",
+            left: 20,
+            right: 20,
+            bottom: 20,
+            minHeight: 76,
+            borderRadius: 20,
+            border: "1px solid rgba(117,163,255,0.14)",
+            background: "rgba(8,16,30,0.94)",
+            boxShadow: "0 22px 60px rgba(0,0,0,0.38)",
+            backdropFilter: "blur(16px)",
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 1fr) auto",
+            alignItems: "center",
+            gap: 14,
+            padding: "12px 14px",
+            zIndex: 1000,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              gap: 10,
+              overflowX: "auto",
+              minWidth: 0,
+            }}
+          >
+            {bottomCompareItems.map((item) => (
+              <div
+                key={item.id}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
+                  minWidth: 220,
+                  maxWidth: 260,
+                  padding: 8,
+                  borderRadius: 14,
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  background: "rgba(255,255,255,0.05)",
+                  flexShrink: 0,
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={() => navigate(`/product/${item.slug || item.id}`)}
+                  style={{
+                    border: "none",
+                    background: "transparent",
+                    padding: 0,
+                    cursor: "pointer",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 52,
+                      height: 52,
+                      borderRadius: 12,
+                      overflow: "hidden",
+                      display: "grid",
+                      placeItems: "center",
+                      background: "rgba(255,255,255,0.04)",
+                    }}
+                  >
+                    {item.imageUrl ? (
+                      <img
+                        src={item.imageUrl}
+                        alt={item.name}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "contain",
+                          display: "block",
+                        }}
+                      />
+                    ) : (
+                      <div style={{ fontSize: 10, opacity: 0.5 }}>No Image</div>
+                    )}
+                  </div>
+                </button>
+
+                <div
+                  style={{
+                    flex: 1,
+                    minWidth: 0,
+                    fontSize: 13,
+                    fontWeight: 700,
+                    lineHeight: 1.2,
+                    color: "#eef5ff",
+                    overflow: "hidden",
+                    display: "-webkit-box",
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: "vertical",
+                  }}
+                >
+                  {item.name}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    removeItem(item.id);
+                    if (item.slug && item.slug !== item.id) {
+                      removeItem(item.slug);
+                    }
+                  }}
+                  style={{
+                    width: 24,
+                    height: 24,
+                    borderRadius: 999,
+                    border: "1px solid rgba(255,255,255,0.14)",
+                    background: "rgba(10,18,32,0.96)",
+                    color: "#fff",
+                    fontWeight: 900,
+                    cursor: "pointer",
+                    padding: 0,
+                    lineHeight: 1,
+                    flexShrink: 0,
+                  }}
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => {
+              if (bottomCompareItems.length >= 2) {
+                navigate("/compare");
+              }
+            }}
+            disabled={bottomCompareItems.length < 2}
+            style={{
+              minHeight: 52,
+              padding: "0 20px",
+              borderRadius: 14,
+              border: "none",
+              background:
+                bottomCompareItems.length >= 2
+                  ? "linear-gradient(135deg,#4c75db,#2f57bc)"
+                  : "linear-gradient(135deg, rgba(92,108,140,0.55), rgba(58,69,91,0.55))",
+              color: "#fff",
+              fontWeight: 800,
+              fontSize: 16,
+              cursor: bottomCompareItems.length >= 2 ? "pointer" : "not-allowed",
+              whiteSpace: "nowrap",
+              opacity: bottomCompareItems.length >= 2 ? 1 : 0.7,
+            }}
+          >
+            Compare ({bottomCompareItems.length})
+          </button>
+        </div>
+      ) : null}
+    </main>
   );
 }
-
-const heroPanelStyles = {
-  padding: "26px",
-  display: "flex",
-  flexDirection: "column",
-  gap: "22px",
-};
-
-const stateWrapStyles = {
-  display: "flex",
-};
-
-const stateCardStyles = {
-  width: "100%",
-  padding: "26px",
-  minHeight: "220px",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  gap: "10px",
-};
-
-const stateEyebrowStyles = {
-  fontSize: "0.82rem",
-  fontWeight: 800,
-  letterSpacing: "0.18em",
-  textTransform: "uppercase",
-  color: "rgba(230, 237, 247, 0.62)",
-};
-
-const stateTitleStyles = {
-  margin: 0,
-};
-
-const stateTextStyles = {
-  fontSize: "1rem",
-  lineHeight: 1.6,
-  color: "rgba(230, 237, 247, 0.78)",
-};
-
-const heroImageCardStyles = {
-  minHeight: "640px",
-  padding: "22px",
-  overflow: "hidden",
-  position: "relative",
-};
-
-const heroImageStyles = {
-  width: "100%",
-  height: "596px",
-  borderRadius: "24px",
-  objectFit: "contain",
-  background:
-    "linear-gradient(180deg, rgba(20, 28, 40, 0.95) 0%, rgba(15, 21, 30, 0.98) 100%)",
-  display: "block",
-};
-
-const heroImagePlaceholderStyles = {
-  width: "100%",
-  height: "596px",
-  borderRadius: "24px",
-  border: "1px dashed rgba(255,255,255,0.10)",
-  background:
-    "linear-gradient(180deg, rgba(20, 28, 40, 0.95) 0%, rgba(15, 21, 30, 0.98) 100%)",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  color: "rgba(230, 237, 247, 0.56)",
-  fontSize: "1.35rem",
-  fontWeight: 700,
-  letterSpacing: "-0.02em",
-};
-
-const galleryArrowStyles = {
-  position: "absolute",
-  top: "50%",
-  transform: "translateY(-50%)",
-  width: "60px",
-  height: "60px",
-  borderRadius: "999px",
-  border: "1px solid rgba(255,255,255,0.14)",
-  background: "rgba(8, 15, 29, 0.78)",
-  color: "#f2f6fb",
-  fontSize: "2.2rem",
-  lineHeight: 1,
-  display: "grid",
-  placeItems: "center",
-  cursor: "pointer",
-  zIndex: 2,
-  backdropFilter: "blur(8px)",
-  boxShadow: "0 12px 26px rgba(0,0,0,0.35)",
-};
-
-const galleryArrowLeftStyles = {
-  left: "34px",
-};
-
-const galleryArrowRightStyles = {
-  right: "34px",
-};
-
-const galleryArrowDisabledStyles = {
-  opacity: 0.45,
-  cursor: "default",
-};
-
-const galleryCounterStyles = {
-  position: "absolute",
-  bottom: "34px",
-  left: "50%",
-  transform: "translateX(-50%)",
-  padding: "8px 14px",
-  borderRadius: "999px",
-  background: "rgba(8, 15, 29, 0.76)",
-  border: "1px solid rgba(255,255,255,0.10)",
-  color: "#f2f6fb",
-  fontSize: "0.9rem",
-  fontWeight: 700,
-  zIndex: 2,
-  backdropFilter: "blur(8px)",
-};
-
-const productIdentityBlockStyles = {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  textAlign: "center",
-  gap: "14px",
-  padding: "4px 16px 0",
-};
-
-const brandLogoWrapStyles = {
-  width: "220px",
-  height: "88px",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-};
-
-const brandLogoStyles = {
-  maxWidth: "100%",
-  maxHeight: "100%",
-  objectFit: "contain",
-  display: "block",
-};
-
-const productTitleStyles = {
-  margin: 0,
-  maxWidth: "980px",
-};
-
-const priceStyles = {
-  fontSize: "2.7rem",
-  lineHeight: 1,
-  fontWeight: 900,
-  letterSpacing: "-0.03em",
-  color: "#f2f6fb",
-};
-
-const colorSelectorWrapStyles = {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  gap: "10px",
-};
-
-const colorSelectorLabelStyles = {
-  fontSize: "0.78rem",
-  fontWeight: 800,
-  letterSpacing: "0.16em",
-  textTransform: "uppercase",
-  color: "rgba(230, 237, 247, 0.58)",
-};
-
-const colorSelectorRowStyles = {
-  display: "flex",
-  flexWrap: "wrap",
-  gap: "10px",
-  justifyContent: "center",
-};
-
-const colorChipStyles = {
-  display: "inline-flex",
-  alignItems: "center",
-  gap: "10px",
-  minHeight: "46px",
-  padding: "10px 16px",
-};
-
-const colorChipActiveStyles = {
-  border: "1px solid rgba(112, 160, 255, 0.9)",
-  boxShadow: "0 0 0 2px rgba(96, 146, 255, 0.18)",
-};
-
-const colorSwatchStyles = {
-  width: "16px",
-  height: "16px",
-  borderRadius: "999px",
-  border: "1px solid rgba(255,255,255,0.24)",
-  display: "inline-block",
-  flexShrink: 0,
-};
-
-const colorSwatchFallbackStyles = {
-  width: "16px",
-  height: "16px",
-  borderRadius: "999px",
-  border: "1px solid rgba(255,255,255,0.24)",
-  background: "linear-gradient(135deg, #64748b 0%, #cbd5e1 100%)",
-  display: "inline-block",
-  flexShrink: 0,
-};
-
-const badgeRowStyles = {
-  display: "flex",
-  flexWrap: "wrap",
-  gap: "10px",
-  justifyContent: "center",
-};
-
-const badgeStyles = {
-  borderRadius: "999px",
-  border: "1px solid rgba(255,255,255,0.08)",
-  background: "rgba(18, 24, 33, 0.9)",
-  color: "rgba(242, 246, 251, 0.92)",
-  padding: "10px 14px",
-  fontSize: "0.92rem",
-  fontWeight: 700,
-};
-
-const keyFactsGridStyles = {
-  display: "grid",
-  gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
-  gap: "12px",
-};
-
-const factCardStyles = {
-  padding: "16px",
-  minHeight: "112px",
-};
-
-const factLabelStyles = {
-  fontSize: "0.8rem",
-  fontWeight: 700,
-  letterSpacing: "0.08em",
-  textTransform: "uppercase",
-  color: "rgba(230, 237, 247, 0.54)",
-  marginBottom: "8px",
-};
-
-const factValueStyles = {
-  fontSize: "1.2rem",
-  fontWeight: 800,
-  color: "#f2f6fb",
-  wordBreak: "break-word",
-};
-
-const actionsPanelStyles = {
-  padding: "18px 22px",
-};
-
-const actionsRowStyles = {
-  display: "flex",
-  justifyContent: "space-between",
-  gap: "16px",
-};
-
-const actionSecondaryStyles = {
-  minWidth: "220px",
-};
-
-const actionPrimaryStyles = {
-  minWidth: "240px",
-};

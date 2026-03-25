@@ -30,7 +30,15 @@ export const DATASET_REGISTRY = [
     fileName: "colors.json",
     contract: DATASET_CONTRACTS.colors,
     exporter: "exportColors",
-    dependsOn: ["variants"],
+    dependsOn: [],
+    required: false,
+  },
+  {
+    datasetName: "variantColors",
+    fileName: "variantColors.json",
+    contract: DATASET_CONTRACTS.variantColors,
+    exporter: "exportVariantColors",
+    dependsOn: ["variants", "colors"],
     required: false,
   },
   {

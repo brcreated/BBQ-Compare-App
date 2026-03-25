@@ -1,5 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { subscribe, getState, removeItem, clearAll } from "../state/comparisonStore";
+import {
+  subscribe,
+  getState,
+  removeItem,
+  clearAll,
+  closeComparison,
+  toggleComparison,
+} from "../state/comparisonStore";
 
 const ASSET_BASE_URL = (import.meta.env.VITE_ASSET_BASE_URL || "").replace(/\/$/, "");
 
@@ -43,7 +50,9 @@ function buildProductTitle(familyName, variantName) {
 function isTruthyActive(value) {
   if (value === true) return true;
   if (value === false) return false;
+
   const normalized = String(value || "").trim().toLowerCase();
+
   return (
     normalized === "true" ||
     normalized === "1" ||
@@ -88,19 +97,6 @@ function formatDisplayText(value) {
   }
 
   return raw;
-}
-
-function formatDisplaySpecValue(spec) {
-  const value = String(getSpecValue(spec) ?? "").trim();
-  const unit = String(getSpecUnit(spec) ?? "").trim();
-
-  if (!value) return "—";
-
-  const formattedValue = formatDisplayText(value);
-
-  if (!unit) return formattedValue;
-
-  return `${formattedValue} ${unit}`;
 }
 
 function getVariantId(variant) {
@@ -369,6 +365,19 @@ function sortSpecsForDisplay(specs) {
   });
 }
 
+function formatDisplaySpecValue(spec) {
+  const value = String(getSpecValue(spec) ?? "").trim();
+  const unit = String(getSpecUnit(spec) ?? "").trim();
+
+  if (!value) return "—";
+
+  const formattedValue = formatDisplayText(value);
+
+  if (!unit) return formattedValue;
+
+  return `${formattedValue} ${unit}`;
+}
+
 function formatSpecValue(spec) {
   return formatDisplaySpecValue(spec);
 }
@@ -414,7 +423,7 @@ function getAllSpecGroups(entries) {
       if (a.spec_sort_order !== b.spec_sort_order) {
         return a.spec_sort_order - b.spec_sort_order;
       }
-      return String(a.spec_label || a.spec_key).localeCompare(String(b.spec_label || b.spec_key));
+      return String(a.spec_label || a.spec_key).localeCompare(String(a.spec_label || a.spec_key));
     })
     .forEach((spec) => {
       const groupName = spec.spec_group || "General";
@@ -531,7 +540,6 @@ function buildEntry(variant, families, brands, assets, specs) {
           variant?.map_price ??
           variant?.mapPrice ??
           variant?.price ??
-          variant?.msrp ??
           variant?.msrp
       ) || "View pricing",
   };
@@ -587,49 +595,17 @@ function ProductPreviewImage({ image, title, filePath = "" }) {
     >
       <div
         style={{
-          textAlign: "center",
-          color: "rgba(255,255,255,0.45)",
+          color: "rgba(255,255,255,0.6)",
           fontSize: 12,
-          lineHeight: 1.35,
           fontWeight: 700,
-          letterSpacing: "0.03em",
+          textAlign: "center",
+          lineHeight: 1.4,
         }}
       >
-        Product image
-        <br />
-        coming soon
+        No Image
       </div>
     </div>
   );
-}
-
-function buildDifferenceHighlights(entries, specGroups, maxItems = 6) {
-  const results = [];
-
-  specGroups.forEach((group) => {
-    group.rows.forEach((row) => {
-      const values = entries.map((entry) => {
-        const match = entry.specs.find((spec) => getSpecKey(spec) === String(row.spec_key));
-        return formatSpecValue(match);
-      });
-
-      if (!valuesAreDifferent(values)) return;
-
-      results.push({
-        groupName: group.groupName,
-        specKey: row.spec_key,
-        label: row.spec_label || row.spec_key,
-        isComparisonKey: row.is_comparison_key,
-        values,
-        score:
-          (row.is_comparison_key ? 1000 : 0) +
-          Math.max(0, 100 - Number(row.comparison_priority || 9999)) +
-          Math.max(0, 50 - Number(row.spec_sort_order || 9999)),
-      });
-    });
-  });
-
-  return results.sort((a, b) => b.score - a.score).slice(0, maxItems);
 }
 
 function buildComparisonMetrics(entries, specGroups) {
@@ -705,7 +681,7 @@ export default function ComparisonView({
   specs = [],
 }) {
   const [store, setStore] = useState(getState());
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(Boolean(getState().isTrayOpen));
   const [showDifferencesOnly, setShowDifferencesOnly] = useState(false);
   const [focusedVariantId, setFocusedVariantId] = useState("");
   const prevCountRef = useRef(store?.count || 0);
@@ -713,19 +689,12 @@ export default function ComparisonView({
 
   useEffect(() => {
     const unsubscribe = subscribe((nextState) => {
-      const prevCount = prevCountRef.current;
-
       setStore(nextState);
-
-            if ((nextState?.count || 0) === 0) {
-        setIsOpen(false);
-        setShowDifferencesOnly(false);
-        setFocusedVariantId("");
-      }
+      setIsOpen(Boolean(nextState?.isTrayOpen));
 
       if ((nextState?.count || 0) === 0) {
-        setIsOpen(false);
         setShowDifferencesOnly(false);
+        setFocusedVariantId("");
       }
 
       prevCountRef.current = nextState?.count || 0;
@@ -740,1504 +709,859 @@ export default function ComparisonView({
     return selectedIds
       .map((id) => {
         const variant = variants.find((item) => String(getVariantId(item)) === String(id)) || null;
-
         if (!variant) return null;
-
         return buildEntry(variant, families, brands, assets, specs);
       })
       .filter(Boolean);
   }, [selectedIds, variants, families, brands, assets, specs]);
 
+  const compareReady = selectedEntries.length >= 2;
   const specGroups = useMemo(() => getAllSpecGroups(selectedEntries), [selectedEntries]);
+  const visibleSpecGroups = useMemo(() => {
+    if (!showDifferencesOnly) return specGroups;
 
-  const differenceHighlights = useMemo(() => {
-    return buildDifferenceHighlights(selectedEntries, specGroups, 6);
-  }, [selectedEntries, specGroups]);
-    const comparisonMetrics = useMemo(() => {
-    return buildComparisonMetrics(selectedEntries, specGroups);
-  }, [selectedEntries, specGroups]);
+    return specGroups
+      .map((group) => ({
+        ...group,
+        rows: group.rows.filter((row) => {
+          const values = selectedEntries.map((entry) => {
+            const match = entry.specs.find((spec) => getSpecKey(spec) === String(row.spec_key));
+            return formatSpecValue(match);
+          });
 
-    const count = selectedEntries.length;
-  const compareReady = count >= 2;
-  const hasSpecGroups = specGroups.length > 0;
-  const hasDifferenceHighlights = differenceHighlights.length > 0;
-  const hasComparisonMetrics = comparisonMetrics.totalVisibleSpecs > 0;
+          return valuesAreDifferent(values);
+        }),
+      }))
+      .filter((group) => group.rows.length > 0);
+  }, [specGroups, selectedEntries, showDifferencesOnly]);
+
+  const comparisonMetrics = useMemo(() => {
+    return buildComparisonMetrics(selectedEntries, visibleSpecGroups);
+  }, [selectedEntries, visibleSpecGroups]);
+
   const hasFocusedProduct = Boolean(focusedVariantId);
 
-  function toggleFocusedProduct(variantId) {
-    setFocusedVariantId((current) => (current === variantId ? "" : variantId));
+  function handleToggleOpen() {
+    toggleComparison();
   }
 
-  function getColumnFocusStyles(variantId) {
-    const isFocused = focusedVariantId === variantId;
-    const isDimmed = hasFocusedProduct && !isFocused;
-
-    return {
-      isFocused,
-      isDimmed,
-    };
+  function handleCloseTray() {
+    closeComparison();
   }
 
-    function scrollToGroup(groupName) {
-    const key = buildGroupAnchorId(groupName);
-    const target = groupSectionRefs.current[key];
-
-    if (!target) return;
-
-    target.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-      inline: "nearest",
-    });
+  function scrollToGroup(groupName) {
+    const anchorId = buildGroupAnchorId(groupName);
+    const node = groupSectionRefs.current[anchorId];
+    if (!node) return;
+    node.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
   }
 
-  if (!count) return null;
+  if (selectedEntries.length === 0) return null;
 
   return (
-    <>
-      {isOpen && (
-        <div
-          onClick={() => setIsOpen(false)}
-          style={{
-            position: "fixed",
-            inset: 0,
-            background:
-              "linear-gradient(180deg, rgba(7,10,16,0.15) 0%, rgba(7,10,16,0.6) 100%)",
-            backdropFilter: "blur(8px)",
-            WebkitBackdropFilter: "blur(8px)",
-            zIndex: 70,
-          }}
-        />
-      )}
-
+    <div
+      style={{
+        position: "fixed",
+        left: 20,
+        right: 20,
+        bottom: 20,
+        zIndex: 60,
+        borderRadius: 28,
+        border: "1px solid rgba(255,255,255,0.08)",
+        background: "linear-gradient(180deg, rgba(10,14,22,0.94) 0%, rgba(7,10,17,0.98) 100%)",
+        boxShadow: "0 24px 80px rgba(0,0,0,0.5)",
+        backdropFilter: "blur(18px)",
+        WebkitBackdropFilter: "blur(18px)",
+        overflow: "hidden",
+      }}
+    >
       <div
         style={{
-          position: "fixed",
-          left: 20,
-          right: 20,
-          bottom: 20,
-          zIndex: 80,
-          pointerEvents: "none",
+          padding: 20,
+          display: "grid",
+          gap: 18,
         }}
       >
         <div
           style={{
-            pointerEvents: "auto",
-            borderRadius: 28,
-            overflow: "hidden",
-            border: "1px solid rgba(255,255,255,0.12)",
-            background:
-              "linear-gradient(180deg, rgba(14,18,26,0.96) 0%, rgba(10,13,20,0.98) 100%)",
-            boxShadow:
-              "0 24px 70px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06)",
+            display: "grid",
+            gridTemplateColumns: compareReady ? "1fr auto" : "1fr",
+            gap: 18,
+            alignItems: "start",
           }}
         >
-          <div
-            style={{
-              padding: "18px 20px",
-              borderBottom: isOpen ? "1px solid rgba(255,255,255,0.08)" : "none",
-              background:
-                "linear-gradient(90deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)",
-            }}
-          >
+          <div style={{ display: "grid", gap: 14 }}>
             <div
               style={{
-                display: "grid",
-                gridTemplateColumns: compareReady ? "1fr auto" : "1fr",
-                gap: 16,
+                display: "flex",
+                flexWrap: "wrap",
                 alignItems: "center",
+                justifyContent: "space-between",
+                gap: 12,
               }}
             >
-              <div
-                style={{
-                  display: "grid",
-                  gap: 14,
-                }}
-              >
+              <div style={{ display: "grid", gap: 6 }}>
                 <div
                   style={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    alignItems: "center",
-                    gap: 12,
+                    color: "rgba(255,255,255,0.62)",
+                    fontSize: 12,
+                    fontWeight: 800,
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
                   }}
                 >
-                  <div
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 10,
-                      padding: "10px 14px",
-                      borderRadius: 999,
-                      background: "rgba(255,255,255,0.06)",
-                      border: "1px solid rgba(255,255,255,0.08)",
-                    }}
-                  >
-                    <span
-                      style={{
-                        width: 10,
-                        height: 10,
-                        borderRadius: "50%",
-                        background: compareReady ? "#8fd3ff" : "#f6c56f",
-                        boxShadow: compareReady
-                          ? "0 0 18px rgba(143,211,255,0.65)"
-                          : "0 0 18px rgba(246,197,111,0.55)",
-                        flexShrink: 0,
-                      }}
-                    />
-                    <span
-                      style={{
-                        color: "#f7f8fb",
-                        fontSize: 14,
-                        fontWeight: 700,
-                        letterSpacing: "0.04em",
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      {compareReady ? "Compare Ready" : "Select One More"}
-                    </span>
-                  </div>
-
-                  <div
-                    style={{
-                      color: "rgba(255,255,255,0.72)",
-                      fontSize: 14,
-                      fontWeight: 600,
-                    }}
-                  >
-                    {count} product{count === 1 ? "" : "s"} selected
-                  </div>
+                  Showroom Comparison
                 </div>
 
                 <div
                   style={{
-                    display: "flex",
-                    gap: 12,
-                    overflowX: "auto",
-                    paddingBottom: 2,
-                    scrollbarWidth: "thin",
+                    color: "#ffffff",
+                    fontSize: 22,
+                    lineHeight: 1.1,
+                    fontWeight: 800,
                   }}
                 >
-                  {selectedEntries.map((entry) => (
-                    <div
-                      key={entry.variantId}
-                      style={{
-                        minWidth: 240,
-                        maxWidth: 280,
-                        borderRadius: 20,
-                        padding: 12,
-                        display: "grid",
-                        gridTemplateColumns: "72px 1fr auto",
-                        gap: 12,
-                        alignItems: "center",
-                        background: "rgba(255,255,255,0.05)",
-                        border: "1px solid rgba(255,255,255,0.08)",
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: 72,
-                          height: 72,
-                          borderRadius: 16,
-                          overflow: "hidden",
-                          background:
-                            "linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%)",
-                          border: "1px solid rgba(255,255,255,0.08)",
-                        }}
-                      >
-                        <ProductPreviewImage
-                          key={`${entry.variantId}-${entry.heroImage || ""}-${entry.heroFilePath || ""}`}
-                          image={entry.heroImage}
-                          filePath={entry.heroFilePath}
-                          title={entry.title}
-                        />
-                      </div>
-
-                      <div
-                        style={{
-                          minWidth: 0,
-                          display: "grid",
-                          gap: 6,
-                        }}
-                      >
-                        <div
-                          style={{
-                            color: "rgba(255,255,255,0.62)",
-                            fontSize: 11,
-                            fontWeight: 700,
-                            letterSpacing: "0.08em",
-                            textTransform: "uppercase",
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                          }}
-                        >
-                          {entry.brandName || "Product"}
-                        </div>
-
-                        <div
-                          style={{
-                            color: "#ffffff",
-                            fontSize: 15,
-                            lineHeight: 1.3,
-                            fontWeight: 700,
-                            display: "-webkit-box",
-                            WebkitLineClamp: 2,
-                            WebkitBoxOrient: "vertical",
-                            overflow: "hidden",
-                          }}
-                        >
-                          {entry.title}
-                        </div>
-
-                        <div
-                          style={{
-                            display: "flex",
-                            flexWrap: "wrap",
-                            gap: 6,
-                          }}
-                        >
-                          {[entry.cookingCategory, entry.fuelType, entry.installType]
-                            .filter(Boolean)
-                            .slice(0, 2)
-                            .map((value) => (
-                              <span
-                                key={`${entry.variantId}-${value}`}
-                                style={{
-                                  padding: "5px 8px",
-                                  borderRadius: 999,
-                                  background: "rgba(255,255,255,0.06)",
-                                  border: "1px solid rgba(255,255,255,0.08)",
-                                  color: "rgba(255,255,255,0.8)",
-                                  fontSize: 11,
-                                  fontWeight: 600,
-                                  whiteSpace: "nowrap",
-                                }}
-                              >
-                                {formatDisplayText(value)}
-                              </span>
-                            ))}
-                        </div>
-                      </div>
-
-                      <button
-                        type="button"
-                        onClick={() => removeItem(entry.variantId)}
-                        aria-label={`Remove ${entry.title} from comparison`}
-                        style={{
-                          alignSelf: "start",
-                          width: 40,
-                          height: 40,
-                          borderRadius: 12,
-                          border: "1px solid rgba(255,255,255,0.08)",
-                          background: "rgba(255,255,255,0.05)",
-                          color: "#ffffff",
-                          fontSize: 18,
-                          cursor: "pointer",
-                        }}
-                      >
-                        ×
-                      </button>
-                    </div>
-                  ))}
+                  {selectedEntries.length === 1
+                    ? "1 product added"
+                    : `${selectedEntries.length} products added`}
                 </div>
               </div>
 
-              {compareReady && (
-                <div
-                  style={{
-                    display: "grid",
-                    gap: 10,
-                    alignSelf: "stretch",
-                    minWidth: 260,
-                  }}
-                >
-                  <button
-                    type="button"
-                    onClick={() => setIsOpen((current) => !current)}
-                    style={{
-                      minHeight: 62,
-                      borderRadius: 18,
-                      border: "1px solid rgba(143,211,255,0.28)",
-                      background:
-                        "linear-gradient(135deg, rgba(143,211,255,0.22) 0%, rgba(255,255,255,0.1) 100%)",
-                      color: "#ffffff",
-                      fontSize: 16,
-                      fontWeight: 800,
-                      letterSpacing: "0.02em",
-                      cursor: "pointer",
-                      padding: "14px 18px",
-                      boxShadow: "0 12px 30px rgba(0,0,0,0.22)",
-                    }}
-                  >
-                    {isOpen ? "Hide Full Comparison" : "Open Full Comparison"}
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => clearAll()}
-                    style={{
-                      minHeight: 48,
-                      borderRadius: 16,
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      background: "rgba(255,255,255,0.04)",
-                      color: "rgba(255,255,255,0.85)",
-                      fontSize: 14,
-                      fontWeight: 700,
-                      cursor: "pointer",
-                      padding: "12px 16px",
-                    }}
-                  >
-                    Clear Comparison
-                  </button>
-                </div>
-              )}
+              <button
+                type="button"
+                onClick={handleCloseTray}
+                aria-label="Close comparison tray"
+                style={{
+                  width: 42,
+                  height: 42,
+                  borderRadius: 14,
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  background: "rgba(255,255,255,0.05)",
+                  color: "#ffffff",
+                  fontSize: 18,
+                  cursor: "pointer",
+                }}
+              >
+                ×
+              </button>
             </div>
-          </div>
 
-          {isOpen && compareReady && (
             <div
               style={{
-                maxHeight: "65vh",
-                overflow: "auto",
-                padding: 20,
                 display: "grid",
-                gap: 20,
+                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                gap: 12,
               }}
             >
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: 16,
-                }}
-              >
-                <div style={{ display: "grid", gap: 6 }}>
-                  <div
-                    style={{
-                      color: "rgba(255,255,255,0.62)",
-                      fontSize: 12,
-                      fontWeight: 800,
-                      letterSpacing: "0.08em",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    Showroom Comparison
-                  </div>
-                  <h2
-                    style={{
-                      margin: 0,
-                      color: "#ffffff",
-                      fontSize: 28,
-                      lineHeight: 1.1,
-                      fontWeight: 800,
-                    }}
-                  >
-                    Compare Product Specs Side by Side
-                  </h2>
-                  <div
-                    style={{
-                      color: "rgba(255,255,255,0.68)",
-                      fontSize: 15,
-                      fontWeight: 500,
-                    }}
-                  >
-                    Built from live catalog JSON. Differences can be highlighted instantly.
-                  </div>
-                </div>
-
-                <label
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 12,
-                    padding: "12px 16px",
-                    borderRadius: 16,
-                    background: "rgba(255,255,255,0.05)",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    color: "#ffffff",
-                    cursor: hasSpecGroups ? "pointer" : "not-allowed",
-                    userSelect: "none",
-                    opacity: hasSpecGroups ? 1 : 0.55,
-                  }}
-                >
-                  <input
-                    type="checkbox"
-                    checked={showDifferencesOnly}
-                    disabled={!hasSpecGroups}
-                    onChange={(event) => setShowDifferencesOnly(event.target.checked)}
-                    style={{
-                      width: 18,
-                      height: 18,
-                      accentColor: "#8fd3ff",
-                      cursor: hasSpecGroups ? "pointer" : "not-allowed",
-                    }}
-                  />
-                  <span
-                    style={{
-                      fontSize: 14,
-                      fontWeight: 700,
-                    }}
-                  >
-                    Show differences only
-                  </span>
-                </label>
-              </div>
-                            <div
-                style={{
-                  display: "grid",
-                  gap: 14,
-                }}
-              >
+              {selectedEntries.map((entry) => (
                 <div
+                  key={entry.variantId}
                   style={{
-                    color: "rgba(255,255,255,0.56)",
-                    fontSize: 11,
-                    fontWeight: 800,
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  Selected Products
-                </div>
-
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-                    gap: 14,
-                  }}
-                >
-                  {selectedEntries.map((entry) => {
-                    const summaryChips = getEntrySummaryChips(entry);
-
-                    return (
-                                            <button
-                        key={`expanded-summary-${entry.variantId}`}
-                        type="button"
-                        onClick={() => toggleFocusedProduct(entry.variantId)}
-                        style={{
-                          borderRadius: 22,
-                          border:
-                            focusedVariantId === entry.variantId
-                              ? "1px solid rgba(143,211,255,0.34)"
-                              : "1px solid rgba(255,255,255,0.08)",
-                          background:
-                            focusedVariantId === entry.variantId
-                              ? "linear-gradient(180deg, rgba(143,211,255,0.18) 0%, rgba(255,255,255,0.05) 100%)"
-                              : "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%)",
-                          padding: 16,
-                          display: "grid",
-                          gridTemplateColumns: "88px 1fr",
-                          gap: 14,
-                          alignItems: "center",
-                          boxShadow:
-                            focusedVariantId === entry.variantId
-                              ? "0 14px 34px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.05)"
-                              : "inset 0 1px 0 rgba(255,255,255,0.04)",
-                          cursor: "pointer",
-                          textAlign: "left",
-                          width: "100%",
-                          opacity:
-                            hasFocusedProduct && focusedVariantId !== entry.variantId ? 0.68 : 1,
-                          transition:
-                            "opacity 180ms ease, transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease",
-                          transform:
-                            focusedVariantId === entry.variantId ? "translateY(-1px)" : "none",
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: 88,
-                            height: 88,
-                            borderRadius: 18,
-                            overflow: "hidden",
-                            border: "1px solid rgba(255,255,255,0.08)",
-                            background:
-                              "linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%)",
-                          }}
-                        >
-                          <ProductPreviewImage
-                            key={`${entry.variantId}-${entry.heroImage || ""}-${entry.heroFilePath || ""}-summary`}
-                            image={entry.heroImage}
-                            filePath={entry.heroFilePath}
-                            title={entry.title}
-                          />
-                        </div>
-
-                        <div
-                          style={{
-                            minWidth: 0,
-                            display: "grid",
-                            gap: 8,
-                          }}
-                        >
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "start",
-                              justifyContent: "space-between",
-                              gap: 12,
-                            }}
-                          >
-                            <div
-                              style={{
-                                minWidth: 0,
-                                display: "grid",
-                                gap: 4,
-                              }}
-                            >
-                              <div
-                                style={{
-                                  color: "rgba(255,255,255,0.56)",
-                                  fontSize: 11,
-                                  fontWeight: 800,
-                                  letterSpacing: "0.08em",
-                                  textTransform: "uppercase",
-                                  whiteSpace: "nowrap",
-                                  overflow: "hidden",
-                                  textOverflow: "ellipsis",
-                                }}
-                              >
-                                {entry.brandName || "Product"}
-                              </div>
-
-                              <div
-                                style={{
-                                  color: "#ffffff",
-                                  fontSize: 18,
-                                  lineHeight: 1.25,
-                                  fontWeight: 800,
-                                }}
-                              >
-                                {entry.title}
-                              </div>
-                            </div>
-
-                            <div
-                              style={{
-                                flexShrink: 0,
-                                padding: "8px 10px",
-                                borderRadius: 12,
-                                background: "rgba(143,211,255,0.14)",
-                                border: "1px solid rgba(143,211,255,0.2)",
-                                color: "#dff3ff",
-                                fontSize: 13,
-                                fontWeight: 800,
-                                whiteSpace: "nowrap",
-                              }}
-                            >
-                              {entry.priceLabel}
-                            </div>
-                          </div>
-
-                          {summaryChips.length > 0 && (
-                            <div
-                              style={{
-                                display: "flex",
-                                flexWrap: "wrap",
-                                gap: 8,
-                              }}
-                            >
-                              {summaryChips.map((chip) => (
-                                <span
-                                  key={`${entry.variantId}-summary-chip-${chip}`}
-                                  style={{
-                                    padding: "6px 10px",
-                                    borderRadius: 999,
-                                    background: "rgba(255,255,255,0.06)",
-                                    border: "1px solid rgba(255,255,255,0.08)",
-                                    color: "rgba(255,255,255,0.8)",
-                                    fontSize: 12,
-                                    fontWeight: 700,
-                                    whiteSpace: "nowrap",
-                                  }}
-                                >
-                                  {chip}
-                                </span>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-                            <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  alignItems: "center",
-                  gap: 10,
-                }}
-              >
-                <div
-                  style={{
-                    color: "rgba(255,255,255,0.56)",
-                    fontSize: 11,
-                    fontWeight: 800,
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  Focus Mode
-                </div>
-
-                <div
-                  style={{
-                    color: hasFocusedProduct ? "#dff3ff" : "rgba(255,255,255,0.72)",
-                    fontSize: 13,
-                    fontWeight: 700,
-                  }}
-                >
-                  {hasFocusedProduct
-                    ? `Spotlighting ${
-                        selectedEntries.find((entry) => entry.variantId === focusedVariantId)?.title ||
-                        "selected product"
-                      }`
-                    : "Tap a selected product card above to spotlight its column"}
-                </div>
-
-                {hasFocusedProduct && (
-                  <button
-                    type="button"
-                    onClick={() => setFocusedVariantId("")}
-                    style={{
-                      minHeight: 36,
-                      padding: "8px 12px",
-                      borderRadius: 999,
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      background: "rgba(255,255,255,0.05)",
-                      color: "#ffffff",
-                      fontSize: 12,
-                      fontWeight: 700,
-                      cursor: "pointer",
-                    }}
-                  >
-                    Clear Focus
-                  </button>
-                )}
-              </div>
-                            {hasSpecGroups && hasComparisonMetrics && (
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-                    gap: 14,
-                  }}
-                >
-                  <div
-                    style={{
-                      borderRadius: 20,
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      background: "rgba(255,255,255,0.04)",
-                      padding: 16,
-                      display: "grid",
-                      gap: 8,
-                    }}
-                  >
-                    <div
-                      style={{
-                        color: "rgba(255,255,255,0.56)",
-                        fontSize: 11,
-                        fontWeight: 800,
-                        letterSpacing: "0.08em",
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      Compared Specs
-                    </div>
-                    <div
-                      style={{
-                        color: "#ffffff",
-                        fontSize: 28,
-                        lineHeight: 1,
-                        fontWeight: 800,
-                      }}
-                    >
-                      {comparisonMetrics.totalVisibleSpecs}
-                    </div>
-                    <div
-                      style={{
-                        color: "rgba(255,255,255,0.68)",
-                        fontSize: 13,
-                        lineHeight: 1.45,
-                        fontWeight: 600,
-                      }}
-                    >
-                      Total shared and differing rows available for this selection.
-                    </div>
-                  </div>
-
-                  <div
-                    style={{
-                      borderRadius: 20,
-                      border: "1px solid rgba(143,211,255,0.16)",
-                      background:
-                        "linear-gradient(180deg, rgba(143,211,255,0.14) 0%, rgba(255,255,255,0.04) 100%)",
-                      padding: 16,
-                      display: "grid",
-                      gap: 8,
-                    }}
-                  >
-                    <div
-                      style={{
-                        color: "rgba(223,243,255,0.72)",
-                        fontSize: 11,
-                        fontWeight: 800,
-                        letterSpacing: "0.08em",
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      Key Differences
-                    </div>
-                    <div
-                      style={{
-                        color: "#ffffff",
-                        fontSize: 28,
-                        lineHeight: 1,
-                        fontWeight: 800,
-                      }}
-                    >
-                      {comparisonMetrics.differingSpecs}
-                    </div>
-                    <div
-                      style={{
-                        color: "rgba(255,255,255,0.7)",
-                        fontSize: 13,
-                        lineHeight: 1.45,
-                        fontWeight: 600,
-                      }}
-                    >
-                      Specs that separate these products in the current catalog.
-                    </div>
-                  </div>
-
-                  <div
-                    style={{
-                      borderRadius: 20,
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      background: "rgba(255,255,255,0.04)",
-                      padding: 16,
-                      display: "grid",
-                      gap: 8,
-                    }}
-                  >
-                    <div
-                      style={{
-                        color: "rgba(255,255,255,0.56)",
-                        fontSize: 11,
-                        fontWeight: 800,
-                        letterSpacing: "0.08em",
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      Shared Specs
-                    </div>
-                    <div
-                      style={{
-                        color: "#ffffff",
-                        fontSize: 28,
-                        lineHeight: 1,
-                        fontWeight: 800,
-                      }}
-                    >
-                      {comparisonMetrics.sharedSpecs}
-                    </div>
-                    <div
-                      style={{
-                        color: "rgba(255,255,255,0.68)",
-                        fontSize: 13,
-                        lineHeight: 1.45,
-                        fontWeight: 600,
-                      }}
-                    >
-                      Rows where the selected products currently match.
-                    </div>
-                  </div>
-
-                  <div
-                    style={{
-                      borderRadius: 20,
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      background: "rgba(255,255,255,0.04)",
-                      padding: 16,
-                      display: "grid",
-                      gap: 8,
-                    }}
-                  >
-                    <div
-                      style={{
-                        color: "rgba(255,255,255,0.56)",
-                        fontSize: 11,
-                        fontWeight: 800,
-                        letterSpacing: "0.08em",
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      Key Compare Rows
-                    </div>
-                    <div
-                      style={{
-                        color: "#ffffff",
-                        fontSize: 28,
-                        lineHeight: 1,
-                        fontWeight: 800,
-                      }}
-                    >
-                      {comparisonMetrics.keySpecs}
-                    </div>
-                    <div
-                      style={{
-                        color: "rgba(255,255,255,0.68)",
-                        fontSize: 13,
-                        lineHeight: 1.45,
-                        fontWeight: 600,
-                      }}
-                    >
-                      Important rows flagged as high-value comparison specs.
-                    </div>
-                  </div>
-                </div>
-              )}
-              {hasSpecGroups && hasDifferenceHighlights && (
-                <div
-                  style={{
-                    borderRadius: 24,
-                    border: "1px solid rgba(143,211,255,0.16)",
+                    borderRadius: 20,
+                    border:
+                      focusedVariantId === entry.variantId
+                        ? "1px solid rgba(143,211,255,0.35)"
+                        : "1px solid rgba(255,255,255,0.08)",
                     background:
-                      "linear-gradient(180deg, rgba(143,211,255,0.12) 0%, rgba(255,255,255,0.04) 100%)",
-                    padding: 20,
+                      focusedVariantId === entry.variantId
+                        ? "linear-gradient(180deg, rgba(143,211,255,0.12) 0%, rgba(255,255,255,0.04) 100%)"
+                        : "rgba(255,255,255,0.04)",
+                    padding: 14,
                     display: "grid",
-                    gap: 16,
+                    gridTemplateColumns: "92px 1fr auto",
+                    gap: 14,
+                    alignItems: "center",
                   }}
                 >
                   <div
                     style={{
-                      display: "grid",
-                      gap: 6,
+                      width: 92,
+                      height: 92,
+                      borderRadius: 18,
+                      overflow: "hidden",
+                      border: "1px solid rgba(255,255,255,0.08)",
+                      background:
+                        "linear-gradient(180deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.03) 100%)",
                     }}
                   >
+                    <ProductPreviewImage
+                      image={entry.heroImage}
+                      title={entry.title}
+                      filePath={entry.heroFilePath}
+                    />
+                  </div>
+
+                  <div style={{ display: "grid", gap: 8 }}>
                     <div
                       style={{
                         color: "rgba(255,255,255,0.62)",
-                        fontSize: 12,
-                        fontWeight: 800,
-                        letterSpacing: "0.08em",
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      Key Differences
-                    </div>
-                    <div
-                      style={{
-                        color: "#ffffff",
-                        fontSize: 22,
-                        lineHeight: 1.15,
-                        fontWeight: 800,
-                      }}
-                    >
-                      Fast showroom summary
-                    </div>
-                    <div
-                      style={{
-                        color: "rgba(255,255,255,0.7)",
-                        fontSize: 14,
-                        lineHeight: 1.5,
-                        maxWidth: 900,
-                      }}
-                    >
-                      These are the most important differences across the selected products, surfaced
-                      ahead of the full spec table.
-                    </div>
-                  </div>
-
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-                      gap: 14,
-                    }}
-                  >
-                    {differenceHighlights.map((item) => (
-                      <div
-                        key={`difference-${item.specKey}`}
-                        style={{
-                          borderRadius: 20,
-                          border: "1px solid rgba(255,255,255,0.08)",
-                          background: "rgba(9,14,22,0.42)",
-                          padding: 16,
-                          display: "grid",
-                          gap: 12,
-                          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.04)",
-                        }}
-                      >
-                        <div style={{ display: "grid", gap: 4 }}>
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: 8,
-                              flexWrap: "wrap",
-                            }}
-                          >
-                            <div
-                              style={{
-                                color: "#ffffff",
-                                fontSize: 16,
-                                fontWeight: 800,
-                                lineHeight: 1.2,
-                              }}
-                            >
-                              {item.label}
-                            </div>
-
-                            {item.isComparisonKey && (
-                              <span
-                                style={{
-                                  padding: "4px 8px",
-                                  borderRadius: 999,
-                                  background: "rgba(143,211,255,0.18)",
-                                  border: "1px solid rgba(143,211,255,0.28)",
-                                  color: "#dff3ff",
-                                  fontSize: 10,
-                                  fontWeight: 800,
-                                  letterSpacing: "0.08em",
-                                  textTransform: "uppercase",
-                                  whiteSpace: "nowrap",
-                                }}
-                              >
-                                Key Spec
-                              </span>
-                            )}
-                          </div>
-
-                          <div
-                            style={{
-                              color: "rgba(255,255,255,0.52)",
-                              fontSize: 11,
-                              fontWeight: 800,
-                              letterSpacing: "0.08em",
-                              textTransform: "uppercase",
-                            }}
-                          >
-                            {item.groupName}
-                          </div>
-                        </div>
-
-                        <div
-                          style={{
-                            display: "grid",
-                            gap: 10,
-                          }}
-                        >
-                          {selectedEntries.map((entry, index) => (
-                                                        <div
-                              key={`${item.specKey}-${entry.variantId}`}
-                              style={{
-                                display: "grid",
-                                gridTemplateColumns: "1fr auto",
-                                gap: 10,
-                                alignItems: "center",
-                                padding: "10px 12px",
-                                borderRadius: 14,
-                                background:
-                                  focusedVariantId === entry.variantId
-                                    ? "rgba(143,211,255,0.14)"
-                                    : "rgba(255,255,255,0.04)",
-                                border:
-                                  focusedVariantId === entry.variantId
-                                    ? "1px solid rgba(143,211,255,0.24)"
-                                    : "1px solid rgba(255,255,255,0.06)",
-                                opacity:
-                                  hasFocusedProduct && focusedVariantId !== entry.variantId
-                                    ? 0.56
-                                    : 1,
-                                transition:
-                                  "opacity 180ms ease, background 180ms ease, border-color 180ms ease",
-                              }}
-                            >
-                              <div
-                                style={{
-                                  minWidth: 0,
-                                  color: "rgba(255,255,255,0.78)",
-                                  fontSize: 13,
-                                  fontWeight: 700,
-                                  whiteSpace: "nowrap",
-                                  overflow: "hidden",
-                                  textOverflow: "ellipsis",
-                                }}
-                              >
-                                {entry.title}
-                              </div>
-
-                              <div
-                                style={{
-                                  color: "#ffffff",
-                                  fontSize: 13,
-                                  fontWeight: 800,
-                                  textAlign: "right",
-                                  lineHeight: 1.35,
-                                }}
-                              >
-                                {formatDisplayText(item.values[index])}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-                            {hasSpecGroups && (
-                <div
-                  style={{
-                    display: "grid",
-                    gap: 12,
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      flexWrap: "wrap",
-                      gap: 10,
-                      alignItems: "center",
-                    }}
-                  >
-                    <div
-                      style={{
-                        color: "rgba(255,255,255,0.56)",
                         fontSize: 11,
-                        fontWeight: 800,
+                        lineHeight: 1.2,
+                        fontWeight: 700,
                         letterSpacing: "0.08em",
                         textTransform: "uppercase",
-                        marginRight: 2,
                       }}
                     >
-                      Jump to Section
+                      {entry.brandName || "Product"}
                     </div>
 
-                    {specGroups.map((group) => (
-                      <button
-                        key={`group-nav-${group.groupName}`}
-                        type="button"
-                        onClick={() => scrollToGroup(group.groupName)}
-                        style={{
-                          minHeight: 42,
-                          padding: "10px 14px",
-                          borderRadius: 999,
-                          border: "1px solid rgba(255,255,255,0.08)",
-                          background: "rgba(255,255,255,0.05)",
-                          color: "#ffffff",
-                          fontSize: 13,
-                          fontWeight: 700,
-                          letterSpacing: "0.01em",
-                          cursor: "pointer",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {group.groupName}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-              {hasSpecGroups ? (
-                <div
-                  style={{
-                    overflowX: "auto",
-                    borderRadius: 24,
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    background: "rgba(255,255,255,0.03)",
-                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.04)",
-                    scrollbarWidth: "thin",
-                  }}
-                >
-                  <table
-                    style={{
-                      width: "100%",
-                      minWidth: 980,
-                      borderCollapse: "collapse",
-                    }}
-                  >
-                    <thead>
-                      <tr>
-                        <th
-                          style={{
-                            ...getStickySpecCellStyle(true, false),
-                            top: 0,
-                            textAlign: "left",
-                            padding: 18,
-                            color: "rgba(255,255,255,0.68)",
-                            fontSize: 12,
-                            letterSpacing: "0.08em",
-                            textTransform: "uppercase",
-                            borderBottom: "1px solid rgba(255,255,255,0.08)",
-                            minWidth: 240,
-                          }}
-                        >
-                          Spec
-                        </th>
-
-                        {selectedEntries.map((entry) => (
-                                                    <th
-                            key={`heading-${entry.variantId}`}
-                            style={{
-                              position: "sticky",
-                              top: 0,
-                              zIndex: 2,
-                              verticalAlign: "top",
-                              textAlign: "left",
-                              padding: 18,
-                              background:
-                                focusedVariantId === entry.variantId
-                                  ? "rgba(22,34,48,0.98)"
-                                  : "rgba(12,16,24,0.96)",
-                              borderBottom:
-                                focusedVariantId === entry.variantId
-                                  ? "1px solid rgba(143,211,255,0.24)"
-                                  : "1px solid rgba(255,255,255,0.08)",
-                              minWidth: 260,
-                              opacity:
-                                hasFocusedProduct && focusedVariantId !== entry.variantId ? 0.58 : 1,
-                              transition:
-                                "opacity 180ms ease, background 180ms ease, border-color 180ms ease",
-                              boxShadow:
-                                focusedVariantId === entry.variantId
-                                  ? "inset 0 0 0 1px rgba(143,211,255,0.16)"
-                                  : "none",
-                            }}
-                          >
-                            <div style={{ display: "grid", gap: 12 }}>
-                              <div
-                                style={{
-                                  width: "100%",
-                                  height: entry.heroImage ? 170 : 92,
-                                  borderRadius: 18,
-                                  overflow: "hidden",
-                                  background:
-                                    "linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%)",
-                                  border: "1px solid rgba(255,255,255,0.08)",
-                                }}
-                              >
-                                <ProductPreviewImage
-                                  key={`${entry.variantId}-${entry.heroImage || ""}-${entry.heroFilePath || ""}`}
-                                  image={entry.heroImage}
-                                  filePath={entry.heroFilePath}
-                                  title={entry.title}
-                                />
-                              </div>
-
-                              <div style={{ display: "grid", gap: 4 }}>
-                                <div
-                                  style={{
-                                    color: "rgba(255,255,255,0.58)",
-                                    fontSize: 11,
-                                    fontWeight: 800,
-                                    letterSpacing: "0.08em",
-                                    textTransform: "uppercase",
-                                  }}
-                                >
-                                  {entry.brandName || "Product"}
-                                </div>
-                                <div
-                                  style={{
-                                    color: "#ffffff",
-                                    fontSize: 17,
-                                    lineHeight: 1.3,
-                                    fontWeight: 800,
-                                  }}
-                                >
-                                  {entry.title}
-                                </div>
-                                <div
-                                  style={{
-                                    color: "#8fd3ff",
-                                    fontSize: 15,
-                                    fontWeight: 700,
-                                  }}
-                                >
-                                  {entry.priceLabel}
-                                </div>
-                              </div>
-                            </div>
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {specGroups.map((group) => {
-                        const visibleRows = group.rows.filter((row) => {
-                          const values = selectedEntries.map((entry) => {
-                            const match = entry.specs.find(
-                              (spec) => getSpecKey(spec) === String(row.spec_key)
-                            );
-                            return formatSpecValue(match);
-                          });
-
-                          if (!showDifferencesOnly) return true;
-                          return valuesAreDifferent(values);
-                        });
-
-                        if (!visibleRows.length) return null;
-
-                        return (
-                          <React.Fragment key={group.groupName}>
-                                                        <tr
-                              ref={(node) => {
-                                const key = buildGroupAnchorId(group.groupName);
-                                if (node) {
-                                  groupSectionRefs.current[key] = node;
-                                }
-                              }}
-                              id={`compare-group-${buildGroupAnchorId(group.groupName)}`}
-                            >
-                              <td
-                                colSpan={selectedEntries.length + 1}
-                                style={{
-                                  ...getStickySpecCellStyle(false, true),
-                                  padding: "16px 18px",
-                                  color: "#ffffff",
-                                  fontSize: 14,
-                                  fontWeight: 800,
-                                  letterSpacing: "0.08em",
-                                  textTransform: "uppercase",
-                                  borderTop: "1px solid rgba(255,255,255,0.08)",
-                                  borderBottom: "1px solid rgba(255,255,255,0.06)",
-                                }}
-                              >
-                                {group.groupName}
-                              </td>
-                            </tr>
-
-                            {visibleRows.map((row) => {
-                              const values = selectedEntries.map((entry) => {
-                                const match = entry.specs.find(
-                                  (spec) => getSpecKey(spec) === String(row.spec_key)
-                                );
-                                return formatSpecValue(match);
-                              });
-
-                              const isDifferent = valuesAreDifferent(values);
-
-                              return (
-                                <tr
-                                  key={`${group.groupName}-${row.spec_key}`}
-                                  style={{
-                                    background: isDifferent
-                                      ? "rgba(143,211,255,0.06)"
-                                      : "transparent",
-                                  }}
-                                >
-                                  <td
-                                    style={{
-                                      ...getStickySpecCellStyle(false, false),
-                                      padding: 18,
-                                      borderBottom: "1px solid rgba(255,255,255,0.06)",
-                                      verticalAlign: "top",
-                                    }}
-                                  >
-                                    <div style={{ display: "grid", gap: 4 }}>
-                                      <div
-                                        style={{
-                                          color: "#ffffff",
-                                          fontSize: 15,
-                                          fontWeight: 700,
-                                        }}
-                                      >
-                                        {row.spec_label || row.spec_key}
-                                      </div>
-
-                                      <div
-                                        style={{
-                                          color: row.is_comparison_key
-                                            ? "#8fd3ff"
-                                            : "rgba(255,255,255,0.48)",
-                                          fontSize: 12,
-                                          fontWeight: 700,
-                                          letterSpacing: "0.06em",
-                                          textTransform: "uppercase",
-                                        }}
-                                      >
-                                        {row.is_comparison_key
-                                          ? "Key comparison spec"
-                                          : "Catalog spec"}
-                                      </div>
-                                    </div>
-                                  </td>
-
-                                  {values.map((value, index) => (
-                                    <td
-                                      key={`${row.spec_key}-${selectedEntries[index].variantId}`}
-                                      style={{
-                                        padding: 18,
-                                        borderBottom: "1px solid rgba(255,255,255,0.06)",
-                                        verticalAlign: "top",
-                                        background:
-                                          focusedVariantId === selectedEntries[index].variantId
-                                            ? "rgba(143,211,255,0.1)"
-                                            : isDifferent
-                                            ? "rgba(143,211,255,0.04)"
-                                            : "transparent",
-                                        opacity:
-                                          hasFocusedProduct &&
-                                          focusedVariantId !== selectedEntries[index].variantId
-                                            ? 0.56
-                                            : 1,
-                                        transition:
-                                          "opacity 180ms ease, background 180ms ease",
-                                      }}
-                                    >
-                                      <div
-                                        style={{
-                                          color:
-                                            value === "—" ? "rgba(255,255,255,0.38)" : "#ffffff",
-                                          fontSize: 15,
-                                          lineHeight: 1.45,
-                                          fontWeight: isDifferent ? 700 : 600,
-                                        }}
-                                      >
-                                        {formatDisplayText(value)}
-                                      </div>
-                                    </td>
-                                  ))}
-                                </tr>
-                              );
-                            })}
-                          </React.Fragment>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              ) : (
-                <div
-                  style={{
-                    borderRadius: 24,
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    background: "rgba(255,255,255,0.03)",
-                    padding: 28,
-                    display: "grid",
-                    gap: 22,
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "grid",
-                      gap: 8,
-                    }}
-                  >
                     <div
                       style={{
                         color: "#ffffff",
-                        fontSize: 24,
-                        lineHeight: 1.15,
-                        fontWeight: 800,
+                        fontSize: 15,
+                        lineHeight: 1.3,
+                        fontWeight: 700,
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
                       }}
                     >
-                      Comparison specs are not available yet for these selections
+                      {entry.title}
                     </div>
+
                     <div
                       style={{
-                        color: "rgba(255,255,255,0.68)",
-                        fontSize: 15,
-                        lineHeight: 1.5,
-                        maxWidth: 820,
+                        display: "flex",
+                        flexWrap: "wrap",
+                        gap: 6,
                       }}
                     >
-                      The products are selected correctly, but there are no active variant or
-                      family-shared compare specs in the current JSON for this pair yet.
+                      {getEntrySummaryChips(entry).slice(0, 2).map((value) => (
+                        <span
+                          key={`${entry.variantId}-${value}`}
+                          style={{
+                            padding: "5px 8px",
+                            borderRadius: 999,
+                            background: "rgba(255,255,255,0.06)",
+                            border: "1px solid rgba(255,255,255,0.08)",
+                            color: "rgba(255,255,255,0.8)",
+                            fontSize: 11,
+                            fontWeight: 600,
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {formatDisplayText(value)}
+                        </span>
+                      ))}
                     </div>
                   </div>
 
-                  <div
+                  <button
+                    type="button"
+                    onClick={() => removeItem(entry.variantId)}
+                    aria-label={`Remove ${entry.title} from comparison`}
                     style={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-                      gap: 16,
+                      alignSelf: "start",
+                      width: 40,
+                      height: 40,
+                      borderRadius: 12,
+                      border: "1px solid rgba(255,255,255,0.08)",
+                      background: "rgba(255,255,255,0.05)",
+                      color: "#ffffff",
+                      fontSize: 18,
+                      cursor: "pointer",
                     }}
                   >
-                    {selectedEntries.map((entry) => (
-                      <div
-                        key={`empty-state-${entry.variantId}`}
-                        style={{
-                          borderRadius: 20,
-                          border: "1px solid rgba(255,255,255,0.08)",
-                          background: "rgba(255,255,255,0.04)",
-                          padding: 16,
-                          display: "grid",
-                          gridTemplateColumns: "84px 1fr",
-                          gap: 14,
-                          alignItems: "center",
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: 84,
-                            height: 84,
-                            borderRadius: 18,
-                            overflow: "hidden",
-                            border: "1px solid rgba(255,255,255,0.08)",
-                            background:
-                              "linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%)",
-                          }}
-                        >
-                          <ProductPreviewImage
-                            key={`${entry.variantId}-${entry.heroImage || ""}-${entry.heroFilePath || ""}`}
-                            image={entry.heroImage}
-                            filePath={entry.heroFilePath}
-                            title={entry.title}
-                          />
-                        </div>
-
-                        <div style={{ display: "grid", gap: 6 }}>
-                          <div
-                            style={{
-                              color: "rgba(255,255,255,0.58)",
-                              fontSize: 11,
-                              fontWeight: 800,
-                              letterSpacing: "0.08em",
-                              textTransform: "uppercase",
-                            }}
-                          >
-                            {entry.brandName || "Product"}
-                          </div>
-
-                          <div
-                            style={{
-                              color: "#ffffff",
-                              fontSize: 17,
-                              lineHeight: 1.3,
-                              fontWeight: 800,
-                            }}
-                          >
-                            {entry.title}
-                          </div>
-
-                          <div
-                            style={{
-                              color: "#8fd3ff",
-                              fontSize: 15,
-                              fontWeight: 700,
-                            }}
-                          >
-                            {entry.priceLabel}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                    ×
+                  </button>
                 </div>
-              )}
+              ))}
+            </div>
+          </div>
+
+          {compareReady && (
+            <div
+              style={{
+                display: "grid",
+                gap: 10,
+                alignSelf: "stretch",
+                minWidth: 260,
+              }}
+            >
+              <button
+                type="button"
+                onClick={handleToggleOpen}
+                style={{
+                  minHeight: 62,
+                  borderRadius: 18,
+                  border: "1px solid rgba(143,211,255,0.28)",
+                  background:
+                    "linear-gradient(135deg, rgba(143,211,255,0.22) 0%, rgba(255,255,255,0.1) 100%)",
+                  color: "#ffffff",
+                  fontSize: 16,
+                  fontWeight: 800,
+                  letterSpacing: "0.02em",
+                  cursor: "pointer",
+                  padding: "14px 18px",
+                  boxShadow: "0 12px 30px rgba(0,0,0,0.22)",
+                }}
+              >
+                {isOpen ? "Hide Full Comparison" : "Open Full Comparison"}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => clearAll()}
+                style={{
+                  minHeight: 48,
+                  borderRadius: 16,
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  background: "rgba(255,255,255,0.04)",
+                  color: "rgba(255,255,255,0.85)",
+                  fontSize: 14,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  padding: "12px 16px",
+                }}
+              >
+                Clear Comparison
+              </button>
             </div>
           )}
         </div>
       </div>
-    </>
+
+      {isOpen && compareReady && (
+        <div
+          style={{
+            borderTop: "1px solid rgba(255,255,255,0.08)",
+            maxHeight: "65vh",
+            overflow: "auto",
+            padding: 20,
+            display: "grid",
+            gap: 20,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 16,
+            }}
+          >
+            <div style={{ display: "grid", gap: 6 }}>
+              <div
+                style={{
+                  color: "rgba(255,255,255,0.62)",
+                  fontSize: 12,
+                  fontWeight: 800,
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                }}
+              >
+                Showroom Comparison
+              </div>
+
+              <h2
+                style={{
+                  margin: 0,
+                  color: "#ffffff",
+                  fontSize: 28,
+                  lineHeight: 1.1,
+                  fontWeight: 800,
+                }}
+              >
+                Compare Product Specs Side by Side
+              </h2>
+
+              <div
+                style={{
+                  color: "rgba(255,255,255,0.72)",
+                  fontSize: 14,
+                  lineHeight: 1.5,
+                }}
+              >
+                Use this view to compare the selected products across shared spec rows.
+              </div>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 10,
+                alignItems: "center",
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => setShowDifferencesOnly((current) => !current)}
+                style={{
+                  minHeight: 44,
+                  borderRadius: 14,
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  background: showDifferencesOnly
+                    ? "rgba(143,211,255,0.18)"
+                    : "rgba(255,255,255,0.04)",
+                  color: "#ffffff",
+                  fontSize: 13,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  padding: "10px 14px",
+                }}
+              >
+                {showDifferencesOnly ? "Showing Differences Only" : "Show Differences Only"}
+              </button>
+
+              <button
+                type="button"
+                onClick={handleCloseTray}
+                style={{
+                  minHeight: 44,
+                  borderRadius: 14,
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  background: "rgba(255,255,255,0.04)",
+                  color: "#ffffff",
+                  fontSize: 13,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  padding: "10px 14px",
+                }}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 10,
+            }}
+          >
+            <div
+              style={{
+                padding: "10px 14px",
+                borderRadius: 14,
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                color: "#ffffff",
+                fontSize: 13,
+                fontWeight: 700,
+              }}
+            >
+              Specs: {comparisonMetrics.totalVisibleSpecs}
+            </div>
+
+            <div
+              style={{
+                padding: "10px 14px",
+                borderRadius: 14,
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                color: "#ffffff",
+                fontSize: 13,
+                fontWeight: 700,
+              }}
+            >
+              Differences: {comparisonMetrics.differingSpecs}
+            </div>
+
+            <div
+              style={{
+                padding: "10px 14px",
+                borderRadius: 14,
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                color: "#ffffff",
+                fontSize: 13,
+                fontWeight: 700,
+              }}
+            >
+              Key Specs: {comparisonMetrics.keySpecs}
+            </div>
+          </div>
+
+          {visibleSpecGroups.length > 0 ? (
+            <>
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: 8,
+                }}
+              >
+                {visibleSpecGroups.map((group) => (
+                  <button
+                    key={group.groupName}
+                    type="button"
+                    onClick={() => scrollToGroup(group.groupName)}
+                    style={{
+                      minHeight: 38,
+                      borderRadius: 999,
+                      border: "1px solid rgba(255,255,255,0.08)",
+                      background: "rgba(255,255,255,0.04)",
+                      color: "rgba(255,255,255,0.9)",
+                      fontSize: 12,
+                      fontWeight: 700,
+                      cursor: "pointer",
+                      padding: "8px 12px",
+                    }}
+                  >
+                    {group.groupName}
+                  </button>
+                ))}
+              </div>
+
+              <div
+                style={{
+                  overflowX: "auto",
+                  borderRadius: 24,
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  background: "rgba(255,255,255,0.03)",
+                }}
+              >
+                <table
+                  style={{
+                    width: "100%",
+                    minWidth: 1080,
+                    borderCollapse: "separate",
+                    borderSpacing: 0,
+                  }}
+                >
+                  <thead>
+                    <tr>
+                      <th
+                        style={{
+                          ...getStickySpecCellStyle(true, false),
+                          minWidth: 240,
+                          padding: 18,
+                          textAlign: "left",
+                          color: "rgba(255,255,255,0.68)",
+                          fontSize: 12,
+                          fontWeight: 800,
+                          letterSpacing: "0.08em",
+                          textTransform: "uppercase",
+                          borderBottom: "1px solid rgba(255,255,255,0.08)",
+                        }}
+                      >
+                        Specs
+                      </th>
+
+                      {selectedEntries.map((entry) => (
+                        <th
+                          key={`head-${entry.variantId}`}
+                          style={{
+                            minWidth: 260,
+                            padding: 18,
+                            textAlign: "left",
+                            borderBottom: "1px solid rgba(255,255,255,0.08)",
+                            background:
+                              focusedVariantId === entry.variantId
+                                ? "rgba(143,211,255,0.1)"
+                                : "transparent",
+                          }}
+                        >
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setFocusedVariantId((current) =>
+                                current === entry.variantId ? "" : entry.variantId
+                              )
+                            }
+                            style={{
+                              width: "100%",
+                              textAlign: "left",
+                              border: "none",
+                              background: "transparent",
+                              padding: 0,
+                              cursor: "pointer",
+                              display: "grid",
+                              gap: 8,
+                            }}
+                          >
+                            <div
+                              style={{
+                                color: "rgba(255,255,255,0.62)",
+                                fontSize: 11,
+                                fontWeight: 700,
+                                letterSpacing: "0.08em",
+                                textTransform: "uppercase",
+                              }}
+                            >
+                              {entry.brandName}
+                            </div>
+
+                            <div
+                              style={{
+                                color: "#ffffff",
+                                fontSize: 18,
+                                lineHeight: 1.2,
+                                fontWeight: 800,
+                              }}
+                            >
+                              {entry.title}
+                            </div>
+
+                            <div
+                              style={{
+                                color: "rgba(255,255,255,0.82)",
+                                fontSize: 13,
+                                fontWeight: 700,
+                              }}
+                            >
+                              {entry.priceLabel}
+                            </div>
+                          </button>
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {visibleSpecGroups.map((group) => {
+                      const anchorId = buildGroupAnchorId(group.groupName);
+
+                      return (
+                        <React.Fragment key={group.groupName}>
+                          <tr ref={(node) => (groupSectionRefs.current[anchorId] = node)}>
+                            <td
+                              style={{
+                                ...getStickySpecCellStyle(false, true),
+                                padding: 16,
+                                borderBottom: "1px solid rgba(255,255,255,0.08)",
+                                color: "#ffffff",
+                                fontSize: 15,
+                                fontWeight: 800,
+                              }}
+                            >
+                              {group.groupName}
+                            </td>
+
+                            {selectedEntries.map((entry) => (
+                              <td
+                                key={`${group.groupName}-${entry.variantId}`}
+                                style={{
+                                  padding: 16,
+                                  borderBottom: "1px solid rgba(255,255,255,0.08)",
+                                  background:
+                                    focusedVariantId === entry.variantId
+                                      ? "rgba(143,211,255,0.06)"
+                                      : "transparent",
+                                }}
+                              />
+                            ))}
+                          </tr>
+
+                          {group.rows.map((row) => {
+                            const values = selectedEntries.map((entry) => {
+                              const match = entry.specs.find(
+                                (spec) => getSpecKey(spec) === String(row.spec_key)
+                              );
+                              return formatSpecValue(match);
+                            });
+
+                            const isDifferent = valuesAreDifferent(values);
+
+                            return (
+                              <tr key={`${group.groupName}-${row.spec_key}`}>
+                                <td
+                                  style={{
+                                    ...getStickySpecCellStyle(false, false),
+                                    padding: 18,
+                                    borderBottom: "1px solid rgba(255,255,255,0.06)",
+                                    verticalAlign: "top",
+                                  }}
+                                >
+                                  <div style={{ display: "grid", gap: 6 }}>
+                                    <div
+                                      style={{
+                                        color: "#ffffff",
+                                        fontSize: 14,
+                                        lineHeight: 1.35,
+                                        fontWeight: 700,
+                                      }}
+                                    >
+                                      {row.spec_label}
+                                    </div>
+
+                                    <div
+                                      style={{
+                                        color: "rgba(255,255,255,0.48)",
+                                        fontSize: 11,
+                                        lineHeight: 1.3,
+                                        fontWeight: 700,
+                                        textTransform: "uppercase",
+                                        letterSpacing: "0.06em",
+                                      }}
+                                    >
+                                      {row.is_comparison_key
+                                        ? "Key comparison spec"
+                                        : "Catalog spec"}
+                                    </div>
+                                  </div>
+                                </td>
+
+                                {values.map((value, index) => (
+                                  <td
+                                    key={`${row.spec_key}-${selectedEntries[index].variantId}`}
+                                    style={{
+                                      padding: 18,
+                                      borderBottom: "1px solid rgba(255,255,255,0.06)",
+                                      verticalAlign: "top",
+                                      background:
+                                        focusedVariantId === selectedEntries[index].variantId
+                                          ? "rgba(143,211,255,0.1)"
+                                          : isDifferent
+                                          ? "rgba(143,211,255,0.04)"
+                                          : "transparent",
+                                      opacity:
+                                        hasFocusedProduct &&
+                                        focusedVariantId !== selectedEntries[index].variantId
+                                          ? 0.56
+                                          : 1,
+                                      transition:
+                                        "opacity 180ms ease, background 180ms ease",
+                                    }}
+                                  >
+                                    <div
+                                      style={{
+                                        color:
+                                          value === "—" ? "rgba(255,255,255,0.38)" : "#ffffff",
+                                        fontSize: 15,
+                                        lineHeight: 1.45,
+                                        fontWeight: isDifferent ? 700 : 600,
+                                      }}
+                                    >
+                                      {formatDisplayText(value)}
+                                    </div>
+                                  </td>
+                                ))}
+                              </tr>
+                            );
+                          })}
+                        </React.Fragment>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          ) : (
+            <div
+              style={{
+                borderRadius: 24,
+                border: "1px solid rgba(255,255,255,0.08)",
+                background: "rgba(255,255,255,0.03)",
+                padding: 28,
+                display: "grid",
+                gap: 22,
+              }}
+            >
+              <div
+                style={{
+                  display: "grid",
+                  gap: 8,
+                }}
+              >
+                <div
+                  style={{
+                    color: "#ffffff",
+                    fontSize: 24,
+                    lineHeight: 1.15,
+                    fontWeight: 800,
+                  }}
+                >
+                  Comparison specs are not available yet for these selections
+                </div>
+
+                <div
+                  style={{
+                    color: "rgba(255,255,255,0.68)",
+                    fontSize: 15,
+                    lineHeight: 1.5,
+                    maxWidth: 820,
+                  }}
+                >
+                  The products are selected correctly, but there are no active variant or
+                  family-shared compare specs in the current JSON for this pair yet.
+                </div>
+              </div>
+
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+                  gap: 16,
+                }}
+              >
+                {selectedEntries.map((entry) => (
+                  <div
+                    key={`empty-state-${entry.variantId}`}
+                    style={{
+                      borderRadius: 20,
+                      border: "1px solid rgba(255,255,255,0.08)",
+                      background: "rgba(255,255,255,0.04)",
+                      padding: 16,
+                      display: "grid",
+                      gridTemplateColumns: "84px 1fr",
+                      gap: 14,
+                      alignItems: "center",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 84,
+                        height: 84,
+                        borderRadius: 18,
+                        overflow: "hidden",
+                        border: "1px solid rgba(255,255,255,0.08)",
+                        background:
+                          "linear-gradient(180deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.03) 100%)",
+                      }}
+                    >
+                      <ProductPreviewImage
+                        image={entry.heroImage}
+                        title={entry.title}
+                        filePath={entry.heroFilePath}
+                      />
+                    </div>
+
+                    <div style={{ display: "grid", gap: 6 }}>
+                      <div
+                        style={{
+                          color: "rgba(255,255,255,0.62)",
+                          fontSize: 11,
+                          fontWeight: 700,
+                          letterSpacing: "0.08em",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        {entry.brandName}
+                      </div>
+
+                      <div
+                        style={{
+                          color: "#ffffff",
+                          fontSize: 16,
+                          lineHeight: 1.25,
+                          fontWeight: 800,
+                        }}
+                      >
+                        {entry.title}
+                      </div>
+
+                      <div
+                        style={{
+                          color: "rgba(255,255,255,0.74)",
+                          fontSize: 13,
+                          fontWeight: 700,
+                        }}
+                      >
+                        {entry.priceLabel}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
   );
 }

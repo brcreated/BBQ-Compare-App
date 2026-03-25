@@ -44,6 +44,19 @@ export const DATASET_CONTRACTS = Object.freeze({
     fields: COLOR_FIELDS,
   }),
 
+  variantColors: Object.freeze({
+    fileName: "variantColors.json",
+    recordKey: "variantColors",
+    idField: "VariantColorId",
+    fields: Object.freeze({
+      VariantColorId: "string",
+      VariantId: "string",
+      ColorId: "string",
+      SortOrder: "number|null",
+      Active: "boolean",
+    }),
+  }),
+
   specs: Object.freeze({
     fileName: "specs.json",
     recordKey: "specs",

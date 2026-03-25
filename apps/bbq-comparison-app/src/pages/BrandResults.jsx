@@ -1,28 +1,27 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-
-function joinUrl(base, path) {
-  const cleanBase = String(base || "").replace(/\/+$/, "");
-  const cleanPath = String(path || "").replace(/^\/+/, "");
-  return cleanPath ? `${cleanBase}/${cleanPath}` : cleanBase;
-}
-
-function isAbsoluteUrl(value) {
-  return /^https?:\/\//i.test(String(value || "").trim());
-}
-
-function resolveAssetUrl(base, path) {
-  const value = String(path || "").trim();
-  if (!value) return "";
-  if (isAbsoluteUrl(value)) return value;
-  return joinUrl(base, value);
-}
+import { useNavigate, useParams, useSearchParams, useLocation } from "react-router-dom";
+import { useCatalog } from "../context/CatalogContext";
+import { getState, subscribe, removeItem } from "../state/comparisonStore";
+import AboutModal from "../components/AboutModal";
 
 function normalizeId(value) {
   return String(value || "")
     .trim()
     .toLowerCase()
     .replace(/[_\s]+/g, "-");
+}
+
+function getVariantRouteValue(record) {
+  return String(
+    pickFirst(
+      record?.slug,
+      record?.variantSlug,
+      record?.variant_slug,
+      record?.id,
+      record?.variantId,
+      record?.variant_id
+    )
+  ).trim();
 }
 
 function cleanLabel(value) {
@@ -113,11 +112,13 @@ function getVariantId(record) {
   );
 }
 
-function getVariantName(variant, familyMap) {
+function getVariantName(variant, familyMap, brandMap) {
   const family = familyMap.get(getFamilyId(variant));
+  const brandId = getBrandId(variant) || getBrandId(family);
+  const brand = brandMap.get(brandId);
 
-  const familyName = cleanLabel(
-    pickFirst(family?.name, family?.familyName, family?.family_name)
+  const brandName = cleanLabel(
+    pickFirst(brand?.name, brand?.brandName, brand?.brand_name)
   );
 
   const variantName = cleanLabel(
@@ -130,26 +131,23 @@ function getVariantName(variant, familyMap) {
     )
   );
 
-  if (!familyName && !variantName) {
-    return cleanLabel(
-      pickFirst(variant?.id, variant?.variant_id, "Unnamed Product")
-    );
-  }
+  const fallbackName = cleanLabel(
+    pickFirst(
+      variantName,
+      family?.name,
+      family?.familyName,
+      family?.family_name,
+      variant?.id,
+      variant?.variant_id,
+      "Unnamed Product"
+    )
+  );
 
-  if (!familyName) return variantName;
-  if (!variantName) return familyName;
+  if (!brandName && !fallbackName) return "Unnamed Product";
+  if (!brandName) return fallbackName;
+  if (!fallbackName) return brandName;
 
-  const familyNorm = normalizeText(familyName);
-  const variantNorm = normalizeText(variantName);
-
-  if (
-    variantNorm === familyNorm ||
-    variantNorm.startsWith(`${familyNorm} `)
-  ) {
-    return variantName;
-  }
-
-  return `${familyName} ${variantName}`;
+  return `${brandName} - ${fallbackName}`;
 }
 
 function getAssetType(asset) {
@@ -192,7 +190,11 @@ function getAssetFilePath(asset) {
     asset?.filePath,
     asset?.url,
     asset?.src,
-    asset?.path
+    asset?.path,
+    asset?.imageUrl,
+    asset?.image_url,
+    asset?.sourceUrl,
+    asset?.source_url
   );
 }
 
@@ -363,6 +365,41 @@ function findVariantSize(variant, specMap) {
   return "";
 }
 
+function findVariantInstallation(variant, specMap) {
+  const directInstall = cleanLabel(
+    pickFirst(
+      variant?.installType,
+      variant?.install_type,
+      variant?.installation,
+      variant?.defaultInstallation,
+      variant?.default_installation
+    )
+  );
+
+  if (directInstall) {
+    const normalized = normalizeId(directInstall);
+    if (normalized.includes("built")) return "Built-In";
+    if (normalized.includes("free")) return "Freestanding";
+    return formatTitle(directInstall);
+  }
+
+  const variantId = getVariantId(variant);
+  const specs = specMap.get(variantId) || [];
+
+  for (const key of ["install_type", "installation", "default_installation"]) {
+    const match = specs.find((spec) => getSpecKey(spec) === key);
+    if (!match) continue;
+    const value = cleanLabel(getSpecValue(match));
+    if (!value) continue;
+    const normalized = normalizeId(value);
+    if (normalized.includes("built")) return "Built-In";
+    if (normalized.includes("free")) return "Freestanding";
+    return formatTitle(value);
+  }
+
+  return "";
+}
+
 function getSizeBucket(area) {
   if (area === null) return "Unknown";
   if (area < 500) return "Small";
@@ -432,6 +469,15 @@ function findVariantFuelOptions(variant, specMap) {
     return ["Propane"];
   }
 
+  if (normalizedFuel.includes("pellet")) return ["Pellet"];
+  if (normalizedFuel.includes("charcoal") && normalizedFuel.includes("wood")) {
+    return ["Charcoal", "Wood"];
+  }
+  if (normalizedFuel.includes("charcoal")) return ["Charcoal"];
+  if (normalizedFuel.includes("wood")) return ["Wood"];
+  if (normalizedFuel.includes("griddle")) return ["Griddle"];
+  if (normalizedFuel.includes("pizza")) return ["Pizza Oven"];
+
   if (normalizedFuel.includes("gas")) {
     return ["Propane"];
   }
@@ -441,103 +487,196 @@ function findVariantFuelOptions(variant, specMap) {
   return [];
 }
 
+function findVariantCategory(variant, familyMap, specMap) {
+  const directCategory = cleanLabel(
+    pickFirst(
+      variant?.category,
+      variant?.cookingCategory,
+      variant?.cooking_category,
+      variant?.productCategory,
+      variant?.product_category
+    )
+  );
+
+  if (directCategory) return normalizeId(directCategory);
+
+  const family = familyMap.get(getFamilyId(variant));
+  const familyCategory = cleanLabel(
+    pickFirst(
+      family?.category,
+      family?.cookingCategory,
+      family?.cooking_category,
+      family?.productCategory,
+      family?.product_category
+    )
+  );
+
+  if (familyCategory) return normalizeId(familyCategory);
+
+  const variantId = getVariantId(variant);
+  const specs = specMap.get(variantId) || [];
+
+  for (const key of ["category", "cooking_category", "product_category"]) {
+    const match = specs.find((spec) => getSpecKey(spec) === key);
+    if (!match) continue;
+    const value = cleanLabel(getSpecValue(match));
+    if (value) return normalizeId(value);
+  }
+
+  return "";
+}
+
+function getFuelFilterFromQuery(searchParams) {
+  const fuel = normalizeId(searchParams.get("fuel"));
+
+  if (fuel === "pellet") return "Pellet";
+  if (fuel === "charcoal" || fuel === "wood" || fuel === "charcoal-wood") {
+    return "Charcoal";
+  }
+  if (fuel === "gas") return "Gas";
+  if (fuel === "propane") return "Propane";
+  if (fuel === "natural-gas" || fuel === "naturalgas" || fuel === "natural_gas") {
+    return "Natural Gas";
+  }
+
+  return "All";
+}
+
+function getInstallationFilterFromQuery(searchParams) {
+  const installation = normalizeId(searchParams.get("installation"));
+
+  if (installation.includes("built")) return "Built-In";
+  if (installation.includes("free")) return "Freestanding";
+
+  return "All";
+}
+
+function getCollectionMeta({ routeBrandId, brandSlug, selectedBrand, searchParams }) {
+  const normalizedFuel = normalizeId(searchParams.get("fuel"));
+  const normalizedCategory = normalizeId(searchParams.get("category"));
+  const normalizedInstallation = normalizeId(searchParams.get("installation"));
+
+  if (normalizedFuel === "pellet") {
+    return {
+      title: "All Pellet Grills & Smokers",
+      subtitle: "Browse every pellet grill and smoker in the showroom.",
+    };
+  }
+
+  if (
+    normalizedFuel === "gas" ||
+    normalizedFuel === "propane" ||
+    normalizedFuel === "natural-gas" ||
+    normalizedFuel === "naturalgas" ||
+    normalizedFuel === "natural_gas"
+  ) {
+    return {
+      title: "All Natural Gas & Propane Grills",
+      subtitle: "Browse every gas grill and compare propane and natural gas options.",
+    };
+  }
+
+  if (
+    normalizedFuel === "charcoal" ||
+    normalizedFuel === "wood" ||
+    normalizedFuel === "charcoal-wood"
+  ) {
+    return {
+      title: "All Charcoal & Wood Grills & Smokers",
+      subtitle: "Browse traditional charcoal and wood-fired grills and smokers.",
+    };
+  }
+
+  if (normalizedCategory === "griddle" || normalizedCategory === "griddles") {
+    return {
+      title: "All Griddles",
+      subtitle: "Browse flat top cooking options across the catalog.",
+    };
+  }
+
+  if (
+    normalizedCategory === "pizza-oven" ||
+    normalizedCategory === "pizza-ovens" ||
+    normalizedCategory === "pizza"
+  ) {
+    return {
+      title: "All Pizza Ovens",
+      subtitle: "Browse gas and wood-fired pizza ovens.",
+    };
+  }
+
+  if (
+    normalizedInstallation.includes("built") ||
+    normalizedCategory === "outdoor-kitchen" ||
+    normalizedCategory === "built-in"
+  ) {
+    return {
+      title: "All Built-In Grills",
+      subtitle: "Browse built-in grills for outdoor kitchen projects.",
+    };
+  }
+
+  const isAllBrands = !routeBrandId || routeBrandId === "all";
+  if (isAllBrands) {
+    return {
+      title: "All Brands",
+      subtitle: "Browse the full live catalog across every brand.",
+    };
+  }
+
+  return {
+    title: pickFirst(
+      selectedBrand?.name,
+      selectedBrand?.brandName,
+      selectedBrand?.brand_name,
+      routeBrandId ? formatTitle(brandSlug) : "All Brands"
+    ),
+    subtitle: "Browse this brand and narrow the results with filters.",
+  };
+}
+
 function BrandResults() {
   const navigate = useNavigate();
-  const { brandId = "" } = useParams();
+  const location = useLocation();
+  const { brandSlug = "" } = useParams();
+  const [searchParams] = useSearchParams();
+  const routeBrandId = normalizeId(brandSlug);
 
-  const [brands, setBrands] = useState([]);
-  const [families, setFamilies] = useState([]);
-  const [variants, setVariants] = useState([]);
-  const [assets, setAssets] = useState([]);
-  const [specs, setSpecs] = useState([]);
+  const {
+    brands = [],
+    families = [],
+    variants = [],
+    assets = [],
+    specs = [],
+    loading,
+    error,
+  } = useCatalog();
 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  const [selectedFuel, setSelectedFuel] = useState("All");
+  const [selectedFuel, setSelectedFuel] = useState(() =>
+    getFuelFilterFromQuery(searchParams)
+  );
+  const [selectedInstallation, setSelectedInstallation] = useState(() =>
+    getInstallationFilterFromQuery(searchParams)
+  );
   const [selectedSize, setSelectedSize] = useState("All");
   const [selectedPrice, setSelectedPrice] = useState("All");
+  const [selectedBrandFilter, setSelectedBrandFilter] = useState("All");
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [compareState, setCompareState] = useState(getState());
 
-  const dataBaseUrl = import.meta.env.VITE_DATA_BASE_URL || "";
   const assetBaseUrl = import.meta.env.VITE_ASSET_BASE_URL || "";
-  const routeBrandId = normalizeId(brandId);
 
   useEffect(() => {
-    let cancelled = false;
+    return subscribe(setCompareState);
+  }, []);
 
-    async function loadData() {
-      try {
-        setLoading(true);
-        setError("");
-
-        if (!dataBaseUrl) {
-          throw new Error("Missing VITE_DATA_BASE_URL");
-        }
-
-        const [
-          brandsResponse,
-          familiesResponse,
-          variantsResponse,
-          assetsResponse,
-          specsResponse,
-        ] = await Promise.all([
-          fetch(joinUrl(dataBaseUrl, "brands.json")),
-          fetch(joinUrl(dataBaseUrl, "families.json")),
-          fetch(joinUrl(dataBaseUrl, "variants.json")),
-          fetch(joinUrl(dataBaseUrl, "assets.json")),
-          fetch(joinUrl(dataBaseUrl, "specs.json")),
-        ]);
-
-        const failedResponse = [
-          brandsResponse,
-          familiesResponse,
-          variantsResponse,
-          assetsResponse,
-          specsResponse,
-        ].find((response) => !response.ok);
-
-        if (failedResponse) {
-          throw new Error(`Failed to fetch ${failedResponse.url}`);
-        }
-
-        const [
-          brandsJson,
-          familiesJson,
-          variantsJson,
-          assetsJson,
-          specsJson,
-        ] = await Promise.all([
-          brandsResponse.json(),
-          familiesResponse.json(),
-          variantsResponse.json(),
-          assetsResponse.json(),
-          specsResponse.json(),
-        ]);
-
-        if (cancelled) return;
-
-        setBrands(Array.isArray(brandsJson) ? brandsJson : []);
-        setFamilies(Array.isArray(familiesJson) ? familiesJson : []);
-        setVariants(Array.isArray(variantsJson) ? variantsJson : []);
-        setAssets(Array.isArray(assetsJson) ? assetsJson : []);
-        setSpecs(Array.isArray(specsJson) ? specsJson : []);
-      } catch (loadError) {
-        if (cancelled) return;
-        setError(
-          loadError instanceof Error ? loadError.message : "Failed to load data"
-        );
-      } finally {
-        if (cancelled) return;
-        setLoading(false);
-      }
-    }
-
-    loadData();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [dataBaseUrl]);
+  useEffect(() => {
+    setSelectedFuel(getFuelFilterFromQuery(searchParams));
+    setSelectedInstallation(getInstallationFilterFromQuery(searchParams));
+    setSelectedSize("All");
+    setSelectedPrice("All");
+    setSelectedBrandFilter("All");
+  }, [searchParams]);
 
   const familyMap = useMemo(() => {
     const map = new Map();
@@ -550,6 +689,18 @@ function BrandResults() {
 
     return map;
   }, [families]);
+
+  const brandMap = useMemo(() => {
+    const map = new Map();
+
+    brands.forEach((brand) => {
+      const id = getRecordId(brand);
+      if (!id) return;
+      map.set(id, brand);
+    });
+
+    return map;
+  }, [brands]);
 
   const specMap = useMemo(() => {
     const map = new Map();
@@ -569,20 +720,33 @@ function BrandResults() {
   }, [specs]);
 
   const selectedBrand = useMemo(() => {
-    return brands.find((brand) => getRecordId(brand) === routeBrandId) || null;
+    return (
+      brands.find(
+        (brand) =>
+          getRecordId(brand) === routeBrandId ||
+          normalizeId(pickFirst(brand?.brandSlug, brand?.brand_slug, brand?.slug)) === routeBrandId
+      ) || null
+    );
   }, [brands, routeBrandId]);
 
-  const brandLogoUrl = useMemo(() => {
-    if (!selectedBrand) return "";
+  const collectionMeta = useMemo(() => {
+    return getCollectionMeta({
+      routeBrandId,
+      brandSlug,
+      selectedBrand,
+      searchParams,
+    });
+  }, [routeBrandId, brandSlug, selectedBrand, searchParams]);
 
-    const directLogo = resolveAssetUrl(
-      assetBaseUrl,
-      pickFirst(
-        selectedBrand?.logoUrl,
-        selectedBrand?.logo_url,
-        selectedBrand?.brandLogoUrl,
-        selectedBrand?.brand_logo_url
-      )
+  const brandLogoUrl = useMemo(() => {
+    const isAllBrands = !routeBrandId || routeBrandId === "all";
+    if (!selectedBrand || isAllBrands) return "";
+
+    const directLogo = pickFirst(
+      selectedBrand?.logoUrl,
+      selectedBrand?.logo_url,
+      selectedBrand?.brandLogoUrl,
+      selectedBrand?.brand_logo_url
     );
 
     if (directLogo) return directLogo;
@@ -605,14 +769,22 @@ function BrandResults() {
 
     if (!assetLogo) return "";
 
-    return resolveAssetUrl(assetBaseUrl, getAssetFilePath(assetLogo));
+    const filePath = getAssetFilePath(assetLogo);
+    if (!filePath) return "";
+
+    if (/^https?:\/\//i.test(filePath)) return filePath;
+    const cleanBase = String(assetBaseUrl || "").replace(/\/+$/, "");
+    const cleanPath = String(filePath || "").replace(/^\/+/, "");
+    return cleanBase ? `${cleanBase}/${cleanPath}` : `/${cleanPath}`;
   }, [selectedBrand, assets, assetBaseUrl, routeBrandId]);
 
   const filteredVariants = useMemo(() => {
-    if (!routeBrandId) return [];
+    const isAllBrands = !routeBrandId || routeBrandId === "all";
 
     return variants.filter((variant) => {
       if (!isActiveRecord(variant)) return false;
+
+      if (isAllBrands) return true;
 
       const directBrandId = getBrandId(variant);
       if (directBrandId && directBrandId === routeBrandId) return true;
@@ -629,33 +801,125 @@ function BrandResults() {
       const variantId = getVariantId(variant);
       const bestAsset = pickBestAssetForVariant(variantId, assets);
       const filePath = getAssetFilePath(bestAsset);
-      const imageUrl = filePath ? resolveAssetUrl(assetBaseUrl, filePath) : "";
+
+      let imageUrl = "";
+      if (filePath) {
+        if (/^https?:\/\//i.test(filePath)) {
+          imageUrl = filePath;
+        } else {
+          const cleanBase = String(assetBaseUrl || "").replace(/\/+$/, "");
+          const cleanPath = String(filePath || "").replace(/^\/+/, "");
+          imageUrl = cleanBase ? `${cleanBase}/${cleanPath}` : `/${cleanPath}`;
+        }
+      }
+
       const cookingArea = findVariantCookingArea(variant, specMap);
       const fuelOptions = findVariantFuelOptions(variant, specMap);
+      const category = findVariantCategory(variant, familyMap, specMap);
+      const family = familyMap.get(getFamilyId(variant));
+      const resolvedBrandId = getBrandId(variant) || getBrandId(family);
+      const resolvedBrand =
+        brands.find((brand) => getRecordId(brand) === resolvedBrandId) || null;
+      const resolvedBrandName = cleanLabel(
+        pickFirst(
+          resolvedBrand?.name,
+          resolvedBrand?.brandName,
+          resolvedBrand?.brand_name,
+          formatTitle(resolvedBrandId)
+        )
+      );
 
       return {
         id: variantId || getRecordId(variant),
-        name: getVariantName(variant, familyMap),
+        routeValue: getVariantRouteValue(variant),
+        name: getVariantName(variant, familyMap, brandMap),
         imageUrl,
         price: findVariantPrice(variant, specMap),
         priceNumber: findVariantPriceNumber(variant, specMap),
+        brandId: resolvedBrandId,
+        brandName: resolvedBrandName,
         fuelOptions,
         fuelSummary:
-          fuelOptions.length === 2
+          fuelOptions.includes("Propane") && fuelOptions.includes("Natural Gas")
             ? "Propane / Natural Gas"
-            : fuelOptions[0] || "",
+            : fuelOptions.join(" / "),
+        installation: findVariantInstallation(variant, specMap),
         size: findVariantSize(variant, specMap),
         sizeBucket: getSizeBucket(cookingArea),
+        category,
       };
     });
-  }, [filteredVariants, assets, assetBaseUrl, familyMap, specMap]);
+  }, [filteredVariants, assets, assetBaseUrl, familyMap, brandMap, specMap, brands]);
 
   const fuelOptions = useMemo(() => {
     const values = Array.from(
-      new Set(productCards.flatMap((product) => product.fuelOptions))
+      new Set(productCards.flatMap((product) => product.fuelOptions).filter(Boolean))
     ).sort((a, b) => a.localeCompare(b));
 
-    return ["All", ...values];
+    const ordered = [
+      "All",
+      "Gas",
+      "Pellet",
+      "Charcoal",
+      "Wood",
+      "Propane",
+      "Natural Gas",
+    ];
+
+    const existing = ordered.filter(
+      (value) => value === "All" || value === "Gas" || values.includes(value)
+    );
+    const extras = values.filter((value) => !existing.includes(value));
+
+    return [...existing, ...extras];
+  }, [productCards]);
+
+
+  const brandFilterOptions = useMemo(() => {
+    const isAllBrands = !routeBrandId || routeBrandId === "all";
+    if (!isAllBrands) return ["All"];
+
+    const brandMap = new Map();
+
+    productCards.forEach((product) => {
+      const productBrandId = normalizeId(product.brandId);
+      const productBrandName = cleanLabel(product.brandName);
+
+      if (!productBrandId || !productBrandName) return;
+      if (!brandMap.has(productBrandId)) {
+        brandMap.set(productBrandId, productBrandName);
+      }
+    });
+
+    const sorted = Array.from(brandMap.entries())
+      .sort((a, b) => a[1].localeCompare(b[1]))
+      .map(([id, name]) => ({ id, name }));
+
+    return ["All", ...sorted.map((brand) => brand.id)];
+  }, [productCards, routeBrandId]);
+
+  const brandFilterLabelMap = useMemo(() => {
+    const map = new Map();
+    map.set("All", "All Brands");
+
+    productCards.forEach((product) => {
+      const productBrandId = normalizeId(product.brandId);
+      const productBrandName = cleanLabel(product.brandName);
+      if (!productBrandId || !productBrandName) return;
+      if (!map.has(productBrandId)) {
+        map.set(productBrandId, productBrandName);
+      }
+    });
+
+    return map;
+  }, [productCards]);
+
+  const installationOptions = useMemo(() => {
+    const values = Array.from(
+      new Set(productCards.map((product) => product.installation).filter(Boolean))
+    ).sort((a, b) => a.localeCompare(b));
+
+    return values.length ? ["All", ...values] : ["All"];
   }, [productCards]);
 
   const sizeOptions = useMemo(() => {
@@ -669,10 +933,122 @@ function BrandResults() {
   const priceOptions = ["All", "Under $2,000", "$2,000–$4,999", "$5,000+"];
 
   const visibleProducts = useMemo(() => {
-    return productCards.filter((product) => {
+    const quizResults = location.state?.quizResults || null;
+
+    let baseProducts = productCards;
+
+    if (Array.isArray(quizResults) && quizResults.length > 0) {
+      const normalizedQuizIds = new Set(
+        quizResults
+          .map((id) => normalizeId(id))
+          .filter(Boolean)
+      );
+
+      baseProducts = productCards.filter((product) => {
+        const productId = normalizeId(product.id);
+        const productRouteValue = normalizeId(product.routeValue);
+        return (
+          normalizedQuizIds.has(productId) ||
+          normalizedQuizIds.has(productRouteValue)
+        );
+      });
+    }
+
+    const normalizedFuel = normalizeId(searchParams.get("fuel"));
+    const normalizedCategory = normalizeId(searchParams.get("category"));
+    const normalizedInstallation = normalizeId(searchParams.get("installation"));
+
+    return baseProducts.filter((product) => {
+      if (normalizedFuel) {
+        if (normalizedFuel === "pellet" && !product.fuelOptions.includes("Pellet")) {
+          return false;
+        }
+
+        if (
+          (normalizedFuel === "charcoal" || normalizedFuel === "wood" || normalizedFuel === "charcoal-wood") &&
+          !product.fuelOptions.some((option) => option === "Charcoal" || option === "Wood")
+        ) {
+          return false;
+        }
+
+        if (normalizedFuel === "gas") {
+          const hasGas =
+            product.fuelOptions.includes("Propane") ||
+            product.fuelOptions.includes("Natural Gas");
+          if (!hasGas) return false;
+        }
+
+        if (normalizedFuel === "propane" && !product.fuelOptions.includes("Propane")) {
+          return false;
+        }
+
+        if (
+          (normalizedFuel === "natural-gas" ||
+            normalizedFuel === "naturalgas" ||
+            normalizedFuel === "natural_gas") &&
+          !product.fuelOptions.includes("Natural Gas")
+        ) {
+          return false;
+        }
+      }
+
+      if (normalizedInstallation) {
+        if (normalizedInstallation.includes("built") && product.installation !== "Built-In") {
+          return false;
+        }
+
+        if (normalizedInstallation.includes("free") && product.installation !== "Freestanding") {
+          return false;
+        }
+      }
+
+      if (normalizedCategory) {
+        const isBuiltInCategory =
+          normalizedCategory === "outdoor-kitchen" || normalizedCategory === "built-in";
+
+        const isGriddleCategory =
+          normalizedCategory === "griddle" || normalizedCategory === "griddles";
+
+        const isPizzaCategory =
+          normalizedCategory === "pizza-oven" ||
+          normalizedCategory === "pizza-ovens" ||
+          normalizedCategory === "pizza";
+
+        if (isBuiltInCategory && product.installation !== "Built-In") {
+          return false;
+        }
+
+        if (isGriddleCategory && !product.category.includes("griddle")) {
+          return false;
+        }
+
+        if (isPizzaCategory && !product.category.includes("pizza")) {
+          return false;
+        }
+      }
+
+      if (selectedFuel !== "All") {
+        if (selectedFuel === "Gas") {
+          const hasGas =
+            product.fuelOptions.includes("Propane") ||
+            product.fuelOptions.includes("Natural Gas");
+
+          if (!hasGas) return false;
+        } else if (!product.fuelOptions.includes(selectedFuel)) {
+          return false;
+        }
+      }
+
       if (
-        selectedFuel !== "All" &&
-        !product.fuelOptions.includes(selectedFuel)
+        selectedBrandFilter !== "All" &&
+        normalizeId(product.brandId) !== normalizeId(selectedBrandFilter)
+      ) {
+        return false;
+      }
+
+      if (
+        selectedInstallation !== "All" &&
+        product.installation !== selectedInstallation
       ) {
         return false;
       }
@@ -702,14 +1078,55 @@ function BrandResults() {
 
       return true;
     });
-  }, [productCards, selectedFuel, selectedSize, selectedPrice]);
+  }, [
+    productCards,
+    searchParams,
+    selectedFuel,
+    selectedBrandFilter,
+    selectedInstallation,
+    selectedSize,
+    selectedPrice,
+    location.state,
+  ]);
 
-  const brandLabel = pickFirst(
-    selectedBrand?.name,
-    selectedBrand?.brandName,
-    selectedBrand?.brand_name,
-    formatTitle(brandId)
-  );
+  const compareIds = compareState.items || [];
+
+  const compareItems = useMemo(() => {
+    return compareIds
+      .map((id) => {
+        const variant =
+          (variants || []).find((v) => v.id === id) ||
+          (variants || []).find((v) => v.slug === id);
+
+        if (!variant) return null;
+
+        const variantId = getVariantId(variant);
+        const bestAsset = pickBestAssetForVariant(variantId, assets);
+        const filePath = getAssetFilePath(bestAsset);
+
+        let imageUrl = "";
+
+        if (filePath) {
+          if (/^https?:\/\//i.test(filePath)) {
+            imageUrl = filePath;
+          } else {
+            const cleanBase = String(assetBaseUrl || "").replace(/\/+$/, "");
+            const cleanPath = String(filePath || "").replace(/^\/+/, "");
+            imageUrl = cleanBase ? `${cleanBase}/${cleanPath}` : `/${cleanPath}`;
+          }
+        }
+
+        return {
+          id: variantId,
+          slug: getVariantRouteValue(variant),
+          name: getVariantName(variant, familyMap, brandMap),
+          imageUrl,
+        };
+      })
+      .filter(Boolean);
+  }, [compareIds, variants, assets, assetBaseUrl, familyMap, brandMap]);
+
+  const canCompare = compareItems.length >= 2;
 
   return (
     <main className="brand-results-screen">
@@ -719,14 +1136,50 @@ function BrandResults() {
 
       <section className="brand-results-shell">
         <div className="brand-results-topbar">
-          <button
-            type="button"
-            className="back-button interactive-button"
-            onClick={() => navigate("/discover")}
+          <div
+            style={{
+              display: "flex",
+              gap: 12,
+              alignItems: "center",
+              flexWrap: "wrap",
+            }}
           >
-            <span className="button-sheen" />
-            Back to Home
-          </button>
+            <button
+              type="button"
+              className="back-button interactive-button"
+              onClick={() => navigate("/discover")}
+            >
+              <span className="button-sheen" />
+              Home
+            </button>
+
+            <button
+              type="button"
+              className="back-button interactive-button"
+              onClick={() => navigate("/brands")}
+            >
+              <span className="button-sheen" />
+              Brands
+            </button>
+
+            <button
+              type="button"
+              className="back-button interactive-button"
+              onClick={() => setIsAboutOpen(true)}
+            >
+              <span className="button-sheen" />
+              About
+            </button>
+
+            <button
+              type="button"
+              className="back-button interactive-button"
+              onClick={() => navigate(-1)}
+            >
+              <span className="button-sheen" />
+              Back
+            </button>
+          </div>
         </div>
 
         <header className="brand-results-header interactive-panel">
@@ -735,13 +1188,14 @@ function BrandResults() {
               <div className="brand-results-logo-wrap">
                 <img
                   src={brandLogoUrl}
-                  alt={`${brandLabel} logo`}
+                  alt={`${collectionMeta.title} logo`}
                   className="brand-results-logo"
                 />
               </div>
             ) : null}
 
-            <h1 className="brand-results-title">{brandLabel}</h1>
+            <h1 className="brand-results-title">{collectionMeta.title}</h1>
+            <p className="brand-results-subtitle">{collectionMeta.subtitle}</p>
           </div>
         </header>
 
@@ -758,6 +1212,44 @@ function BrandResults() {
                 onChange={(event) => setSelectedFuel(event.target.value)}
               >
                 {fuelOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {(!routeBrandId || routeBrandId === "all") && (
+              <div className="filter-group">
+                <label className="filter-label" htmlFor="brand-filter">
+                  Brand
+                </label>
+                <select
+                  id="brand-filter"
+                  className="filter-select"
+                  value={selectedBrandFilter}
+                  onChange={(event) => setSelectedBrandFilter(event.target.value)}
+                >
+                  {brandFilterOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {brandFilterLabelMap.get(option) || option}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            <div className="filter-group">
+              <label className="filter-label" htmlFor="installation-filter">
+                Installation
+              </label>
+              <select
+                id="installation-filter"
+                className="filter-select"
+                value={selectedInstallation}
+                onChange={(event) => setSelectedInstallation(event.target.value)}
+              >
+                {installationOptions.map((option) => (
                   <option key={option} value={option}>
                     {option}
                   </option>
@@ -806,9 +1298,11 @@ function BrandResults() {
                 type="button"
                 className="reset-button interactive-button"
                 onClick={() => {
-                  setSelectedFuel("All");
+                  setSelectedFuel(getFuelFilterFromQuery(searchParams));
+                  setSelectedInstallation(getInstallationFilterFromQuery(searchParams));
                   setSelectedSize("All");
                   setSelectedPrice("All");
+                  setSelectedBrandFilter("All");
                 }}
               >
                 <span className="button-sheen" />
@@ -823,11 +1317,11 @@ function BrandResults() {
             <div className="brand-results-grid-placeholder">Loading...</div>
           ) : error ? (
             <div className="brand-results-grid-placeholder brand-results-error">
-              {error}
+              {typeof error === "string" ? error : error?.message || "Failed to load data"}
             </div>
           ) : visibleProducts.length === 0 ? (
             <div className="brand-results-grid-placeholder">
-              No products match the current filters.
+              {location.state?.quizResults ? "No quiz-matched products were found for those answers." : "No products match the current filters."}
             </div>
           ) : (
             <div className="brand-results-grid">
@@ -837,11 +1331,11 @@ function BrandResults() {
                   className="product-card interactive-button"
                   role="button"
                   tabIndex={0}
-                  onClick={() => navigate(`/product/${product.id}`)}
+                  onClick={() => navigate(`/product/${product.routeValue}`)}
                   onKeyDown={(event) => {
                     if (event.key === "Enter" || event.key === " ") {
                       event.preventDefault();
-                      navigate(`/product/${product.id}`);
+                      navigate(`/product/${product.routeValue}`);
                     }
                   }}
                 >
@@ -865,6 +1359,10 @@ function BrandResults() {
                         <span className="product-badge">{product.fuelSummary}</span>
                       ) : null}
 
+                      {product.installation ? (
+                        <span className="product-badge">{product.installation}</span>
+                      ) : null}
+
                       {product.size ? (
                         <span className="product-badge">{product.size}</span>
                       ) : null}
@@ -880,7 +1378,7 @@ function BrandResults() {
                         className="product-action interactive-button"
                         onClick={(event) => {
                           event.stopPropagation();
-                          navigate(`/product/${product.id}`);
+                          navigate(`/product/${product.routeValue}`);
                         }}
                       >
                         <span className="button-sheen" />
@@ -951,7 +1449,7 @@ function BrandResults() {
           z-index: 1;
           min-height: 100vh;
           width: 100%;
-          padding: 22px 28px 24px;
+          padding: 22px 28px 120px;
           box-sizing: border-box;
           display: grid;
           grid-template-rows: auto auto auto 1fr;
@@ -961,6 +1459,7 @@ function BrandResults() {
         .brand-results-topbar {
           display: flex;
           justify-content: flex-start;
+          align-items: center;
         }
 
         .interactive-panel {
@@ -1046,19 +1545,21 @@ function BrandResults() {
         }
 
         .back-button {
-          min-width: 220px;
-          height: 64px;
+          min-width: 0;
+          height: 56px;
           padding: 0 22px;
           border: none;
           border-radius: 18px;
           background: linear-gradient(180deg, #5a78a8 0%, #435d83 100%);
           color: #f7fbff;
-          font-size: 0.96rem;
+          font-size: 0.92rem;
           font-weight: 900;
           letter-spacing: 0.08em;
           text-transform: uppercase;
           box-shadow: 0 16px 34px rgba(67, 93, 131, 0.32);
           cursor: pointer;
+          white-space: nowrap;
+          flex: 0 0 auto;
         }
 
         .back-button:hover {
@@ -1109,6 +1610,14 @@ function BrandResults() {
           color: #f2f6fb;
         }
 
+        .brand-results-subtitle {
+          margin: 0;
+          max-width: 700px;
+          font-size: 1rem;
+          line-height: 1.6;
+          color: rgba(230, 237, 247, 0.78);
+        }
+
         .brand-results-filters,
         .brand-results-grid-section {
           padding: 20px 22px;
@@ -1119,7 +1628,7 @@ function BrandResults() {
           position: relative;
           z-index: 1;
           display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
+          grid-template-columns: repeat(6, minmax(0, 1fr));
           gap: 16px;
           align-items: end;
         }
@@ -1239,6 +1748,7 @@ function BrandResults() {
           width: 100%;
           height: 100%;
           object-fit: contain;
+          object-position: center;
           display: block;
         }
 
@@ -1343,7 +1853,10 @@ function BrandResults() {
         }
 
         @media (max-width: 1400px) {
-          .filter-section,
+          .filter-section {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+          }
+
           .brand-results-grid {
             grid-template-columns: repeat(3, minmax(0, 1fr));
           }
@@ -1378,6 +1891,165 @@ function BrandResults() {
           }
         }
       `}</style>
+
+      {compareItems.length >= 1 && (
+        <div
+          style={{
+            position: "fixed",
+            left: 20,
+            right: 20,
+            bottom: 20,
+            minHeight: 76,
+            borderRadius: 20,
+            border: "1px solid rgba(117,163,255,0.14)",
+            background: "rgba(8,16,30,0.94)",
+            boxShadow: "0 22px 60px rgba(0,0,0,0.38)",
+            backdropFilter: "blur(16px)",
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 1fr) auto",
+            alignItems: "center",
+            gap: 14,
+            padding: "12px 14px",
+            zIndex: 1000,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              gap: 10,
+              overflowX: "auto",
+              minWidth: 0,
+            }}
+          >
+            {compareItems.map((item) => (
+              <div
+                key={item.id}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
+                  minWidth: 220,
+                  maxWidth: 260,
+                  padding: 8,
+                  borderRadius: 14,
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  background: "rgba(255,255,255,0.05)",
+                  flexShrink: 0,
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={() => navigate(`/product/${item.slug || item.id}`)}
+                  style={{
+                    border: "none",
+                    background: "transparent",
+                    padding: 0,
+                    cursor: "pointer",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 52,
+                      height: 52,
+                      borderRadius: 12,
+                      overflow: "hidden",
+                      display: "grid",
+                      placeItems: "center",
+                      background: "rgba(255,255,255,0.04)",
+                    }}
+                  >
+                    {item.imageUrl ? (
+                      <img
+                        src={item.imageUrl}
+                        alt={item.name}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "contain",
+                          display: "block",
+                        }}
+                      />
+                    ) : (
+                      <div style={{ fontSize: 10, opacity: 0.5 }}>No Image</div>
+                    )}
+                  </div>
+                </button>
+
+                <div
+                  style={{
+                    flex: 1,
+                    minWidth: 0,
+                    fontSize: 13,
+                    fontWeight: 700,
+                    lineHeight: 1.2,
+                    color: "#eef5ff",
+                    overflow: "hidden",
+                    display: "-webkit-box",
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: "vertical",
+                  }}
+                >
+                  {item.name}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    removeItem(item.id);
+                    if (item.slug && item.slug !== item.id) removeItem(item.slug);
+                  }}
+                  style={{
+                    width: 24,
+                    height: 24,
+                    borderRadius: 999,
+                    border: "1px solid rgba(255,255,255,0.14)",
+                    background: "rgba(10,18,32,0.96)",
+                    color: "#fff",
+                    fontWeight: 900,
+                    cursor: "pointer",
+                    padding: 0,
+                    lineHeight: 1,
+                    flexShrink: 0,
+                  }}
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => {
+              if (!canCompare) return;
+              navigate("/compare");
+            }}
+            disabled={!canCompare}
+            style={{
+              minHeight: 52,
+              padding: "0 20px",
+              borderRadius: 14,
+              border: "none",
+              background: canCompare
+                ? "linear-gradient(135deg,#4c75db,#2f57bc)"
+                : "linear-gradient(135deg,rgba(76,117,219,0.45),rgba(47,87,188,0.45))",
+              color: "#fff",
+              fontWeight: 800,
+              fontSize: 16,
+              cursor: canCompare ? "pointer" : "not-allowed",
+              whiteSpace: "nowrap",
+              opacity: canCompare ? 1 : 0.72,
+            }}
+          >
+            Compare ({compareItems.length})
+          </button>
+        </div>
+      )}
+
+      <AboutModal
+        isOpen={isAboutOpen}
+        onClose={() => setIsAboutOpen(false)}
+      />
     </main>
   );
 }

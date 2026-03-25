@@ -1,4 +1,4 @@
-// src/pages/DiscoveryHub.jsx
+//DiscoveryHub.jsx
 
 import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -27,21 +27,21 @@ const fuelOptions = [
     id: "pellet",
     title: "Pellet Grills",
     subtitle: "Set-it-and-enjoy flavor",
-    route: "/brands?fuel=pellet",
+    fuel: "pellet",
     image: `${import.meta.env.VITE_ASSET_BASE_URL}/fuel/pellets.png`,
   },
   {
     id: "charcoal",
     title: "Charcoal & Wood",
     subtitle: "Traditional smoke and fire",
-    route: "/brands?fuel=charcoal",
+    fuel: "charcoal",
     image: `${import.meta.env.VITE_ASSET_BASE_URL}/fuel/charcoal.png`,
   },
   {
     id: "gas",
     title: "Gas Grills",
     subtitle: "Fast, clean, and convenient",
-    route: "/brands?fuel=gas",
+    fuel: "gas",
     image: `${import.meta.env.VITE_ASSET_BASE_URL}/fuel/gas.png`,
   },
 ];
@@ -52,24 +52,38 @@ export default function DiscoveryHub() {
 
   const brandScrollRef = useRef(null);
   const isResettingRef = useRef(false);
+  const dragStateRef = useRef({
+    isPointerDown: false,
+    isDragging: false,
+    startX: 0,
+    startY: 0,
+    startScrollLeft: 0,
+  });
 
   useEffect(() => {
     const container = brandScrollRef.current;
     if (!container) return;
 
-    const singleSetWidth = container.scrollWidth / 3;
-    container.scrollLeft = singleSetWidth;
+    const setInitialPosition = () => {
+      const singleSetWidth = container.scrollWidth / 3;
+      if (singleSetWidth > 0) {
+        container.scrollLeft = singleSetWidth;
+      }
+    };
 
-    const handleScroll = () => {
+    const resetLoopIfNeeded = () => {
       if (isResettingRef.current) return;
 
-      if (container.scrollLeft <= singleSetWidth * 0.25) {
+      const singleSetWidth = container.scrollWidth / 3;
+      if (!singleSetWidth) return;
+
+      if (container.scrollLeft <= singleSetWidth * 0.35) {
         isResettingRef.current = true;
         container.scrollLeft += singleSetWidth;
         requestAnimationFrame(() => {
           isResettingRef.current = false;
         });
-      } else if (container.scrollLeft >= singleSetWidth * 1.75) {
+      } else if (container.scrollLeft >= singleSetWidth * 1.65) {
         isResettingRef.current = true;
         container.scrollLeft -= singleSetWidth;
         requestAnimationFrame(() => {
@@ -78,14 +92,109 @@ export default function DiscoveryHub() {
       }
     };
 
+    const handleScroll = () => {
+      resetLoopIfNeeded();
+    };
+
+    const handleWheel = (event) => {
+      const mostlyVerticalWheel =
+        Math.abs(event.deltaY) > Math.abs(event.deltaX);
+
+      if (mostlyVerticalWheel) {
+        container.scrollLeft += event.deltaY;
+        event.preventDefault();
+      }
+    };
+
+    const handlePointerDown = (event) => {
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+
+      dragStateRef.current.isPointerDown = true;
+      dragStateRef.current.isDragging = false;
+      dragStateRef.current.startX = event.clientX;
+      dragStateRef.current.startY = event.clientY;
+      dragStateRef.current.startScrollLeft = container.scrollLeft;
+    };
+
+    const handlePointerMove = (event) => {
+      const drag = dragStateRef.current;
+      if (!drag.isPointerDown) return;
+
+      const deltaX = event.clientX - drag.startX;
+      const deltaY = event.clientY - drag.startY;
+
+      if (!drag.isDragging) {
+        const horizontalIntent =
+          Math.abs(deltaX) > 8 && Math.abs(deltaX) > Math.abs(deltaY);
+
+        if (horizontalIntent) {
+          drag.isDragging = true;
+          container.classList.add("is-dragging");
+        }
+      }
+
+      if (!drag.isDragging) return;
+
+      container.scrollLeft = drag.startScrollLeft - deltaX;
+      resetLoopIfNeeded();
+
+      if (event.pointerType === "mouse") {
+        event.preventDefault();
+      }
+    };
+
+    const endPointer = () => {
+      const drag = dragStateRef.current;
+      drag.isPointerDown = false;
+
+      if (drag.isDragging) {
+        setTimeout(() => {
+          container.classList.remove("is-dragging");
+          drag.isDragging = false;
+        }, 0);
+      } else {
+        container.classList.remove("is-dragging");
+        drag.isDragging = false;
+      }
+    };
+
+    setInitialPosition();
+
     container.addEventListener("scroll", handleScroll, { passive: true });
+    container.addEventListener("wheel", handleWheel, { passive: false });
+    container.addEventListener("pointerdown", handlePointerDown);
+    container.addEventListener("pointermove", handlePointerMove);
+    container.addEventListener("pointerup", endPointer);
+    container.addEventListener("pointercancel", endPointer);
+    container.addEventListener("pointerleave", endPointer);
+
+    const resizeObserver = new ResizeObserver(() => {
+      if (container.scrollLeft === 0) {
+        setInitialPosition();
+      } else {
+        resetLoopIfNeeded();
+      }
+    });
+
+    resizeObserver.observe(container);
 
     return () => {
       container.removeEventListener("scroll", handleScroll);
+      container.removeEventListener("wheel", handleWheel);
+      container.removeEventListener("pointerdown", handlePointerDown);
+      container.removeEventListener("pointermove", handlePointerMove);
+      container.removeEventListener("pointerup", endPointer);
+      container.removeEventListener("pointercancel", endPointer);
+      container.removeEventListener("pointerleave", endPointer);
+      resizeObserver.disconnect();
     };
   }, []);
 
   const loopedLogos = [...brandLogos, ...brandLogos, ...brandLogos];
+
+  const handleFuelNavigate = (fuel) => {
+    navigate(`/brand/all?fuel=${encodeURIComponent(fuel)}`);
+  };
 
   return (
     <main className="discovery-hub-screen">
@@ -113,6 +222,7 @@ export default function DiscoveryHub() {
                       <img
                         src={`${import.meta.env.VITE_ASSET_BASE_URL}/logos/${brand.file}`}
                         alt={brand.name}
+                        draggable="false"
                       />
                     </button>
                   ))}
@@ -130,7 +240,7 @@ export default function DiscoveryHub() {
                   key={fuel.id}
                   type="button"
                   className="fuel-card interactive-button"
-                  onClick={() => navigate(fuel.route)}
+                  onClick={() => handleFuelNavigate(fuel.fuel)}
                   aria-label={fuel.title}
                 >
                   <span className="button-sheen" />
@@ -148,73 +258,76 @@ export default function DiscoveryHub() {
             </div>
           </section>
 
-          <section className="discovery-section discovery-section-quiz interactive-panel">
-            <div className="quiz-panel">
-              <div className="quiz-copy">
-                <h2>Find Your Perfect Grill</h2>
-                <p>
-                  Answer a few quick questions and get guided recommendations.
-                </p>
-              </div>
+          <section className="discovery-section discovery-section-experience interactive-panel">
+            <div className="section-title center-title">Browse by Cooking Experience</div>
+
+            <div className="specialty-grid">
+              <button
+                type="button"
+                className="specialty-card interactive-button"
+                onClick={() => navigate("/brand/all?installation=built-in")}
+              >
+                <span className="button-sheen" />
+                <div
+                  className="specialty-bg"
+                  style={{
+                    backgroundImage: `url("${import.meta.env.VITE_ASSET_BASE_URL}/fuel/outdoor-kitchen.png")`,
+                  }}
+                />
+                <div className="specialty-overlay" />
+                <div className="specialty-content">
+                  <h2>Outdoor Kitchen</h2>
+                  <p>Explore Built-In Grills</p>
+                </div>
+              </button>
 
               <button
                 type="button"
-                className="quiz-button interactive-button"
-                onClick={() => navigate("/quiz")}
+                className="specialty-card interactive-button"
+                onClick={() => navigate("/brand/all?category=griddle")}
               >
                 <span className="button-sheen" />
-                Start Quiz
+                <div
+                  className="specialty-bg"
+                  style={{
+                    backgroundImage: `url("https://bbqcompareassets.brcreated.app/assets/fuel/griddle.png")`,
+                  }}
+                />
+                <div className="specialty-overlay" />
+                <div className="specialty-content">
+                  <h2>Griddles</h2>
+                  <p>Explore Flat Top Cooking</p>
+                </div>
+              </button>
+
+              <button
+                type="button"
+                className="specialty-card interactive-button"
+                onClick={() => navigate("/brand/all?category=pizza-oven")}
+              >
+                <span className="button-sheen" />
+                <div
+                  className="specialty-bg"
+                  style={{
+                    backgroundImage: `url("${import.meta.env.VITE_ASSET_BASE_URL}/fuel/pizza.png")`,
+                  }}
+                />
+                <div className="specialty-overlay" />
+                <div className="specialty-content">
+                  <h2>Pizza Ovens</h2>
+                  <p>Explore Gas or Wood-Fired Pizza Ovens</p>
+                </div>
               </button>
             </div>
-          </section>
-
-          <section className="specialty-grid">
-            <button
-              type="button"
-              className="specialty-card interactive-button"
-              onClick={() => navigate("/brands?category=outdoor-kitchen")}
-            >
-              <span className="button-sheen" />
-              <div
-                className="specialty-bg"
-                style={{
-                  backgroundImage: `url("${import.meta.env.VITE_ASSET_BASE_URL}/fuel/outdoor-kitchen.png")`,
-                }}
-              />
-              <div className="specialty-overlay" />
-              <div className="specialty-content">
-                <h2>Outdoor Kitchen</h2>
-                <p>Explore Built-In Grills</p>
-              </div>
-            </button>
-
-            <button
-              type="button"
-              className="specialty-card interactive-button"
-              onClick={() => navigate("/brands?category=pizza-oven")}
-            >
-              <span className="button-sheen" />
-              <div
-                className="specialty-bg"
-                style={{
-                  backgroundImage: `url("${import.meta.env.VITE_ASSET_BASE_URL}/fuel/pizza.png")`,
-                }}
-              />
-              <div className="specialty-overlay" />
-              <div className="specialty-content">
-                <h2>Pizza Ovens</h2>
-                <p>Explore Gas or Wood-Fired Pizza Ovens!</p>
-              </div>
-            </button>
           </section>
 
           <button
             type="button"
             className="view-all interactive-button"
-            onClick={() => navigate("/brands")}
+            onClick={() => navigate("/brand/all")}
           >
             <span className="button-sheen" />
-            View All Grills
+            View All
           </button>
         </section>
       </section>
@@ -286,7 +399,7 @@ export default function DiscoveryHub() {
 
         .discovery-hub-sections {
           display: grid;
-          grid-template-rows: 1.12fr 1.05fr 0.82fr 1fr auto;
+          grid-template-rows: 1.12fr 1.05fr 1fr auto;
           gap: 16px;
           min-height: calc(100vh - 46px);
         }
@@ -358,18 +471,25 @@ export default function DiscoveryHub() {
           scrollbar-width: none;
           -ms-overflow-style: none;
           -webkit-overflow-scrolling: touch;
-          scroll-behavior: smooth;
+          scroll-behavior: auto;
           cursor: grab;
           padding: 6px 10px;
           box-sizing: border-box;
+          touch-action: pan-x;
+          user-select: none;
         }
 
         .brand-scroll-wrap::-webkit-scrollbar {
           display: none;
         }
 
-        .brand-scroll-wrap:active {
+        .brand-scroll-wrap:active,
+        .brand-scroll-wrap.is-dragging {
           cursor: grabbing;
+        }
+
+        .brand-scroll-wrap.is-dragging .logo-card {
+          pointer-events: none;
         }
 
         .brand-row {
@@ -455,6 +575,8 @@ export default function DiscoveryHub() {
           height: auto;
           object-fit: contain;
           display: block;
+          pointer-events: none;
+          user-select: none;
         }
 
         .discovery-section-fuel {
@@ -535,60 +657,18 @@ export default function DiscoveryHub() {
           color: rgba(230, 237, 247, 0.82);
         }
 
-        .discovery-section-quiz {
-          padding: 20px 22px;
+        .discovery-section-experience {
+          padding: 14px 16px 16px;
           box-sizing: border-box;
         }
 
-        .quiz-panel {
+        .specialty-grid {
           position: relative;
           z-index: 1;
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 24px;
-        }
-
-        .quiz-copy h2 {
-          margin: 0 0 10px;
-          font-size: 1.7rem;
-          font-weight: 800;
-          letter-spacing: -0.02em;
-          color: #f2f6fb;
-        }
-
-        .quiz-copy p {
-          margin: 0;
-          font-size: 1rem;
-          line-height: 1.6;
-          color: rgba(230, 237, 247, 0.78);
-        }
-
-        .quiz-button {
-          flex: 0 0 auto;
-          min-width: 220px;
-          height: 64px;
-          border: none;
-          border-radius: 18px;
-          background: linear-gradient(180deg, #5a78a8 0%, #435d83 100%);
-          color: #f7fbff;
-          font-size: 0.96rem;
-          font-weight: 900;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          box-shadow: 0 16px 34px rgba(67, 93, 131, 0.32);
-        }
-
-        .quiz-button:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 22px 40px rgba(67, 93, 131, 0.38);
-        }
-
-        .specialty-grid {
           display: grid;
-          grid-template-columns: 1fr 1fr;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
           gap: 16px;
+          height: calc(100% - 58px);
         }
 
         .specialty-card {
@@ -723,15 +803,6 @@ export default function DiscoveryHub() {
 
           .specialty-grid {
             grid-template-columns: 1fr;
-          }
-
-          .quiz-panel {
-            flex-direction: column;
-            align-items: flex-start;
-          }
-
-          .quiz-button {
-            width: 100%;
           }
         }
 
