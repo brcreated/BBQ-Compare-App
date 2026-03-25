@@ -7,8 +7,8 @@ export default function AboutModal({ isOpen, onClose }) {
   const [versionSource, setVersionSource] = useState("");
 
   const GITHUB_CONFIG = {
-    owner: "YOUR_GITHUB_USERNAME_OR_ORG",
-    repo: "YOUR_REPOSITORY_NAME",
+    owner: "brcreated",
+    repo: "BBQ-Compare-App",
     branch: "main",
     packageJsonPath: "package.json",
   };
