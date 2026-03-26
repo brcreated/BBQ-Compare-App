@@ -1,5 +1,5 @@
 // src/hooks/useIdleReset.js
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function useIdleReset({
   timeout = 60000,
@@ -10,13 +10,18 @@ export default function useIdleReset({
   const lastActivityRef = useRef(0);
   const hasResetRef = useRef(false);
   const intervalRef = useRef(null);
+  const [isIdleFading, setIsIdleFading] = useState(false);
 
   useEffect(() => {
-    if (!enabled) return;
+    if (!enabled) {
+      setIsIdleFading(false);
+      return;
+    }
 
     const markActivity = () => {
       lastActivityRef.current = Date.now();
       hasResetRef.current = false;
+      setIsIdleFading(false);
     };
 
     const runReset = () => {
@@ -41,6 +46,9 @@ export default function useIdleReset({
     const checkIdle = () => {
       const now = Date.now();
       const idleFor = now - lastActivityRef.current;
+      const fadeStart = Math.max(timeout - 5000, 0);
+
+      setIsIdleFading(idleFor >= fadeStart && idleFor < timeout);
 
       if (idleFor >= timeout) {
         runReset();
@@ -97,4 +105,6 @@ export default function useIdleReset({
       document.removeEventListener("visibilitychange", handleVisibility);
     };
   }, [enabled, timeout, onReset, resetUrl]);
+
+  return { isIdleFading };
 }
