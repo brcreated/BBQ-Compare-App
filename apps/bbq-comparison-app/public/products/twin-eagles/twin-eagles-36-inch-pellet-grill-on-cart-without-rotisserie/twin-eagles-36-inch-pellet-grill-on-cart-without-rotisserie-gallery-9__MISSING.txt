@@ -1,4 +1,0 @@
-MISSING IMAGE
-expected_file=twin-eagles-36-inch-pellet-grill-on-cart-without-rotisserie-gallery-9.jpg
-source_page=https://www.twineagles.dometic.com/products/twin-eagles-grill-base?variant=53647072756003
-slot=gallery-9

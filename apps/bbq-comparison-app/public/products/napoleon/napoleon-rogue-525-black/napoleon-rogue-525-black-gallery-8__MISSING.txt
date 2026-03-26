@@ -1,4 +1,0 @@
-MISSING IMAGE
-expected_file=napoleon-rogue-525-black-gallery-8.jpg
-source_page=https://www.napoleon.com/en/us/grills/products/gas-grills/rogue-series/rogue-525-r525pk-2
-slot=gallery-8

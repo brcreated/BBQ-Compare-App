@@ -1,4 +1,0 @@
-MISSING IMAGE
-expected_file=twin-eagles-36-inch-built-in-pellet-grill-with-rotisserie-gallery-5.jpg
-source_page=https://www.twineagles.dometic.com/products/twin-eagles-pellet-grill?variant=50000363684131
-slot=gallery-5

@@ -1,4 +1,0 @@
-MISSING IMAGE
-expected_file=twin-eagles-eagle-one-series-54-inch-built-in-gas-grill-standard-gallery-9.jpg
-source_page=https://www.twineagles.dometic.com/products/eagle-one-gas-grill?variant=50000350478627
-slot=gallery-9

@@ -1,4 +1,0 @@
-MISSING IMAGE
-expected_file=napoleon-rogue-pro-s-phantom-425-rsib-gallery-6.jpg
-source_page=https://www.napoleon.com/en/us/grills/products/gas-grills/rogue-pro-s-series/phantom-rogue-pro-s-425-rsib-rps425rsibpk-2-phm
-slot=gallery-6

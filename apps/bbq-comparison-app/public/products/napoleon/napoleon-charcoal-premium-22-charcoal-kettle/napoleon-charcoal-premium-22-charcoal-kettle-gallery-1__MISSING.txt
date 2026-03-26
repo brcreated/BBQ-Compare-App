@@ -1,4 +1,0 @@
-MISSING IMAGE
-expected_file=napoleon-charcoal-premium-22-charcoal-kettle-gallery-1.jpg
-source_page=https://www.napoleon.com/en/us/grills/products/charcoal-grills/charcoal-premium-series/premium-22-charcoal-kettle-nk22k-leg-3
-slot=gallery-1

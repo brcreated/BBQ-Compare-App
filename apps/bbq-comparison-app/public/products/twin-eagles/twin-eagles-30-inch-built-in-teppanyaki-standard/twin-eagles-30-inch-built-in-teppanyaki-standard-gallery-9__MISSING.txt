@@ -1,4 +1,0 @@
-MISSING IMAGE
-expected_file=twin-eagles-30-inch-built-in-teppanyaki-standard-gallery-9.jpg
-source_page=https://www.twineagles.dometic.com/products/twin-eagles-teppanyaki
-slot=gallery-9

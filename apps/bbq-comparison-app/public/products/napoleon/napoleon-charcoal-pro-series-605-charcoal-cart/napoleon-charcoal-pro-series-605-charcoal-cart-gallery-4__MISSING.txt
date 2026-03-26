@@ -1,4 +1,0 @@
-MISSING IMAGE
-expected_file=napoleon-charcoal-pro-series-605-charcoal-cart-gallery-4.jpg
-source_page=https://www.napoleon.com/en/us/grills/products/charcoal-grills/charcoal-pro-series/professional-605-charcoal-cart-pro605css
-slot=gallery-4

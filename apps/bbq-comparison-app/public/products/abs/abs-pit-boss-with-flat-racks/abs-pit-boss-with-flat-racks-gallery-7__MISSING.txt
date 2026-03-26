@@ -1,4 +1,0 @@
-MISSING IMAGE
-expected_file=abs-pit-boss-with-flat-racks-gallery-7.jpg
-source_page=https://www.americanbarbecuesystems.com/product/pit-boss-with-stainless-flat-racks/
-slot=gallery-7

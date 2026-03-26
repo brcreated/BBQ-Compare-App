@@ -1,4 +1,0 @@
-MISSING IMAGE
-expected_file=napoleon-built-in-prestige-pro-825-rbi-hero.jpg
-source_page=https://www.napoleon.com/en/us/grills/products/built-gas-grills/built-prestige-pro-series/built-prestige-pro-825-rbi-bipro825rbipss-3
-slot=hero

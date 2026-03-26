@@ -1,4 +1,0 @@
-MISSING IMAGE
-expected_file=napoleon-built-in-700-series-32-black-gallery-7.jpg
-source_page=https://www.napoleon.com/en/us/grills/products/built-gas-grills/built-700-series/built-700-series-32-big32rbpmk-1
-slot=gallery-7

@@ -1,4 +1,0 @@
-MISSING IMAGE
-expected_file=napoleon-freestyle-griddle-24-inch-gallery-7.jpg
-source_page=https://www.napoleon.com/en/us/grills/products/griddles/freestyle-griddles/freestyle-24-inch-f24dftpk
-slot=gallery-7

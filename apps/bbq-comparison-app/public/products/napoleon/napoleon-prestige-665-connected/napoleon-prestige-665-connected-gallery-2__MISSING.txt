@@ -1,4 +1,0 @@
-MISSING IMAGE
-expected_file=napoleon-prestige-665-connected-gallery-2.jpg
-source_page=https://www.napoleon.com/en/us/grills/products/gas-grills/prestige-series/prestige-665-connected-rsib-p665vxrsibpss
-slot=gallery-2

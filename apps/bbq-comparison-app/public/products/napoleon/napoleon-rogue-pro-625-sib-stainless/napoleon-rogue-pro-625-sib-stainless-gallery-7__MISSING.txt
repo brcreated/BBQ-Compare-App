@@ -1,4 +1,0 @@
-MISSING IMAGE
-expected_file=napoleon-rogue-pro-625-sib-stainless-gallery-7.jpg
-source_page=https://www.napoleon.com/en/us/grills/products/gas-grills/rogue-pro-series/rogue-pro-625-sib-rp625sibpss-2
-slot=gallery-7

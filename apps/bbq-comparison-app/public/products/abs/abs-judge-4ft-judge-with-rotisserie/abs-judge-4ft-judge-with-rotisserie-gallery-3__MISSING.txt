@@ -1,4 +1,0 @@
-MISSING IMAGE
-expected_file=abs-judge-4ft-judge-with-rotisserie-gallery-3.jpg
-source_page=https://www.americanbarbecuesystems.com/product/judge-4ft/
-slot=gallery-3

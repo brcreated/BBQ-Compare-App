@@ -1,4 +1,0 @@
-MISSING IMAGE
-expected_file=horizon-20-classic-icon-smoker-gallery-1.jpg
-source_page=https://horizonsmokers.com/shop-for-smokers/ols/products/20-classic-icon-horizon-smoker-20-cls-cn-hrz1
-slot=gallery-1
