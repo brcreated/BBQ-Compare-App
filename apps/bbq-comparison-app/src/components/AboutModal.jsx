@@ -4,14 +4,15 @@ import BRcreatedLogo from "./BRcreatedLogo";
 
 export default function AboutModal({ isOpen, onClose }) {
   const [version, setVersion] = useState("Loading...");
-  const [versionSource, setVersionSource] = useState("");
+  const [commitMessage, setCommitMessage] = useState("Loading...");
 
   const GITHUB_CONFIG = {
-  owner: "brcreated",
-  repo: "BBQ-Compare-App",
-  branch: "main",
-  packageJsonPath: "apps/bbq-comparison-app/package.json",
-};
+    owner: "brcreated",
+    repo: "BBQ-Compare-App",
+    branch: "main",
+    packageJsonPath: "apps/bbq-comparison-app/package.json",
+    appPath: "apps/bbq-comparison-app",
+  };
 
   const STORE_LOGO_URL =
     "https://bbqcompareassets.brcreated.app/assets/branding/logo.svg";
@@ -21,35 +22,53 @@ export default function AboutModal({ isOpen, onClose }) {
 
     let cancelled = false;
 
-    async function loadVersion() {
+    async function loadAboutData() {
       try {
-        const res = await fetch(
-          `https://raw.githubusercontent.com/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/${GITHUB_CONFIG.branch}/${GITHUB_CONFIG.packageJsonPath}`,
-          { cache: "no-store" }
-        );
+        const [packageRes, commitRes] = await Promise.all([
+          fetch(
+            `https://raw.githubusercontent.com/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/${GITHUB_CONFIG.branch}/${GITHUB_CONFIG.packageJsonPath}`,
+            { cache: "no-store" }
+          ),
+          fetch(
+            `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/commits?sha=${GITHUB_CONFIG.branch}&path=${encodeURIComponent(
+              GITHUB_CONFIG.appPath
+            )}&per_page=1`,
+            {
+              headers: {
+                Accept: "application/vnd.github+json",
+              },
+              cache: "no-store",
+            }
+          ),
+        ]);
 
-        if (!res.ok) {
-          throw new Error("package fetch failed");
+        if (!cancelled) {
+          if (packageRes.ok) {
+            const packageJson = await packageRes.json();
+            setVersion(packageJson?.version ? `v${packageJson.version}` : "dev");
+          } else {
+            setVersion("dev");
+          }
+
+          if (commitRes.ok) {
+            const commits = await commitRes.json();
+            const latestMessage =
+              commits?.[0]?.commit?.message?.split("\n")[0]?.trim();
+
+            setCommitMessage(latestMessage || "No commit message found");
+          } else {
+            setCommitMessage("Unable to load commit message");
+          }
         }
-
-        const json = await res.json();
-
-        if (!cancelled && json?.version) {
-          setVersion(`v${json.version}`);
-          setVersionSource("GitHub");
-          return;
-        }
-
-        throw new Error("no version");
       } catch {
         if (!cancelled) {
           setVersion("dev");
-          setVersionSource("local");
+          setCommitMessage("Unable to load commit message");
         }
       }
     }
 
-    loadVersion();
+    loadAboutData();
 
     return () => {
       cancelled = true;
@@ -253,17 +272,18 @@ export default function AboutModal({ isOpen, onClose }) {
         }
 
         .about-modal-meta {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-          gap: 16px;
           margin-top: 28px;
         }
 
         .about-modal-meta-card {
-          padding: 18px;
+          padding: 18px 20px;
           border-radius: 18px;
           background: rgba(255, 255, 255, 0.04);
           border: 1px solid rgba(255, 255, 255, 0.06);
+          display: grid;
+          grid-template-columns: 180px 1fr;
+          gap: 20px;
+          align-items: flex-start;
         }
 
         .about-modal-meta-label {
@@ -287,6 +307,10 @@ export default function AboutModal({ isOpen, onClose }) {
           color: #b9c7d8;
           line-height: 1.5;
           word-break: break-word;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
         }
 
         .about-modal-footer {
@@ -324,6 +348,11 @@ export default function AboutModal({ isOpen, onClose }) {
 
           .about-modal-store-logo {
             max-height: 64px;
+          }
+
+          .about-modal-meta-card {
+            grid-template-columns: 1fr;
+            gap: 16px;
           }
         }
       `}</style>
@@ -394,23 +423,20 @@ export default function AboutModal({ isOpen, onClose }) {
 
             <div className="about-modal-meta">
               <div className="about-modal-meta-card">
-                <p className="about-modal-meta-label">Version</p>
-                <p className="about-modal-meta-value">{version}</p>
-              </div>
+                <div>
+                  <p className="about-modal-meta-label">Version</p>
+                  <p className="about-modal-meta-value">{version}</p>
+                </div>
 
-              <div className="about-modal-meta-card">
-                <p className="about-modal-meta-label">Source</p>
-                <p className="about-modal-meta-small">{versionSource}</p>
-              </div>
-
-              <div className="about-modal-meta-card">
-                <p className="about-modal-meta-label">Branch</p>
-                <p className="about-modal-meta-small">{GITHUB_CONFIG.branch}</p>
+                <div>
+                  <p className="about-modal-meta-label">Latest Update</p>
+                  <p className="about-modal-meta-small">{commitMessage}</p>
+                </div>
               </div>
             </div>
 
             <div className="about-modal-footer">
-              Copyright © {year} | Created by{" "}
+              Copyright © {year} | Powered by{" "}
               <a
                 href="https://brcreated.app"
                 target="_blank"

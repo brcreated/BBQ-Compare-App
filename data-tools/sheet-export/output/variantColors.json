@@ -196,6 +196,13 @@
     "isActive": true
   },
   {
+    "id": "alfresco_30__stainless_steel",
+    "variantId": "alfresco_30",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
     "id": "alfresco_30_dual_zone_griddle__stainless_steel",
     "variantId": "alfresco_30_dual_zone_griddle",
     "colorId": "stainless_steel",
