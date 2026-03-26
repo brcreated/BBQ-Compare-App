@@ -1,38 +1,42 @@
+// src/hooks/useIdleReset.js
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
-export default function useIdleReset(
+export default function useIdleReset({
   timeout = 60000,
-  fadeDurationOrOnIdle = 5000,
-  maybeOnIdle
-) {
+  fadeDuration = 5000,
+  enabled = true,
+  onReset,
+  resetPath = "/",
+} = {}) {
   const navigate = useNavigate();
-  const timerRef = useRef(null);
+  const location = useLocation();
+
+  const idleTimerRef = useRef(null);
   const fadeTimerRef = useRef(null);
   const [isIdleFading, setIsIdleFading] = useState(false);
 
-  const fadeDuration =
-    typeof fadeDurationOrOnIdle === "number" ? fadeDurationOrOnIdle : 5000;
-
-  const onIdle =
-    typeof fadeDurationOrOnIdle === "function"
-      ? fadeDurationOrOnIdle
-      : typeof maybeOnIdle === "function"
-      ? maybeOnIdle
-      : null;
-
   useEffect(() => {
+    if (!enabled) return;
+
     const clearTimers = () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+      if (fadeTimerRef.current) clearTimeout(fadeTimerRef.current);
+    };
+
+    const runReset = () => {
+      setIsIdleFading(false);
+
+      if (typeof onReset === "function") {
+        onReset();
       }
 
-      if (fadeTimerRef.current) {
-        clearTimeout(fadeTimerRef.current);
+      if (location.pathname !== resetPath) {
+        navigate(resetPath, { replace: true });
       }
     };
 
-    const resetTimer = () => {
+    const startTimers = () => {
       clearTimers();
       setIsIdleFading(false);
 
@@ -42,45 +46,45 @@ export default function useIdleReset(
         setIsIdleFading(true);
       }, Math.max(timeout - safeFadeDuration, 0));
 
-      timerRef.current = setTimeout(() => {
-        setIsIdleFading(false);
-
-        if (typeof onIdle === "function") {
-          onIdle();
-          return;
-        }
-
-        navigate("/", { replace: true });
+      idleTimerRef.current = setTimeout(() => {
+        runReset();
       }, timeout);
     };
 
+    const handleActivity = () => {
+      startTimers();
+    };
+
     const events = [
-      "touchstart",
-      "touchmove",
-      "mousedown",
-      "mousemove",
-      "keydown",
-      "scroll",
-      "wheel",
       "pointerdown",
       "pointermove",
+      "pointerup",
+      "touchstart",
+      "touchmove",
+      "touchend",
+      "mousedown",
+      "mousemove",
+      "mouseup",
       "click",
+      "keydown",
+      "wheel",
+      "scroll",
     ];
 
     events.forEach((eventName) => {
-      window.addEventListener(eventName, resetTimer, { passive: true });
+      window.addEventListener(eventName, handleActivity, { passive: true });
     });
 
-    resetTimer();
+    startTimers();
 
     return () => {
       clearTimers();
 
       events.forEach((eventName) => {
-        window.removeEventListener(eventName, resetTimer);
+        window.removeEventListener(eventName, handleActivity);
       });
     };
-  }, [navigate, timeout, fadeDuration, onIdle]);
+  }, [enabled, timeout, fadeDuration, onReset, resetPath, navigate, location.pathname]);
 
   return { isIdleFading };
 }

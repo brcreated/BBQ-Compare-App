@@ -149,7 +149,7 @@ export default function CompareMiniBar() {
             >
               <button
                 type="button"
-                onClick={() => navigate(`/products/${item.slug || item.id}`)}
+                onClick={() => navigate(`/product/${item.slug || item.id}`)}
                 style={{
                   border: "none",
                   background: "transparent",
@@ -177,7 +177,7 @@ export default function CompareMiniBar() {
 
               <button
                 type="button"
-                onClick={() => navigate(`/products/${item.slug || item.id}`)}
+                onClick={() => navigate(`/product/${item.slug || item.id}`)}
                 style={{
                   border: "none",
                   background: "transparent",
