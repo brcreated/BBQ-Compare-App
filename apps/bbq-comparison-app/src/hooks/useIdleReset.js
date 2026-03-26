@@ -1,58 +1,50 @@
 // src/hooks/useIdleReset.js
-import { useEffect, useRef, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useRef } from "react";
 
 export default function useIdleReset({
   timeout = 60000,
-  fadeDuration = 5000,
-  enabled = true,
   onReset,
-  resetPath = "/",
+  resetUrl = "/",
+  enabled = true,
 } = {}) {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const idleTimerRef = useRef(null);
-  const fadeTimerRef = useRef(null);
-  const [isIdleFading, setIsIdleFading] = useState(false);
+  const lastActivityRef = useRef(0);
+  const hasResetRef = useRef(false);
+  const intervalRef = useRef(null);
 
   useEffect(() => {
     if (!enabled) return;
 
-    const clearTimers = () => {
-      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-      if (fadeTimerRef.current) clearTimeout(fadeTimerRef.current);
+    const markActivity = () => {
+      lastActivityRef.current = Date.now();
+      hasResetRef.current = false;
     };
 
     const runReset = () => {
-      setIsIdleFading(false);
+      if (hasResetRef.current) return;
+      hasResetRef.current = true;
 
-      if (typeof onReset === "function") {
-        onReset();
+      try {
+        if (typeof onReset === "function") {
+          onReset();
+        }
+      } catch (error) {
+        console.error("Idle reset onReset failed:", error);
       }
 
-      if (location.pathname !== resetPath) {
-        navigate(resetPath, { replace: true });
+      if (window.location.pathname !== resetUrl) {
+        window.location.href = resetUrl;
+      } else {
+        window.location.reload();
       }
     };
 
-    const startTimers = () => {
-      clearTimers();
-      setIsIdleFading(false);
+    const checkIdle = () => {
+      const now = Date.now();
+      const idleFor = now - lastActivityRef.current;
 
-      const safeFadeDuration = Math.min(fadeDuration, timeout);
-
-      fadeTimerRef.current = setTimeout(() => {
-        setIsIdleFading(true);
-      }, Math.max(timeout - safeFadeDuration, 0));
-
-      idleTimerRef.current = setTimeout(() => {
+      if (idleFor >= timeout) {
         runReset();
-      }, timeout);
-    };
-
-    const handleActivity = () => {
-      startTimers();
+      }
     };
 
     const events = [
@@ -67,24 +59,42 @@ export default function useIdleReset({
       "mouseup",
       "click",
       "keydown",
+      "keyup",
       "wheel",
       "scroll",
     ];
 
     events.forEach((eventName) => {
-      window.addEventListener(eventName, handleActivity, { passive: true });
+      window.addEventListener(eventName, markActivity, { passive: true });
+      document.addEventListener(eventName, markActivity, { passive: true });
     });
 
-    startTimers();
+    const handleVisibility = () => {
+      if (!document.hidden) {
+        markActivity();
+      }
+    };
+
+    window.addEventListener("focus", markActivity);
+    window.addEventListener("pageshow", markActivity);
+    document.addEventListener("visibilitychange", handleVisibility);
+
+    markActivity();
+    intervalRef.current = window.setInterval(checkIdle, 1000);
 
     return () => {
-      clearTimers();
+      if (intervalRef.current) {
+        window.clearInterval(intervalRef.current);
+      }
 
       events.forEach((eventName) => {
-        window.removeEventListener(eventName, handleActivity);
+        window.removeEventListener(eventName, markActivity);
+        document.removeEventListener(eventName, markActivity);
       });
-    };
-  }, [enabled, timeout, fadeDuration, onReset, resetPath, navigate, location.pathname]);
 
-  return { isIdleFading };
+      window.removeEventListener("focus", markActivity);
+      window.removeEventListener("pageshow", markActivity);
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
+  }, [enabled, timeout, onReset, resetUrl]);
 }
