@@ -1,0 +1,706 @@
+[
+  {
+    "id": "abs_judge_4ft",
+    "brandId": "abs",
+    "name": "Judge 4FT",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "abs_judge_5ft",
+    "brandId": "abs",
+    "name": "Judge 5FT",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "abs_bar_be_cube",
+    "brandId": "abs",
+    "name": "Bar-Be-Cube",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "abs_pit_boss",
+    "brandId": "abs",
+    "name": "Pit Boss",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "abs_all_star",
+    "brandId": "abs",
+    "name": "All-Star",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfa_moderno",
+    "brandId": "alfa",
+    "name": "Moderno",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfa_classico",
+    "brandId": "alfa",
+    "name": "Classico",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfa_futuro",
+    "brandId": "alfa",
+    "name": "Futuro",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfresco_lxe",
+    "brandId": "alfresco",
+    "name": "LXE Series",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfresco_griddle",
+    "brandId": "alfresco",
+    "name": "Dual Zone Griddles",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfresco_aipg",
+    "brandId": "alfresco",
+    "name": "AIPG Series",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "artisan_professional",
+    "brandId": "artisan",
+    "name": "Professional Series",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "artisan_artisan",
+    "brandId": "artisan",
+    "name": "Artisan Series",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "artisan_american_eagle",
+    "brandId": "artisan",
+    "name": "American Eagle Series",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "delta_heat_grills",
+    "brandId": "delta-heat",
+    "name": "Gas Grills",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "delta_heat_teppanyaki",
+    "brandId": "delta-heat",
+    "name": "Teppanyaki",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "delta_heat_grill_base",
+    "brandId": "delta-heat",
+    "name": "Grill Bases",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gateway_go2",
+    "brandId": "gateway",
+    "name": "GO2 Drum",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gateway_30_gallon",
+    "brandId": "gateway",
+    "name": "30 Gallon Drum",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gateway_55_gallon",
+    "brandId": "gateway",
+    "name": "55 Gallon Drum",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gozney_arc",
+    "brandId": "gozney",
+    "name": "Arc",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gozney_arc_xl",
+    "brandId": "gozney",
+    "name": "Arc XL",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gozney_dome",
+    "brandId": "gozney",
+    "name": "Dome",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gozney_roccbox",
+    "brandId": "gozney",
+    "name": "Roccbox",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "halo_elite_griddle",
+    "brandId": "halo",
+    "name": "Elite Griddles",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "halo_prime_pellet_grill",
+    "brandId": "halo",
+    "name": "Prime Pellet Grill",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "halo_versa_pizza_oven",
+    "brandId": "halo",
+    "name": "Versa Pizza Oven",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "horizon_classic_smokers",
+    "brandId": "horizon",
+    "name": "Classic Smokers",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "horizon_rd_special_smokers",
+    "brandId": "horizon",
+    "name": "RD Special Smokers",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "horizon_ranger_smokers",
+    "brandId": "horizon",
+    "name": "Ranger Smokers",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "horizon_icon_smokers",
+    "brandId": "horizon",
+    "name": "Icon Smokers",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_prestige_pro_series",
+    "brandId": "napoleon",
+    "name": "Prestige PRO Series",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_prestige_series",
+    "brandId": "napoleon",
+    "name": "Prestige Series",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_pro_s_series",
+    "brandId": "napoleon",
+    "name": "Rogue PRO-S Series",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_pro_series",
+    "brandId": "napoleon",
+    "name": "Rogue PRO Series",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_series",
+    "brandId": "napoleon",
+    "name": "Rogue Series",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_freestyle_series",
+    "brandId": "napoleon",
+    "name": "Freestyle Series",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_griddles",
+    "brandId": "napoleon",
+    "name": "Griddles",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_built_in_700",
+    "brandId": "napoleon",
+    "name": "Built-In 700 Series",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_built_in_700_black",
+    "brandId": "napoleon",
+    "name": "Built-In 700 Series Black",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_built_in_500",
+    "brandId": "napoleon",
+    "name": "Built-In 500 Series",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_built_in_prestige_pro",
+    "brandId": "napoleon",
+    "name": "Built-In Prestige PRO Series",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_charcoal_pro",
+    "brandId": "napoleon",
+    "name": "Charcoal PRO Series",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_charcoal_premium",
+    "brandId": "napoleon",
+    "name": "Charcoal Premium Series",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "primo_oval_xxl",
+    "brandId": "primo",
+    "name": "Oval XXL",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "primo_oval_xl",
+    "brandId": "primo",
+    "name": "Oval XL",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "primo_oval_large",
+    "brandId": "primo",
+    "name": "Oval Large",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "primo_oval_junior",
+    "brandId": "primo",
+    "name": "Oval Junior",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "primo_round",
+    "brandId": "primo",
+    "name": "Round",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "recteq_road_warrior_340p",
+    "brandId": "recteq",
+    "name": "Road Warrior 340P",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "recteq_e_series_built_in_1300",
+    "brandId": "recteq",
+    "name": "E-Series Built-In 1300",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "recteq_deck_boss_800",
+    "brandId": "recteq",
+    "name": "Deck Boss 800",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "recteq_backyard_beast_1200",
+    "brandId": "recteq",
+    "name": "Backyard Beast 1200",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "recteq_patio_legend_400",
+    "brandId": "recteq",
+    "name": "Patio Legend 400",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "recteq_x_fire_pro_825",
+    "brandId": "recteq",
+    "name": "X-Fire Pro 825",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "recteq_bullseye_deluxe",
+    "brandId": "recteq",
+    "name": "Bullseye Deluxe",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "recteq_rt_2500_bfg",
+    "brandId": "recteq",
+    "name": "RT-2500 BFG",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "recteq_smokestone_600",
+    "brandId": "recteq",
+    "name": "SmokeStone 600",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "recteq_dualfire_1200",
+    "brandId": "recteq",
+    "name": "DualFire 1200",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "recteq_flagship_1600",
+    "brandId": "recteq",
+    "name": "Flagship 1600",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "smokin_brothers_premier_plus_24",
+    "brandId": "smokin-brothers",
+    "name": "Premier Plus 24",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "smokin_brothers_premier_plus_30",
+    "brandId": "smokin-brothers",
+    "name": "Premier Plus 30",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "smokin_brothers_premier_plus_36",
+    "brandId": "smokin-brothers",
+    "name": "Premier Plus 36",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "smokin_brothers_premier_vertical",
+    "brandId": "smokin-brothers",
+    "name": "Premier Vertical",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_c_series_30",
+    "brandId": "twin-eagles",
+    "name": "C Series 30",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_c_series_36",
+    "brandId": "twin-eagles",
+    "name": "C Series 36",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_c_series_42",
+    "brandId": "twin-eagles",
+    "name": "C Series 42",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_c_series_54",
+    "brandId": "twin-eagles",
+    "name": "C Series 54",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_pellet_36",
+    "brandId": "twin-eagles",
+    "name": "Pellet 36",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_teppanyaki_30",
+    "brandId": "twin-eagles",
+    "name": "Teppanyaki 30",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_eagle_one_42",
+    "brandId": "twin-eagles",
+    "name": "Eagle One 42",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_eagle_one_54",
+    "brandId": "twin-eagles",
+    "name": "Eagle One 54",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys480s",
+    "brandId": "yoder",
+    "name": "YS480S",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys640s",
+    "brandId": "yoder",
+    "name": "YS640S",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys1500s",
+    "brandId": "yoder",
+    "name": "YS1500S",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_flat_top_24x36",
+    "brandId": "yoder",
+    "name": "Flat Top 24x36",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_flat_top_24x48",
+    "brandId": "yoder",
+    "name": "Flat Top 24x48",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_durango_20",
+    "brandId": "yoder",
+    "name": "Durango 20",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_durango_24",
+    "brandId": "yoder",
+    "name": "Durango 24",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_loaded_wichita",
+    "brandId": "yoder",
+    "name": "Loaded Wichita",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_kingman",
+    "brandId": "yoder",
+    "name": "Kingman",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_el_dorado_36",
+    "brandId": "yoder",
+    "name": "El Dorado 36",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_el_dorado_42",
+    "brandId": "yoder",
+    "name": "El Dorado 42",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_abilene_20",
+    "brandId": "yoder",
+    "name": "Abilene 20",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_stockton",
+    "brandId": "yoder",
+    "name": "Stockton",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_cimarron_s",
+    "brandId": "yoder",
+    "name": "CimarronS",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_cimarron_offset",
+    "brandId": "yoder",
+    "name": "Cimarron Offset",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_frontiersman",
+    "brandId": "yoder",
+    "name": "Frontiersman",
+    "description": "",
+    "sortOrder": null,
+    "isActive": true
+  }
+]

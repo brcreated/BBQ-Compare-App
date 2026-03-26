@@ -1,0 +1,2214 @@
+[
+  {
+    "id": "abs_all_star_standard__matte_black",
+    "variantId": "abs_all_star_standard",
+    "colorId": "matte_black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "abs_bar_be_cube_standard__matte_black",
+    "variantId": "abs_bar_be_cube_standard",
+    "colorId": "matte_black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "abs_bar_be_cube_with_pellet_hopper__matte_black",
+    "variantId": "abs_bar_be_cube_with_pellet_hopper",
+    "colorId": "matte_black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "abs_judge_4ft_judge_with_rotisserie__matte_black",
+    "variantId": "abs_judge_4ft_judge_with_rotisserie",
+    "colorId": "matte_black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "abs_judge_4ft_judge_with_rotisserie_and_propane_burner__matte_black",
+    "variantId": "abs_judge_4ft_judge_with_rotisserie_and_propane_burner",
+    "colorId": "matte_black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "abs_judge_5ft_judge_with_legs__matte_black",
+    "variantId": "abs_judge_5ft_judge_with_legs",
+    "colorId": "matte_black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "abs_judge_5ft_judge_with_rotisserie__matte_black",
+    "variantId": "abs_judge_5ft_judge_with_rotisserie",
+    "colorId": "matte_black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "abs_pit_boss_with_flat_racks__matte_black",
+    "variantId": "abs_pit_boss_with_flat_racks",
+    "colorId": "matte_black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "abs_pit_boss_with_rotisserie__matte_black",
+    "variantId": "abs_pit_boss_with_rotisserie",
+    "colorId": "matte_black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "abs_pit_boss_with_stainless_rotisserie_and_pellet_system__matte_black",
+    "variantId": "abs_pit_boss_with_stainless_rotisserie_and_pellet_system",
+    "colorId": "matte_black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfa_classico_2_pizze_gas__ardesia_grey",
+    "variantId": "alfa_classico_2_pizze_gas",
+    "colorId": "ardesia_grey",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfa_classico_2_pizze_wood__ardesia_grey",
+    "variantId": "alfa_classico_2_pizze_wood",
+    "colorId": "ardesia_grey",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfa_classico_4_pizze__ardesia_grey",
+    "variantId": "alfa_classico_4_pizze",
+    "colorId": "ardesia_grey",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfa_futuro_2_pizze__white_stone",
+    "variantId": "alfa_futuro_2_pizze",
+    "colorId": "white_stone",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfa_futuro_2_pizze__wrinkle_black",
+    "variantId": "alfa_futuro_2_pizze",
+    "colorId": "wrinkle_black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfa_futuro_4_pizze__white_stone",
+    "variantId": "alfa_futuro_4_pizze",
+    "colorId": "white_stone",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfa_futuro_4_pizze__wrinkle_black",
+    "variantId": "alfa_futuro_4_pizze",
+    "colorId": "wrinkle_black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfa_moderno_1_pizza__copper",
+    "variantId": "alfa_moderno_1_pizza",
+    "colorId": "copper",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfa_moderno_2_pizze__anthracite_grey",
+    "variantId": "alfa_moderno_2_pizze",
+    "colorId": "anthracite_grey",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfa_moderno_2_pizze__ruby_red",
+    "variantId": "alfa_moderno_2_pizze",
+    "colorId": "ruby_red",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfa_moderno_3_pizze_gas__anthracite_grey",
+    "variantId": "alfa_moderno_3_pizze_gas",
+    "colorId": "anthracite_grey",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfa_moderno_3_pizze_gas__ruby_red",
+    "variantId": "alfa_moderno_3_pizze_gas",
+    "colorId": "ruby_red",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfa_moderno_3_pizze_wood__anthracite_grey",
+    "variantId": "alfa_moderno_3_pizze_wood",
+    "colorId": "anthracite_grey",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfa_moderno_3_pizze_wood__ruby_red",
+    "variantId": "alfa_moderno_3_pizze_wood",
+    "colorId": "ruby_red",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfa_moderno_5_pizze__imperial_yellow",
+    "variantId": "alfa_moderno_5_pizze",
+    "colorId": "imperial_yellow",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfa_moderno_5_pizze__ruby_red",
+    "variantId": "alfa_moderno_5_pizze",
+    "colorId": "ruby_red",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfa_moderno_portable__antique_red",
+    "variantId": "alfa_moderno_portable",
+    "colorId": "antique_red",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfa_moderno_portable__ardesia_grey",
+    "variantId": "alfa_moderno_portable",
+    "colorId": "ardesia_grey",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfresco_30__stainless_steel",
+    "variantId": "alfresco_30",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfresco_30_dual_zone_griddle__stainless_steel",
+    "variantId": "alfresco_30_dual_zone_griddle",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfresco_36_aipg__stainless_steel",
+    "variantId": "alfresco_36_aipg",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfresco_36_lxe_one_sear_zone__stainless_steel",
+    "variantId": "alfresco_36_lxe_one_sear_zone",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfresco_36_lxe_standard__stainless_steel",
+    "variantId": "alfresco_36_lxe_standard",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfresco_42__stainless_steel",
+    "variantId": "alfresco_42",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfresco_42_aipg__stainless_steel",
+    "variantId": "alfresco_42_aipg",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "alfresco_56__stainless_steel",
+    "variantId": "alfresco_56",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "artisan_american_eagle_26_built_in__stainless_steel",
+    "variantId": "artisan_american_eagle_26_built_in",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "artisan_american_eagle_26_cart__stainless_steel",
+    "variantId": "artisan_american_eagle_26_cart",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "artisan_american_eagle_32_built_in__stainless_steel",
+    "variantId": "artisan_american_eagle_32_built_in",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "artisan_american_eagle_32_cart__stainless_steel",
+    "variantId": "artisan_american_eagle_32_cart",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "artisan_american_eagle_36_built_in__stainless_steel",
+    "variantId": "artisan_american_eagle_36_built_in",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "artisan_american_eagle_36_cart__stainless_steel",
+    "variantId": "artisan_american_eagle_36_cart",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "artisan_artisan_32_built_in__stainless_steel",
+    "variantId": "artisan_artisan_32_built_in",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "artisan_artisan_32_cart__stainless_steel",
+    "variantId": "artisan_artisan_32_cart",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "artisan_artisan_36_built_in__stainless_steel",
+    "variantId": "artisan_artisan_36_built_in",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "artisan_artisan_36_cart__stainless_steel",
+    "variantId": "artisan_artisan_36_cart",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "artisan_artisan_42_built_in__stainless_steel",
+    "variantId": "artisan_artisan_42_built_in",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "artisan_artisan_42_cart__stainless_steel",
+    "variantId": "artisan_artisan_42_cart",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "artisan_professional_32_built_in__stainless_steel",
+    "variantId": "artisan_professional_32_built_in",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "artisan_professional_32_cart__stainless_steel",
+    "variantId": "artisan_professional_32_cart",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "artisan_professional_36_built_in__stainless_steel",
+    "variantId": "artisan_professional_36_built_in",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "artisan_professional_36_cart__stainless_steel",
+    "variantId": "artisan_professional_36_cart",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "artisan_professional_42_built_in__stainless_steel",
+    "variantId": "artisan_professional_42_built_in",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "artisan_professional_42_cart__stainless_steel",
+    "variantId": "artisan_professional_42_cart",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "delta_heat_26_inch_gas_grill_cart__stainless_steel",
+    "variantId": "delta_heat_26_inch_gas_grill_cart",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "delta_heat_32_inch_built_in_gas_grill_with_infrared_rotisserie_and_sear_zone_with_color_panel__black",
+    "variantId": "delta_heat_32_inch_built_in_gas_grill_with_infrared_rotisserie_and_sear_zone_with_color_panel",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "delta_heat_32_inch_built_in_gas_grill_with_infrared_rotisserie_and_sear_zone_with_color_panel__stainless_steel",
+    "variantId": "delta_heat_32_inch_built_in_gas_grill_with_infrared_rotisserie_and_sear_zone_with_color_panel",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "delta_heat_32_inch_built_in_gas_grill_with_infrared_rotisserie_and_sear_zone_with_color_panel__white",
+    "variantId": "delta_heat_32_inch_built_in_gas_grill_with_infrared_rotisserie_and_sear_zone_with_color_panel",
+    "colorId": "white",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "delta_heat_32_inch_built_in_gas_grill_with_infrared_rotisserie_with_color_panel__black",
+    "variantId": "delta_heat_32_inch_built_in_gas_grill_with_infrared_rotisserie_with_color_panel",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "delta_heat_32_inch_built_in_gas_grill_with_infrared_rotisserie_with_color_panel__stainless_steel",
+    "variantId": "delta_heat_32_inch_built_in_gas_grill_with_infrared_rotisserie_with_color_panel",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "delta_heat_32_inch_built_in_gas_grill_with_infrared_rotisserie_with_color_panel__white",
+    "variantId": "delta_heat_32_inch_built_in_gas_grill_with_infrared_rotisserie_with_color_panel",
+    "colorId": "white",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "delta_heat_32_inch_built_in_teppanyaki_gas_griddle_with_color_panel__black",
+    "variantId": "delta_heat_32_inch_built_in_teppanyaki_gas_griddle_with_color_panel",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "delta_heat_32_inch_built_in_teppanyaki_gas_griddle_with_color_panel__stainless_steel",
+    "variantId": "delta_heat_32_inch_built_in_teppanyaki_gas_griddle_with_color_panel",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "delta_heat_32_inch_built_in_teppanyaki_gas_griddle_with_color_panel__white",
+    "variantId": "delta_heat_32_inch_built_in_teppanyaki_gas_griddle_with_color_panel",
+    "colorId": "white",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "delta_heat_32_inch_gas_grill_cart__stainless_steel",
+    "variantId": "delta_heat_32_inch_gas_grill_cart",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "delta_heat_38_inch_built_in_gas_grill_infrared_rotisserie_with_sear_zone_with_color_panel__black",
+    "variantId": "delta_heat_38_inch_built_in_gas_grill_infrared_rotisserie_with_sear_zone_with_color_panel",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "delta_heat_38_inch_built_in_gas_grill_infrared_rotisserie_with_sear_zone_with_color_panel__stainless_steel",
+    "variantId": "delta_heat_38_inch_built_in_gas_grill_infrared_rotisserie_with_sear_zone_with_color_panel",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "delta_heat_38_inch_built_in_gas_grill_infrared_rotisserie_with_sear_zone_with_color_panel__white",
+    "variantId": "delta_heat_38_inch_built_in_gas_grill_infrared_rotisserie_with_sear_zone_with_color_panel",
+    "colorId": "white",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "delta_heat_38_inch_gas_grill_cart__stainless_steel",
+    "variantId": "delta_heat_38_inch_gas_grill_cart",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gateway_30_gallon__black",
+    "variantId": "gateway_30_gallon",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gateway_30_gallon__charcoal",
+    "variantId": "gateway_30_gallon",
+    "colorId": "charcoal",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gateway_30_gallon__red",
+    "variantId": "gateway_30_gallon",
+    "colorId": "red",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gateway_55_gallon_gloss__black",
+    "variantId": "gateway_55_gallon_gloss",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gateway_55_gallon_gloss__red",
+    "variantId": "gateway_55_gallon_gloss",
+    "colorId": "red",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gateway_55_gallon_gloss__blue",
+    "variantId": "gateway_55_gallon_gloss",
+    "colorId": "blue",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gateway_55_gallon_matte__black",
+    "variantId": "gateway_55_gallon_matte",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gateway_55_gallon_matte__charcoal",
+    "variantId": "gateway_55_gallon_matte",
+    "colorId": "charcoal",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gateway_55_gallon_matte__red",
+    "variantId": "gateway_55_gallon_matte",
+    "colorId": "red",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gateway_go2__black",
+    "variantId": "gateway_go2",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gateway_go2__charcoal",
+    "variantId": "gateway_go2",
+    "colorId": "charcoal",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gateway_go2__red",
+    "variantId": "gateway_go2",
+    "colorId": "red",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gozney_arc__black",
+    "variantId": "gozney_arc",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gozney_arc_xl__black",
+    "variantId": "gozney_arc_xl",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gozney_arc_xl__bone",
+    "variantId": "gozney_arc_xl",
+    "colorId": "bone",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gozney_dome__bone",
+    "variantId": "gozney_dome",
+    "colorId": "bone",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gozney_dome__olive",
+    "variantId": "gozney_dome",
+    "colorId": "olive",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gozney_dome__black",
+    "variantId": "gozney_dome",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gozney_dome_gen2__black",
+    "variantId": "gozney_dome_gen2",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gozney_dome_gen2__bone",
+    "variantId": "gozney_dome_gen2",
+    "colorId": "bone",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gozney_dome_xl_gen2__black",
+    "variantId": "gozney_dome_xl_gen2",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gozney_dome_xl_gen2__bone",
+    "variantId": "gozney_dome_xl_gen2",
+    "colorId": "bone",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "gozney_roccbox__black",
+    "variantId": "gozney_roccbox",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "halo_elite1b_countertop_griddle__black",
+    "variantId": "halo_elite1b_countertop_griddle",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "halo_elite2b_outdoor_griddle__black",
+    "variantId": "halo_elite2b_outdoor_griddle",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "halo_elite3b_outdoor_griddle__black",
+    "variantId": "halo_elite3b_outdoor_griddle",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "halo_elite4b_outdoor_griddle__black",
+    "variantId": "halo_elite4b_outdoor_griddle",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "halo_prime300_pellet_grill__black",
+    "variantId": "halo_prime300_pellet_grill",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "halo_versa_16_pizza_oven__black",
+    "variantId": "halo_versa_16_pizza_oven",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "horizon_16_classic_smoker__black",
+    "variantId": "horizon_16_classic_smoker",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "horizon_20_classic_icon_smoker__black",
+    "variantId": "horizon_20_classic_icon_smoker",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "horizon_20_classic_smoker__black",
+    "variantId": "horizon_20_classic_smoker",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "horizon_20_ranger_smoker__black",
+    "variantId": "horizon_20_ranger_smoker",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "horizon_20_rd_special_marshal_smoker__black",
+    "variantId": "horizon_20_rd_special_marshal_smoker",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "horizon_24_rd_special_marshal_smoker__black",
+    "variantId": "horizon_24_rd_special_marshal_smoker",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_built_in_500_series_32__stainless_steel",
+    "variantId": "napoleon_built_in_500_series_32",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_built_in_700_series_32__black",
+    "variantId": "napoleon_built_in_700_series_32",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_built_in_700_series_32__stainless_steel",
+    "variantId": "napoleon_built_in_700_series_32",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_built_in_700_series_32_griddle__stainless_steel",
+    "variantId": "napoleon_built_in_700_series_32_griddle",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_built_in_700_series_38__stainless_steel",
+    "variantId": "napoleon_built_in_700_series_38",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_built_in_700_series_44__stainless_steel",
+    "variantId": "napoleon_built_in_700_series_44",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_built_in_700_series_black_32__black",
+    "variantId": "napoleon_built_in_700_series_black_32",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_built_in_prestige_pro_825__stainless_steel",
+    "variantId": "napoleon_built_in_prestige_pro_825",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_charcoal_premium_14_kettle_portable__black",
+    "variantId": "napoleon_charcoal_premium_14_kettle_portable",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_charcoal_premium_18_kettle__black",
+    "variantId": "napoleon_charcoal_premium_18_kettle",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_charcoal_premium_22_kettle__black",
+    "variantId": "napoleon_charcoal_premium_22_kettle",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_charcoal_pro_18_kettle__black",
+    "variantId": "napoleon_charcoal_pro_18_kettle",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_charcoal_pro_22_charcoal_kettle_with_cart__black",
+    "variantId": "napoleon_charcoal_pro_22_charcoal_kettle_with_cart",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_charcoal_pro_22_kettle__black",
+    "variantId": "napoleon_charcoal_pro_22_kettle",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_charcoal_pro_605_charcoal_cart__stainless_steel",
+    "variantId": "napoleon_charcoal_pro_605_charcoal_cart",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_freestyle_24_inch_griddle_natural_gas__black",
+    "variantId": "napoleon_freestyle_24_inch_griddle_natural_gas",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_freestyle_24_inch_griddle_propane__black",
+    "variantId": "napoleon_freestyle_24_inch_griddle_propane",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_freestyle_365_natural_gas__black",
+    "variantId": "napoleon_freestyle_365_natural_gas",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_freestyle_365_propane__grey",
+    "variantId": "napoleon_freestyle_365_propane",
+    "colorId": "grey",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_freestyle_365_sb__grey",
+    "variantId": "napoleon_freestyle_365_sb",
+    "colorId": "grey",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_freestyle_425_natural_gas__grey",
+    "variantId": "napoleon_freestyle_425_natural_gas",
+    "colorId": "grey",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_freestyle_425_propane__grey",
+    "variantId": "napoleon_freestyle_425_propane",
+    "colorId": "grey",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_freestyle_425_sb__grey",
+    "variantId": "napoleon_freestyle_425_sb",
+    "colorId": "grey",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_prestige_500_connected_rsib_natural_gas__stainless_steel",
+    "variantId": "napoleon_prestige_500_connected_rsib_natural_gas",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_prestige_500_connected_rsib_propane__stainless_steel",
+    "variantId": "napoleon_prestige_500_connected_rsib_propane",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_prestige_500_rsib_natural_gas__stainless_steel",
+    "variantId": "napoleon_prestige_500_rsib_natural_gas",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_prestige_500_rsib_propane__stainless_steel",
+    "variantId": "napoleon_prestige_500_rsib_propane",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_prestige_665_connected_rsib_natural_gas__stainless_steel",
+    "variantId": "napoleon_prestige_665_connected_rsib_natural_gas",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_prestige_665_connected_rsib_propane__stainless_steel",
+    "variantId": "napoleon_prestige_665_connected_rsib_propane",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_prestige_665_rsib_natural_gas__stainless_steel",
+    "variantId": "napoleon_prestige_665_rsib_natural_gas",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_prestige_665_rsib_propane__stainless_steel",
+    "variantId": "napoleon_prestige_665_rsib_propane",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_prestige_phantom_500_connected_rsib_natural_gas__black",
+    "variantId": "napoleon_prestige_phantom_500_connected_rsib_natural_gas",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_prestige_phantom_500_connected_rsib_propane__black",
+    "variantId": "napoleon_prestige_phantom_500_connected_rsib_propane",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_prestige_pro_500_natural_gas__stainless_steel",
+    "variantId": "napoleon_prestige_pro_500_natural_gas",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_prestige_pro_500_propane__stainless_steel",
+    "variantId": "napoleon_prestige_pro_500_propane",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_prestige_pro_500_rsib_natural_gas__stainless_steel",
+    "variantId": "napoleon_prestige_pro_500_rsib_natural_gas",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_prestige_pro_500_rsib_propane__stainless_steel",
+    "variantId": "napoleon_prestige_pro_500_rsib_propane",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_prestige_pro_665_elite_natural_gas__stainless_steel",
+    "variantId": "napoleon_prestige_pro_665_elite_natural_gas",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_prestige_pro_665_elite_propane__stainless_steel",
+    "variantId": "napoleon_prestige_pro_665_elite_propane",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_prestige_pro_665_rsib_natural_gas__stainless_steel",
+    "variantId": "napoleon_prestige_pro_665_rsib_natural_gas",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_prestige_pro_665_rsib_propane__stainless_steel",
+    "variantId": "napoleon_prestige_pro_665_rsib_propane",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_prestige_pro_825_rsbi_natural_gas__stainless_steel",
+    "variantId": "napoleon_prestige_pro_825_rsbi_natural_gas",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_prestige_pro_825_rsbi_propane__stainless_steel",
+    "variantId": "napoleon_prestige_pro_825_rsbi_propane",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_425_natural_gas__black",
+    "variantId": "napoleon_rogue_425_natural_gas",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_425_natural_gas__stainless_steel",
+    "variantId": "napoleon_rogue_425_natural_gas",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_425_propane__black",
+    "variantId": "napoleon_rogue_425_propane",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_425_propane__stainless_steel",
+    "variantId": "napoleon_rogue_425_propane",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_425_sb_natural_gas__black",
+    "variantId": "napoleon_rogue_425_sb_natural_gas",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_425_sb_propane__black",
+    "variantId": "napoleon_rogue_425_sb_propane",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_525_natural_gas__black",
+    "variantId": "napoleon_rogue_525_natural_gas",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_525_natural_gas__stainless_steel",
+    "variantId": "napoleon_rogue_525_natural_gas",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_525_propane__black",
+    "variantId": "napoleon_rogue_525_propane",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_525_propane__stainless_steel",
+    "variantId": "napoleon_rogue_525_propane",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_525_sb_natural_gas__black",
+    "variantId": "napoleon_rogue_525_sb_natural_gas",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_525_sb_natural_gas__stainless_steel",
+    "variantId": "napoleon_rogue_525_sb_natural_gas",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_525_sb_propane__black",
+    "variantId": "napoleon_rogue_525_sb_propane",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_525_sb_propane__stainless_steel",
+    "variantId": "napoleon_rogue_525_sb_propane",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_pro_425_sib_natural_gas__black",
+    "variantId": "napoleon_rogue_pro_425_sib_natural_gas",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_pro_425_sib_natural_gas__stainless_steel",
+    "variantId": "napoleon_rogue_pro_425_sib_natural_gas",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_pro_425_sib_propane__black",
+    "variantId": "napoleon_rogue_pro_425_sib_propane",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_pro_425_sib_propane__stainless_steel",
+    "variantId": "napoleon_rogue_pro_425_sib_propane",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_pro_525_sib_natural_gas__black",
+    "variantId": "napoleon_rogue_pro_525_sib_natural_gas",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_pro_525_sib_natural_gas__stainless_steel",
+    "variantId": "napoleon_rogue_pro_525_sib_natural_gas",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_pro_525_sib_propane__black",
+    "variantId": "napoleon_rogue_pro_525_sib_propane",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_pro_525_sib_propane__stainless_steel",
+    "variantId": "napoleon_rogue_pro_525_sib_propane",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_pro_625_sib_natural_gas__black",
+    "variantId": "napoleon_rogue_pro_625_sib_natural_gas",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_pro_625_sib_natural_gas__stainless_steel",
+    "variantId": "napoleon_rogue_pro_625_sib_natural_gas",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_pro_625_sib_propane__black",
+    "variantId": "napoleon_rogue_pro_625_sib_propane",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_pro_625_sib_propane__stainless_steel",
+    "variantId": "napoleon_rogue_pro_625_sib_propane",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_pro_phantom_30_inch_griddle_natural_gas__black",
+    "variantId": "napoleon_rogue_pro_phantom_30_inch_griddle_natural_gas",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_pro_phantom_30_inch_griddle_propane__black",
+    "variantId": "napoleon_rogue_pro_phantom_30_inch_griddle_propane",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_pro_s_425_rsib_natural_gas__stainless_steel",
+    "variantId": "napoleon_rogue_pro_s_425_rsib_natural_gas",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_pro_s_425_rsib_propane__stainless_steel",
+    "variantId": "napoleon_rogue_pro_s_425_rsib_propane",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_pro_s_525_rsib_natural_gas__stainless_steel",
+    "variantId": "napoleon_rogue_pro_s_525_rsib_natural_gas",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_pro_s_525_rsib_propane__stainless_steel",
+    "variantId": "napoleon_rogue_pro_s_525_rsib_propane",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_pro_s_625_rsib_natural_gas__stainless_steel",
+    "variantId": "napoleon_rogue_pro_s_625_rsib_natural_gas",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_pro_s_625_rsib_propane__stainless_steel",
+    "variantId": "napoleon_rogue_pro_s_625_rsib_propane",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_pro_s_phantom_425_rsib_natural_gas__black",
+    "variantId": "napoleon_rogue_pro_s_phantom_425_rsib_natural_gas",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "napoleon_rogue_pro_s_phantom_425_rsib_propane__black",
+    "variantId": "napoleon_rogue_pro_s_phantom_425_rsib_propane",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "primo_oval_junior_all_in_one__black",
+    "variantId": "primo_oval_junior_all_in_one",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "primo_oval_junior_cart_with_basket_and_stainless_steel_side_shelves__black",
+    "variantId": "primo_oval_junior_cart_with_basket_and_stainless_steel_side_shelves",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "primo_oval_junior_head_only__black",
+    "variantId": "primo_oval_junior_head_only",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "primo_oval_large_all_in_one__black",
+    "variantId": "primo_oval_large_all_in_one",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "primo_oval_large_cart_with_basket_and_stainless_steel_side_shelves__black",
+    "variantId": "primo_oval_large_cart_with_basket_and_stainless_steel_side_shelves",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "primo_oval_large_head_only__black",
+    "variantId": "primo_oval_large_head_only",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "primo_oval_xl_all_in_one__black",
+    "variantId": "primo_oval_xl_all_in_one",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "primo_oval_xl_cart_with_basket_and_stainless_steel_side_shelves__black",
+    "variantId": "primo_oval_xl_cart_with_basket_and_stainless_steel_side_shelves",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "primo_oval_xl_head_only__black",
+    "variantId": "primo_oval_xl_head_only",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "primo_oval_xxl_all_in_one__black",
+    "variantId": "primo_oval_xxl_all_in_one",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "primo_oval_xxl_cart_with_basket_and_stainless_steel_side_shelves__black",
+    "variantId": "primo_oval_xxl_cart_with_basket_and_stainless_steel_side_shelves",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "primo_oval_xxl_head_only__black",
+    "variantId": "primo_oval_xxl_head_only",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "primo_round_all_in_one__black",
+    "variantId": "primo_round_all_in_one",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "primo_round_head_only__black",
+    "variantId": "primo_round_head_only",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "recteq_backyard_beast_1200_standard__black",
+    "variantId": "recteq_backyard_beast_1200_standard",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "recteq_bullseye_deluxe_standard__black",
+    "variantId": "recteq_bullseye_deluxe_standard",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "recteq_deck_boss_800_standard__black",
+    "variantId": "recteq_deck_boss_800_standard",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "recteq_dualfire_1200_standard__black",
+    "variantId": "recteq_dualfire_1200_standard",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "recteq_e_series_built_in_1300_built_in__black",
+    "variantId": "recteq_e_series_built_in_1300_built_in",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "recteq_flagship_1600_standard__black",
+    "variantId": "recteq_flagship_1600_standard",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "recteq_patio_legend_400_standard__black",
+    "variantId": "recteq_patio_legend_400_standard",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "recteq_road_warrior_340p_standard__black",
+    "variantId": "recteq_road_warrior_340p_standard",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "recteq_rt_2500_bfg_standard__black",
+    "variantId": "recteq_rt_2500_bfg_standard",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "recteq_smokestone_600_standard__black",
+    "variantId": "recteq_smokestone_600_standard",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "recteq_x_fire_pro_825_standard__black",
+    "variantId": "recteq_x_fire_pro_825_standard",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "smokin_brothers_24_premier_plus__black",
+    "variantId": "smokin_brothers_24_premier_plus",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "smokin_brothers_30_premier_plus__black",
+    "variantId": "smokin_brothers_30_premier_plus",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "smokin_brothers_36_premier_plus__black",
+    "variantId": "smokin_brothers_36_premier_plus",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "smokin_brothers_premier_plus_24_built_in__black",
+    "variantId": "smokin_brothers_premier_plus_24_built_in",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "smokin_brothers_premier_plus_30_built_in__black",
+    "variantId": "smokin_brothers_premier_plus_30_built_in",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "smokin_brothers_premier_plus_36_built_in__black",
+    "variantId": "smokin_brothers_premier_plus_36_built_in",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "smokin_brothers_premier_vertical__black",
+    "variantId": "smokin_brothers_premier_vertical",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_30_inch_built_in_teppanyaki_standard__stainless_steel",
+    "variantId": "twin_eagles_30_inch_built_in_teppanyaki_standard",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_30_inch_teppanyaki_on_cart_standard__stainless_steel",
+    "variantId": "twin_eagles_30_inch_teppanyaki_on_cart_standard",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_36_inch_built_in_pellet_grill_with_rotisserie__stainless_steel",
+    "variantId": "twin_eagles_36_inch_built_in_pellet_grill_with_rotisserie",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_36_inch_built_in_pellet_grill_without_rotisserie__stainless_steel",
+    "variantId": "twin_eagles_36_inch_built_in_pellet_grill_without_rotisserie",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_36_inch_pellet_grill_on_cart_with_rotisserie__stainless_steel",
+    "variantId": "twin_eagles_36_inch_pellet_grill_on_cart_with_rotisserie",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_36_inch_pellet_grill_on_cart_without_rotisserie__stainless_steel",
+    "variantId": "twin_eagles_36_inch_pellet_grill_on_cart_without_rotisserie",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_c_series_30_inch_gas_grill_on_cart_infrared_rotisserie__stainless_steel",
+    "variantId": "twin_eagles_c_series_30_inch_gas_grill_on_cart_infrared_rotisserie",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_c_series_30_inch_gas_grill_on_cart_infrared_rotisserie_and_sear_zone__stainless_steel",
+    "variantId": "twin_eagles_c_series_30_inch_gas_grill_on_cart_infrared_rotisserie_and_sear_zone",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_c_series_30_inch_gas_grill_on_cart_standard__stainless_steel",
+    "variantId": "twin_eagles_c_series_30_inch_gas_grill_on_cart_standard",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie__stainless_steel",
+    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station__stainless_steel",
+    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard__stainless_steel",
+    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie__stainless_steel",
+    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station__stainless_steel",
+    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard__stainless_steel",
+    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie__stainless_steel",
+    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station__stainless_steel",
+    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard__stainless_steel",
+    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station__stainless_steel",
+    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_eagle_one_42_inch_gas_grill_on_cart_standard__stainless_steel",
+    "variantId": "twin_eagles_eagle_one_42_inch_gas_grill_on_cart_standard",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_eagle_one_54_inch_gas_grill_on_cart_standard__stainless_steel",
+    "variantId": "twin_eagles_eagle_one_54_inch_gas_grill_on_cart_standard",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_eagle_one_series_42_inch_built_in_gas_grill_standard__stainless_steel",
+    "variantId": "twin_eagles_eagle_one_series_42_inch_built_in_gas_grill_standard",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "twin_eagles_eagle_one_series_54_inch_built_in_gas_grill_standard__stainless_steel",
+    "variantId": "twin_eagles_eagle_one_series_54_inch_built_in_gas_grill_standard",
+    "colorId": "stainless_steel",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_abilene_standard__black",
+    "variantId": "yoder_abilene_standard",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_cimarron_comp_cart__orange",
+    "variantId": "yoder_cimarron_comp_cart",
+    "colorId": "orange",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_cimarrons_comp_cart__black",
+    "variantId": "yoder_cimarrons_comp_cart",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_cimarrons_comp_cart__orange",
+    "variantId": "yoder_cimarrons_comp_cart",
+    "colorId": "orange",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_cimarrons_comp_cart__silver",
+    "variantId": "yoder_cimarrons_comp_cart",
+    "colorId": "silver",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_cimarrons_skeleton_cart__black",
+    "variantId": "yoder_cimarrons_skeleton_cart",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_durango_20_offset__black",
+    "variantId": "yoder_durango_20_offset",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_durango_24_offset__black",
+    "variantId": "yoder_durango_24_offset",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_el_dorado_36__black",
+    "variantId": "yoder_el_dorado_36",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_el_dorado_36_built_in__black",
+    "variantId": "yoder_el_dorado_36_built_in",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_el_dorado_42__black",
+    "variantId": "yoder_el_dorado_42",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_el_dorado_42_built_in__black",
+    "variantId": "yoder_el_dorado_42_built_in",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_flat_top_24x36_comp_cart__black",
+    "variantId": "yoder_flat_top_24x36_comp_cart",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_flat_top_24x36_comp_cart__blue",
+    "variantId": "yoder_flat_top_24x36_comp_cart",
+    "colorId": "blue",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_flat_top_24x36_comp_cart__green",
+    "variantId": "yoder_flat_top_24x36_comp_cart",
+    "colorId": "green",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_flat_top_24x36_comp_cart__military_green",
+    "variantId": "yoder_flat_top_24x36_comp_cart",
+    "colorId": "military_green",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_flat_top_24x36_comp_cart__orange",
+    "variantId": "yoder_flat_top_24x36_comp_cart",
+    "colorId": "orange",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_flat_top_24x36_comp_cart__purple",
+    "variantId": "yoder_flat_top_24x36_comp_cart",
+    "colorId": "purple",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_flat_top_24x36_comp_cart__red",
+    "variantId": "yoder_flat_top_24x36_comp_cart",
+    "colorId": "red",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_flat_top_24x36_comp_cart__silver",
+    "variantId": "yoder_flat_top_24x36_comp_cart",
+    "colorId": "silver",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_flat_top_24x36_standard_cart__black",
+    "variantId": "yoder_flat_top_24x36_standard_cart",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_flat_top_24x48_comp_cart__black",
+    "variantId": "yoder_flat_top_24x48_comp_cart",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_flat_top_24x48_comp_cart__blue",
+    "variantId": "yoder_flat_top_24x48_comp_cart",
+    "colorId": "blue",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_flat_top_24x48_comp_cart__green",
+    "variantId": "yoder_flat_top_24x48_comp_cart",
+    "colorId": "green",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_flat_top_24x48_comp_cart__military_green",
+    "variantId": "yoder_flat_top_24x48_comp_cart",
+    "colorId": "military_green",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_flat_top_24x48_comp_cart__orange",
+    "variantId": "yoder_flat_top_24x48_comp_cart",
+    "colorId": "orange",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_flat_top_24x48_comp_cart__purple",
+    "variantId": "yoder_flat_top_24x48_comp_cart",
+    "colorId": "purple",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_flat_top_24x48_comp_cart__red",
+    "variantId": "yoder_flat_top_24x48_comp_cart",
+    "colorId": "red",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_flat_top_24x48_comp_cart__silver",
+    "variantId": "yoder_flat_top_24x48_comp_cart",
+    "colorId": "silver",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_flat_top_24x48_standard_cart__black",
+    "variantId": "yoder_flat_top_24x48_standard_cart",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_frontiersman_comp_cart__orange",
+    "variantId": "yoder_frontiersman_comp_cart",
+    "colorId": "orange",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_kingman_offset__black",
+    "variantId": "yoder_kingman_offset",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_loaded_wichita_offset__black",
+    "variantId": "yoder_loaded_wichita_offset",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_stockton_offset__black",
+    "variantId": "yoder_stockton_offset",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys1500s_comp_cart__black",
+    "variantId": "yoder_ys1500s_comp_cart",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys1500s_comp_cart__orange",
+    "variantId": "yoder_ys1500s_comp_cart",
+    "colorId": "orange",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys1500s_comp_cart__silver",
+    "variantId": "yoder_ys1500s_comp_cart",
+    "colorId": "silver",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys1500s_comp_cart_with_storage__black",
+    "variantId": "yoder_ys1500s_comp_cart_with_storage",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys1500s_comp_cart_with_storage__orange",
+    "variantId": "yoder_ys1500s_comp_cart_with_storage",
+    "colorId": "orange",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys1500s_comp_cart_with_storage__silver",
+    "variantId": "yoder_ys1500s_comp_cart_with_storage",
+    "colorId": "silver",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys1500s_outlander__black",
+    "variantId": "yoder_ys1500s_outlander",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys480s_built_in_with_valance__black",
+    "variantId": "yoder_ys480s_built_in_with_valance",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys480s_comp_cart__black",
+    "variantId": "yoder_ys480s_comp_cart",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys480s_comp_cart__blue",
+    "variantId": "yoder_ys480s_comp_cart",
+    "colorId": "blue",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys480s_comp_cart__orange",
+    "variantId": "yoder_ys480s_comp_cart",
+    "colorId": "orange",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys480s_comp_cart__purple",
+    "variantId": "yoder_ys480s_comp_cart",
+    "colorId": "purple",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys480s_comp_cart__red",
+    "variantId": "yoder_ys480s_comp_cart",
+    "colorId": "red",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys480s_comp_cart__silver",
+    "variantId": "yoder_ys480s_comp_cart",
+    "colorId": "silver",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys480s_comp_cart__yellow",
+    "variantId": "yoder_ys480s_comp_cart",
+    "colorId": "yellow",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys480s_comp_cart_with_storage__black",
+    "variantId": "yoder_ys480s_comp_cart_with_storage",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys480s_comp_cart_with_storage__blue",
+    "variantId": "yoder_ys480s_comp_cart_with_storage",
+    "colorId": "blue",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys480s_comp_cart_with_storage__orange",
+    "variantId": "yoder_ys480s_comp_cart_with_storage",
+    "colorId": "orange",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys480s_comp_cart_with_storage__purple",
+    "variantId": "yoder_ys480s_comp_cart_with_storage",
+    "colorId": "purple",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys480s_comp_cart_with_storage__red",
+    "variantId": "yoder_ys480s_comp_cart_with_storage",
+    "colorId": "red",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys480s_comp_cart_with_storage__silver",
+    "variantId": "yoder_ys480s_comp_cart_with_storage",
+    "colorId": "silver",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys480s_comp_cart_with_storage__yellow",
+    "variantId": "yoder_ys480s_comp_cart_with_storage",
+    "colorId": "yellow",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys480s_outlander__black",
+    "variantId": "yoder_ys480s_outlander",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys480s_standard__black",
+    "variantId": "yoder_ys480s_standard",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys640s_built_in_with_valance__black",
+    "variantId": "yoder_ys640s_built_in_with_valance",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys640s_comp_cart__black",
+    "variantId": "yoder_ys640s_comp_cart",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys640s_comp_cart__blue",
+    "variantId": "yoder_ys640s_comp_cart",
+    "colorId": "blue",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys640s_comp_cart__orange",
+    "variantId": "yoder_ys640s_comp_cart",
+    "colorId": "orange",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys640s_comp_cart__purple",
+    "variantId": "yoder_ys640s_comp_cart",
+    "colorId": "purple",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys640s_comp_cart__red",
+    "variantId": "yoder_ys640s_comp_cart",
+    "colorId": "red",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys640s_comp_cart__silver",
+    "variantId": "yoder_ys640s_comp_cart",
+    "colorId": "silver",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys640s_comp_cart__yellow",
+    "variantId": "yoder_ys640s_comp_cart",
+    "colorId": "yellow",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys640s_comp_cart_with_storage__black",
+    "variantId": "yoder_ys640s_comp_cart_with_storage",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys640s_comp_cart_with_storage__blue",
+    "variantId": "yoder_ys640s_comp_cart_with_storage",
+    "colorId": "blue",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys640s_comp_cart_with_storage__cerulean_blue",
+    "variantId": "yoder_ys640s_comp_cart_with_storage",
+    "colorId": "cerulean_blue",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys640s_comp_cart_with_storage__green",
+    "variantId": "yoder_ys640s_comp_cart_with_storage",
+    "colorId": "green",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys640s_comp_cart_with_storage__maroon",
+    "variantId": "yoder_ys640s_comp_cart_with_storage",
+    "colorId": "maroon",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys640s_comp_cart_with_storage__orange",
+    "variantId": "yoder_ys640s_comp_cart_with_storage",
+    "colorId": "orange",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys640s_comp_cart_with_storage__purple",
+    "variantId": "yoder_ys640s_comp_cart_with_storage",
+    "colorId": "purple",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys640s_comp_cart_with_storage__red",
+    "variantId": "yoder_ys640s_comp_cart_with_storage",
+    "colorId": "red",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys640s_comp_cart_with_storage__silver",
+    "variantId": "yoder_ys640s_comp_cart_with_storage",
+    "colorId": "silver",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys640s_comp_cart_with_storage__yellow",
+    "variantId": "yoder_ys640s_comp_cart_with_storage",
+    "colorId": "yellow",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys640s_outlander__black",
+    "variantId": "yoder_ys640s_outlander",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  },
+  {
+    "id": "yoder_ys640s_standard__black",
+    "variantId": "yoder_ys640s_standard",
+    "colorId": "black",
+    "sortOrder": null,
+    "isActive": true
+  }
+]
