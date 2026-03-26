@@ -1,4 +1,0 @@
-MISSING IMAGE
-expected_file=twin-eagles-30-inch-teppanyaki-on-cart-standard-gallery-9.jpg
-source_page=https://www.bbqguys.com/i/3052272/twin-eagles/30-in-natural-gas-teppanyaki-griddle-on-deluxe-cart?absrc=Bing&abid=77447059250613&abcampid=663472262&abgroupid=1239150748943437&bclid=5f20c13332a911e2e892a888c14894c5&utm_source=microsoft&utm_medium=paid&utm_campaign=663472262&utm_content=77447059250613&utm_term=default&species=pmax-ad&msclkid=5f20c13332a911e2e892a888c14894c5&campaignid=663472262&campaign=MIC%20%7C%20PMAX%20%7C%20Generic%20%7C%20Outdoor%20Cooking%20%7C%202025-06%20%5BODK%5D%20%5BDH%5D&adgroupid=1239150748943437&adgroup=BBQ%20Grills%20%7C%20Prio%201&adid=77447059250613&keyword=default&feeditemid=&orderitemid=2329246665117193&targetid=pla-2329246665117193:aud-807896995&matchtype=e&bidmatchtype=be&network=o&device=c
-slot=gallery-9

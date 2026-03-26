@@ -1,4 +1,0 @@
-MISSING IMAGE
-expected_file=smokin-brothers-premier-plus-30-built-in-gallery-4.jpg
-source_page=https://smokinbrothers.com/product/smokin-brothers-built-in-kit-for-premier-models-2/
-slot=gallery-4
