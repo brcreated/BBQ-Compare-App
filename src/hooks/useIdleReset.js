@@ -7,9 +7,8 @@ export default function useIdleReset({
   resetUrl = "/",
   enabled = true,
 } = {}) {
-  const lastActivityRef = useRef(Date.now());
+  const lastActivityRef = useRef(0);
   const hasResetRef = useRef(false);
-  const rafRef = useRef(null);
   const intervalRef = useRef(null);
 
   useEffect(() => {
@@ -28,15 +27,13 @@ export default function useIdleReset({
         if (typeof onReset === "function") {
           onReset();
         }
-      } catch (err) {
-        console.error("Idle reset onReset failed:", err);
+      } catch (error) {
+        console.error("Idle reset onReset failed:", error);
       }
 
-      // Hard redirect is more reliable than router navigation on kiosk/TV wrappers.
       if (window.location.pathname !== resetUrl) {
-        window.location.replace(resetUrl);
+        window.location.href = resetUrl;
       } else {
-        // Already on welcome page: force a reload so UI/store truly resets.
         window.location.reload();
       }
     };
@@ -44,25 +41,19 @@ export default function useIdleReset({
     const checkIdle = () => {
       const now = Date.now();
       const idleFor = now - lastActivityRef.current;
+
       if (idleFor >= timeout) {
         runReset();
       }
-    };
-
-    const loop = () => {
-      checkIdle();
-      rafRef.current = window.requestAnimationFrame(loop);
     };
 
     const events = [
       "pointerdown",
       "pointermove",
       "pointerup",
-      "pointercancel",
       "touchstart",
       "touchmove",
       "touchend",
-      "touchcancel",
       "mousedown",
       "mousemove",
       "mouseup",
@@ -78,22 +69,23 @@ export default function useIdleReset({
       document.addEventListener(eventName, markActivity, { passive: true });
     });
 
-    document.addEventListener("visibilitychange", () => {
-      if (!document.hidden) markActivity();
-    });
+    const handleVisibility = () => {
+      if (!document.hidden) {
+        markActivity();
+      }
+    };
 
     window.addEventListener("focus", markActivity);
     window.addEventListener("pageshow", markActivity);
+    document.addEventListener("visibilitychange", handleVisibility);
 
     markActivity();
-
-    // Use both interval and RAF for stubborn Android TV wrappers.
     intervalRef.current = window.setInterval(checkIdle, 1000);
-    rafRef.current = window.requestAnimationFrame(loop);
 
     return () => {
-      if (intervalRef.current) window.clearInterval(intervalRef.current);
-      if (rafRef.current) window.cancelAnimationFrame(rafRef.current);
+      if (intervalRef.current) {
+        window.clearInterval(intervalRef.current);
+      }
 
       events.forEach((eventName) => {
         window.removeEventListener(eventName, markActivity);
@@ -102,6 +94,7 @@ export default function useIdleReset({
 
       window.removeEventListener("focus", markActivity);
       window.removeEventListener("pageshow", markActivity);
+      document.removeEventListener("visibilitychange", handleVisibility);
     };
   }, [enabled, timeout, onReset, resetUrl]);
 }
