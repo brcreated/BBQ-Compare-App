@@ -8962,8 +8962,8 @@
   {
     "id": "spec_00640",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_30_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_30_inch_infrared_rotisserie",
     "key": "body_material",
     "label": "Body Material",
     "value": "stainless_steel",
@@ -8976,8 +8976,8 @@
   {
     "id": "spec_00641",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_30_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_30_inch_infrared_rotisserie",
     "key": "made_in_usa",
     "label": "Made in USA",
     "value": "true",
@@ -8990,8 +8990,8 @@
   {
     "id": "spec_00642",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_30_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_30_inch_infrared_rotisserie",
     "key": "btu_output",
     "label": "BTU Output",
     "value": "50000",
@@ -9004,8 +9004,8 @@
   {
     "id": "spec_00643",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_30_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_30_inch_infrared_rotisserie",
     "key": "rear_rotisserie_btu",
     "label": "Rear Rotisserie BTU",
     "value": "14000",
@@ -9018,8 +9018,8 @@
   {
     "id": "spec_00644",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_30_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_30_inch_infrared_rotisserie_and_sear_station",
     "key": "body_material",
     "label": "Body Material",
     "value": "stainless_steel",
@@ -9032,8 +9032,8 @@
   {
     "id": "spec_00645",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_30_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_30_inch_infrared_rotisserie_and_sear_station",
     "key": "made_in_usa",
     "label": "Made in USA",
     "value": "true",
@@ -9046,8 +9046,8 @@
   {
     "id": "spec_00646",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_30_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_30_inch_infrared_rotisserie_and_sear_station",
     "key": "btu_output",
     "label": "BTU Output",
     "value": "50000",
@@ -9060,8 +9060,8 @@
   {
     "id": "spec_00647",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_30_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_30_inch_infrared_rotisserie_and_sear_station",
     "key": "has_sear_zone",
     "label": "Has Sear Zone",
     "value": "true",
@@ -9074,8 +9074,8 @@
   {
     "id": "spec_00648",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_30_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_30_inch_infrared_rotisserie_and_sear_station",
     "key": "sear_burner_btu",
     "label": "Sear Burner BTU",
     "value": "25000",
@@ -9088,8 +9088,8 @@
   {
     "id": "spec_00649",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
+    "entityId": "twin_eagles_c_series_30_inch_gas_grill_on_cart_standard",
+    "variantId": "twin_eagles_c_series_30_inch_gas_grill_on_cart_standard",
     "key": "body_material",
     "label": "Body Material",
     "value": "stainless_steel",
@@ -9102,8 +9102,8 @@
   {
     "id": "spec_00650",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
+    "entityId": "twin_eagles_c_series_30_inch_gas_grill_on_cart_standard",
+    "variantId": "twin_eagles_c_series_30_inch_gas_grill_on_cart_standard",
     "key": "made_in_usa",
     "label": "Made in USA",
     "value": "true",
@@ -9116,8 +9116,8 @@
   {
     "id": "spec_00651",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
+    "entityId": "twin_eagles_c_series_30_inch_gas_grill_on_cart_standard",
+    "variantId": "twin_eagles_c_series_30_inch_gas_grill_on_cart_standard",
     "key": "btu_output",
     "label": "BTU Output",
     "value": "50000",
@@ -9130,8 +9130,8 @@
   {
     "id": "spec_00652",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_36_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_36_inch_infrared_rotisserie",
     "key": "body_material",
     "label": "Body Material",
     "value": "stainless_steel",
@@ -9144,8 +9144,8 @@
   {
     "id": "spec_00653",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_36_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_36_inch_infrared_rotisserie",
     "key": "made_in_usa",
     "label": "Made in USA",
     "value": "true",
@@ -9158,8 +9158,8 @@
   {
     "id": "spec_00654",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_36_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_36_inch_infrared_rotisserie",
     "key": "btu_output",
     "label": "BTU Output",
     "value": "75000",
@@ -9172,8 +9172,8 @@
   {
     "id": "spec_00655",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_36_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_36_inch_infrared_rotisserie",
     "key": "rear_rotisserie_btu",
     "label": "Rear Rotisserie BTU",
     "value": "14000",
@@ -9186,8 +9186,8 @@
   {
     "id": "spec_00656",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_36_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_36_inch_infrared_rotisserie_and_sear_station",
     "key": "body_material",
     "label": "Body Material",
     "value": "stainless_steel",
@@ -9200,8 +9200,8 @@
   {
     "id": "spec_00657",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_36_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_36_inch_infrared_rotisserie_and_sear_station",
     "key": "made_in_usa",
     "label": "Made in USA",
     "value": "true",
@@ -9214,8 +9214,8 @@
   {
     "id": "spec_00658",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_36_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_36_inch_infrared_rotisserie_and_sear_station",
     "key": "btu_output",
     "label": "BTU Output",
     "value": "75000",
@@ -9228,8 +9228,8 @@
   {
     "id": "spec_00659",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_36_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_36_inch_infrared_rotisserie_and_sear_station",
     "key": "has_sear_zone",
     "label": "Has Sear Zone",
     "value": "true",
@@ -9242,8 +9242,8 @@
   {
     "id": "spec_00660",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_36_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_36_inch_infrared_rotisserie_and_sear_station",
     "key": "sear_burner_btu",
     "label": "Sear Burner BTU",
     "value": "25000",
@@ -9256,8 +9256,8 @@
   {
     "id": "spec_00661",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_36_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_36_inch_standard",
     "key": "body_material",
     "label": "Body Material",
     "value": "stainless_steel",
@@ -9270,8 +9270,8 @@
   {
     "id": "spec_00662",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_36_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_36_inch_standard",
     "key": "made_in_usa",
     "label": "Made in USA",
     "value": "true",
@@ -9284,8 +9284,8 @@
   {
     "id": "spec_00663",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_36_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_36_inch_standard",
     "key": "btu_output",
     "label": "BTU Output",
     "value": "75000",
@@ -9298,8 +9298,8 @@
   {
     "id": "spec_00664",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_42_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_42_inch_infrared_rotisserie",
     "key": "body_material",
     "label": "Body Material",
     "value": "stainless_steel",
@@ -9312,8 +9312,8 @@
   {
     "id": "spec_00665",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_42_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_42_inch_infrared_rotisserie",
     "key": "made_in_usa",
     "label": "Made in USA",
     "value": "true",
@@ -9326,8 +9326,8 @@
   {
     "id": "spec_00666",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_42_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_42_inch_infrared_rotisserie",
     "key": "btu_output",
     "label": "BTU Output",
     "value": "75000",
@@ -9340,8 +9340,8 @@
   {
     "id": "spec_00667",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_42_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_42_inch_infrared_rotisserie",
     "key": "rear_rotisserie_btu",
     "label": "Rear Rotisserie BTU",
     "value": "14000",
@@ -9354,8 +9354,8 @@
   {
     "id": "spec_00668",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_42_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_42_inch_infrared_rotisserie_and_sear_station",
     "key": "body_material",
     "label": "Body Material",
     "value": "stainless_steel",
@@ -9368,8 +9368,8 @@
   {
     "id": "spec_00669",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_42_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_42_inch_infrared_rotisserie_and_sear_station",
     "key": "made_in_usa",
     "label": "Made in USA",
     "value": "true",
@@ -9382,8 +9382,8 @@
   {
     "id": "spec_00670",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_42_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_42_inch_infrared_rotisserie_and_sear_station",
     "key": "btu_output",
     "label": "BTU Output",
     "value": "75000",
@@ -9396,8 +9396,8 @@
   {
     "id": "spec_00671",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_42_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_42_inch_infrared_rotisserie_and_sear_station",
     "key": "has_sear_zone",
     "label": "Has Sear Zone",
     "value": "true",
@@ -9410,8 +9410,8 @@
   {
     "id": "spec_00672",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_42_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_42_inch_infrared_rotisserie_and_sear_station",
     "key": "sear_burner_btu",
     "label": "Sear Burner BTU",
     "value": "25000",
@@ -9424,8 +9424,8 @@
   {
     "id": "spec_00673",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_42_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_42_inch_standard",
     "key": "body_material",
     "label": "Body Material",
     "value": "stainless_steel",
@@ -9438,8 +9438,8 @@
   {
     "id": "spec_00674",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_42_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_42_inch_standard",
     "key": "made_in_usa",
     "label": "Made in USA",
     "value": "true",
@@ -9452,8 +9452,8 @@
   {
     "id": "spec_00675",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_42_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_42_inch_standard",
     "key": "btu_output",
     "label": "BTU Output",
     "value": "75000",
@@ -9466,8 +9466,8 @@
   {
     "id": "spec_00680",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_54_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_54_inch_infrared_rotisserie_and_sear_station",
     "key": "body_material",
     "label": "Body Material",
     "value": "stainless_steel",
@@ -9480,8 +9480,8 @@
   {
     "id": "spec_00681",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_54_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_54_inch_infrared_rotisserie_and_sear_station",
     "key": "made_in_usa",
     "label": "Made in USA",
     "value": "true",
@@ -9494,8 +9494,8 @@
   {
     "id": "spec_00682",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_54_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_54_inch_infrared_rotisserie_and_sear_station",
     "key": "btu_output",
     "label": "BTU Output",
     "value": "100000",
@@ -9508,8 +9508,8 @@
   {
     "id": "spec_00683",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_54_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_54_inch_infrared_rotisserie_and_sear_station",
     "key": "has_sear_zone",
     "label": "Has Sear Zone",
     "value": "true",
@@ -9522,8 +9522,8 @@
   {
     "id": "spec_00684",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_54_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_54_inch_infrared_rotisserie_and_sear_station",
     "key": "sear_burner_btu",
     "label": "Sear Burner BTU",
     "value": "25000",
@@ -9536,8 +9536,8 @@
   {
     "id": "spec_00685",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_54_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_54_inch_infrared_rotisserie_and_sear_station",
     "key": "rear_rotisserie_btu",
     "label": "Rear Rotisserie BTU",
     "value": "28000",
@@ -16002,6 +16002,20 @@
     "isActive": true
   },
   {
+    "id": "derived_alfa_classico_2_pizze_gas_side_burner",
+    "entityType": "variant",
+    "entityId": "alfa_classico_2_pizze_gas",
+    "variantId": "alfa_classico_2_pizze_gas",
+    "key": "side_burner",
+    "label": "Side Burner",
+    "value": "false",
+    "unit": "",
+    "valueType": "boolean",
+    "group": "Features",
+    "sortOrder": 1007,
+    "isActive": true
+  },
+  {
     "id": "derived_alfa_classico_2_pizze_gas_supports_propane",
     "entityType": "variant",
     "entityId": "alfa_classico_2_pizze_gas",
@@ -16012,7 +16026,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1007,
+    "sortOrder": 1008,
     "isActive": true
   },
   {
@@ -16026,7 +16040,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1008,
+    "sortOrder": 1009,
     "isActive": true
   },
   {
@@ -16040,7 +16054,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1009,
+    "sortOrder": 1010,
     "isActive": true
   },
   {
@@ -16054,7 +16068,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1010,
+    "sortOrder": 1011,
     "isActive": true
   },
   {
@@ -16068,7 +16082,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1011,
+    "sortOrder": 1012,
     "isActive": true
   },
   {
@@ -16082,7 +16096,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1012,
+    "sortOrder": 1013,
     "isActive": true
   },
   {
@@ -16096,7 +16110,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1013,
+    "sortOrder": 1014,
     "isActive": true
   },
   {
@@ -16110,7 +16124,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1014,
+    "sortOrder": 1015,
     "isActive": true
   },
   {
@@ -16124,7 +16138,7 @@
     "unit": "",
     "valueType": "",
     "group": "Installation",
-    "sortOrder": 1015,
+    "sortOrder": 1016,
     "isActive": true
   },
   {
@@ -16226,6 +16240,20 @@
     "isActive": true
   },
   {
+    "id": "derived_alfa_classico_2_pizze_wood_side_burner",
+    "entityType": "variant",
+    "entityId": "alfa_classico_2_pizze_wood",
+    "variantId": "alfa_classico_2_pizze_wood",
+    "key": "side_burner",
+    "label": "Side Burner",
+    "value": "false",
+    "unit": "",
+    "valueType": "boolean",
+    "group": "Features",
+    "sortOrder": 1007,
+    "isActive": true
+  },
+  {
     "id": "derived_alfa_classico_2_pizze_wood_supports_propane",
     "entityType": "variant",
     "entityId": "alfa_classico_2_pizze_wood",
@@ -16236,7 +16264,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1007,
+    "sortOrder": 1008,
     "isActive": true
   },
   {
@@ -16250,7 +16278,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1008,
+    "sortOrder": 1009,
     "isActive": true
   },
   {
@@ -16264,7 +16292,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1009,
+    "sortOrder": 1010,
     "isActive": true
   },
   {
@@ -16278,7 +16306,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1010,
+    "sortOrder": 1011,
     "isActive": true
   },
   {
@@ -16292,7 +16320,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1011,
+    "sortOrder": 1012,
     "isActive": true
   },
   {
@@ -16306,7 +16334,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1012,
+    "sortOrder": 1013,
     "isActive": true
   },
   {
@@ -16320,7 +16348,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1013,
+    "sortOrder": 1014,
     "isActive": true
   },
   {
@@ -16334,7 +16362,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1014,
+    "sortOrder": 1015,
     "isActive": true
   },
   {
@@ -16348,7 +16376,7 @@
     "unit": "",
     "valueType": "",
     "group": "Installation",
-    "sortOrder": 1015,
+    "sortOrder": 1016,
     "isActive": true
   },
   {
@@ -16450,6 +16478,20 @@
     "isActive": true
   },
   {
+    "id": "derived_alfa_classico_4_pizze_side_burner",
+    "entityType": "variant",
+    "entityId": "alfa_classico_4_pizze",
+    "variantId": "alfa_classico_4_pizze",
+    "key": "side_burner",
+    "label": "Side Burner",
+    "value": "false",
+    "unit": "",
+    "valueType": "boolean",
+    "group": "Features",
+    "sortOrder": 1007,
+    "isActive": true
+  },
+  {
     "id": "derived_alfa_classico_4_pizze_supports_propane",
     "entityType": "variant",
     "entityId": "alfa_classico_4_pizze",
@@ -16460,7 +16502,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1007,
+    "sortOrder": 1008,
     "isActive": true
   },
   {
@@ -16474,7 +16516,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1008,
+    "sortOrder": 1009,
     "isActive": true
   },
   {
@@ -16488,7 +16530,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1009,
+    "sortOrder": 1010,
     "isActive": true
   },
   {
@@ -16502,7 +16544,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1010,
+    "sortOrder": 1011,
     "isActive": true
   },
   {
@@ -16516,7 +16558,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1011,
+    "sortOrder": 1012,
     "isActive": true
   },
   {
@@ -16530,7 +16572,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1012,
+    "sortOrder": 1013,
     "isActive": true
   },
   {
@@ -16544,7 +16586,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1013,
+    "sortOrder": 1014,
     "isActive": true
   },
   {
@@ -16558,7 +16600,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1014,
+    "sortOrder": 1015,
     "isActive": true
   },
   {
@@ -16572,7 +16614,7 @@
     "unit": "",
     "valueType": "",
     "group": "Installation",
-    "sortOrder": 1015,
+    "sortOrder": 1016,
     "isActive": true
   },
   {
@@ -16716,6 +16758,20 @@
     "isActive": true
   },
   {
+    "id": "derived_alfa_futuro_2_pizze_side_burner",
+    "entityType": "variant",
+    "entityId": "alfa_futuro_2_pizze",
+    "variantId": "alfa_futuro_2_pizze",
+    "key": "side_burner",
+    "label": "Side Burner",
+    "value": "false",
+    "unit": "",
+    "valueType": "boolean",
+    "group": "Features",
+    "sortOrder": 1010,
+    "isActive": true
+  },
+  {
     "id": "derived_alfa_futuro_2_pizze_supports_propane",
     "entityType": "variant",
     "entityId": "alfa_futuro_2_pizze",
@@ -16726,7 +16782,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1010,
+    "sortOrder": 1011,
     "isActive": true
   },
   {
@@ -16740,7 +16796,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1011,
+    "sortOrder": 1012,
     "isActive": true
   },
   {
@@ -16754,7 +16810,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1012,
+    "sortOrder": 1013,
     "isActive": true
   },
   {
@@ -16768,7 +16824,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1013,
+    "sortOrder": 1014,
     "isActive": true
   },
   {
@@ -16782,7 +16838,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1014,
+    "sortOrder": 1015,
     "isActive": true
   },
   {
@@ -16796,7 +16852,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1015,
+    "sortOrder": 1016,
     "isActive": true
   },
   {
@@ -16810,7 +16866,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1016,
+    "sortOrder": 1017,
     "isActive": true
   },
   {
@@ -16824,7 +16880,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1017,
+    "sortOrder": 1018,
     "isActive": true
   },
   {
@@ -16838,7 +16894,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1018,
+    "sortOrder": 1019,
     "isActive": true
   },
   {
@@ -16852,7 +16908,7 @@
     "unit": "",
     "valueType": "",
     "group": "Installation",
-    "sortOrder": 1019,
+    "sortOrder": 1020,
     "isActive": true
   },
   {
@@ -16996,6 +17052,20 @@
     "isActive": true
   },
   {
+    "id": "derived_alfa_futuro_4_pizze_side_burner",
+    "entityType": "variant",
+    "entityId": "alfa_futuro_4_pizze",
+    "variantId": "alfa_futuro_4_pizze",
+    "key": "side_burner",
+    "label": "Side Burner",
+    "value": "false",
+    "unit": "",
+    "valueType": "boolean",
+    "group": "Features",
+    "sortOrder": 1010,
+    "isActive": true
+  },
+  {
     "id": "derived_alfa_futuro_4_pizze_supports_propane",
     "entityType": "variant",
     "entityId": "alfa_futuro_4_pizze",
@@ -17006,7 +17076,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1010,
+    "sortOrder": 1011,
     "isActive": true
   },
   {
@@ -17020,7 +17090,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1011,
+    "sortOrder": 1012,
     "isActive": true
   },
   {
@@ -17034,7 +17104,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1012,
+    "sortOrder": 1013,
     "isActive": true
   },
   {
@@ -17048,7 +17118,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1013,
+    "sortOrder": 1014,
     "isActive": true
   },
   {
@@ -17062,7 +17132,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1014,
+    "sortOrder": 1015,
     "isActive": true
   },
   {
@@ -17076,7 +17146,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1015,
+    "sortOrder": 1016,
     "isActive": true
   },
   {
@@ -17090,7 +17160,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1016,
+    "sortOrder": 1017,
     "isActive": true
   },
   {
@@ -17104,7 +17174,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1017,
+    "sortOrder": 1018,
     "isActive": true
   },
   {
@@ -17118,7 +17188,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1018,
+    "sortOrder": 1019,
     "isActive": true
   },
   {
@@ -17132,7 +17202,7 @@
     "unit": "",
     "valueType": "",
     "group": "Installation",
-    "sortOrder": 1019,
+    "sortOrder": 1020,
     "isActive": true
   },
   {
@@ -17234,6 +17304,20 @@
     "isActive": true
   },
   {
+    "id": "derived_alfa_moderno_1_pizza_side_burner",
+    "entityType": "variant",
+    "entityId": "alfa_moderno_1_pizza",
+    "variantId": "alfa_moderno_1_pizza",
+    "key": "side_burner",
+    "label": "Side Burner",
+    "value": "false",
+    "unit": "",
+    "valueType": "boolean",
+    "group": "Features",
+    "sortOrder": 1007,
+    "isActive": true
+  },
+  {
     "id": "derived_alfa_moderno_1_pizza_supports_propane",
     "entityType": "variant",
     "entityId": "alfa_moderno_1_pizza",
@@ -17244,7 +17328,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1007,
+    "sortOrder": 1008,
     "isActive": true
   },
   {
@@ -17258,7 +17342,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1008,
+    "sortOrder": 1009,
     "isActive": true
   },
   {
@@ -17272,7 +17356,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1009,
+    "sortOrder": 1010,
     "isActive": true
   },
   {
@@ -17286,7 +17370,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1010,
+    "sortOrder": 1011,
     "isActive": true
   },
   {
@@ -17300,7 +17384,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1011,
+    "sortOrder": 1012,
     "isActive": true
   },
   {
@@ -17314,7 +17398,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1012,
+    "sortOrder": 1013,
     "isActive": true
   },
   {
@@ -17328,7 +17412,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1013,
+    "sortOrder": 1014,
     "isActive": true
   },
   {
@@ -17342,7 +17426,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1014,
+    "sortOrder": 1015,
     "isActive": true
   },
   {
@@ -17356,7 +17440,7 @@
     "unit": "",
     "valueType": "",
     "group": "Installation",
-    "sortOrder": 1015,
+    "sortOrder": 1016,
     "isActive": true
   },
   {
@@ -17458,6 +17542,20 @@
     "isActive": true
   },
   {
+    "id": "derived_alfa_moderno_2_pizze_side_burner",
+    "entityType": "variant",
+    "entityId": "alfa_moderno_2_pizze",
+    "variantId": "alfa_moderno_2_pizze",
+    "key": "side_burner",
+    "label": "Side Burner",
+    "value": "false",
+    "unit": "",
+    "valueType": "boolean",
+    "group": "Features",
+    "sortOrder": 1007,
+    "isActive": true
+  },
+  {
     "id": "derived_alfa_moderno_2_pizze_supports_propane",
     "entityType": "variant",
     "entityId": "alfa_moderno_2_pizze",
@@ -17468,7 +17566,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1007,
+    "sortOrder": 1008,
     "isActive": true
   },
   {
@@ -17482,7 +17580,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1008,
+    "sortOrder": 1009,
     "isActive": true
   },
   {
@@ -17496,7 +17594,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1009,
+    "sortOrder": 1010,
     "isActive": true
   },
   {
@@ -17510,7 +17608,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1010,
+    "sortOrder": 1011,
     "isActive": true
   },
   {
@@ -17524,7 +17622,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1011,
+    "sortOrder": 1012,
     "isActive": true
   },
   {
@@ -17538,7 +17636,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1012,
+    "sortOrder": 1013,
     "isActive": true
   },
   {
@@ -17552,7 +17650,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1013,
+    "sortOrder": 1014,
     "isActive": true
   },
   {
@@ -17566,7 +17664,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1014,
+    "sortOrder": 1015,
     "isActive": true
   },
   {
@@ -17580,7 +17678,7 @@
     "unit": "",
     "valueType": "",
     "group": "Installation",
-    "sortOrder": 1015,
+    "sortOrder": 1016,
     "isActive": true
   },
   {
@@ -17682,6 +17780,20 @@
     "isActive": true
   },
   {
+    "id": "derived_alfa_moderno_3_pizze_gas_side_burner",
+    "entityType": "variant",
+    "entityId": "alfa_moderno_3_pizze_gas",
+    "variantId": "alfa_moderno_3_pizze_gas",
+    "key": "side_burner",
+    "label": "Side Burner",
+    "value": "false",
+    "unit": "",
+    "valueType": "boolean",
+    "group": "Features",
+    "sortOrder": 1007,
+    "isActive": true
+  },
+  {
     "id": "derived_alfa_moderno_3_pizze_gas_supports_propane",
     "entityType": "variant",
     "entityId": "alfa_moderno_3_pizze_gas",
@@ -17692,7 +17804,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1007,
+    "sortOrder": 1008,
     "isActive": true
   },
   {
@@ -17706,7 +17818,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1008,
+    "sortOrder": 1009,
     "isActive": true
   },
   {
@@ -17720,7 +17832,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1009,
+    "sortOrder": 1010,
     "isActive": true
   },
   {
@@ -17734,7 +17846,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1010,
+    "sortOrder": 1011,
     "isActive": true
   },
   {
@@ -17748,7 +17860,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1011,
+    "sortOrder": 1012,
     "isActive": true
   },
   {
@@ -17762,7 +17874,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1012,
+    "sortOrder": 1013,
     "isActive": true
   },
   {
@@ -17776,7 +17888,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1013,
+    "sortOrder": 1014,
     "isActive": true
   },
   {
@@ -17790,7 +17902,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1014,
+    "sortOrder": 1015,
     "isActive": true
   },
   {
@@ -17804,7 +17916,7 @@
     "unit": "",
     "valueType": "",
     "group": "Installation",
-    "sortOrder": 1015,
+    "sortOrder": 1016,
     "isActive": true
   },
   {
@@ -17906,6 +18018,20 @@
     "isActive": true
   },
   {
+    "id": "derived_alfa_moderno_3_pizze_wood_side_burner",
+    "entityType": "variant",
+    "entityId": "alfa_moderno_3_pizze_wood",
+    "variantId": "alfa_moderno_3_pizze_wood",
+    "key": "side_burner",
+    "label": "Side Burner",
+    "value": "false",
+    "unit": "",
+    "valueType": "boolean",
+    "group": "Features",
+    "sortOrder": 1007,
+    "isActive": true
+  },
+  {
     "id": "derived_alfa_moderno_3_pizze_wood_supports_propane",
     "entityType": "variant",
     "entityId": "alfa_moderno_3_pizze_wood",
@@ -17916,7 +18042,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1007,
+    "sortOrder": 1008,
     "isActive": true
   },
   {
@@ -17930,7 +18056,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1008,
+    "sortOrder": 1009,
     "isActive": true
   },
   {
@@ -17944,7 +18070,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1009,
+    "sortOrder": 1010,
     "isActive": true
   },
   {
@@ -17958,7 +18084,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1010,
+    "sortOrder": 1011,
     "isActive": true
   },
   {
@@ -17972,7 +18098,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1011,
+    "sortOrder": 1012,
     "isActive": true
   },
   {
@@ -17986,7 +18112,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1012,
+    "sortOrder": 1013,
     "isActive": true
   },
   {
@@ -18000,7 +18126,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1013,
+    "sortOrder": 1014,
     "isActive": true
   },
   {
@@ -18014,7 +18140,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1014,
+    "sortOrder": 1015,
     "isActive": true
   },
   {
@@ -18028,7 +18154,7 @@
     "unit": "",
     "valueType": "",
     "group": "Installation",
-    "sortOrder": 1015,
+    "sortOrder": 1016,
     "isActive": true
   },
   {
@@ -18130,6 +18256,20 @@
     "isActive": true
   },
   {
+    "id": "derived_alfa_moderno_5_pizze_side_burner",
+    "entityType": "variant",
+    "entityId": "alfa_moderno_5_pizze",
+    "variantId": "alfa_moderno_5_pizze",
+    "key": "side_burner",
+    "label": "Side Burner",
+    "value": "false",
+    "unit": "",
+    "valueType": "boolean",
+    "group": "Features",
+    "sortOrder": 1007,
+    "isActive": true
+  },
+  {
     "id": "derived_alfa_moderno_5_pizze_supports_propane",
     "entityType": "variant",
     "entityId": "alfa_moderno_5_pizze",
@@ -18140,7 +18280,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1007,
+    "sortOrder": 1008,
     "isActive": true
   },
   {
@@ -18154,7 +18294,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1008,
+    "sortOrder": 1009,
     "isActive": true
   },
   {
@@ -18168,7 +18308,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1009,
+    "sortOrder": 1010,
     "isActive": true
   },
   {
@@ -18182,7 +18322,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1010,
+    "sortOrder": 1011,
     "isActive": true
   },
   {
@@ -18196,7 +18336,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1011,
+    "sortOrder": 1012,
     "isActive": true
   },
   {
@@ -18210,7 +18350,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1012,
+    "sortOrder": 1013,
     "isActive": true
   },
   {
@@ -18224,7 +18364,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1013,
+    "sortOrder": 1014,
     "isActive": true
   },
   {
@@ -18238,7 +18378,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1014,
+    "sortOrder": 1015,
     "isActive": true
   },
   {
@@ -18252,7 +18392,7 @@
     "unit": "",
     "valueType": "",
     "group": "Installation",
-    "sortOrder": 1015,
+    "sortOrder": 1016,
     "isActive": true
   },
   {
@@ -18382,6 +18522,20 @@
     "isActive": true
   },
   {
+    "id": "derived_alfa_moderno_portable_side_burner",
+    "entityType": "variant",
+    "entityId": "alfa_moderno_portable",
+    "variantId": "alfa_moderno_portable",
+    "key": "side_burner",
+    "label": "Side Burner",
+    "value": "false",
+    "unit": "",
+    "valueType": "boolean",
+    "group": "Features",
+    "sortOrder": 1009,
+    "isActive": true
+  },
+  {
     "id": "derived_alfa_moderno_portable_supports_propane",
     "entityType": "variant",
     "entityId": "alfa_moderno_portable",
@@ -18392,7 +18546,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1009,
+    "sortOrder": 1010,
     "isActive": true
   },
   {
@@ -18406,7 +18560,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1010,
+    "sortOrder": 1011,
     "isActive": true
   },
   {
@@ -18420,7 +18574,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1011,
+    "sortOrder": 1012,
     "isActive": true
   },
   {
@@ -18434,7 +18588,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1012,
+    "sortOrder": 1013,
     "isActive": true
   },
   {
@@ -18448,7 +18602,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Fuel",
-    "sortOrder": 1013,
+    "sortOrder": 1014,
     "isActive": true
   },
   {
@@ -18462,7 +18616,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1014,
+    "sortOrder": 1015,
     "isActive": true
   },
   {
@@ -18476,7 +18630,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1015,
+    "sortOrder": 1016,
     "isActive": true
   },
   {
@@ -18490,7 +18644,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1016,
+    "sortOrder": 1017,
     "isActive": true
   },
   {
@@ -18504,7 +18658,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1017,
+    "sortOrder": 1018,
     "isActive": true
   },
   {
@@ -18518,7 +18672,7 @@
     "unit": "",
     "valueType": "boolean",
     "group": "Installation",
-    "sortOrder": 1018,
+    "sortOrder": 1019,
     "isActive": true
   },
   {
@@ -71736,10 +71890,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_primary_cooking_area",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_primary_cooking_area",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
     "key": "primary_cooking_area",
     "label": "Primary Cooking Area",
     "value": "508",
@@ -71750,10 +71904,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_total_cooking_area",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_total_cooking_area",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
     "key": "total_cooking_area",
     "label": "Total Cooking Area",
     "value": "508",
@@ -71764,10 +71918,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_burner_count",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_burner_count",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
     "key": "burner_count",
     "label": "Burner Count",
     "value": "2",
@@ -71778,10 +71932,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_heat_zones",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_heat_zones",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
     "key": "heat_zones",
     "label": "Heat Zones",
     "value": "2",
@@ -71792,10 +71946,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_fuel_type",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_fuel_type",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
     "key": "fuel_type",
     "label": "Fuel Type",
     "value": "Gas",
@@ -71806,10 +71960,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_install_type",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_install_type",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
     "key": "install_type",
     "label": "Installation",
     "value": "built_in",
@@ -71820,10 +71974,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_cooking_category",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_cooking_category",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
     "key": "cooking_category",
     "label": "Cooking Category",
     "value": "gas_grill",
@@ -71834,10 +71988,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_cooking_style",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_cooking_style",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
     "key": "cooking_style",
     "label": "Cooking Style",
     "value": "gas_grill",
@@ -71848,10 +72002,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_size_class",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_size_class",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
     "key": "size_class",
     "label": "Size Class",
     "value": "medium",
@@ -71862,10 +72016,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_rotisserie_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_rotisserie_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
     "key": "rotisserie_compatible",
     "label": "Rotisserie Compatible",
     "value": "true",
@@ -71876,10 +72030,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_supports_propane",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_supports_propane",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
     "key": "supports_propane",
     "label": "Supports Propane",
     "value": "true",
@@ -71890,10 +72044,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_supports_natural_gas",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_supports_natural_gas",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
     "key": "supports_natural_gas",
     "label": "Supports Natural Gas",
     "value": "true",
@@ -71904,10 +72058,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_supports_charcoal",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_supports_charcoal",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
     "key": "supports_charcoal",
     "label": "Supports Charcoal",
     "value": "false",
@@ -71918,10 +72072,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_supports_pellet",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_supports_pellet",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
     "key": "supports_pellet",
     "label": "Supports Pellet",
     "value": "false",
@@ -71932,10 +72086,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_supports_wood",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_supports_wood",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
     "key": "supports_wood",
     "label": "Supports Wood",
     "value": "false",
@@ -71946,10 +72100,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_built_in_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_built_in_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
     "key": "built_in_compatible",
     "label": "Built-In Compatible",
     "value": "true",
@@ -71960,10 +72114,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_freestanding_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_freestanding_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
     "key": "freestanding_compatible",
     "label": "Freestanding Compatible",
     "value": "false",
@@ -71974,10 +72128,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_supports_built_in",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_supports_built_in",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
     "key": "supports_built_in",
     "label": "Supports Built-In",
     "value": "true",
@@ -71988,10 +72142,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_supports_freestanding",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_supports_freestanding",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie",
     "key": "supports_freestanding",
     "label": "Supports Freestanding",
     "value": "false",
@@ -72002,10 +72156,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station_primary_cooking_area",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station_primary_cooking_area",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
     "key": "primary_cooking_area",
     "label": "Primary Cooking Area",
     "value": "508",
@@ -72016,10 +72170,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station_total_cooking_area",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station_total_cooking_area",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
     "key": "total_cooking_area",
     "label": "Total Cooking Area",
     "value": "508",
@@ -72030,10 +72184,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station_burner_count",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station_burner_count",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
     "key": "burner_count",
     "label": "Burner Count",
     "value": "2",
@@ -72044,10 +72198,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station_heat_zones",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station_heat_zones",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
     "key": "heat_zones",
     "label": "Heat Zones",
     "value": "2",
@@ -72058,10 +72212,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station_fuel_type",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station_fuel_type",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
     "key": "fuel_type",
     "label": "Fuel Type",
     "value": "Gas",
@@ -72072,10 +72226,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station_install_type",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station_install_type",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
     "key": "install_type",
     "label": "Installation",
     "value": "built_in",
@@ -72086,10 +72240,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station_cooking_category",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station_cooking_category",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
     "key": "cooking_category",
     "label": "Cooking Category",
     "value": "gas_grill",
@@ -72100,10 +72254,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station_cooking_style",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station_cooking_style",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
     "key": "cooking_style",
     "label": "Cooking Style",
     "value": "gas_grill",
@@ -72114,10 +72268,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station_size_class",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station_size_class",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
     "key": "size_class",
     "label": "Size Class",
     "value": "medium",
@@ -72128,10 +72282,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station_rotisserie_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station_rotisserie_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
     "key": "rotisserie_compatible",
     "label": "Rotisserie Compatible",
     "value": "true",
@@ -72142,10 +72296,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station_supports_propane",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station_supports_propane",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_propane",
     "label": "Supports Propane",
     "value": "true",
@@ -72156,10 +72310,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station_supports_natural_gas",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station_supports_natural_gas",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_natural_gas",
     "label": "Supports Natural Gas",
     "value": "true",
@@ -72170,10 +72324,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station_supports_charcoal",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station_supports_charcoal",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_charcoal",
     "label": "Supports Charcoal",
     "value": "false",
@@ -72184,10 +72338,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station_supports_pellet",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station_supports_pellet",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_pellet",
     "label": "Supports Pellet",
     "value": "false",
@@ -72198,10 +72352,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station_supports_wood",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station_supports_wood",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_wood",
     "label": "Supports Wood",
     "value": "false",
@@ -72212,10 +72366,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station_built_in_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station_built_in_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
     "key": "built_in_compatible",
     "label": "Built-In Compatible",
     "value": "true",
@@ -72226,10 +72380,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station_freestanding_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station_freestanding_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
     "key": "freestanding_compatible",
     "label": "Freestanding Compatible",
     "value": "false",
@@ -72240,10 +72394,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station_supports_built_in",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station_supports_built_in",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_built_in",
     "label": "Supports Built-In",
     "value": "true",
@@ -72254,10 +72408,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station_supports_freestanding",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station_supports_freestanding",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_freestanding",
     "label": "Supports Freestanding",
     "value": "false",
@@ -72268,10 +72422,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard_primary_cooking_area",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_standard_primary_cooking_area",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
     "key": "primary_cooking_area",
     "label": "Primary Cooking Area",
     "value": "508",
@@ -72282,10 +72436,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard_total_cooking_area",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_standard_total_cooking_area",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
     "key": "total_cooking_area",
     "label": "Total Cooking Area",
     "value": "508",
@@ -72296,10 +72450,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard_burner_count",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_standard_burner_count",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
     "key": "burner_count",
     "label": "Burner Count",
     "value": "2",
@@ -72310,10 +72464,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard_heat_zones",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_standard_heat_zones",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
     "key": "heat_zones",
     "label": "Heat Zones",
     "value": "2",
@@ -72324,10 +72478,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard_fuel_type",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_standard_fuel_type",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
     "key": "fuel_type",
     "label": "Fuel Type",
     "value": "Gas",
@@ -72338,10 +72492,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard_install_type",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_standard_install_type",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
     "key": "install_type",
     "label": "Installation",
     "value": "built_in",
@@ -72352,10 +72506,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard_cooking_category",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_standard_cooking_category",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
     "key": "cooking_category",
     "label": "Cooking Category",
     "value": "gas_grill",
@@ -72366,10 +72520,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard_cooking_style",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_standard_cooking_style",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
     "key": "cooking_style",
     "label": "Cooking Style",
     "value": "gas_grill",
@@ -72380,10 +72534,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard_size_class",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_standard_size_class",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
     "key": "size_class",
     "label": "Size Class",
     "value": "medium",
@@ -72394,10 +72548,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard_supports_propane",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_standard_supports_propane",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
     "key": "supports_propane",
     "label": "Supports Propane",
     "value": "true",
@@ -72408,10 +72562,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard_supports_natural_gas",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_standard_supports_natural_gas",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
     "key": "supports_natural_gas",
     "label": "Supports Natural Gas",
     "value": "true",
@@ -72422,10 +72576,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard_supports_charcoal",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_standard_supports_charcoal",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
     "key": "supports_charcoal",
     "label": "Supports Charcoal",
     "value": "false",
@@ -72436,10 +72590,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard_supports_pellet",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_standard_supports_pellet",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
     "key": "supports_pellet",
     "label": "Supports Pellet",
     "value": "false",
@@ -72450,10 +72604,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard_supports_wood",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_standard_supports_wood",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
     "key": "supports_wood",
     "label": "Supports Wood",
     "value": "false",
@@ -72464,10 +72618,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard_built_in_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_standard_built_in_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
     "key": "built_in_compatible",
     "label": "Built-In Compatible",
     "value": "true",
@@ -72478,10 +72632,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard_freestanding_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_standard_freestanding_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
     "key": "freestanding_compatible",
     "label": "Freestanding Compatible",
     "value": "false",
@@ -72492,10 +72646,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard_supports_built_in",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_standard_supports_built_in",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
     "key": "supports_built_in",
     "label": "Supports Built-In",
     "value": "true",
@@ -72506,10 +72660,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard_supports_freestanding",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_30_inch_standard_supports_freestanding",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_30_inch_gas_grill_30_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
     "key": "supports_freestanding",
     "label": "Supports Freestanding",
     "value": "false",
@@ -72520,10 +72674,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_primary_cooking_area",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_primary_cooking_area",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
     "key": "primary_cooking_area",
     "label": "Primary Cooking Area",
     "value": "640",
@@ -72534,10 +72688,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_total_cooking_area",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_total_cooking_area",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
     "key": "total_cooking_area",
     "label": "Total Cooking Area",
     "value": "640",
@@ -72548,10 +72702,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_burner_count",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_burner_count",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
     "key": "burner_count",
     "label": "Burner Count",
     "value": "3",
@@ -72562,10 +72716,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_heat_zones",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_heat_zones",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
     "key": "heat_zones",
     "label": "Heat Zones",
     "value": "3",
@@ -72576,10 +72730,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_fuel_type",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_fuel_type",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
     "key": "fuel_type",
     "label": "Fuel Type",
     "value": "Gas",
@@ -72590,10 +72744,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_install_type",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_install_type",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
     "key": "install_type",
     "label": "Installation",
     "value": "built_in",
@@ -72604,10 +72758,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_cooking_category",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_cooking_category",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
     "key": "cooking_category",
     "label": "Cooking Category",
     "value": "gas_grill",
@@ -72618,10 +72772,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_cooking_style",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_cooking_style",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
     "key": "cooking_style",
     "label": "Cooking Style",
     "value": "gas_grill",
@@ -72632,10 +72786,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_size_class",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_size_class",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
     "key": "size_class",
     "label": "Size Class",
     "value": "medium",
@@ -72646,10 +72800,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_rotisserie_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_rotisserie_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
     "key": "rotisserie_compatible",
     "label": "Rotisserie Compatible",
     "value": "true",
@@ -72660,10 +72814,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_supports_propane",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_supports_propane",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
     "key": "supports_propane",
     "label": "Supports Propane",
     "value": "true",
@@ -72674,10 +72828,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_supports_natural_gas",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_supports_natural_gas",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
     "key": "supports_natural_gas",
     "label": "Supports Natural Gas",
     "value": "true",
@@ -72688,10 +72842,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_supports_charcoal",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_supports_charcoal",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
     "key": "supports_charcoal",
     "label": "Supports Charcoal",
     "value": "false",
@@ -72702,10 +72856,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_supports_pellet",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_supports_pellet",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
     "key": "supports_pellet",
     "label": "Supports Pellet",
     "value": "false",
@@ -72716,10 +72870,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_supports_wood",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_supports_wood",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
     "key": "supports_wood",
     "label": "Supports Wood",
     "value": "false",
@@ -72730,10 +72884,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_built_in_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_built_in_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
     "key": "built_in_compatible",
     "label": "Built-In Compatible",
     "value": "true",
@@ -72744,10 +72898,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_freestanding_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_freestanding_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
     "key": "freestanding_compatible",
     "label": "Freestanding Compatible",
     "value": "false",
@@ -72758,10 +72912,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_supports_built_in",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_supports_built_in",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
     "key": "supports_built_in",
     "label": "Supports Built-In",
     "value": "true",
@@ -72772,10 +72926,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_supports_freestanding",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_supports_freestanding",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
     "key": "supports_freestanding",
     "label": "Supports Freestanding",
     "value": "false",
@@ -72786,10 +72940,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station_primary_cooking_area",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station_primary_cooking_area",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
     "key": "primary_cooking_area",
     "label": "Primary Cooking Area",
     "value": "640",
@@ -72800,10 +72954,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station_total_cooking_area",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station_total_cooking_area",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
     "key": "total_cooking_area",
     "label": "Total Cooking Area",
     "value": "640",
@@ -72814,10 +72968,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station_burner_count",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station_burner_count",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
     "key": "burner_count",
     "label": "Burner Count",
     "value": "3",
@@ -72828,10 +72982,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station_heat_zones",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station_heat_zones",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
     "key": "heat_zones",
     "label": "Heat Zones",
     "value": "3",
@@ -72842,10 +72996,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station_fuel_type",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station_fuel_type",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
     "key": "fuel_type",
     "label": "Fuel Type",
     "value": "Gas",
@@ -72856,10 +73010,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station_install_type",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station_install_type",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
     "key": "install_type",
     "label": "Installation",
     "value": "built_in",
@@ -72870,10 +73024,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station_cooking_category",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station_cooking_category",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
     "key": "cooking_category",
     "label": "Cooking Category",
     "value": "gas_grill",
@@ -72884,10 +73038,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station_cooking_style",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station_cooking_style",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
     "key": "cooking_style",
     "label": "Cooking Style",
     "value": "gas_grill",
@@ -72898,10 +73052,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station_size_class",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station_size_class",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
     "key": "size_class",
     "label": "Size Class",
     "value": "medium",
@@ -72912,10 +73066,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station_rotisserie_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station_rotisserie_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
     "key": "rotisserie_compatible",
     "label": "Rotisserie Compatible",
     "value": "true",
@@ -72926,10 +73080,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station_supports_propane",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station_supports_propane",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_propane",
     "label": "Supports Propane",
     "value": "true",
@@ -72940,10 +73094,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station_supports_natural_gas",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station_supports_natural_gas",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_natural_gas",
     "label": "Supports Natural Gas",
     "value": "true",
@@ -72954,10 +73108,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station_supports_charcoal",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station_supports_charcoal",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_charcoal",
     "label": "Supports Charcoal",
     "value": "false",
@@ -72968,10 +73122,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station_supports_pellet",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station_supports_pellet",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_pellet",
     "label": "Supports Pellet",
     "value": "false",
@@ -72982,10 +73136,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station_supports_wood",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station_supports_wood",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_wood",
     "label": "Supports Wood",
     "value": "false",
@@ -72996,10 +73150,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station_built_in_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station_built_in_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
     "key": "built_in_compatible",
     "label": "Built-In Compatible",
     "value": "true",
@@ -73010,10 +73164,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station_freestanding_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station_freestanding_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
     "key": "freestanding_compatible",
     "label": "Freestanding Compatible",
     "value": "false",
@@ -73024,10 +73178,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station_supports_built_in",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station_supports_built_in",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_built_in",
     "label": "Supports Built-In",
     "value": "true",
@@ -73038,10 +73192,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station_supports_freestanding",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station_supports_freestanding",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_freestanding",
     "label": "Supports Freestanding",
     "value": "false",
@@ -73052,10 +73206,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard_primary_cooking_area",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_standard_primary_cooking_area",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
     "key": "primary_cooking_area",
     "label": "Primary Cooking Area",
     "value": "640",
@@ -73066,10 +73220,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard_total_cooking_area",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_standard_total_cooking_area",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
     "key": "total_cooking_area",
     "label": "Total Cooking Area",
     "value": "640",
@@ -73080,10 +73234,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard_burner_count",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_standard_burner_count",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
     "key": "burner_count",
     "label": "Burner Count",
     "value": "3",
@@ -73094,10 +73248,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard_heat_zones",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_standard_heat_zones",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
     "key": "heat_zones",
     "label": "Heat Zones",
     "value": "3",
@@ -73108,10 +73262,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard_fuel_type",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_standard_fuel_type",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
     "key": "fuel_type",
     "label": "Fuel Type",
     "value": "Gas",
@@ -73122,10 +73276,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard_install_type",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_standard_install_type",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
     "key": "install_type",
     "label": "Installation",
     "value": "built_in",
@@ -73136,10 +73290,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard_cooking_category",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_standard_cooking_category",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
     "key": "cooking_category",
     "label": "Cooking Category",
     "value": "gas_grill",
@@ -73150,10 +73304,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard_cooking_style",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_standard_cooking_style",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
     "key": "cooking_style",
     "label": "Cooking Style",
     "value": "gas_grill",
@@ -73164,10 +73318,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard_size_class",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_standard_size_class",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
     "key": "size_class",
     "label": "Size Class",
     "value": "medium",
@@ -73178,10 +73332,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard_supports_propane",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_standard_supports_propane",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
     "key": "supports_propane",
     "label": "Supports Propane",
     "value": "true",
@@ -73192,10 +73346,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard_supports_natural_gas",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_standard_supports_natural_gas",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
     "key": "supports_natural_gas",
     "label": "Supports Natural Gas",
     "value": "true",
@@ -73206,10 +73360,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard_supports_charcoal",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_standard_supports_charcoal",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
     "key": "supports_charcoal",
     "label": "Supports Charcoal",
     "value": "false",
@@ -73220,10 +73374,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard_supports_pellet",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_standard_supports_pellet",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
     "key": "supports_pellet",
     "label": "Supports Pellet",
     "value": "false",
@@ -73234,10 +73388,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard_supports_wood",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_standard_supports_wood",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
     "key": "supports_wood",
     "label": "Supports Wood",
     "value": "false",
@@ -73248,10 +73402,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard_built_in_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_standard_built_in_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
     "key": "built_in_compatible",
     "label": "Built-In Compatible",
     "value": "true",
@@ -73262,10 +73416,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard_freestanding_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_standard_freestanding_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
     "key": "freestanding_compatible",
     "label": "Freestanding Compatible",
     "value": "false",
@@ -73276,10 +73430,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard_supports_built_in",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_standard_supports_built_in",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
     "key": "supports_built_in",
     "label": "Supports Built-In",
     "value": "true",
@@ -73290,10 +73444,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard_supports_freestanding",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_36_inch_standard_supports_freestanding",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_36_inch_gas_grill_36_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_standard",
     "key": "supports_freestanding",
     "label": "Supports Freestanding",
     "value": "false",
@@ -73304,10 +73458,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_primary_cooking_area",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_primary_cooking_area",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
     "key": "primary_cooking_area",
     "label": "Primary Cooking Area",
     "value": "760",
@@ -73318,10 +73472,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_total_cooking_area",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_total_cooking_area",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
     "key": "total_cooking_area",
     "label": "Total Cooking Area",
     "value": "760",
@@ -73332,10 +73486,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_burner_count",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_burner_count",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
     "key": "burner_count",
     "label": "Burner Count",
     "value": "3",
@@ -73346,10 +73500,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_heat_zones",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_heat_zones",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
     "key": "heat_zones",
     "label": "Heat Zones",
     "value": "3",
@@ -73360,10 +73514,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_fuel_type",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_fuel_type",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
     "key": "fuel_type",
     "label": "Fuel Type",
     "value": "Gas",
@@ -73374,10 +73528,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_install_type",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_install_type",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
     "key": "install_type",
     "label": "Installation",
     "value": "built_in",
@@ -73388,10 +73542,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_cooking_category",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_cooking_category",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
     "key": "cooking_category",
     "label": "Cooking Category",
     "value": "gas_grill",
@@ -73402,10 +73556,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_cooking_style",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_cooking_style",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
     "key": "cooking_style",
     "label": "Cooking Style",
     "value": "gas_grill",
@@ -73416,10 +73570,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_size_class",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_size_class",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
     "key": "size_class",
     "label": "Size Class",
     "value": "large",
@@ -73430,10 +73584,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_rotisserie_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_rotisserie_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
     "key": "rotisserie_compatible",
     "label": "Rotisserie Compatible",
     "value": "true",
@@ -73444,10 +73598,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_supports_propane",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_supports_propane",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
     "key": "supports_propane",
     "label": "Supports Propane",
     "value": "true",
@@ -73458,10 +73612,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_supports_natural_gas",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_supports_natural_gas",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
     "key": "supports_natural_gas",
     "label": "Supports Natural Gas",
     "value": "true",
@@ -73472,10 +73626,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_supports_charcoal",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_supports_charcoal",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
     "key": "supports_charcoal",
     "label": "Supports Charcoal",
     "value": "false",
@@ -73486,10 +73640,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_supports_pellet",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_supports_pellet",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
     "key": "supports_pellet",
     "label": "Supports Pellet",
     "value": "false",
@@ -73500,10 +73654,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_supports_wood",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_supports_wood",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
     "key": "supports_wood",
     "label": "Supports Wood",
     "value": "false",
@@ -73514,10 +73668,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_built_in_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_built_in_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
     "key": "built_in_compatible",
     "label": "Built-In Compatible",
     "value": "true",
@@ -73528,10 +73682,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_freestanding_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_freestanding_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
     "key": "freestanding_compatible",
     "label": "Freestanding Compatible",
     "value": "false",
@@ -73542,10 +73696,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_supports_built_in",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_supports_built_in",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
     "key": "supports_built_in",
     "label": "Supports Built-In",
     "value": "true",
@@ -73556,10 +73710,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_supports_freestanding",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_supports_freestanding",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie",
     "key": "supports_freestanding",
     "label": "Supports Freestanding",
     "value": "false",
@@ -73570,10 +73724,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station_primary_cooking_area",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station_primary_cooking_area",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
     "key": "primary_cooking_area",
     "label": "Primary Cooking Area",
     "value": "760",
@@ -73584,10 +73738,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station_total_cooking_area",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station_total_cooking_area",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
     "key": "total_cooking_area",
     "label": "Total Cooking Area",
     "value": "760",
@@ -73598,10 +73752,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station_burner_count",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station_burner_count",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
     "key": "burner_count",
     "label": "Burner Count",
     "value": "3",
@@ -73612,10 +73766,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station_heat_zones",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station_heat_zones",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
     "key": "heat_zones",
     "label": "Heat Zones",
     "value": "3",
@@ -73626,10 +73780,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station_fuel_type",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station_fuel_type",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
     "key": "fuel_type",
     "label": "Fuel Type",
     "value": "Gas",
@@ -73640,10 +73794,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station_install_type",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station_install_type",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
     "key": "install_type",
     "label": "Installation",
     "value": "built_in",
@@ -73654,10 +73808,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station_cooking_category",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station_cooking_category",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
     "key": "cooking_category",
     "label": "Cooking Category",
     "value": "gas_grill",
@@ -73668,10 +73822,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station_cooking_style",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station_cooking_style",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
     "key": "cooking_style",
     "label": "Cooking Style",
     "value": "gas_grill",
@@ -73682,10 +73836,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station_size_class",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station_size_class",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
     "key": "size_class",
     "label": "Size Class",
     "value": "large",
@@ -73696,10 +73850,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station_rotisserie_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station_rotisserie_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
     "key": "rotisserie_compatible",
     "label": "Rotisserie Compatible",
     "value": "true",
@@ -73710,10 +73864,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station_supports_propane",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station_supports_propane",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_propane",
     "label": "Supports Propane",
     "value": "true",
@@ -73724,10 +73878,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station_supports_natural_gas",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station_supports_natural_gas",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_natural_gas",
     "label": "Supports Natural Gas",
     "value": "true",
@@ -73738,10 +73892,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station_supports_charcoal",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station_supports_charcoal",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_charcoal",
     "label": "Supports Charcoal",
     "value": "false",
@@ -73752,10 +73906,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station_supports_pellet",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station_supports_pellet",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_pellet",
     "label": "Supports Pellet",
     "value": "false",
@@ -73766,10 +73920,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station_supports_wood",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station_supports_wood",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_wood",
     "label": "Supports Wood",
     "value": "false",
@@ -73780,10 +73934,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station_built_in_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station_built_in_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
     "key": "built_in_compatible",
     "label": "Built-In Compatible",
     "value": "true",
@@ -73794,10 +73948,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station_freestanding_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station_freestanding_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
     "key": "freestanding_compatible",
     "label": "Freestanding Compatible",
     "value": "false",
@@ -73808,10 +73962,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station_supports_built_in",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station_supports_built_in",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_built_in",
     "label": "Supports Built-In",
     "value": "true",
@@ -73822,10 +73976,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station_supports_freestanding",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station_supports_freestanding",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_freestanding",
     "label": "Supports Freestanding",
     "value": "false",
@@ -73836,10 +73990,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard_primary_cooking_area",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_standard_primary_cooking_area",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
     "key": "primary_cooking_area",
     "label": "Primary Cooking Area",
     "value": "760",
@@ -73850,10 +74004,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard_total_cooking_area",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_standard_total_cooking_area",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
     "key": "total_cooking_area",
     "label": "Total Cooking Area",
     "value": "760",
@@ -73864,10 +74018,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard_burner_count",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_standard_burner_count",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
     "key": "burner_count",
     "label": "Burner Count",
     "value": "3",
@@ -73878,10 +74032,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard_heat_zones",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_standard_heat_zones",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
     "key": "heat_zones",
     "label": "Heat Zones",
     "value": "3",
@@ -73892,10 +74046,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard_fuel_type",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_standard_fuel_type",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
     "key": "fuel_type",
     "label": "Fuel Type",
     "value": "Gas",
@@ -73906,10 +74060,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard_install_type",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_standard_install_type",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
     "key": "install_type",
     "label": "Installation",
     "value": "built_in",
@@ -73920,10 +74074,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard_cooking_category",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_standard_cooking_category",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
     "key": "cooking_category",
     "label": "Cooking Category",
     "value": "gas_grill",
@@ -73934,10 +74088,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard_cooking_style",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_standard_cooking_style",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
     "key": "cooking_style",
     "label": "Cooking Style",
     "value": "gas_grill",
@@ -73948,10 +74102,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard_size_class",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_standard_size_class",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
     "key": "size_class",
     "label": "Size Class",
     "value": "large",
@@ -73962,10 +74116,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard_supports_propane",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_standard_supports_propane",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
     "key": "supports_propane",
     "label": "Supports Propane",
     "value": "true",
@@ -73976,10 +74130,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard_supports_natural_gas",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_standard_supports_natural_gas",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
     "key": "supports_natural_gas",
     "label": "Supports Natural Gas",
     "value": "true",
@@ -73990,10 +74144,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard_supports_charcoal",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_standard_supports_charcoal",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
     "key": "supports_charcoal",
     "label": "Supports Charcoal",
     "value": "false",
@@ -74004,10 +74158,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard_supports_pellet",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_standard_supports_pellet",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
     "key": "supports_pellet",
     "label": "Supports Pellet",
     "value": "false",
@@ -74018,10 +74172,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard_supports_wood",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_standard_supports_wood",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
     "key": "supports_wood",
     "label": "Supports Wood",
     "value": "false",
@@ -74032,10 +74186,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard_built_in_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_standard_built_in_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
     "key": "built_in_compatible",
     "label": "Built-In Compatible",
     "value": "true",
@@ -74046,10 +74200,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard_freestanding_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_standard_freestanding_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
     "key": "freestanding_compatible",
     "label": "Freestanding Compatible",
     "value": "false",
@@ -74060,10 +74214,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard_supports_built_in",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_standard_supports_built_in",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
     "key": "supports_built_in",
     "label": "Supports Built-In",
     "value": "true",
@@ -74074,10 +74228,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard_supports_freestanding",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_42_inch_standard_supports_freestanding",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
-    "variantId": "twin_eagles_c_series_built_in_42_inch_gas_grill_42_inch_standard",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
     "key": "supports_freestanding",
     "label": "Supports Freestanding",
     "value": "false",
@@ -74088,10 +74242,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station_primary_cooking_area",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station_primary_cooking_area",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
     "key": "primary_cooking_area",
     "label": "Primary Cooking Area",
     "value": "1068",
@@ -74102,10 +74256,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station_total_cooking_area",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station_total_cooking_area",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
     "key": "total_cooking_area",
     "label": "Total Cooking Area",
     "value": "1068",
@@ -74116,10 +74270,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station_burner_count",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station_burner_count",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
     "key": "burner_count",
     "label": "Burner Count",
     "value": "4",
@@ -74130,10 +74284,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station_heat_zones",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station_heat_zones",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
     "key": "heat_zones",
     "label": "Heat Zones",
     "value": "4",
@@ -74144,10 +74298,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station_fuel_type",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station_fuel_type",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
     "key": "fuel_type",
     "label": "Fuel Type",
     "value": "Gas",
@@ -74158,10 +74312,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station_install_type",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station_install_type",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
     "key": "install_type",
     "label": "Installation",
     "value": "built_in",
@@ -74172,10 +74326,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station_cooking_category",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station_cooking_category",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
     "key": "cooking_category",
     "label": "Cooking Category",
     "value": "gas_grill",
@@ -74186,10 +74340,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station_cooking_style",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station_cooking_style",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
     "key": "cooking_style",
     "label": "Cooking Style",
     "value": "gas_grill",
@@ -74200,10 +74354,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station_size_class",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station_size_class",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
     "key": "size_class",
     "label": "Size Class",
     "value": "large",
@@ -74214,10 +74368,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station_rotisserie_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station_rotisserie_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
     "key": "rotisserie_compatible",
     "label": "Rotisserie Compatible",
     "value": "true",
@@ -74228,10 +74382,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station_supports_propane",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station_supports_propane",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_propane",
     "label": "Supports Propane",
     "value": "true",
@@ -74242,10 +74396,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station_supports_natural_gas",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station_supports_natural_gas",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_natural_gas",
     "label": "Supports Natural Gas",
     "value": "true",
@@ -74256,10 +74410,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station_supports_charcoal",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station_supports_charcoal",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_charcoal",
     "label": "Supports Charcoal",
     "value": "false",
@@ -74270,10 +74424,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station_supports_pellet",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station_supports_pellet",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_pellet",
     "label": "Supports Pellet",
     "value": "false",
@@ -74284,10 +74438,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station_supports_wood",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station_supports_wood",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_wood",
     "label": "Supports Wood",
     "value": "false",
@@ -74298,10 +74452,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station_built_in_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station_built_in_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
     "key": "built_in_compatible",
     "label": "Built-In Compatible",
     "value": "true",
@@ -74312,10 +74466,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station_freestanding_compatible",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station_freestanding_compatible",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
     "key": "freestanding_compatible",
     "label": "Freestanding Compatible",
     "value": "false",
@@ -74326,10 +74480,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station_supports_built_in",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station_supports_built_in",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_built_in",
     "label": "Supports Built-In",
     "value": "true",
@@ -74340,10 +74494,10 @@
     "isActive": true
   },
   {
-    "id": "derived_twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station_supports_freestanding",
+    "id": "derived_twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station_supports_freestanding",
     "entityType": "variant",
-    "entityId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
-    "variantId": "twin_eagles_c_series_built_in_54_inch_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "entityId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
+    "variantId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
     "key": "supports_freestanding",
     "label": "Supports Freestanding",
     "value": "false",
