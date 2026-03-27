@@ -1,4 +1,4 @@
-// src/components/CompareMiniBar.jsx
+//CompareMiniBar.jsx
 
 import React, { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -39,7 +39,7 @@ function getHeroAsset(variantId, assets = []) {
 
   const preferred = matching.find((asset) => {
     const imageType = String(asset.imageType || asset.image_type || "").toLowerCase();
-    return ["hero", "main", "primary"].includes(imageType);
+    return ["hero", "main", "primary", "gallery-1", "gallery_1"].includes(imageType);
   });
 
   return preferred || matching[0] || null;
@@ -87,8 +87,7 @@ export default function CompareMiniBar() {
     pathname === "/" ||
     pathname === "/discover" ||
     pathname.startsWith("/product/") ||
-    pathname.startsWith("/brand/") ||
-    pathname === "/compare";
+    pathname.startsWith("/brand/");
 
   const compareIds = useMemo(() => {
     return Array.isArray(compareState?.items) ? compareState.items : [];
@@ -127,13 +126,12 @@ export default function CompareMiniBar() {
           alignItems: "center",
         }}
       >
-        {/* 🔥 FIX: NO overflow scroll here */}
         <div
           style={{
             display: "flex",
             gap: 10,
+            overflowX: "auto",
             flex: 1,
-            flexWrap: "wrap", // allows wrapping instead of scrolling
           }}
         >
           {items.map((item) => (
@@ -170,7 +168,7 @@ export default function CompareMiniBar() {
                   <img
                     src={item.imageUrl}
                     alt={item.name}
-                    style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                    style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
                   />
                 ) : (
                   <div style={{ fontSize: 10, color: "rgba(255,255,255,0.5)" }}>No Image</div>
@@ -188,6 +186,7 @@ export default function CompareMiniBar() {
                   padding: 0,
                   cursor: "pointer",
                   fontWeight: 700,
+                  lineHeight: 1.2,
                   flex: 1,
                 }}
               >
@@ -205,6 +204,8 @@ export default function CompareMiniBar() {
                   width: 24,
                   height: 24,
                   cursor: "pointer",
+                  padding: 0,
+                  lineHeight: 1,
                 }}
               >
                 ×
@@ -213,7 +214,7 @@ export default function CompareMiniBar() {
           ))}
         </div>
 
-        <div style={{ display: "flex", gap: 10 }}>
+        <div style={{ display: "flex", gap: 10, flexShrink: 0 }}>
           <button
             type="button"
             onClick={() => clearAll()}

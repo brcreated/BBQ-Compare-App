@@ -1,8 +1,7 @@
-//DiscoveryHub.jsx
-
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useIdleReset from "../hooks/useIdleReset";
+import AboutModal from "../components/AboutModal";
 
 const brandLogos = [
   { id: "abs", name: "ABS", file: "abs-logo.png" },
@@ -49,6 +48,7 @@ const fuelOptions = [
 export default function DiscoveryHub() {
   const navigate = useNavigate();
   const { isIdleFading } = useIdleReset(60000, 5000);
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
 
   const brandScrollRef = useRef(null);
   const isResettingRef = useRef(false);
@@ -321,14 +321,25 @@ export default function DiscoveryHub() {
             </div>
           </section>
 
-          <button
-            type="button"
-            className="view-all interactive-button"
-            onClick={() => navigate("/brand/all")}
-          >
-            <span className="button-sheen" />
-            View All
-          </button>
+          <div className="bottom-action-row">
+            <button
+              type="button"
+              className="split-action-button interactive-button"
+              onClick={() => navigate("/brand/all")}
+            >
+              <span className="button-sheen" />
+              View All
+            </button>
+
+            <button
+              type="button"
+              className="split-action-button interactive-button secondary"
+              onClick={() => setIsAboutOpen(true)}
+            >
+              <span className="button-sheen" />
+              About
+            </button>
+          </div>
         </section>
       </section>
 
@@ -336,6 +347,8 @@ export default function DiscoveryHub() {
         className={`idle-fade-overlay ${isIdleFading ? "idle-fade-overlay-visible" : ""}`}
         aria-hidden="true"
       />
+
+      <AboutModal isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
 
       <style>{`
         .discovery-hub-screen {
@@ -432,14 +445,6 @@ export default function DiscoveryHub() {
             radial-gradient(circle at top center, rgba(90, 120, 180, 0.06), transparent 42%);
         }
 
-        .interactive-panel:hover {
-          transform: translateY(-2px);
-          border-color: rgba(110, 145, 210, 0.17);
-          box-shadow:
-            0 30px 74px rgba(0, 0, 0, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.05);
-        }
-
         .section-title {
           position: relative;
           z-index: 1;
@@ -510,10 +515,6 @@ export default function DiscoveryHub() {
           -webkit-tap-highlight-color: transparent;
         }
 
-        .interactive-button:hover {
-          filter: brightness(1.03);
-        }
-
         .interactive-button:active {
           transform: scale(0.985);
         }
@@ -540,11 +541,6 @@ export default function DiscoveryHub() {
           transition: opacity 220ms ease;
         }
 
-        .interactive-button:hover .button-sheen {
-          opacity: 1;
-          animation: sheenSweep 900ms cubic-bezier(0.22, 1, 0.36, 1) 1;
-        }
-
         .logo-card {
           width: 220px;
           height: 128px;
@@ -559,13 +555,6 @@ export default function DiscoveryHub() {
           box-shadow:
             0 14px 28px rgba(0, 0, 0, 0.12),
             inset 0 1px 0 rgba(255, 255, 255, 0.85);
-        }
-
-        .logo-card:hover {
-          transform: translateY(-3px) scale(1.015);
-          box-shadow:
-            0 20px 34px rgba(0, 0, 0, 0.18),
-            inset 0 1px 0 rgba(255, 255, 255, 0.92);
         }
 
         .logo-card img {
@@ -602,12 +591,6 @@ export default function DiscoveryHub() {
           min-height: 190px;
         }
 
-        .fuel-card:hover {
-          transform: translateY(-4px);
-          border-color: rgba(110, 145, 210, 0.24);
-          box-shadow: 0 22px 42px rgba(0, 0, 0, 0.3);
-        }
-
         .fuel-bg {
           position: absolute;
           inset: 0;
@@ -616,10 +599,6 @@ export default function DiscoveryHub() {
           background-size: cover;
           transform: scale(1.02);
           transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .fuel-card:hover .fuel-bg {
-          transform: scale(1.06);
         }
 
         .fuel-overlay {
@@ -636,10 +615,6 @@ export default function DiscoveryHub() {
           padding: 18px;
           transform: translateY(0);
           transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .fuel-card:hover .fuel-content {
-          transform: translateY(-2px);
         }
 
         .fuel-content h3 {
@@ -680,12 +655,6 @@ export default function DiscoveryHub() {
           background: #121821;
         }
 
-        .specialty-card:hover {
-          transform: translateY(-4px);
-          border-color: rgba(110, 145, 210, 0.24);
-          box-shadow: 0 24px 44px rgba(0, 0, 0, 0.32);
-        }
-
         .specialty-bg {
           position: absolute;
           inset: 0;
@@ -694,10 +663,6 @@ export default function DiscoveryHub() {
           background-size: cover;
           transform: scale(1.02);
           transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .specialty-card:hover .specialty-bg {
-          transform: scale(1.06);
         }
 
         .specialty-overlay {
@@ -721,10 +686,6 @@ export default function DiscoveryHub() {
           transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        .specialty-card:hover .specialty-content {
-          transform: translateY(-2px);
-        }
-
         .specialty-content h2 {
           margin: 0 0 10px;
           font-size: 1.95rem;
@@ -740,7 +701,13 @@ export default function DiscoveryHub() {
           color: rgba(230, 237, 247, 0.86);
         }
 
-        .view-all {
+        .bottom-action-row {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 16px;
+        }
+
+        .split-action-button {
           height: 72px;
           border: none;
           border-radius: 20px;
@@ -753,10 +720,11 @@ export default function DiscoveryHub() {
           box-shadow: 0 18px 38px rgba(67, 93, 131, 0.34);
         }
 
-        .view-all:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 24px 44px rgba(67, 93, 131, 0.42);
+        .split-action-button.secondary {
+          background: linear-gradient(180deg, #2b3442 0%, #1d2530 100%);
+          box-shadow: 0 18px 38px rgba(0, 0, 0, 0.28);
         }
+
 
         .idle-fade-overlay {
           position: fixed;
@@ -822,6 +790,10 @@ export default function DiscoveryHub() {
 
           .specialty-content h2 {
             font-size: 1.6rem;
+          }
+
+          .bottom-action-row {
+            grid-template-columns: 1fr;
           }
         }
       `}</style>

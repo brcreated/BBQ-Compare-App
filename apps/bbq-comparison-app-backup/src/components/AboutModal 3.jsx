@@ -2,63 +2,73 @@
 import React, { useEffect, useState } from "react";
 import BRcreatedLogo from "./BRcreatedLogo";
 
-function formatUpdatedAt(isoString) {
-  if (!isoString) return "Unknown";
-
-  try {
-    return new Intl.DateTimeFormat("en-US", {
-      dateStyle: "medium",
-      timeStyle: "short",
-    }).format(new Date(isoString));
-  } catch {
-    return isoString;
-  }
-}
-
 export default function AboutModal({ isOpen, onClose }) {
+  const [version, setVersion] = useState("Loading...");
+  const [commitMessage, setCommitMessage] = useState("Loading...");
+
+  const GITHUB_CONFIG = {
+    owner: "brcreated",
+    repo: "BBQ-Compare-App",
+    branch: "main",
+    packageJsonPath: "apps/bbq-comparison-app/package.json",
+    appPath: "apps/bbq-comparison-app",
+  };
+
   const STORE_LOGO_URL =
     "https://bbqcompareassets.brcreated.app/assets/branding/logo.svg";
-
-  const [appVersion, setAppVersion] = useState("Unknown");
-  const [commitMessage, setCommitMessage] = useState("Unknown");
-  const [updateVersion, setUpdateVersion] = useState("Unknown");
-  const [updatedAtLabel, setUpdatedAtLabel] = useState("Unknown");
 
   useEffect(() => {
     if (!isOpen) return;
 
     let cancelled = false;
 
-    async function loadVersion() {
+    async function loadAboutData() {
       try {
-        const response = await fetch(`/app-version.json?t=${Date.now()}`, {
-          cache: "no-store",
-        });
+        const [packageRes, commitRes] = await Promise.all([
+          fetch(
+            `https://raw.githubusercontent.com/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/${GITHUB_CONFIG.branch}/${GITHUB_CONFIG.packageJsonPath}`,
+            { cache: "no-store" }
+          ),
+          fetch(
+            `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/commits?sha=${GITHUB_CONFIG.branch}&path=${encodeURIComponent(
+              GITHUB_CONFIG.appPath
+            )}&per_page=1`,
+            {
+              headers: {
+                Accept: "application/vnd.github+json",
+              },
+              cache: "no-store",
+            }
+          ),
+        ]);
 
-        if (!response.ok) {
-          throw new Error("Failed to load app-version.json");
-        }
-
-        const data = await response.json();
-
-        if (cancelled) return;
-
-        setAppVersion(data?.appVersion || "Unknown");
-        setCommitMessage(data?.commitMessage || "Unknown");
-        setUpdateVersion(data?.updateVersion || "Unknown");
-        setUpdatedAtLabel(formatUpdatedAt(data?.updatedAt));
-      } catch (error) {
         if (!cancelled) {
-          console.error("Failed to load app version info:", error);
-          setAppVersion("Unknown");
-          setCommitMessage("Unknown");
-          setUpdateVersion("Unknown");
-          setUpdatedAtLabel("Unknown");
+          if (packageRes.ok) {
+            const packageJson = await packageRes.json();
+            setVersion(packageJson?.version ? `v${packageJson.version}` : "dev");
+          } else {
+            setVersion("dev");
+          }
+
+          if (commitRes.ok) {
+            const commits = await commitRes.json();
+            const latestMessage =
+              commits?.[0]?.commit?.message?.split("\n")[0]?.trim();
+
+            setCommitMessage(latestMessage || "No commit message found");
+          } else {
+            setCommitMessage("Unable to load commit message");
+          }
+        }
+      } catch {
+        if (!cancelled) {
+          setVersion("dev");
+          setCommitMessage("Unable to load commit message");
         }
       }
     }
 
-    loadVersion();
+    loadAboutData();
 
     return () => {
       cancelled = true;
@@ -116,15 +126,40 @@ export default function AboutModal({ isOpen, onClose }) {
           position: relative;
         }
 
+        .about-modal-topbar {
+          display: flex;
+          justify-content: flex-end;
+          padding: 16px 16px 0;
+        }
+
+        .about-modal-close {
+          appearance: none;
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          background: rgba(255, 255, 255, 0.05);
+          color: #ffffff;
+          width: 44px;
+          height: 44px;
+          border-radius: 999px;
+          font-size: 20px;
+          cursor: pointer;
+          transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+        }
+
+        .about-modal-close:hover {
+          transform: scale(1.05);
+          background: rgba(255, 255, 255, 0.09);
+          border-color: rgba(76, 201, 240, 0.35);
+        }
+
         .about-modal-content {
-          padding: 28px 32px 28px;
+          padding: 8px 32px 32px;
         }
 
         .about-modal-hero {
           display: flex;
           justify-content: center;
           align-items: center;
-          padding: 4px 0 10px;
+          padding: 20px 0 10px;
         }
 
         .about-modal-hero-link {
@@ -236,27 +271,22 @@ export default function AboutModal({ isOpen, onClose }) {
           font-size: 17px;
         }
 
-        .about-modal-status {
+        .about-modal-meta {
           margin-top: 28px;
-          display: grid;
-          gap: 16px;
         }
 
-        .about-modal-status-card {
-          padding: 20px 22px;
-          border-radius: 20px;
+        .about-modal-meta-card {
+          padding: 18px 20px;
+          border-radius: 18px;
           background: rgba(255, 255, 255, 0.04);
           border: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .about-modal-status-row {
           display: grid;
-          grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
-          gap: 16px;
-          align-items: center;
+          grid-template-columns: 180px 1fr;
+          gap: 20px;
+          align-items: flex-start;
         }
 
-        .about-modal-label {
+        .about-modal-meta-label {
           margin: 0;
           font-size: 12px;
           color: #8bd1ff;
@@ -264,99 +294,23 @@ export default function AboutModal({ isOpen, onClose }) {
           letter-spacing: 0.16em;
         }
 
-        .about-modal-version-chip {
-          display: inline-flex;
-          align-items: center;
-          gap: 10px;
-          width: fit-content;
-          padding: 10px 14px;
-          border-radius: 999px;
-          background: rgba(76, 201, 240, 0.08);
-          border: 1px solid rgba(76, 201, 240, 0.18);
-          box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
-        }
-
-        .about-modal-version-dot {
-          width: 10px;
-          height: 10px;
-          border-radius: 999px;
-          background: #4cc9f0;
-          box-shadow: 0 0 12px rgba(76, 201, 240, 0.55);
-          flex: 0 0 auto;
-        }
-
-        .about-modal-version-text {
-          font-size: 16px;
-          font-weight: 700;
-          letter-spacing: 0.01em;
-          word-break: break-word;
-        }
-
-        .about-modal-commit-text {
-          font-size: 18px;
-          font-weight: 600;
-          line-height: 1.45;
-          color: #ffffff;
-          word-break: break-word;
-        }
-
-        .about-modal-detail-grid {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 16px;
-        }
-
-        .about-modal-detail-card {
-          padding: 18px 20px;
-          border-radius: 18px;
-          background: rgba(255, 255, 255, 0.04);
-          border: 1px solid rgba(255, 255, 255, 0.06);
-          min-height: 114px;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-        }
-
-        .about-modal-detail-value {
-          margin-top: 12px;
+        .about-modal-meta-value {
+          margin: 10px 0 0;
           font-size: 20px;
           font-weight: 700;
-          line-height: 1.35;
           color: #ffffff;
+        }
+
+        .about-modal-meta-small {
+          margin: 10px 0 0;
+          font-size: 14px;
+          color: #b9c7d8;
+          line-height: 1.5;
           word-break: break-word;
-        }
-
-        .about-modal-actions {
-          display: flex;
-          justify-content: center;
-          margin-top: 24px;
-        }
-
-        .about-modal-close-button {
-          appearance: none;
-          border: 1px solid rgba(76, 201, 240, 0.22);
-          background: linear-gradient(180deg, rgba(76, 201, 240, 0.16) 0%, rgba(76, 201, 240, 0.08) 100%);
-          color: #ffffff;
-          min-width: 220px;
-          height: 52px;
-          border-radius: 16px;
-          font-size: 16px;
-          font-weight: 700;
-          letter-spacing: 0.02em;
-          cursor: pointer;
-          transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background 160ms ease;
-          box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22);
-        }
-
-        .about-modal-close-button:hover {
-          transform: translateY(-2px);
-          border-color: rgba(76, 201, 240, 0.34);
-          box-shadow: 0 18px 38px rgba(0, 0, 0, 0.28);
-          background: linear-gradient(180deg, rgba(76, 201, 240, 0.20) 0%, rgba(76, 201, 240, 0.10) 100%);
-        }
-
-        .about-modal-close-button:active {
-          transform: translateY(0);
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
         }
 
         .about-modal-footer {
@@ -374,15 +328,9 @@ export default function AboutModal({ isOpen, onClose }) {
           font-weight: 600;
         }
 
-        @media (max-width: 800px) {
-          .about-modal-detail-grid {
-            grid-template-columns: 1fr;
-          }
-        }
-
         @media (max-width: 640px) {
           .about-modal-content {
-            padding: 20px 18px 20px;
+            padding: 8px 18px 20px;
           }
 
           .about-modal-hero-link {
@@ -394,26 +342,16 @@ export default function AboutModal({ isOpen, onClose }) {
             font-size: 15px;
           }
 
+          .about-modal-store-card {
+            min-height: 130px;
+          }
+
           .about-modal-store-logo {
             max-height: 64px;
           }
 
-          .about-modal-close-button {
-            width: 100%;
-            min-width: 0;
-          }
-
-          .about-modal-commit-text {
-            font-size: 16px;
-          }
-
-          .about-modal-detail-value {
-            font-size: 18px;
-          }
-
-          .about-modal-top-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+          .about-modal-meta-card {
+            grid-template-columns: 1fr;
             gap: 16px;
           }
         }
@@ -430,6 +368,17 @@ export default function AboutModal({ isOpen, onClose }) {
           className="about-modal-card"
           onClick={(event) => event.stopPropagation()}
         >
+          <div className="about-modal-topbar">
+            <button
+              type="button"
+              className="about-modal-close"
+              onClick={onClose}
+              aria-label="Close about popup"
+            >
+              ×
+            </button>
+          </div>
+
           <div className="about-modal-content">
             <div className="about-modal-hero">
               <a
@@ -472,41 +421,18 @@ export default function AboutModal({ isOpen, onClose }) {
               compare products, understand differences, and choose with confidence.
             </p>
 
-            <div className="about-modal-status">
-              <div className="about-modal-detail-grid">
-                <div className="about-modal-detail-card">
-                  <p className="about-modal-label">App Version</p>
-                  <div className="about-modal-version-chip">
-                    <span className="about-modal-version-dot" />
-                    <span className="about-modal-version-text">{appVersion}</span>
-                  </div>
+            <div className="about-modal-meta">
+              <div className="about-modal-meta-card">
+                <div>
+                  <p className="about-modal-meta-label">Version</p>
+                  <p className="about-modal-meta-value">{version}</p>
                 </div>
 
-                <div className="about-modal-detail-card">
-                  <p className="about-modal-label">Latest App Version Update</p>
-                  <div className="about-modal-commit-text">{commitMessage}</div>
-                </div>
-
-                <div className="about-modal-detail-card">
-                  <p className="about-modal-label">Update Version</p>
-                  <div className="about-modal-detail-value">{updateVersion}</div>
-                </div>
-
-                <div className="about-modal-detail-card">
-                  <p className="about-modal-label">Version Updated On</p>
-                  <div className="about-modal-detail-value">{updatedAtLabel}</div>
+                <div>
+                  <p className="about-modal-meta-label">Latest Update</p>
+                  <p className="about-modal-meta-small">{commitMessage}</p>
                 </div>
               </div>
-            </div>
-
-            <div className="about-modal-actions">
-              <button
-                type="button"
-                className="about-modal-close-button"
-                onClick={onClose}
-              >
-                Close
-              </button>
             </div>
 
             <div className="about-modal-footer">

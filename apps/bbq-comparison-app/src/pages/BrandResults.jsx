@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams, useSearchParams, useLocation } from "react-router-dom";
 import { useCatalog } from "../context/CatalogContext";
-import { getState, subscribe, removeItem } from "../state/comparisonStore";
+import { getState, subscribe, removeItem, addItem, isSelected } from "../state/comparisonStore";
 import AboutModal from "../components/AboutModal";
+import useIdleReset from "../hooks/useIdleReset";
 
 function normalizeId(value) {
   return String(value || "")
@@ -274,8 +275,7 @@ function findVariantPrice(variant, specMap) {
   );
 
   if (directPrice !== "") {
-    const formatted = formatPrice(directPrice);
-    if (formatted) return formatted;
+    return formatPriceDisplay(directPrice);
   }
 
   const variantId = getVariantId(variant);
@@ -284,11 +284,46 @@ function findVariantPrice(variant, specMap) {
   for (const key of ["price", "msrp", "base_price", "sale_price", "starting_price"]) {
     const match = specs.find((spec) => getSpecKey(spec) === key);
     if (!match) continue;
-    const formatted = formatPrice(getSpecValue(match));
-    if (formatted) return formatted;
+    return formatPriceDisplay(getSpecValue(match));
   }
 
   return "";
+}
+
+function parsePriceNumber(value) {
+  if (value === null || value === undefined) return null;
+
+  const raw = String(value).trim();
+  if (!raw) return null;
+  if (/[a-zA-Z]/.test(raw)) return null;
+
+  const numeric = Number(raw.replace(/[$,]/g, ""));
+  return Number.isFinite(numeric) ? numeric : null;
+}
+
+function formatPriceDisplay(value) {
+  if (value === null || value === undefined) return "Request Pricing";
+
+  const raw = String(value).trim();
+  if (!raw) return "Request Pricing";
+
+  // If it contains letters, keep the original text
+  if (/[a-zA-Z]/.test(raw)) {
+    return raw;
+  }
+
+  // Strip common formatting chars and try numeric conversion
+  const numeric = Number(raw.replace(/[$,]/g, ""));
+  if (Number.isFinite(numeric)) {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: 0,
+    }).format(numeric);
+  }
+
+  // Fallback: preserve original text
+  return raw;
 }
 
 function findVariantPriceNumber(variant, specMap) {
@@ -638,6 +673,7 @@ function getCollectionMeta({ routeBrandId, brandSlug, selectedBrand, searchParam
 function BrandResults() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { isIdleFading } = useIdleReset(60000, 5000);
   const { brandSlug = "" } = useParams();
   const [searchParams] = useSearchParams();
   const routeBrandId = normalizeId(brandSlug);
@@ -665,6 +701,10 @@ function BrandResults() {
   const [compareState, setCompareState] = useState(getState());
 
   const assetBaseUrl = import.meta.env.VITE_ASSET_BASE_URL || "";
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [routeBrandId, location.key]);
 
   useEffect(() => {
     return subscribe(setCompareState);
@@ -1130,57 +1170,58 @@ function BrandResults() {
 
   return (
     <main className="brand-results-screen">
+      <div className={`brand-results-page-fade ${isIdleFading ? "is-idle-fading" : ""}`}>
       <div className="ambient-light ambient-light-1" />
       <div className="ambient-light ambient-light-2" />
       <div className="ambient-light ambient-light-3" />
 
       <section className="brand-results-shell">
-        <div className="brand-results-topbar">
-          <div
-            style={{
-              display: "flex",
-              gap: 12,
-              alignItems: "center",
-              flexWrap: "wrap",
-            }}
-          >
-            <button
-              type="button"
-              className="back-button interactive-button"
-              onClick={() => navigate("/discover")}
-            >
-              <span className="button-sheen" />
-              Home
-            </button>
+        <div className="brand-results-topbar brand-results-sticky-topbar">
+  <div
+    style={{
+      display: "flex",
+      gap: 12,
+      alignItems: "center",
+      flexWrap: "wrap",
+    }}
+  >
+    <button
+      type="button"
+      className="other-button interactive-button"
+      onClick={() => navigate("/")}
+    >
+      <span className="button-sheen" />
+      Start Over
+    </button>
 
-            <button
-              type="button"
-              className="back-button interactive-button"
-              onClick={() => navigate("/brands")}
-            >
-              <span className="button-sheen" />
-              Brands
-            </button>
+    <button
+      type="button"
+      className="other-button interactive-button"
+      onClick={() => navigate("/brands")}
+    >
+      <span className="button-sheen" />
+      Brands
+    </button>
 
-            <button
-              type="button"
-              className="back-button interactive-button"
-              onClick={() => setIsAboutOpen(true)}
-            >
-              <span className="button-sheen" />
-              About
-            </button>
+    <button
+      type="button"
+      className="other-button interactive-button"
+      onClick={() => setIsAboutOpen(true)}
+    >
+      <span className="button-sheen" />
+      About
+    </button>
 
-            <button
-              type="button"
-              className="back-button interactive-button"
-              onClick={() => navigate(-1)}
-            >
-              <span className="button-sheen" />
-              Back
-            </button>
-          </div>
-        </div>
+    <button
+      type="button"
+      className="back-button interactive-button"
+      onClick={() => navigate(-1)}
+    >
+      <span className="button-sheen" />
+      Back
+    </button>
+  </div>
+</div>
 
         <header className="brand-results-header interactive-panel">
           <div className="brand-results-header-content">
@@ -1325,69 +1366,97 @@ function BrandResults() {
             </div>
           ) : (
             <div className="brand-results-grid">
-              {visibleProducts.map((product) => (
-                <article
-                  key={product.id}
-                  className="product-card interactive-button"
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => navigate(`/product/${product.routeValue}`)}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter" || event.key === " ") {
-                      event.preventDefault();
-                      navigate(`/product/${product.routeValue}`);
-                    }
-                  }}
-                >
-                  <span className="button-sheen" />
+              {visibleProducts.map((product) => {
+                const inCompare =
+                  isSelected(product.routeValue) || isSelected(product.id);
+                const compareCount = compareState?.items?.length || 0;
+                const isCompareFull = compareCount >= 4;
 
-                  <div className="product-image-wrap">
-                    {product.imageUrl ? (
-                      <img src={product.imageUrl} alt={product.name} />
-                    ) : (
-                      <div className="product-image-fallback">No Image</div>
-                    )}
-                  </div>
+                return (
+                  <article
+                    key={product.id}
+                    className={`product-card interactive-button ${inCompare ? "product-card-selected" : ""}`}
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => navigate(`/product/${product.routeValue}`)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        navigate(`/product/${product.routeValue}`);
+                      }
+                    }}
+                  >
+                    <span className="button-sheen" />
+                    {inCompare ? (
+                      <div className="product-selected-badge">✓ In Compare</div>
+                    ) : null}
 
-                  <div className="product-info">
-                    <div className="product-top">
-                      <h3 className="product-title">{product.name}</h3>
+                    <div className="product-image-wrap">
+                      {product.imageUrl ? (
+                        <img src={product.imageUrl} alt={product.name} />
+                      ) : (
+                        <div className="product-image-fallback">No Image</div>
+                      )}
                     </div>
 
-                    <div className="product-spec-row">
-                      {product.fuelSummary ? (
-                        <span className="product-badge">{product.fuelSummary}</span>
-                      ) : null}
-
-                      {product.installation ? (
-                        <span className="product-badge">{product.installation}</span>
-                      ) : null}
-
-                      {product.size ? (
-                        <span className="product-badge">{product.size}</span>
-                      ) : null}
-                    </div>
-
-                    <div className="product-bottom">
-                      <div className="product-price">
-                        {product.price || "View Details"}
+                    <div className="product-info">
+                      <div className="product-top">
+                        <h3 className="product-title">{product.name}</h3>
                       </div>
 
-                      <button
-                        type="button"
-                        className="product-action interactive-button"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          navigate(`/product/${product.routeValue}`);
-                        }}
-                      >
-                        <span className="button-sheen" />
-                        View Product
-                      </button>
+                      <div className="product-spec-row">
+                        {product.fuelSummary ? (
+                          <span className="product-badge">{product.fuelSummary}</span>
+                        ) : null}
+
+                        {product.installation ? (
+                          <span className="product-badge">{product.installation}</span>
+                        ) : null}
+
+                        {product.size ? (
+                          <span className="product-badge">{product.size}</span>
+                        ) : null}
+                      </div>
+
+                      <div className="product-bottom">
+                        <div className="product-price">
+                          {product.price || "View Details"}
+                        </div>
+
+                        <button
+                          type="button"
+                          className="product-action interactive-button"
+                          onClick={(event) => {
+                            event.stopPropagation();
+
+                            if (inCompare) {
+                              removeItem(product.routeValue);
+                              removeItem(product.id);
+                              return;
+                            }
+
+                            if (isCompareFull) return;
+
+                            addItem(product.routeValue || product.id);
+                          }}
+                          disabled={!inCompare && isCompareFull}
+                          style={{
+                            opacity: !inCompare && isCompareFull ? 0.5 : 1,
+                            cursor: !inCompare && isCompareFull ? "not-allowed" : "pointer",
+                          }}
+                        >
+                          <span className="button-sheen" />
+                          {inCompare
+                            ? "Remove"
+                            : isCompareFull
+                            ? "Compare Full"
+                            : "Add to Compare"}
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                </article>
-              ))}
+                  </article>
+                );
+              })}
             </div>
           )}
         </section>
@@ -1395,16 +1464,27 @@ function BrandResults() {
 
       <style>{`
         .brand-results-screen {
+          scroll-padding-bottom: 220px;
           position: relative;
           min-height: 100vh;
           width: 100%;
-          overflow: hidden;
+          overflow-x: hidden;
+          overflow-y: visible;
           background:
             radial-gradient(circle at 18% 14%, rgba(76, 110, 168, 0.09), transparent 28%),
             radial-gradient(circle at 82% 88%, rgba(76, 110, 168, 0.08), transparent 32%),
             linear-gradient(180deg, #0a0d12 0%, #0f141b 48%, #090c11 100%);
           color: #e6edf7;
           font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        .brand-results-page-fade {
+          min-height: 100vh;
+          transition: opacity 500ms ease;
+        }
+
+        .brand-results-page-fade.is-idle-fading {
+          opacity: 0;
         }
 
         .ambient-light {
@@ -1449,17 +1529,21 @@ function BrandResults() {
           z-index: 1;
           min-height: 100vh;
           width: 100%;
-          padding: 22px 28px 120px;
+          padding: 22px 28px 220px;
           box-sizing: border-box;
           display: grid;
           grid-template-rows: auto auto auto 1fr;
           gap: 16px;
         }
 
-        .brand-results-topbar {
-          display: flex;
-          justify-content: flex-start;
-          align-items: center;
+        .brand-results-sticky-topbar {
+          position: sticky;
+          top: 0;
+          z-index: 220;
+          padding: 10px 0 6px;
+          background:
+            linear-gradient(180deg, rgba(10,13,18,0.96) 0%, rgba(10,13,18,0.88) 72%, rgba(10,13,18,0) 100%);
+          backdrop-filter: blur(14px);
         }
 
         .interactive-panel {
@@ -1490,36 +1574,42 @@ function BrandResults() {
             radial-gradient(circle at top center, rgba(90, 120, 180, 0.06), transparent 42%);
         }
 
-        .interactive-panel:hover {
-          transform: translateY(-2px);
-          border-color: rgba(110, 145, 210, 0.17);
-          box-shadow:
-            0 30px 74px rgba(0, 0, 0, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.05);
-        }
+        
 
         .interactive-button {
           position: relative;
           overflow: hidden;
           transition:
-            transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
-            box-shadow 220ms ease,
-            border-color 220ms ease,
-            filter 220ms ease;
+            transform 120ms cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 160ms ease,
+            filter 120ms ease;
           -webkit-tap-highlight-color: transparent;
-        }
-
-        .interactive-button:hover {
-          filter: brightness(1.03);
+          will-change: transform;
         }
 
         .interactive-button:active {
-          transform: scale(0.985);
+          transform: scale(0.965);
+          filter: brightness(1.08);
         }
 
         .interactive-button:focus-visible {
           outline: 2px solid rgba(122, 157, 219, 0.5);
           outline-offset: 2px;
+        }
+
+        .interactive-button::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          background: radial-gradient(circle, rgba(122,157,219,0.25) 0%, transparent 60%);
+          opacity: 0;
+          transition: opacity 180ms ease;
+          pointer-events: none;
+        }
+
+        .interactive-button:active::after {
+          opacity: 1;
         }
 
         .button-sheen {
@@ -1539,17 +1629,32 @@ function BrandResults() {
           transition: opacity 220ms ease;
         }
 
-        .interactive-button:hover .button-sheen {
-          opacity: 1;
-          animation: sheenSweep 900ms cubic-bezier(0.22, 1, 0.36, 1) 1;
-        }
+        
 
         .back-button {
           min-width: 0;
           height: 56px;
-          padding: 0 22px;
+          padding: 0 150px;
           border: none;
-          border-radius: 18px;
+          border-radius: 30px;
+          background: linear-gradient(180deg, #5a78a8 0%, #435d83 100%);
+          color: #f7fbff;
+          font-size: 1rem;
+          font-weight: 900;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          box-shadow: 0 16px 34px rgba(67, 93, 131, 0.32);
+          cursor: pointer;
+          white-space: nowrap;
+          flex: 0 0 auto;
+        }
+
+        .other-button {
+          min-width: 0;
+          height: 56px;
+          padding: 0 42px;
+          border: none;
+          border-radius: 30px;
           background: linear-gradient(180deg, #5a78a8 0%, #435d83 100%);
           color: #f7fbff;
           font-size: 0.92rem;
@@ -1562,10 +1667,6 @@ function BrandResults() {
           flex: 0 0 auto;
         }
 
-        .back-button:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 22px 40px rgba(67, 93, 131, 0.38);
-        }
 
         .brand-results-header {
           min-height: 220px;
@@ -1618,9 +1719,13 @@ function BrandResults() {
           color: rgba(230, 237, 247, 0.78);
         }
 
-        .brand-results-filters,
-        .brand-results-grid-section {
+        .brand-results-filters {
           padding: 20px 22px;
+          box-sizing: border-box;
+        }
+
+        .brand-results-grid-section {
+          padding: 20px 22px 120px;
           box-sizing: border-box;
         }
 
@@ -1679,10 +1784,7 @@ function BrandResults() {
           cursor: pointer;
         }
 
-        .reset-button:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 22px 40px rgba(67, 93, 131, 0.38);
-        }
+        
 
         .brand-results-grid-placeholder {
           min-height: 140px;
@@ -1726,12 +1828,7 @@ function BrandResults() {
           cursor: pointer;
         }
 
-        .product-card:hover {
-          transform: translateY(-4px);
-          border-color: rgba(110, 145, 210, 0.24);
-          box-shadow: 0 24px 44px rgba(0, 0, 0, 0.32);
-        }
-
+        
         .product-image-wrap {
           height: 280px;
           padding: 18px;
@@ -1829,11 +1926,6 @@ function BrandResults() {
           cursor: pointer;
         }
 
-        .product-action:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 22px 40px rgba(67, 93, 131, 0.38);
-        }
-
         @keyframes ambientFloat {
           0%, 100% {
             transform: translate3d(0, 0, 0) scale(1);
@@ -1849,6 +1941,81 @@ function BrandResults() {
           }
           100% {
             transform: translateX(480%) rotate(20deg);
+          }
+        }
+
+
+        .compare-bar-shell {
+          animation: compareBarSlideUp 240ms cubic-bezier(0.22, 1, 0.36, 1);
+          transform-origin: bottom center;
+        }
+
+        .compare-bar-shell::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 20px;
+          pointer-events: none;
+          background: linear-gradient(
+            180deg,
+            rgba(255,255,255,0.06),
+            rgba(255,255,255,0.01)
+          );
+        }
+
+        .compare-bar-ready {
+          box-shadow:
+            0 22px 60px rgba(0,0,0,0.38),
+            0 0 0 1px rgba(76,117,219,0.16),
+            0 0 28px rgba(76,117,219,0.14);
+        }
+
+        .compare-bar-ready button:last-child {
+          animation: compareButtonPulse 1.8s ease-in-out infinite;
+        }
+
+        .compare-bar-shell > div > div {
+          animation: compareChipPopIn 180ms cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .compare-bar-shell button:last-child:active {
+          transform: scale(0.97);
+        }
+
+        @keyframes compareBarSlideUp {
+          0% {
+            opacity: 0;
+            transform: translateY(20px) scale(0.985);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        @keyframes compareChipPopIn {
+          0% {
+            opacity: 0;
+            transform: translateY(10px) scale(0.96);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        @keyframes compareButtonPulse {
+          0%, 100% {
+            box-shadow:
+              0 0 0 0 rgba(76,117,219,0),
+              0 10px 24px rgba(0,0,0,0.22);
+            transform: scale(1);
+          }
+          50% {
+            box-shadow:
+              0 0 0 8px rgba(76,117,219,0.08),
+              0 14px 28px rgba(0,0,0,0.28);
+            transform: scale(1.02);
           }
         }
 
@@ -1873,6 +2040,47 @@ function BrandResults() {
           }
         }
 
+        .product-card-selected {
+          border-color: rgba(122, 157, 219, 0.58);
+          box-shadow:
+            0 28px 60px rgba(0, 0, 0, 0.42),
+            0 0 0 1px rgba(122, 157, 219, 0.22),
+            0 0 28px rgba(76, 117, 219, 0.22);
+          transform: translateY(-6px);
+          transition: all 180ms ease;
+        }
+
+        .product-card-selected::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 22px;
+          pointer-events: none;
+          box-shadow: inset 0 0 0 1px rgba(159, 195, 255, 0.16);
+        }
+
+        .product-selected-badge {
+          position: absolute;
+          top: 14px;
+          right: 14px;
+          z-index: 3;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 34px;
+          padding: 0 12px;
+          border-radius: 999px;
+          border: 1px solid rgba(132, 178, 255, 0.38);
+          background: rgba(34, 55, 97, 0.88);
+          color: #eef5ff;
+          font-size: 0.72rem;
+          font-weight: 900;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);
+          backdrop-filter: blur(8px);
+        }
+
         @media (max-width: 768px) {
           .filter-section,
           .brand-results-grid {
@@ -1884,16 +2092,24 @@ function BrandResults() {
             align-items: stretch;
           }
 
-          .product-action,
-          .back-button,
-          .reset-button {
-            width: 100%;
+          .product-action {
+            min-height: 64px;
+            transition:
+              transform 120ms ease,
+              box-shadow 160ms ease,
+              filter 120ms ease;
+          }
+
+          .product-action:active {
+            transform: scale(0.96);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.25);
           }
         }
       `}</style>
 
       {compareItems.length >= 1 && (
         <div
+          className={`compare-bar-shell ${canCompare ? "compare-bar-ready" : ""}`}
           style={{
             position: "fixed",
             left: 20,
@@ -1926,70 +2142,70 @@ function BrandResults() {
                 key={item.id}
                 style={{
                   display: "flex",
-                  alignItems: "center",
-                  gap: 10,
-                  minWidth: 220,
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  gap: 8,
+                  minWidth: 240,
                   maxWidth: 260,
-                  padding: 8,
-                  borderRadius: 14,
+                  padding: 12,
+                  borderRadius: 18,
                   border: "1px solid rgba(255,255,255,0.08)",
                   background: "rgba(255,255,255,0.05)",
                   flexShrink: 0,
                 }}
               >
-                <button
-                  type="button"
-                  onClick={() => navigate(`/product/${item.slug || item.id}`)}
-                  style={{
-                    border: "none",
-                    background: "transparent",
-                    padding: 0,
-                    cursor: "pointer",
-                  }}
-                >
-                  <div
+                <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                  <button
+                    type="button"
+                    onClick={() => navigate(`/product/${item.slug || item.id}`)}
                     style={{
-                      width: 52,
-                      height: 52,
-                      borderRadius: 12,
-                      overflow: "hidden",
-                      display: "grid",
-                      placeItems: "center",
-                      background: "rgba(255,255,255,0.04)",
+                      border: "none",
+                      background: "transparent",
+                      padding: 0,
+                      cursor: "pointer",
                     }}
                   >
-                    {item.imageUrl ? (
-                      <img
-                        src={item.imageUrl}
-                        alt={item.name}
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "contain",
-                          display: "block",
-                        }}
-                      />
-                    ) : (
-                      <div style={{ fontSize: 10, opacity: 0.5 }}>No Image</div>
-                    )}
-                  </div>
-                </button>
+                    <div
+                      style={{
+                        width: 64,
+                        height: 64,
+                        borderRadius: 12,
+                        overflow: "hidden",
+                        display: "grid",
+                        placeItems: "center",
+                        background: "rgba(255,255,255,0.04)",
+                      }}
+                    >
+                      {item.imageUrl ? (
+                        <img
+                          src={item.imageUrl}
+                          alt={item.name}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "contain",
+                          }}
+                        />
+                      ) : (
+                        <div style={{ fontSize: 10, opacity: 0.5 }}>No Image</div>
+                      )}
+                    </div>
+                  </button>
 
-                <div
-                  style={{
-                    flex: 1,
-                    minWidth: 0,
-                    fontSize: 13,
-                    fontWeight: 700,
-                    lineHeight: 1.2,
-                    color: "#eef5ff",
-                    overflow: "hidden",
-                    display: "-webkit-box",
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: "vertical",
-                  }}
-                >
-                  {item.name}
+                  <div
+                    style={{
+                      flex: 1,
+                      fontSize: 14,
+                      fontWeight: 700,
+                      color: "#eef5ff",
+                      overflow: "hidden",
+                      display: "-webkit-box",
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: "vertical",
+                    }}
+                  >
+                    {item.name}
+                  </div>
                 </div>
 
                 <button
@@ -1999,20 +2215,17 @@ function BrandResults() {
                     if (item.slug && item.slug !== item.id) removeItem(item.slug);
                   }}
                   style={{
-                    width: 24,
-                    height: 24,
-                    borderRadius: 999,
-                    border: "1px solid rgba(255,255,255,0.14)",
-                    background: "rgba(10,18,32,0.96)",
+                    height: 40,
+                    borderRadius: 12,
+                    border: "1px solid rgba(255,255,255,0.12)",
+                    background: "rgba(10,18,32,0.85)",
                     color: "#fff",
-                    fontWeight: 900,
+                    fontWeight: 800,
                     cursor: "pointer",
-                    padding: 0,
-                    lineHeight: 1,
-                    flexShrink: 0,
+                    width: "100%",
                   }}
                 >
-                  ×
+                  Remove
                 </button>
               </div>
             ))}
@@ -2039,12 +2252,15 @@ function BrandResults() {
               cursor: canCompare ? "pointer" : "not-allowed",
               whiteSpace: "nowrap",
               opacity: canCompare ? 1 : 0.72,
+              transition: "transform 140ms ease, box-shadow 180ms ease, opacity 140ms ease",
             }}
           >
             Compare ({compareItems.length})
           </button>
         </div>
       )}
+
+      </div>
 
       <AboutModal
         isOpen={isAboutOpen}

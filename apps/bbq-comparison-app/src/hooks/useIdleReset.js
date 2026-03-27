@@ -1,110 +1,66 @@
 // src/hooks/useIdleReset.js
-import { useEffect, useRef, useState } from "react";
 
-export default function useIdleReset({
-  timeout = 60000,
-  onReset,
-  resetUrl = "/",
-  enabled = true,
-} = {}) {
-  const lastActivityRef = useRef(0);
-  const hasResetRef = useRef(false);
-  const intervalRef = useRef(null);
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+export default function useIdleReset(timeout = 60000, fadeDuration = 5000) {
+  const navigate = useNavigate();
+
+  const timerRef = useRef(null);
+  const fadeTimerRef = useRef(null);
+
   const [isIdleFading, setIsIdleFading] = useState(false);
 
   useEffect(() => {
-    if (!enabled) {
+    const clearTimers = () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+      if (fadeTimerRef.current) clearTimeout(fadeTimerRef.current);
+    };
+
+    const startTimers = () => {
+      clearTimers();
       setIsIdleFading(false);
-      return;
-    }
 
-    const markActivity = () => {
-      lastActivityRef.current = Date.now();
-      hasResetRef.current = false;
-      setIsIdleFading(false);
+      const safeFadeDuration = Math.min(fadeDuration, timeout);
+
+      // Start fade before reset
+      fadeTimerRef.current = setTimeout(() => {
+        setIsIdleFading(true);
+      }, Math.max(timeout - safeFadeDuration, 0));
+
+      // Full reset
+      timerRef.current = setTimeout(() => {
+        navigate("/", { replace: true });
+      }, timeout);
     };
 
-    const runReset = () => {
-      if (hasResetRef.current) return;
-      hasResetRef.current = true;
-
-      try {
-        if (typeof onReset === "function") {
-          onReset();
-        }
-      } catch (error) {
-        console.error("Idle reset onReset failed:", error);
-      }
-
-      if (window.location.pathname !== resetUrl) {
-        window.location.href = resetUrl;
-      } else {
-        window.location.reload();
-      }
-    };
-
-    const checkIdle = () => {
-      const now = Date.now();
-      const idleFor = now - lastActivityRef.current;
-      const fadeStart = Math.max(timeout - 5000, 0);
-
-      setIsIdleFading(idleFor >= fadeStart && idleFor < timeout);
-
-      if (idleFor >= timeout) {
-        runReset();
-      }
-    };
-
-    const events = [
-      "pointerdown",
-      "pointermove",
-      "pointerup",
+    const activityEvents = [
+      "mousemove",
+      "mousedown",
       "touchstart",
       "touchmove",
-      "touchend",
-      "mousedown",
-      "mousemove",
-      "mouseup",
-      "click",
       "keydown",
-      "keyup",
-      "wheel",
       "scroll",
     ];
 
-    events.forEach((eventName) => {
-      window.addEventListener(eventName, markActivity, { passive: true });
-      document.addEventListener(eventName, markActivity, { passive: true });
-    });
-
-    const handleVisibility = () => {
-      if (!document.hidden) {
-        markActivity();
-      }
+    const handleActivity = () => {
+      startTimers();
     };
 
-    window.addEventListener("focus", markActivity);
-    window.addEventListener("pageshow", markActivity);
-    document.addEventListener("visibilitychange", handleVisibility);
+    activityEvents.forEach((event) =>
+      window.addEventListener(event, handleActivity, { passive: true })
+    );
 
-    markActivity();
-    intervalRef.current = window.setInterval(checkIdle, 1000);
+    // Init
+    startTimers();
 
     return () => {
-      if (intervalRef.current) {
-        window.clearInterval(intervalRef.current);
-      }
-
-      events.forEach((eventName) => {
-        window.removeEventListener(eventName, markActivity);
-        document.removeEventListener(eventName, markActivity);
-      });
-
-      window.removeEventListener("focus", markActivity);
-      window.removeEventListener("pageshow", markActivity);
-      document.removeEventListener("visibilitychange", handleVisibility);
+      clearTimers();
+      activityEvents.forEach((event) =>
+        window.removeEventListener(event, handleActivity)
+      );
     };
-  }, [enabled, timeout, onReset, resetUrl]);
+  }, [navigate, timeout, fadeDuration]);
 
   return { isIdleFading };
 }

@@ -1,7 +1,7 @@
 // src/App.jsx
 import React, { useEffect, useRef, useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import useAppUpdateManager from "./hooks/useAppUpdateManager";
 import WelcomeScreen from "./pages/WelcomeScreen";
 import DiscoveryHub from "./pages/DiscoveryHub";
 import BrandSelection from "./pages/BrandSelection";
@@ -14,9 +14,17 @@ import AboutPage from "./pages/AboutPage";
 import { clearAll } from "./state/comparisonStore";
 
 function AppShell() {
+  const location = useLocation();
   const timeoutMs = 60000;
   const lastActivityRef = useRef(0);
   const [secondsLeft, setSecondsLeft] = useState(60);
+
+  const { updatedAtLabel, updatedAt, appVersion } = useAppUpdateManager({
+    checkIntervalMs: 60000,
+    nightlyReloadHour: 3,
+    nightlyReloadMinute: 0,
+    enableNightlyReload: true,
+  });
 
   useEffect(() => {
     const markActivity = () => {
@@ -99,26 +107,13 @@ function AppShell() {
     };
   }, []);
 
+  const hideGlobalCompareMiniBar =
+    location.pathname.startsWith("/brand/") ||
+    location.pathname.startsWith("/product/") ||
+    location.pathname === "/compare";
+
   return (
     <>
-      <div
-        style={{
-          position: "fixed",
-          right: 12,
-          bottom: 12,
-          zIndex: 99999,
-          background: "rgba(0,0,0,0.85)",
-          color: "#fff",
-          padding: "10px 12px",
-          borderRadius: 12,
-          fontSize: 16,
-          fontWeight: 700,
-          boxShadow: "0 8px 24px rgba(0,0,0,0.35)",
-        }}
-      >
-        Idle reset test: {secondsLeft}s
-      </div>
-
       <Routes>
         <Route path="/" element={<WelcomeScreen />} />
         <Route path="/discover" element={<DiscoveryHub />} />
@@ -126,10 +121,19 @@ function AppShell() {
         <Route path="/brand/:brandSlug" element={<BrandResults />} />
         <Route path="/product/:productId" element={<ProductDetail />} />
         <Route path="/compare" element={<ComparePage />} />
-        <Route path="/about" element={<AboutPage />} />
+        <Route
+          path="/about"
+          element={
+            <AboutPage
+              updatedAtLabel={updatedAtLabel}
+              updatedAt={updatedAt}
+              appVersion={appVersion}
+            />
+          }
+        />
       </Routes>
 
-      <CompareMiniBar />
+      {!hideGlobalCompareMiniBar ? <CompareMiniBar /> : null}
     </>
   );
 }

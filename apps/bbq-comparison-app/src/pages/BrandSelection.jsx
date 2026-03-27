@@ -1,4 +1,5 @@
-//BrandSelections.jsx
+
+// src/pages/BrandSelection.jsx
 
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -138,6 +139,10 @@ export default function BrandSelection() {
   const assetBaseUrl = import.meta.env.VITE_ASSET_BASE_URL || "";
 
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, []);
+
+  useEffect(() => {
     let cancelled = false;
 
     async function loadData() {
@@ -223,6 +228,7 @@ export default function BrandSelection() {
       <div className="ambient-light ambient-light-1" />
       <div className="ambient-light ambient-light-2" />
       <div className="ambient-light ambient-light-3" />
+      <div className="ambient-grid" />
 
       <section className="brand-selection-shell">
         <div className="brand-selection-topbar">
@@ -236,13 +242,17 @@ export default function BrandSelection() {
           </button>
         </div>
 
-        <header className="brand-selection-header interactive-panel">
-          <div className="brand-selection-header-content">
-            <h1 className="brand-selection-title">Brands</h1>
+        <section className="brand-hero">
+          <div className="brand-hero-copy">
+            <div className="brand-selection-eyebrow">Showroom Navigation</div>
+            <h1 className="brand-selection-title">Browse by Brand</h1>
+            <p className="brand-selection-subtitle">
+              Tap a logo to explore products, compare lines, and move through the catalog with a simple touchscreen flow.
+            </p>
           </div>
-        </header>
+        </section>
 
-        <section className="brand-selection-grid-section interactive-panel">
+        <section className="brand-gallery-shell">
           {loading ? (
             <div className="brand-selection-placeholder">Loading brands...</div>
           ) : error ? (
@@ -254,39 +264,49 @@ export default function BrandSelection() {
               No brands available.
             </div>
           ) : (
-            <div className="brand-selection-grid">
-              {visibleBrands.map((brand) => (
-                <article
-                  key={brand.id}
-                  className="brand-card interactive-button"
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => navigate(`/brand/${brand.id}`)}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter" || event.key === " ") {
-                      event.preventDefault();
-                      navigate(`/brand/${brand.id}`);
-                    }
-                  }}
-                >
-                  <span className="button-sheen" />
+            <>
+              <div className="brand-gallery-header">
+                <div className="brand-gallery-title">Select a Brand</div>
+                <div className="brand-gallery-meta">{visibleBrands.length} brands available</div>
+              </div>
 
-                  <div className="brand-card-logo-wrap">
-                    {brand.logoUrl ? (
-                      <img
-                        src={brand.logoUrl}
-                        alt={`${brand.name} logo`}
-                        className="brand-card-logo"
-                      />
-                    ) : (
-                      <div className="brand-card-fallback">{brand.name}</div>
-                    )}
-                  </div>
+              <div className="brand-selection-grid">
+                {visibleBrands.map((brand) => (
+                  <article
+                    key={brand.id}
+                    className="brand-card interactive-button"
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => navigate(`/brand/${brand.id}`)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        navigate(`/brand/${brand.id}`);
+                      }
+                    }}
+                  >
+                    <span className="button-sheen" />
 
-                  <div className="brand-card-name">{brand.name}</div>
-                </article>
-              ))}
-            </div>
+                    <div className="brand-card-logo-wrap">
+                      {brand.logoUrl ? (
+                        <img
+                          src={brand.logoUrl}
+                          alt={`${brand.name} logo`}
+                          className="brand-card-logo"
+                        />
+                      ) : (
+                        <div className="brand-card-fallback">{brand.name}</div>
+                      )}
+                    </div>
+
+                    <div className="brand-card-footer">
+                      <div className="brand-card-name">{brand.name}</div>
+                      <div className="brand-card-cta">Tap to Explore</div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </>
           )}
         </section>
       </section>
@@ -296,13 +316,26 @@ export default function BrandSelection() {
           position: relative;
           min-height: 100vh;
           width: 100%;
-          overflow: hidden;
+          overflow-x: hidden;
+          overflow-y: visible;
           background:
             radial-gradient(circle at 18% 14%, rgba(76, 110, 168, 0.09), transparent 28%),
             radial-gradient(circle at 82% 88%, rgba(76, 110, 168, 0.08), transparent 32%),
             linear-gradient(180deg, #0a0d12 0%, #0f141b 48%, #090c11 100%);
           color: #e6edf7;
           font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        .ambient-grid {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          opacity: 0.08;
+          background-image:
+            linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+          background-size: 56px 56px;
+          mask-image: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.7));
         }
 
         .ambient-light {
@@ -347,76 +380,53 @@ export default function BrandSelection() {
           z-index: 1;
           min-height: 100vh;
           width: 100%;
-          padding: 22px 28px 24px;
+          padding: 18px 28px 34px;
           box-sizing: border-box;
           display: grid;
           grid-template-rows: auto auto 1fr;
-          gap: 16px;
+          gap: 20px;
         }
 
         .brand-selection-topbar {
           display: flex;
-          justify-content: flex-start;
-        }
-
-        .interactive-panel {
-          position: relative;
-          border-radius: 24px;
-          background:
-            linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.018));
-          border: 1px solid rgba(255, 255, 255, 0.07);
-          box-shadow:
-            0 24px 60px rgba(0, 0, 0, 0.34),
-            inset 0 1px 0 rgba(255, 255, 255, 0.04);
-          backdrop-filter: blur(18px);
-          overflow: hidden;
-          transition:
-            transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
-            border-color 260ms ease,
-            box-shadow 260ms ease,
-            background 260ms ease;
-        }
-
-        .interactive-panel::before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          pointer-events: none;
-          background:
-            linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 35%),
-            radial-gradient(circle at top center, rgba(90, 120, 180, 0.06), transparent 42%);
-        }
-
-        .interactive-panel:hover {
-          transform: translateY(-2px);
-          border-color: rgba(110, 145, 210, 0.17);
-          box-shadow:
-            0 30px 74px rgba(0, 0, 0, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.05);
+          justify-content: center;
+          align-items: center;
         }
 
         .interactive-button {
           position: relative;
           overflow: hidden;
           transition:
-            transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
-            box-shadow 220ms ease,
-            border-color 220ms ease,
-            filter 220ms ease;
+            transform 120ms cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 160ms ease,
+            filter 120ms ease;
           -webkit-tap-highlight-color: transparent;
-        }
-
-        .interactive-button:hover {
-          filter: brightness(1.03);
+          will-change: transform;
         }
 
         .interactive-button:active {
-          transform: scale(0.985);
+          transform: scale(0.975);
+          filter: brightness(1.04);
         }
 
         .interactive-button:focus-visible {
           outline: 2px solid rgba(122, 157, 219, 0.5);
           outline-offset: 2px;
+        }
+
+        .interactive-button::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          background: radial-gradient(circle, rgba(122,157,219,0.22) 0%, transparent 60%);
+          opacity: 0;
+          transition: opacity 160ms ease;
+          pointer-events: none;
+        }
+
+        .interactive-button:active::after {
+          opacity: 1;
         }
 
         .button-sheen {
@@ -433,71 +443,127 @@ export default function BrandSelection() {
           transform: rotate(20deg);
           pointer-events: none;
           opacity: 0;
-          transition: opacity 220ms ease;
-        }
-
-        .interactive-button:hover .button-sheen {
-          opacity: 1;
-          animation: sheenSweep 900ms cubic-bezier(0.22, 1, 0.36, 1) 1;
         }
 
         .home-button {
-          min-width: 220px;
-          height: 64px;
-          padding: 0 22px;
-          border: none;
-          border-radius: 18px;
-          background: linear-gradient(180deg, #5a78a8 0%, #435d83 100%);
+          height: 68px;
+          min-width: 380px;
+          padding: 0 44px;
+          border: 1px solid rgba(255,255,255,0.14);
+          border-radius: 999px;
+          background:
+            linear-gradient(180deg, rgba(102,138,193,0.96) 0%, rgba(70,96,137,0.96) 100%);
           color: #f7fbff;
-          font-size: 0.96rem;
+          font-size: 1rem;
           font-weight: 900;
-          letter-spacing: 0.08em;
+          letter-spacing: 0.12em;
           text-transform: uppercase;
-          box-shadow: 0 16px 34px rgba(67, 93, 131, 0.32);
+          box-shadow:
+            0 18px 42px rgba(67, 93, 131, 0.38),
+            inset 0 1px 0 rgba(255,255,255,0.2);
           cursor: pointer;
         }
 
-        .home-button:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 22px 40px rgba(67, 93, 131, 0.38);
-        }
-
-        .brand-selection-header {
-          min-height: 180px;
-          padding: 34px 38px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+        .brand-hero {
+          max-width: 1180px;
+          margin: 0 auto;
+          width: 100%;
+          padding: 22px 6px 6px;
           text-align: center;
         }
 
-        .brand-selection-header-content {
-          position: relative;
-          z-index: 1;
-          display: grid;
-          justify-items: center;
-          gap: 16px;
+        .brand-hero-copy {
+          margin: 0 auto;
           max-width: 860px;
+          display: grid;
+          gap: 12px;
+        }
+
+        .brand-selection-eyebrow {
+          font-size: 0.82rem;
+          font-weight: 800;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: rgba(230, 237, 247, 0.54);
         }
 
         .brand-selection-title {
           margin: 0;
-          font-size: clamp(2.6rem, 4vw, 4.3rem);
-          line-height: 1;
+          font-size: clamp(3rem, 4.6vw, 5.3rem);
+          line-height: 0.96;
           font-weight: 800;
-          letter-spacing: -0.03em;
-          color: #f2f6fb;
+          letter-spacing: -0.05em;
+          color: #f6f9ff;
+          text-shadow: 0 8px 30px rgba(0,0,0,0.26);
         }
 
-        .brand-selection-grid-section {
-          padding: 20px 22px;
-          box-sizing: border-box;
+        .brand-selection-subtitle {
+          margin: 0 auto;
+          max-width: 760px;
+          font-size: 1.02rem;
+          line-height: 1.7;
+          font-weight: 500;
+          color: rgba(230, 237, 247, 0.74);
+        }
+
+        .brand-gallery-shell {
+          position: relative;
+          max-width: 1520px;
+          margin: 0 auto;
+          width: 100%;
+          padding: 28px;
+          border-radius: 34px;
+          border: 1px solid rgba(255,255,255,0.08);
+          background:
+            linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.016));
+          box-shadow:
+            0 30px 80px rgba(0,0,0,0.38),
+            inset 0 1px 0 rgba(255,255,255,0.05);
+          backdrop-filter: blur(22px);
+          overflow: hidden;
+        }
+
+        .brand-gallery-shell::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          background:
+            radial-gradient(circle at top center, rgba(90,120,180,0.09), transparent 42%),
+            linear-gradient(180deg, rgba(255,255,255,0.03), transparent 28%);
+        }
+
+        .brand-gallery-header {
+          position: relative;
+          z-index: 1;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 16px;
+          margin-bottom: 26px;
+          padding: 0 4px;
+        }
+
+        .brand-gallery-title {
+          font-size: 1.2rem;
+          font-weight: 800;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          color: rgba(243,247,255,0.95);
+        }
+
+        .brand-gallery-meta {
+          font-size: 0.92rem;
+          font-weight: 700;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          color: rgba(230,237,247,0.48);
         }
 
         .brand-selection-placeholder {
-          min-height: 240px;
+          min-height: 320px;
           border: 2px dashed rgba(148, 163, 184, 0.22);
-          border-radius: 18px;
+          border-radius: 22px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -507,6 +573,7 @@ export default function BrandSelection() {
           padding: 24px;
           position: relative;
           z-index: 1;
+          background: rgba(255,255,255,0.02);
         }
 
         .brand-selection-error {
@@ -520,49 +587,48 @@ export default function BrandSelection() {
           z-index: 1;
           display: grid;
           grid-template-columns: repeat(4, minmax(0, 1fr));
-          gap: 18px;
+          gap: 28px;
         }
 
         .brand-card {
-          min-height: 250px;
-          border-radius: 22px;
-          border: 1px solid rgba(255, 255, 255, 0.35);
-          background: #ffffff;
+          min-height: 292px;
+          border-radius: 28px;
+          border: 1px solid rgba(255,255,255,0.18);
+          background:
+            linear-gradient(180deg, rgba(250,252,255,0.98) 0%, rgba(238,243,249,0.96) 100%);
           box-shadow:
-            0 22px 42px rgba(0, 0, 0, 0.2),
-            inset 0 1px 0 rgba(255, 255, 255, 0.7);
+            0 30px 64px rgba(0, 0, 0, 0.24),
+            inset 0 1px 0 rgba(255,255,255,0.86);
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          cursor: pointer;
           padding: 22px;
           box-sizing: border-box;
-        }
-
-        .brand-card:hover {
-          transform: translateY(-4px);
-          border-color: rgba(110, 145, 210, 0.3);
-          box-shadow: 0 24px 44px rgba(0, 0, 0, 0.24);
+          cursor: pointer;
         }
 
         .brand-card-logo-wrap {
           flex: 1;
-          min-height: 120px;
+          min-height: 156px;
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 10px;
+          padding: 20px;
           background:
-            radial-gradient(circle at top center, rgba(76, 110, 168, 0.08), transparent 46%),
-            linear-gradient(180deg, rgba(12, 18, 28, 0.02), rgba(12, 18, 28, 0.01));
-          border-radius: 18px;
+            radial-gradient(circle at top center, rgba(76,110,168,0.14), transparent 54%),
+            linear-gradient(180deg, rgba(255,255,255,0.96), rgba(244,247,252,0.82));
+          border-radius: 22px;
+          box-shadow:
+            inset 0 1px 0 rgba(255,255,255,0.95),
+            0 12px 28px rgba(14, 22, 34, 0.08);
         }
 
         .brand-card-logo {
           max-width: 100%;
-          max-height: 88px;
+          max-height: 98px;
           object-fit: contain;
           display: block;
+          filter: saturate(1.03) contrast(1.02);
         }
 
         .brand-card-fallback {
@@ -573,14 +639,29 @@ export default function BrandSelection() {
           color: #243247;
         }
 
-        .brand-card-name {
+        .brand-card-footer {
+          display: grid;
+          gap: 8px;
           padding-top: 18px;
-          font-size: 1.18rem;
-          line-height: 1.2;
+        }
+
+        .brand-card-name {
+          font-size: 1.16rem;
+          line-height: 1.18;
           font-weight: 800;
           letter-spacing: -0.02em;
           text-align: center;
-          color: #111827;
+          color: #101827;
+        }
+
+        .brand-card-cta {
+          font-size: 0.78rem;
+          line-height: 1;
+          font-weight: 800;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          text-align: center;
+          color: rgba(56, 82, 120, 0.72);
         }
 
         @keyframes ambientFloat {
@@ -592,18 +673,20 @@ export default function BrandSelection() {
           }
         }
 
-        @keyframes sheenSweep {
-          0% {
-            transform: translateX(-180%) rotate(20deg);
-          }
-          100% {
-            transform: translateX(480%) rotate(20deg);
-          }
-        }
-
         @media (max-width: 1400px) {
           .brand-selection-grid {
             grid-template-columns: repeat(3, minmax(0, 1fr));
+          }
+        }
+
+        @media (max-width: 1120px) {
+          .brand-selection-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+
+          .brand-gallery-header {
+            flex-direction: column;
+            align-items: flex-start;
           }
         }
 
@@ -612,18 +695,37 @@ export default function BrandSelection() {
             padding: 18px 20px 20px;
           }
 
-          .brand-selection-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+          .home-button {
+            min-width: 320px;
+          }
+
+          .brand-gallery-shell {
+            padding: 22px;
           }
         }
 
         @media (max-width: 768px) {
           .brand-selection-grid {
             grid-template-columns: 1fr;
+            gap: 20px;
+          }
+
+          .brand-gallery-shell {
+            padding: 18px;
+            border-radius: 26px;
+          }
+
+          .brand-selection-title {
+            font-size: clamp(2.5rem, 9vw, 3.5rem);
           }
 
           .home-button {
             width: 100%;
+            min-width: 0;
+          }
+
+          .brand-gallery-header {
+            margin-bottom: 18px;
           }
         }
       `}</style>

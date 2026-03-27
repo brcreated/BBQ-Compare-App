@@ -1,4 +1,4 @@
-//ComparePage.jsx
+// src/pages/ComparePage.jsx
 
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -11,51 +11,93 @@ import {
 import { useCatalog } from "../context/CatalogContext";
 import useIdleReset from "../hooks/useIdleReset";
 
+function formatPriceDisplay(value) {
+  if (value === null || value === undefined) return "Request Pricing";
+
+  const raw = String(value).trim();
+  if (!raw) return "Request Pricing";
+
+  // If it contains letters, keep the original text
+  if (/[a-zA-Z]/.test(raw)) {
+    return raw;
+  }
+
+  // Strip common formatting chars and try numeric conversion
+  const numeric = Number(raw.replace(/[$,]/g, ""));
+  if (Number.isFinite(numeric)) {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: 0,
+    }).format(numeric);
+  }
+
+  // Fallback: preserve original text
+  return raw;
+}
 const PAGE_FONT =
   'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
 
 const pageShellStyle = {
-  minHeight: "100vh",
+  minHeight: "100%",
+  height: "auto",
+  position: "relative",
+  overflowX: "hidden",
+  overflowY: "visible",
   background:
-    "radial-gradient(circle at top, rgba(39,95,170,0.22) 0%, rgba(9,13,20,0.96) 38%, #04070c 100%)",
+    "radial-gradient(circle at 18% 14%, rgba(76, 110, 168, 0.10), transparent 28%), radial-gradient(circle at 82% 88%, rgba(76, 110, 168, 0.08), transparent 32%), linear-gradient(180deg, #0a0d12 0%, #0f141b 48%, #090c11 100%)",
   color: "#f3f7ff",
   fontFamily: PAGE_FONT,
 };
 
 const containerStyle = {
-  width: "min(1600px, calc(100% - 40px))",
+  position: "relative",
+  zIndex: 1,
+  width: "100%",
+  maxWidth: "none",
   margin: "0 auto",
-  padding: "24px 0 72px",
+  padding: "18px 28px 40px",
+  boxSizing: "border-box",
 };
 
-const glassCardStyle = {
-  background: "linear-gradient(180deg, rgba(15,23,36,0.92), rgba(9,14,24,0.92))",
-  border: "1px solid rgba(117, 163, 255, 0.18)",
-  boxShadow: "0 18px 60px rgba(0, 0, 0, 0.28)",
+const panelStyle = {
+  position: "relative",
+  background:
+    "linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.018))",
+  border: "1px solid rgba(255,255,255,0.08)",
+  boxShadow:
+    "0 28px 70px rgba(0, 0, 0, 0.36), inset 0 1px 0 rgba(255,255,255,0.05)",
   borderRadius: 28,
-  backdropFilter: "blur(12px)",
+  backdropFilter: "blur(18px)",
+  overflow: "visible",
 };
 
 const softButtonStyle = {
-  border: "1px solid rgba(255,255,255,0.12)",
-  background: "rgba(10,15,24,0.82)",
-  color: "#e4ecff",
-  borderRadius: 14,
-  padding: "12px 16px",
+  border: "none",
+  background: "linear-gradient(180deg, #5a78a8 0%, #435d83 100%)",
+  color: "#f7fbff",
+  borderRadius: 18,
+  padding: "0 22px",
+  minHeight: 56,
   fontSize: 14,
-  fontWeight: 800,
+  fontWeight: 900,
+  letterSpacing: "0.08em",
+  textTransform: "uppercase",
   cursor: "pointer",
-  boxShadow: "0 10px 28px rgba(0,0,0,0.22)",
+  boxShadow: "0 16px 34px rgba(67, 93, 131, 0.32)",
 };
 
 const primaryButtonStyle = {
   border: "none",
-  background: "linear-gradient(135deg, #4c75db 0%, #2f57bc 100%)",
-  color: "#fff",
-  borderRadius: 14,
-  padding: "12px 16px",
+  background: "linear-gradient(180deg, #5a78a8 0%, #435d83 100%)",
+  color: "#f7fbff",
+  borderRadius: 18,
+  padding: "0 22px",
+  minHeight: 56,
   fontSize: 14,
-  fontWeight: 800,
+  fontWeight: 900,
+  letterSpacing: "0.08em",
+  textTransform: "uppercase",
   cursor: "pointer",
   boxShadow: "0 16px 34px rgba(67, 93, 131, 0.32)",
 };
@@ -211,15 +253,15 @@ function getBrandName(variant, brandsById) {
 
 function getVariantPrice(variant, specsForVariant = []) {
   const direct =
-    variant?.salePrice ||
-    variant?.sale_price ||
-    variant?.price ||
-    variant?.mapPrice ||
-    variant?.map_price ||
+    variant?.salePrice ??
+    variant?.sale_price ??
+    variant?.price ??
+    variant?.mapPrice ??
+    variant?.map_price ??
     variant?.msrp;
 
-  if (direct !== null && direct !== undefined && direct !== "") {
-    return Number(direct) || 0;
+  if (direct !== null && direct !== undefined && String(direct).trim() !== "") {
+    return direct;
   }
 
   const priceSpec = specsForVariant.find((spec) => {
@@ -227,12 +269,12 @@ function getVariantPrice(variant, specsForVariant = []) {
       .trim()
       .toLowerCase();
 
-    return ["price", "sale_price", "map_price", "msrp"].includes(key);
+    return ["price", "sale_price", "map_price", "msrp", "starting_price"].includes(key);
   });
 
-  if (!priceSpec) return 0;
+  if (!priceSpec) return "";
 
-  return parseNumericValue(priceSpec.value ?? priceSpec.specValue ?? "") || 0;
+  return priceSpec.value ?? priceSpec.specValue ?? priceSpec.spec_value ?? "";
 }
 
 function getAssetUrl(asset) {
@@ -358,12 +400,32 @@ function buildSpecGroupsForProducts(products) {
     groups.get(entry.group).push(entry);
   });
 
+  const preferredOrder = [
+    "Highlights",
+    "Cooking",
+    "Performance",
+    "Size",
+    "Capacity",
+    "Build",
+    "Features",
+    "Installation",
+    "Fuel",
+    "Details",
+  ];
+
   return Array.from(groups.entries())
     .map(([groupName, specs]) => ({
       groupName,
       specs: specs.sort((a, b) => a.label.localeCompare(b.label)),
     }))
-    .sort((a, b) => a.groupName.localeCompare(b.groupName));
+    .sort((a, b) => {
+      const aIndex = preferredOrder.indexOf(a.groupName);
+      const bIndex = preferredOrder.indexOf(b.groupName);
+      if (aIndex !== -1 || bIndex !== -1) {
+        return (aIndex === -1 ? 999 : aIndex) - (bIndex === -1 ? 999 : bIndex);
+      }
+      return a.groupName.localeCompare(b.groupName);
+    });
 }
 
 function getSpecForProduct(product, specKey) {
@@ -429,25 +491,22 @@ function CompareHeaderCard({ product, onOpen }) {
         }
       }}
       style={{
-        ...glassCardStyle,
-        overflow: "hidden",
+        ...panelStyle,
         display: "flex",
         flexDirection: "column",
-        minHeight: 390,
+        minHeight: 470,
         cursor: "pointer",
-        transition:
-          "transform 220ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 220ms ease, border-color 220ms ease",
       }}
     >
       <div
         style={{
           position: "relative",
-          aspectRatio: "1 / 1",
+          minHeight: 290,
           background:
-            "radial-gradient(circle at top, rgba(73,122,255,0.16) 0%, rgba(12,17,27,1) 68%)",
+            "radial-gradient(circle at top center, rgba(76, 110, 168, 0.12), transparent 52%), linear-gradient(180deg, rgba(255,255,255,0.03), rgba(9,14,24,0.92))",
           display: "grid",
           placeItems: "center",
-          padding: 24,
+          padding: 28,
           borderBottom: "1px solid rgba(117, 163, 255, 0.12)",
         }}
       >
@@ -457,7 +516,7 @@ function CompareHeaderCard({ product, onOpen }) {
             alt={product.name}
             style={{
               maxWidth: "100%",
-              maxHeight: "100%",
+              maxHeight: 240,
               objectFit: "contain",
               filter: "drop-shadow(0 18px 28px rgba(0,0,0,0.34))",
             }}
@@ -477,18 +536,18 @@ function CompareHeaderCard({ product, onOpen }) {
 
       <div
         style={{
-          padding: 22,
+          padding: 24,
           display: "grid",
-          gap: 10,
+          gap: 12,
         }}
       >
         <div
           style={{
             fontSize: 12,
-            letterSpacing: "0.14em",
+            letterSpacing: "0.16em",
             textTransform: "uppercase",
             color: "#8ea8e8",
-            fontWeight: 800,
+            fontWeight: 900,
           }}
         >
           {product.brand}
@@ -496,11 +555,12 @@ function CompareHeaderCard({ product, onOpen }) {
 
         <div
           style={{
-            fontSize: 22,
-            lineHeight: 1.15,
+            fontSize: 20,
+            lineHeight: 1.16,
             fontWeight: 800,
             color: "#f6f8ff",
             letterSpacing: "-0.03em",
+            minHeight: 48,
           }}
         >
           {product.name}
@@ -508,7 +568,7 @@ function CompareHeaderCard({ product, onOpen }) {
 
         <div
           style={{
-            fontSize: 20,
+            fontSize: 18,
             fontWeight: 800,
             color: "#9ec0ff",
           }}
@@ -520,26 +580,28 @@ function CompareHeaderCard({ product, onOpen }) {
           style={{
             fontSize: 13,
             fontWeight: 800,
-            color: "#d7e3ff",
+            color: "#eef5ff",
             marginTop: 2,
+            letterSpacing: "0.04em",
+            textTransform: "uppercase",
           }}
         >
-          View Product →
+          View Product
         </div>
       </div>
     </div>
   );
 }
 
-function RemoveRowButton({ onRemove }) {
+function CompareRemoveCard({ onRemove }) {
   return (
     <button
       onClick={onRemove}
+      className="compare-action-button"
       style={{
         ...softButtonStyle,
         width: "100%",
-        padding: "12px 14px",
-        whiteSpace: "nowrap",
+        minHeight: 58,
       }}
     >
       Remove
@@ -559,6 +621,10 @@ export default function ComparePage() {
 
   const [compareIds, setCompareIds] = useState(getState().items || []);
   const [showDifferencesOnly, setShowDifferencesOnly] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, []);
 
   useEffect(() => {
     document.body.classList.add("compare-page-active");
@@ -620,7 +686,7 @@ export default function ComparePage() {
           brand: getBrandName(variant, brandsById),
           name: getVariantName(variant),
           price,
-          priceLabel: toCurrency(price),
+          priceLabel: formatPriceDisplay(price),
           heroUrl: getAssetUrl(heroAsset),
           specs: variantSpecs,
         };
@@ -650,6 +716,7 @@ export default function ComparePage() {
   }, [products, showDifferencesOnly, specGroups]);
 
   const hasProducts = products.length > 0;
+  const canCompare = products.length >= 2;
 
   if (loading) {
     return (
@@ -666,7 +733,7 @@ export default function ComparePage() {
       <main style={{ ...pageShellStyle, display: "grid", placeItems: "center", padding: 24 }}>
         <div
           style={{
-            ...glassCardStyle,
+            ...panelStyle,
             width: "min(720px, 100%)",
             padding: 32,
             textAlign: "center",
@@ -677,12 +744,12 @@ export default function ComparePage() {
               fontSize: 14,
               textTransform: "uppercase",
               letterSpacing: "0.18em",
-              color: "#8da9e6",
+              color: "rgba(230, 237, 247, 0.72)",
               fontWeight: 800,
               marginBottom: 14,
             }}
           >
-            Compare Products
+            Compare Grills
           </div>
           <div style={{ fontSize: 32, fontWeight: 800, letterSpacing: "-0.03em", marginBottom: 12 }}>
             Unable to Load Comparison
@@ -690,7 +757,8 @@ export default function ComparePage() {
           <div style={{ fontSize: 16, color: "#c7d5f5", marginBottom: 24 }}>
             {typeof error === "string" ? error : "Unable to load comparison catalog."}
           </div>
-          <button onClick={() => navigate("/discover")} style={primaryButtonStyle}>
+          <button onClick={() => navigate("/discover")} className="compare-top-button"
+            style={primaryButtonStyle}>
             Home
           </button>
         </div>
@@ -703,9 +771,9 @@ export default function ComparePage() {
       <main style={{ ...pageShellStyle, padding: 24, display: "grid", placeItems: "center" }}>
         <div
           style={{
-            ...glassCardStyle,
-            width: "min(860px, 100%)",
-            padding: "42px 32px",
+            ...panelStyle,
+            width: "min(900px, 100%)",
+            padding: "46px 34px",
             textAlign: "center",
           }}
         >
@@ -719,7 +787,7 @@ export default function ComparePage() {
               marginBottom: 16,
             }}
           >
-            Compare Products
+            Compare Grills
           </div>
 
           <div
@@ -744,15 +812,17 @@ export default function ComparePage() {
             }}
           >
             Add products from the product detail page, then come back here for a
-            full side-by-side comparison with images, pricing, and grouped specs.
+            full side-by-side comparison with grouped specs, pricing, and a clean customer-friendly layout.
           </div>
 
           <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
-            <button onClick={() => navigate("/discover")} style={{ ...primaryButtonStyle, minWidth: 180 }}>
+            <button onClick={() => navigate("/discover")} className="compare-top-button"
+              style={{ ...primaryButtonStyle, minWidth: 180 }}>
               Home
             </button>
 
-            <button onClick={() => navigate("/brands")} style={{ ...softButtonStyle, minWidth: 180 }}>
+            <button onClick={() => navigate("/brands")} className="compare-top-button"
+              style={{ ...softButtonStyle, minWidth: 180 }}>
               Brands
             </button>
           </div>
@@ -763,24 +833,36 @@ export default function ComparePage() {
 
   return (
     <main style={pageShellStyle}>
+      <div className="ambient-light ambient-light-1" />
+      <div className="ambient-light ambient-light-2" />
+      <div className="ambient-light ambient-light-3" />
+
       <div style={containerStyle}>
         <section
           style={{
-            ...glassCardStyle,
+            ...panelStyle,
             padding: 18,
             marginBottom: 18,
+            position: "sticky",
+            top: 0,
+            zIndex: 200,
+            background:
+              "linear-gradient(180deg, rgba(10,13,18,0.96) 0%, rgba(10,13,18,0.90) 72%, rgba(10,13,18,0.84) 100%)",
           }}
         >
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
-            <button onClick={() => navigate("/discover")} style={softButtonStyle}>
+            <button onClick={() => navigate("/discover")} className="compare-top-button"
+              style={softButtonStyle}>
               Home
             </button>
 
-            <button onClick={() => navigate("/brands")} style={softButtonStyle}>
-              Go to Brands
+            <button onClick={() => navigate("/brands")} className="compare-top-button"
+              style={softButtonStyle}>
+              Brands
             </button>
 
-            <button onClick={() => navigate(-1)} style={softButtonStyle}>
+            <button onClick={() => navigate(-1)} className="compare-top-button"
+              style={softButtonStyle}>
               Back
             </button>
           </div>
@@ -788,213 +870,326 @@ export default function ComparePage() {
 
         <section
           style={{
-            ...glassCardStyle,
-            padding: 22,
+            ...panelStyle,
+            padding: 30,
             marginBottom: 24,
+            textAlign: "center",
           }}
         >
           <div
             style={{
-              display: "grid",
-              gap: 18,
-              justifyItems: "center",
+              fontSize: 13,
+              textTransform: "uppercase",
+              letterSpacing: "0.18em",
+              color: "#8da9e6",
+              fontWeight: 800,
+              marginBottom: 14,
             }}
           >
-            <h1
-  style={{
-    fontSize: "clamp(60px, 6vw, 80px)",
-    fontWeight: 600,
-    textAlign: "center",
-    marginBottom: "20px",
-    letterSpacing: "-0.02em",
-  }}
->
-  Compare Grills
-</h1>
+            Side-by-Side Showroom Comparison
+          </div>
 
-            <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
-              <button
-                onClick={() => setShowDifferencesOnly((current) => !current)}
-                style={
-                  showDifferencesOnly
-                    ? {
-                        ...softButtonStyle,
-                        border: "1px solid rgba(98,144,255,0.55)",
-                        background: "rgba(43,88,190,0.24)",
-                      }
-                    : softButtonStyle
-                }
-              >
-                {showDifferencesOnly ? "Showing Differences Only" : "Show Differences Only"}
-              </button>
+          <h1
+            style={{
+              fontSize: "clamp(3.8rem, 6vw, 5.8rem)",
+              fontWeight: 800,
+              textAlign: "center",
+              margin: "0 0 14px",
+              letterSpacing: "-0.05em",
+              lineHeight: 0.96,
+            }}
+          >
+            Compare Grills
+          </h1>
 
-              <button
-                onClick={() => clearAll()}
-                style={{
-                  ...softButtonStyle,
-                  background: "rgba(83,20,26,0.34)",
-                  color: "#ffd5da",
-                }}
-              >
-                Clear All
-              </button>
-            </div>
+          <div
+            style={{
+              maxWidth: 760,
+              margin: "0 auto 22px",
+              color: "rgba(230,237,247,0.72)",
+              lineHeight: 1.7,
+              fontSize: 16,
+            }}
+          >
+            Customers can review the most important differences clearly, from cooking area and build details to installation and feature set.
+          </div>
+
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
+            <button
+              onClick={() => setShowDifferencesOnly((current) => !current)}
+              className="compare-action-button"
+              style={
+                showDifferencesOnly
+                  ? {
+                      ...softButtonStyle,
+                      boxShadow: "0 0 0 1px rgba(122,157,219,0.22), 0 16px 34px rgba(67, 93, 131, 0.32)",
+                      filter: "brightness(1.05)",
+                    }
+                  : softButtonStyle
+              }
+            >
+              {showDifferencesOnly ? "Showing Differences Only" : "Show Differences Only"}
+            </button>
+
+            <button
+              onClick={() => clearAll()}
+              className="compare-action-button"
+              style={{
+                ...softButtonStyle,
+                background: "linear-gradient(180deg, rgba(120,34,44,0.95) 0%, rgba(92,24,32,0.95) 100%)",
+                color: "#ffe5e8",
+                boxShadow: "0 16px 34px rgba(92,24,32,0.30)",
+              }}
+            >
+              Clear All
+            </button>
           </div>
         </section>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: `280px repeat(${products.length}, minmax(240px, 1fr))`,
-            gap: 18,
-            alignItems: "start",
-          }}
-        >
-          <div />
+        <div className="compare-grid-shell">
+          <div className="compare-side-column">
+            <div className="compare-side-card">
+              <div className="compare-side-title">Compared Products</div>
+              <div className="compare-side-meta">
+                {products.length} selected
+              </div>
+            </div>
 
-          {products.map((product) => (
-            <CompareHeaderCard
-              key={product.id}
-              product={product}
-              onOpen={() => navigate(`/product/${product.slug || product.id}`)}
-            />
-          ))}
+            <div className="compare-remove-label">Actions</div>
 
-          <div />
-
-          {products.map((product) => (
-            <RemoveRowButton
-              key={`${product.id}-remove`}
-              onRemove={() => removeItem(product.id)}
-            />
-          ))}
-
-          {visibleSpecGroups.map((group) => (
-            <React.Fragment key={group.groupName}>
-              <div
-                style={{
-                  alignSelf: "stretch",
-                  position: "sticky",
-                  top: 18,
-                }}
-              >
-                <div
-                  style={{
-                    ...glassCardStyle,
-                    borderRadius: 20,
-                    padding: 18,
-                  }}
-                >
-                  <div
-                    style={{
-                      fontSize: 13,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.14em",
-                      color: "#8aa5e4",
-                      fontWeight: 800,
-                    }}
-                  >
-                    {group.groupName}
-                  </div>
+            {visibleSpecGroups.map((group) => (
+              <div key={group.groupName} className="compare-side-card compare-side-sticky">
+                <div className="compare-side-title">{group.groupName}</div>
+                <div className="compare-side-meta">
+                  {group.specs.length} {group.specs.length === 1 ? "spec" : "specs"}
                 </div>
               </div>
+            ))}
+          </div>
 
-              <div
-                style={{
-                  gridColumn: `span ${products.length}`,
-                  display: "grid",
-                  gap: 12,
-                }}
-              >
-                {group.specs.map((entry) => {
-                  const comparableValues = products.map((product) =>
-                    getComparableSpecValue(getSpecForProduct(product, entry.key))
-                  );
-                  const isDifferent = areValuesDifferent(comparableValues);
+          <div className="compare-main-column">
+            <div
+              className="compare-products-grid"
+              style={{
+                gridTemplateColumns: `repeat(${products.length}, 1fr)`,
+              }}
+            >
+              {products.map((product) => (
+                <CompareHeaderCard
+                  key={product.id}
+                  product={product}
+                  onOpen={() => navigate(`/product/${product.slug || product.id}`)}
+                />
+              ))}
+            </div>
 
-                  return (
-                    <div
-                      key={entry.key}
-                      style={{
-                        display: "grid",
-                        gridTemplateColumns: `repeat(${products.length}, minmax(240px, 1fr))`,
-                        gap: 18,
-                      }}
-                    >
-                      {products.map((product) => {
-                        const spec = getSpecForProduct(product, entry.key);
-                        const formatted = formatSpecValue(spec);
+            <div
+              className="compare-products-grid"
+              style={{
+                gridTemplateColumns: `repeat(${products.length}, 1fr)`,
+                marginTop: 16,
+              }}
+            >
+              {products.map((product) => (
+                <CompareRemoveCard
+                  key={`${product.id}-remove`}
+                  onRemove={() => removeItem(product.id)}
+                />
+              ))}
+            </div>
 
-                        return (
-                          <div
-                            key={`${product.id}-${entry.key}`}
-                            className="compare-spec-card"
-                            role="button"
-                            tabIndex={0}
-                            onClick={() =>
-                              navigate(`/product/${product.slug || product.id}`)
+            {visibleSpecGroups.map((group) => (
+              <div key={group.groupName} className="compare-group-block">
+                <div
+                  className="compare-group-grid"
+                  style={{
+                    gridTemplateColumns: `repeat(${products.length}, 1fr)`,
+                  }}
+                >
+                  {group.specs.map((entry) => {
+                    const comparableValues = products.map((product) =>
+                      getComparableSpecValue(getSpecForProduct(product, entry.key))
+                    );
+                    const isDifferent = areValuesDifferent(comparableValues);
+
+                    return products.map((product) => {
+                      const spec = getSpecForProduct(product, entry.key);
+                      const formatted = formatSpecValue(spec);
+
+                      return (
+                        <div
+                          key={`${product.id}-${entry.key}`}
+                          className="compare-spec-card"
+                          role="button"
+                          tabIndex={0}
+                          onClick={() =>
+                            navigate(`/product/${product.slug || product.id}`)
+                          }
+                          onKeyDown={(event) => {
+                            if (event.key === "Enter" || event.key === " ") {
+                              event.preventDefault();
+                              navigate(`/product/${product.slug || product.id}`);
                             }
-                            onKeyDown={(event) => {
-                              if (event.key === "Enter" || event.key === " ") {
-                                event.preventDefault();
-                                navigate(`/product/${product.slug || product.id}`);
-                              }
-                            }}
-                            style={{
-                              background: isDifferent
-                                ? "linear-gradient(180deg, rgba(28,43,78,0.92) 0%, rgba(10,15,24,0.98) 100%)"
-                                : "linear-gradient(180deg, rgba(15,23,36,0.92), rgba(9,14,24,0.92))",
-                              border: isDifferent
-                                ? "1px solid rgba(98,144,255,0.38)"
-                                : "1px solid rgba(117, 163, 255, 0.14)",
-                              borderRadius: 20,
-                              padding: 18,
-                              boxShadow: "0 12px 36px rgba(0,0,0,0.24)",
-                              cursor: "pointer",
-                              transition:
-                                "transform 220ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 220ms ease, border-color 220ms ease",
-                            }}
-                          >
-                            <div
-                              style={{
-                                fontSize: 12,
-                                color: "#88a3e0",
-                                textTransform: "uppercase",
-                                letterSpacing: "0.12em",
-                                fontWeight: 700,
-                                marginBottom: 10,
-                              }}
-                            >
-                              {entry.label}
-                            </div>
-
-                            <div
-                              style={{
-                                fontSize: 18,
-                                color: "#f7f9ff",
-                                fontWeight: 700,
-                                lineHeight: 1.4,
-                              }}
-                            >
-                              {formatted}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  );
-                })}
+                          }}
+                          style={{
+                            background: isDifferent
+                              ? "linear-gradient(180deg, rgba(28,43,78,0.92) 0%, rgba(10,15,24,0.98) 100%)"
+                              : "linear-gradient(180deg, rgba(15,23,36,0.92), rgba(9,14,24,0.92))",
+                            border: isDifferent
+                              ? "1px solid rgba(98,144,255,0.38)"
+                              : "1px solid rgba(117, 163, 255, 0.14)",
+                          }}
+                        >
+                          <div className="compare-spec-label">{entry.label}</div>
+                          <div className="compare-spec-value">{formatted}</div>
+                        </div>
+                      );
+                    });
+                  })}
+                </div>
               </div>
-            </React.Fragment>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
       <style>{`
-        .compare-header-card:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 26px 58px rgba(0,0,0,0.38);
-          border-color: rgba(122,162,255,0.28);
+        html, body {
+          overflow-y: auto !important;
+        }
+
+        body.compare-page-active {
+          overflow: auto !important;
+        }
+
+        main {
+          overflow: visible !important;
+        }
+
+        .ambient-light {
+          position: absolute;
+          border-radius: 999px;
+          filter: blur(130px);
+          pointer-events: none;
+          opacity: 0.1;
+          animation: ambientFloat 14s ease-in-out infinite;
+        }
+
+        .ambient-light-1 {
+          width: 520px;
+          height: 520px;
+          top: -180px;
+          left: -120px;
+          background: #4f6691;
+          animation-delay: 0s;
+        }
+
+        .ambient-light-2 {
+          width: 560px;
+          height: 560px;
+          right: -180px;
+          bottom: -180px;
+          background: #3d5377;
+          animation-delay: 3s;
+        }
+
+        .ambient-light-3 {
+          width: 420px;
+          height: 420px;
+          top: 28%;
+          left: 42%;
+          background: #324661;
+          opacity: 0.06;
+          animation-delay: 6s;
+        }
+
+        .compare-grid-shell {
+          display: grid;
+          grid-template-columns: 260px minmax(0, 1fr);
+          gap: 18px;
+          align-items: start;
+        }
+
+        .compare-side-column {
+          display: grid;
+          gap: 16px;
+          align-self: start;
+        }
+
+        .compare-side-card {
+          background:
+            linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.018));
+          border: 1px solid rgba(255,255,255,0.08);
+          box-shadow:
+            0 18px 44px rgba(0,0,0,0.22),
+            inset 0 1px 0 rgba(255,255,255,0.05);
+          border-radius: 22px;
+          padding: 18px;
+          backdrop-filter: blur(16px);
+        }
+
+        .compare-side-sticky {
+          position: sticky;
+          top: 92px;
+        }
+
+        .compare-side-title {
+          font-size: 12px;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: #8aa5e4;
+          font-weight: 900;
+          margin-bottom: 8px;
+        }
+
+        .compare-side-meta {
+          font-size: 16px;
+          color: #f7f9ff;
+          font-weight: 700;
+          line-height: 1.4;
+        }
+
+        .compare-remove-label {
+          font-size: 12px;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: rgba(230,237,247,0.46);
+          font-weight: 900;
+          padding: 0 8px;
+        }
+
+        .compare-main-column {
+          min-width: 0;
+          display: grid;
+          gap: 16px;
+        }
+
+        .compare-products-grid,
+        .compare-group-grid {
+          display: grid;
+          gap: 18px;
+        }
+
+        .compare-group-block {
+          display: grid;
+          gap: 14px;
+        }
+
+        .compare-header-card,
+        .compare-spec-card {
+          transition:
+            transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 180ms ease,
+            border-color 180ms ease,
+            filter 120ms ease;
+          -webkit-tap-highlight-color: transparent;
+          will-change: transform;
+        }
+
+        .compare-header-card:active,
+        .compare-spec-card:active {
+          transform: scale(0.985);
+          filter: brightness(1.03);
         }
 
         .compare-header-card:focus-visible,
@@ -1003,19 +1198,109 @@ export default function ComparePage() {
           outline-offset: 3px;
         }
 
-        .compare-spec-card:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 20px 42px rgba(0,0,0,0.28);
-          border-color: rgba(122,162,255,0.22);
+        .compare-spec-card {
+          border-radius: 22px;
+          padding: 18px;
+          box-shadow: 0 14px 34px rgba(0,0,0,0.24);
+          cursor: pointer;
         }
 
-        body.compare-page-active div[style*="position: fixed"][style*="z-index: 1000"][style*="bottom: 20px"] {
+        .compare-spec-label {
+          font-size: 12px;
+          color: #88a3e0;
+          text-transform: uppercase;
+          letter-spacing: 0.14em;
+          font-weight: 800;
+          margin-bottom: 12px;
+        }
+
+        .compare-spec-value {
+          font-size: 20px;
+          color: #f7f9ff;
+          font-weight: 700;
+          line-height: 1.35;
+          letter-spacing: -0.02em;
+        }
+
+
+        .compare-top-button,
+        .compare-action-button {
+          position: relative;
+          overflow: hidden;
+          transition:
+            transform 120ms cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 160ms ease,
+            filter 120ms ease;
+          -webkit-tap-highlight-color: transparent;
+          will-change: transform;
+        }
+
+        .compare-top-button:active,
+        .compare-action-button:active {
+          transform: scale(0.965);
+          filter: brightness(1.08);
+        }
+
+        .compare-top-button:focus-visible,
+        .compare-action-button:focus-visible {
+          outline: 2px solid rgba(122, 157, 219, 0.5);
+          outline-offset: 2px;
+        }
+
+                body.compare-page-active div[style*="position: fixed"][style*="z-index: 1000"][style*="bottom: 20px"] {
           display: none !important;
         }
 
+        @keyframes ambientFloat {
+          0%, 100% {
+            transform: translate3d(0, 0, 0) scale(1);
+          }
+          50% {
+            transform: translate3d(18px, -12px, 0) scale(1.04);
+          }
+        }
+
+        @media (max-width: 1480px) {
+          .compare-grid-shell {
+            grid-template-columns: 220px minmax(0, 1fr);
+          }
+        }
+
+        @media (max-width: 1024px) {
+          .compare-products-grid,
+          .compare-group-grid {
+            gap: 14px;
+          }
+        }
+
         @media (max-width: 1180px) {
-          .compare-header-card {
-            min-height: 340px;
+          .compare-grid-shell {
+            grid-template-columns: 1fr;
+          }
+
+          .compare-side-column {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            align-items: start;
+          }
+
+          .compare-side-sticky {
+            position: static;
+          }
+        }
+          * {
+          overscroll-behavior: none;
+        }
+
+        .compare-main-column,
+        .compare-grid-shell,
+        .compare-products-grid,
+        .compare-group-grid {
+          overflow: visible !important;
+        }
+
+        @media (max-width: 768px) {
+          .compare-side-column {
+            grid-template-columns: 1fr;
           }
         }
       `}</style>
