@@ -19,7 +19,7 @@ export default function AboutModal({ isOpen, onClose }) {
   const STORE_LOGO_URL =
     "https://bbqcompareassets.brcreated.app/assets/branding/logo.svg";
 
-  const [appVersion, setAppVersion] = useState("Unknown");
+  const [appVersion] = useState(__APP_VERSION__);
   const [commitMessage, setCommitMessage] = useState("Unknown");
   const [updateVersion, setUpdateVersion] = useState("Unknown");
   const [updatedAtLabel, setUpdatedAtLabel] = useState("Unknown");
@@ -43,7 +43,7 @@ export default function AboutModal({ isOpen, onClose }) {
 
         if (cancelled) return;
 
-        setAppVersion(data?.appVersion || "Unknown");
+        
         setCommitMessage(data?.commitMessage || "Unknown");
         setUpdateVersion(data?.updateVersion || "Unknown");
         setUpdatedAtLabel(formatUpdatedAt(data?.updatedAt));
