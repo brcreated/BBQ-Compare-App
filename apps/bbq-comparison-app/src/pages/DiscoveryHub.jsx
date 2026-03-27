@@ -353,9 +353,10 @@ export default function DiscoveryHub() {
       <style>{`
         .discovery-hub-screen {
           position: relative;
-          min-height: 100vh;
+          min-height: 100dvh;
           width: 100%;
-          overflow: hidden;
+          overflow-x: hidden;
+          overflow-y: auto;
           background:
             radial-gradient(circle at 18% 14%, rgba(76, 110, 168, 0.09), transparent 28%),
             radial-gradient(circle at 82% 88%, rgba(76, 110, 168, 0.08), transparent 32%),
@@ -404,17 +405,17 @@ export default function DiscoveryHub() {
         .discovery-hub-shell {
           position: relative;
           z-index: 1;
-          min-height: 100vh;
+          min-height: 100dvh;
           width: 100%;
-          padding: 22px 28px 24px;
+          padding: clamp(14px, 2.4vw, 28px);
           box-sizing: border-box;
         }
 
         .discovery-hub-sections {
           display: grid;
-          grid-template-rows: 1.12fr 1.05fr 1fr auto;
           gap: 16px;
-          min-height: calc(100vh - 46px);
+          min-height: calc(100dvh - clamp(28px, 4.8vw, 56px));
+          grid-template-rows: minmax(240px, 1.12fr) minmax(220px, 1.05fr) minmax(240px, 1fr) auto;
         }
 
         .discovery-section {
@@ -448,7 +449,7 @@ export default function DiscoveryHub() {
         .section-title {
           position: relative;
           z-index: 1;
-          font-size: 1.68rem;
+          font-size: clamp(1.2rem, 2.2vw, 1.68rem);
           font-weight: 800;
           letter-spacing: -0.02em;
           color: #f2f6fb;
@@ -462,6 +463,7 @@ export default function DiscoveryHub() {
         .brand-carousel-shell {
           position: relative;
           z-index: 1;
+          min-height: 0;
           height: calc(100% - 64px);
           display: flex;
           align-items: center;
@@ -500,7 +502,7 @@ export default function DiscoveryHub() {
         .brand-row {
           display: flex;
           align-items: center;
-          gap: 18px;
+          gap: clamp(12px, 1.8vw, 18px);
           width: max-content;
         }
 
@@ -542,13 +544,13 @@ export default function DiscoveryHub() {
         }
 
         .logo-card {
-          width: 220px;
-          height: 128px;
+          width: clamp(156px, 18vw, 220px);
+          height: clamp(96px, 10.5vw, 128px);
           flex: 0 0 auto;
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 18px;
+          padding: clamp(14px, 1.6vw, 18px);
           border-radius: 22px;
           border: 1px solid rgba(0, 0, 0, 0.08);
           background: #ffffff;
@@ -579,6 +581,7 @@ export default function DiscoveryHub() {
           display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
           gap: 16px;
+          min-height: 0;
           height: calc(100% - 58px);
         }
 
@@ -588,7 +591,7 @@ export default function DiscoveryHub() {
           border-radius: 22px;
           border: 1px solid rgba(255, 255, 255, 0.07);
           background: #121821;
-          min-height: 190px;
+          min-height: clamp(170px, 23vw, 220px);
         }
 
         .fuel-bg {
@@ -612,14 +615,14 @@ export default function DiscoveryHub() {
           position: absolute;
           inset: auto 0 0 0;
           z-index: 1;
-          padding: 18px;
+          padding: clamp(16px, 2vw, 20px);
           transform: translateY(0);
           transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .fuel-content h3 {
           margin: 0 0 8px;
-          font-size: 1.28rem;
+          font-size: clamp(1.05rem, 1.6vw, 1.28rem);
           font-weight: 800;
           line-height: 1.08;
           color: #f4f7fc;
@@ -627,7 +630,7 @@ export default function DiscoveryHub() {
 
         .fuel-content p {
           margin: 0;
-          font-size: 0.96rem;
+          font-size: clamp(0.9rem, 1.1vw, 0.96rem);
           line-height: 1.42;
           color: rgba(230, 237, 247, 0.82);
         }
@@ -643,13 +646,14 @@ export default function DiscoveryHub() {
           display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
           gap: 16px;
+          min-height: 0;
           height: calc(100% - 58px);
         }
 
         .specialty-card {
           position: relative;
           overflow: hidden;
-          min-height: 200px;
+          min-height: clamp(180px, 24vw, 240px);
           border-radius: 24px;
           border: 1px solid rgba(255, 255, 255, 0.07);
           background: #121821;
@@ -681,14 +685,14 @@ export default function DiscoveryHub() {
           align-items: center;
           justify-content: center;
           text-align: center;
-          padding: 24px;
+          padding: clamp(18px, 2vw, 24px);
           transform: translateY(0);
           transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .specialty-content h2 {
           margin: 0 0 10px;
-          font-size: 1.95rem;
+          font-size: clamp(1.35rem, 2.6vw, 1.95rem);
           font-weight: 800;
           letter-spacing: -0.03em;
           color: #f4f7fc;
@@ -696,7 +700,7 @@ export default function DiscoveryHub() {
 
         .specialty-content p {
           margin: 0;
-          font-size: 1rem;
+          font-size: clamp(0.92rem, 1.15vw, 1rem);
           line-height: 1.5;
           color: rgba(230, 237, 247, 0.86);
         }
@@ -708,23 +712,23 @@ export default function DiscoveryHub() {
         }
 
         .split-action-button {
-          height: 72px;
+          min-height: 72px;
           border: none;
           border-radius: 20px;
           background: linear-gradient(180deg, #5a78a8 0%, #435d83 100%);
           color: #f7fbff;
-          font-size: 1rem;
+          font-size: clamp(0.92rem, 1.2vw, 1rem);
           font-weight: 900;
           letter-spacing: 0.1em;
           text-transform: uppercase;
           box-shadow: 0 18px 38px rgba(67, 93, 131, 0.34);
+          padding: 14px 20px;
         }
 
         .split-action-button.secondary {
           background: linear-gradient(180deg, #2b3442 0%, #1d2530 100%);
           box-shadow: 0 18px 38px rgba(0, 0, 0, 0.28);
         }
-
 
         .idle-fade-overlay {
           position: fixed;
@@ -750,16 +754,12 @@ export default function DiscoveryHub() {
           }
         }
 
-        @keyframes sheenSweep {
-          0% {
-            transform: translateX(-180%) rotate(20deg);
-          }
-          100% {
-            transform: translateX(480%) rotate(20deg);
-          }
-        }
-
         @media (max-width: 1200px) {
+          .discovery-hub-sections {
+            grid-template-rows: auto;
+            min-height: auto;
+          }
+
           .discovery-hub-shell {
             padding: 18px 20px 20px;
           }
@@ -771,6 +771,12 @@ export default function DiscoveryHub() {
 
           .specialty-grid {
             grid-template-columns: 1fr;
+            height: auto;
+          }
+
+          .brand-carousel-shell {
+            height: auto;
+            min-height: 150px;
           }
         }
 
@@ -794,6 +800,19 @@ export default function DiscoveryHub() {
 
           .bottom-action-row {
             grid-template-columns: 1fr;
+          }
+
+          .discovery-hub-shell {
+            padding: 14px;
+          }
+
+          .discovery-section-fuel,
+          .discovery-section-experience {
+            padding: 12px;
+          }
+
+          .center-title {
+            padding: 16px 16px 8px;
           }
         }
       `}</style>

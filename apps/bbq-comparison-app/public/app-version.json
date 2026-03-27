@@ -1,7 +1,7 @@
 {
-  "appVersion": "v1.4",
-  "commitMessage": "Fix frontend build config",
-  "updateVersion": "2026-03-27T18:32:21.139Z-890f1d0",
-  "updatedAt": "2026-03-27T18:32:21.139Z",
-  "commit": "890f1d0"
-}
+  "appVersion": "1.5.1",
+  "commitMessage": "Apps now automatically update on GitHub pushes. Naming changed in backend. Photos updated and changed.",
+  "updateVersion": "2026-03-27T20:52:33.353Z-bab4cc0",
+  "updatedAt": "2026-03-27T20:52:33.353Z",
+  "commit": "bab4cc0"
+}\n

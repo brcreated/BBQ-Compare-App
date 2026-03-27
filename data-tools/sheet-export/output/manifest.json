@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "generatedAt": "2026-03-27T18:16:50.811Z",
+  "generatedAt": "2026-03-27T20:53:34.269Z",
   "datasets": {
     "brands": {
       "file": "brands.json",
@@ -34,9 +34,9 @@
     },
     "assets": {
       "file": "assets.json",
-      "version": "2157dfd03653",
-      "records": 2202,
-      "hash": "2157dfd036539e09e6237e3ebd25a8c3ba905d2e324aa6a10b609b94431ea229"
+      "version": "0a390ed1d8c1",
+      "records": 2217,
+      "hash": "0a390ed1d8c19135081e3be39ea7b51c730885c7820e85a7aff9022a5ba8b71b"
     },
     "specs": {
       "file": "specs.json",

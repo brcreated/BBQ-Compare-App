@@ -1,5 +1,4 @@
-//WelcomeScreen.jsx
-
+// src/pages/WelcomeScreen.jsx
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -32,7 +31,6 @@ export default function WelcomeScreen() {
 
   return (
     <main style={styles.container}>
-      {/* Background */}
       <div style={styles.backgroundWrapper}>
         <img src={FALLBACK_URL} alt="Background" style={styles.fallback} />
 
@@ -51,21 +49,15 @@ export default function WelcomeScreen() {
         <div style={styles.overlay} />
       </div>
 
-      {/* Logo at Top */}
       <div style={styles.logoContainer}>
         <img src={LOGO_URL} alt="Logo" style={styles.logo} />
       </div>
 
-      {/* Content */}
       <div style={styles.content}>
         <div style={styles.contentInner}>
-          <h1 style={styles.headline}>
-            Explore Premium Outdoor Cooking
-          </h1>
+          <h1 style={styles.headline}>Explore Premium Outdoor Cooking</h1>
 
-          <p style={styles.subheadline}>
-            Compare Outdoor Grills
-          </p>
+          <p style={styles.subheadline}>Compare Outdoor Grills</p>
 
           <button
             type="button"
@@ -92,8 +84,8 @@ export default function WelcomeScreen() {
 const styles = {
   container: {
     position: "relative",
-    width: "100vw",
-    height: "100vh",
+    width: "100%",
+    minHeight: "100dvh",
     overflow: "hidden",
     backgroundColor: "#000",
   },
@@ -125,22 +117,26 @@ const styles = {
     position: "absolute",
     inset: 0,
     background:
-      "linear-gradient(180deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.58) 45%, rgba(0,0,0,0.82) 100%)",
+      "linear-gradient(180deg, rgba(0,0,0,0.34) 0%, rgba(0,0,0,0.56) 45%, rgba(0,0,0,0.82) 100%)",
     zIndex: 2,
   },
 
-  /* LOGO TOP */
   logoContainer: {
     position: "absolute",
-    top: "0px",
+    top: "max(12px, env(safe-area-inset-top, 0px))",
     left: "50%",
     transform: "translateX(-50%)",
     zIndex: 4,
+    width: "min(92vw, 760px)",
+    display: "flex",
+    justifyContent: "center",
+    pointerEvents: "none",
   },
 
   logo: {
-    width: "750px",
-    maxWidth: "60vw",
+    width: "min(100%, 760px)",
+    maxWidth: "68vw",
+    minWidth: "220px",
     height: "auto",
   },
 
@@ -148,27 +144,27 @@ const styles = {
     position: "relative",
     zIndex: 3,
     width: "100%",
-    height: "100%",
+    minHeight: "100dvh",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    padding: "32px",
+    padding: "clamp(16px, 3vw, 40px)",
   },
 
   contentInner: {
-    width: "100%",
-    maxWidth: "920px",
+    width: "min(100%, 980px)",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     textAlign: "center",
     color: "#fff",
     animation: "welcomeFadeIn 900ms ease-out both",
+    paddingTop: "clamp(72px, 10vw, 128px)",
   },
 
   headline: {
     margin: "0 0 18px 0",
-    fontSize: "clamp(40px, 5vw, 72px)",
+    fontSize: "clamp(34px, 6vw, 72px)",
     lineHeight: 1.05,
     fontWeight: 600,
     letterSpacing: "-0.03em",
@@ -176,7 +172,7 @@ const styles = {
 
   subheadline: {
     margin: "0 0 34px 0",
-    fontSize: "clamp(18px, 1.6vw, 22px)",
+    fontSize: "clamp(16px, 2.2vw, 22px)",
     lineHeight: 1.6,
     color: "rgba(255,255,255,0.88)",
     maxWidth: "760px",
@@ -187,17 +183,16 @@ const styles = {
     borderRadius: "999px",
     background: "#fff",
     color: "#111",
-    minWidth: "220px",
-    minHeight: "64px",
-    padding: "18px 34px",
-    fontSize: "18px",
+    minWidth: "min(280px, 90vw)",
+    minHeight: "clamp(52px, 7vw, 64px)",
+    padding: "clamp(14px, 2vw, 18px) clamp(24px, 4vw, 34px)",
+    fontSize: "clamp(16px, 2vw, 18px)",
     fontWeight: 600,
     cursor: "pointer",
     transition: "transform 180ms ease, box-shadow 180ms ease",
   },
 };
 
-/* Animation */
 if (
   typeof document !== "undefined" &&
   !document.getElementById("welcome-keyframes")

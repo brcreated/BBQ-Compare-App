@@ -1,4 +1,6 @@
 // src/components/AboutModal.jsx
+/* global __APP_VERSION__ */
+
 import React, { useEffect, useState } from "react";
 import BRcreatedLogo from "./BRcreatedLogo";
 
@@ -19,7 +21,7 @@ export default function AboutModal({ isOpen, onClose }) {
   const STORE_LOGO_URL =
     "https://bbqcompareassets.brcreated.app/assets/branding/logo.svg";
 
-  const [appVersion] = useState(__APP_VERSION__);
+  const appVersion = __APP_VERSION__;
   const [commitMessage, setCommitMessage] = useState("Unknown");
   const [updateVersion, setUpdateVersion] = useState("Unknown");
   const [updatedAtLabel, setUpdatedAtLabel] = useState("Unknown");
@@ -43,14 +45,12 @@ export default function AboutModal({ isOpen, onClose }) {
 
         if (cancelled) return;
 
-        
         setCommitMessage(data?.commitMessage || "Unknown");
         setUpdateVersion(data?.updateVersion || "Unknown");
         setUpdatedAtLabel(formatUpdatedAt(data?.updatedAt));
       } catch (error) {
         if (!cancelled) {
           console.error("Failed to load app version info:", error);
-          setAppVersion("Unknown");
           setCommitMessage("Unknown");
           setUpdateVersion("Unknown");
           setUpdatedAtLabel("Unknown");
@@ -104,8 +104,9 @@ export default function AboutModal({ isOpen, onClose }) {
 
         .about-modal-card {
           width: min(980px, 100%);
+          max-height: calc(100dvh - 32px);
+          overflow: auto;
           border-radius: 28px;
-          overflow: hidden;
           background:
             radial-gradient(circle at top, rgba(76, 201, 240, 0.10), transparent 26%),
             linear-gradient(180deg, rgba(7, 12, 24, 0.98) 0%, rgba(4, 8, 18, 0.99) 100%);
@@ -242,18 +243,21 @@ export default function AboutModal({ isOpen, onClose }) {
           gap: 16px;
         }
 
-        .about-modal-status-card {
-          padding: 20px 22px;
-          border-radius: 20px;
-          background: rgba(255, 255, 255, 0.04);
-          border: 1px solid rgba(255, 255, 255, 0.06);
+        .about-modal-detail-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 16px;
         }
 
-        .about-modal-status-row {
-          display: grid;
-          grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
-          gap: 16px;
-          align-items: center;
+        .about-modal-detail-card {
+          padding: 18px 20px;
+          border-radius: 18px;
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid rgba(255, 255, 255, 0.06);
+          min-height: 114px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
         }
 
         .about-modal-label {
@@ -274,6 +278,7 @@ export default function AboutModal({ isOpen, onClose }) {
           background: rgba(76, 201, 240, 0.08);
           border: 1px solid rgba(76, 201, 240, 0.18);
           box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+          margin-top: 12px;
         }
 
         .about-modal-version-dot {
@@ -293,28 +298,12 @@ export default function AboutModal({ isOpen, onClose }) {
         }
 
         .about-modal-commit-text {
+          margin-top: 12px;
           font-size: 18px;
           font-weight: 600;
           line-height: 1.45;
           color: #ffffff;
           word-break: break-word;
-        }
-
-        .about-modal-detail-grid {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 16px;
-        }
-
-        .about-modal-detail-card {
-          padding: 18px 20px;
-          border-radius: 18px;
-          background: rgba(255, 255, 255, 0.04);
-          border: 1px solid rgba(255, 255, 255, 0.06);
-          min-height: 114px;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
         }
 
         .about-modal-detail-value {
@@ -381,6 +370,10 @@ export default function AboutModal({ isOpen, onClose }) {
         }
 
         @media (max-width: 640px) {
+          .about-modal-overlay {
+            padding: 12px;
+          }
+
           .about-modal-content {
             padding: 20px 18px 20px;
           }
@@ -409,12 +402,6 @@ export default function AboutModal({ isOpen, onClose }) {
 
           .about-modal-detail-value {
             font-size: 18px;
-          }
-
-          .about-modal-top-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 16px;
           }
         }
       `}</style>

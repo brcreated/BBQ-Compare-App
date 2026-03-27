@@ -932,7 +932,7 @@ export default function ProductDetail() {
                   padding: 24,
                   display: "grid",
                   gap: 24,
-                  gridTemplateColumns: "minmax(0, 1.15fr) minmax(520px, 0.85fr)",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
                   alignItems: "start",
                 }}
               >
@@ -940,7 +940,7 @@ export default function ProductDetail() {
                   <div
                     style={{
                       borderRadius: 24,
-                      minHeight: 620,
+                      minHeight: "clamp(320px, 50vw, 620px)",
                       background: "linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02))",
                       border: "1px solid rgba(117, 163, 255, 0.12)",
                       overflow: "hidden",
@@ -1051,7 +1051,7 @@ export default function ProductDetail() {
                     </div>
                   </div>
 
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 10 }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 10 }}>
                     {topCards.map((card) => (
                       <div
                         key={card.label}
@@ -1237,7 +1237,7 @@ export default function ProductDetail() {
                     >
                       Similar Products
                     </div>
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: 16 }}>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 }}>
                       {similarProducts.map((similar) => (
                         <ProductCard
                           key={similar.id}

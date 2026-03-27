@@ -17,12 +17,10 @@ function formatPriceDisplay(value) {
   const raw = String(value).trim();
   if (!raw) return "Request Pricing";
 
-  // If it contains letters, keep the original text
   if (/[a-zA-Z]/.test(raw)) {
     return raw;
   }
 
-  // Strip common formatting chars and try numeric conversion
   const numeric = Number(raw.replace(/[$,]/g, ""));
   if (Number.isFinite(numeric)) {
     return new Intl.NumberFormat("en-US", {
@@ -32,15 +30,14 @@ function formatPriceDisplay(value) {
     }).format(numeric);
   }
 
-  // Fallback: preserve original text
   return raw;
 }
+
 const PAGE_FONT =
   'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
 
 const pageShellStyle = {
-  minHeight: "100%",
-  height: "auto",
+  minHeight: "100dvh",
   position: "relative",
   overflowX: "hidden",
   overflowY: "visible",
@@ -56,7 +53,7 @@ const containerStyle = {
   width: "100%",
   maxWidth: "none",
   margin: "0 auto",
-  padding: "18px 28px 40px",
+  padding: "clamp(16px, 2.5vw, 28px) clamp(16px, 2.5vw, 28px) 40px",
   boxSizing: "border-box",
 };
 
@@ -185,48 +182,6 @@ function prettifyLabel(value) {
   return normalized;
 }
 
-function toCurrency(value) {
-  const num = Number(value);
-  if (!Number.isFinite(num) || num <= 0) return "Request Pricing";
-
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(num);
-}
-
-function parseNumericValue(value) {
-  if (value === null || value === undefined) return null;
-  const match = String(value).replace(/,/g, "").match(/-?\d+(\.\d+)?/);
-  return match ? Number(match[0]) : null;
-}
-
-function formatSpecValue(spec) {
-  if (!spec) return "—";
-  if (spec.displayValue) {
-    const value = normalizeValueForDisplay(spec.displayValue);
-    return value || "—";
-  }
-
-  const rawValue =
-    spec.value ??
-    spec.specValue ??
-    spec.spec_value ??
-    spec.rawValue ??
-    spec.raw_value ??
-    "";
-
-  const unit = String(spec.unit || spec.specUnit || spec.spec_unit || "").trim();
-  const cleanValue = normalizeValueForDisplay(rawValue);
-
-  if (!cleanValue && !unit) return "—";
-  if (!unit) return cleanValue || "—";
-  if (!cleanValue) return unit;
-
-  return `${cleanValue} ${unit}`.trim();
-}
-
 function getVariantId(variant) {
   return (
     variant?.id ||
@@ -274,7 +229,7 @@ function getVariantPrice(variant, specsForVariant = []) {
 
   if (!priceSpec) return "";
 
-  return priceSpec.value ?? priceSpec.specValue ?? priceSpec.spec_value ?? "";
+  return priceSpec.value ?? priceSpec.specValue ?? spec.spec_value ?? "";
 }
 
 function getAssetUrl(asset) {
@@ -285,14 +240,8 @@ function getAssetUrl(asset) {
   if (asset.sourceUrl) return asset.sourceUrl;
   if (asset.source_url) return asset.source_url;
 
-  const base = String(import.meta.env.VITE_ASSET_BASE_URL || "").replace(
-    /\/$/,
-    ""
-  );
-  const filePath = String(asset.filePath || asset.file_path || "").replace(
-    /^\//,
-    ""
-  );
+  const base = String(import.meta.env.VITE_ASSET_BASE_URL || "").replace(/\/$/, "");
+  const filePath = String(asset.filePath || asset.file_path || "").replace(/^\//, "");
 
   if (!filePath) return "";
   if (!base) return `/${filePath}`;
@@ -305,9 +254,7 @@ function getHeroAsset(variantId, assets = []) {
 
   const candidates = assets
     .filter((asset) => {
-      const entityType = String(
-        asset.entityType || asset.entity_type || ""
-      ).toLowerCase();
+      const entityType = String(asset.entityType || asset.entity_type || "").toLowerCase();
       const entityId = normalizeText(asset.entityId || asset.entity_id || "");
       return entityType === "variant" && entityId === normalizedId;
     })
@@ -319,12 +266,8 @@ function getHeroAsset(variantId, assets = []) {
 
   const hero =
     candidates.find((asset) => {
-      const imageType = String(
-        asset.imageType || asset.image_type || ""
-      ).toLowerCase();
-      return ["hero", "main", "primary", "gallery-1", "gallery_1"].includes(
-        imageType
-      );
+      const imageType = String(asset.imageType || asset.image_type || "").toLowerCase();
+      return ["hero", "main", "primary", "gallery-1", "gallery_1"].includes(imageType);
     }) || candidates[0];
 
   return hero || null;
@@ -334,17 +277,11 @@ function buildSpecsByVariant(specs = []) {
   const map = new Map();
 
   specs.forEach((spec) => {
-    const entityType = String(
-      spec.entityType || spec.entity_type || ""
-    ).toLowerCase();
+    const entityType = String(spec.entityType || spec.entity_type || "").toLowerCase();
     if (entityType !== "variant") return;
 
     const entityId = normalizeText(
-      spec.entityId ||
-        spec.entity_id ||
-        spec.variantId ||
-        spec.variant_id ||
-        ""
+      spec.entityId || spec.entity_id || spec.variantId || spec.variant_id || ""
     );
     if (!entityId) return;
 
@@ -369,16 +306,8 @@ function buildSpecGroupsForProducts(products) {
       if (!rawKey) return;
 
       const normalizedKey = normalizeText(rawKey);
-      const group =
-        spec.group ||
-        spec.specGroup ||
-        spec.spec_group ||
-        "Highlights";
-      const label =
-        spec.label ||
-        spec.specLabel ||
-        spec.spec_label ||
-        rawKey;
+      const group = spec.group || spec.specGroup || spec.spec_group || "Highlights";
+      const label = spec.label || spec.specLabel || spec.spec_label || rawKey;
 
       if (!labelMap.has(normalizedKey)) {
         labelMap.set(normalizedKey, {
@@ -439,13 +368,6 @@ function getSpecForProduct(product, specKey) {
   );
 }
 
-function normalizeComparableValue(value) {
-  const formatted = normalizeValueForDisplay(value);
-  if (!formatted) return "";
-
-  return formatted.trim().toLowerCase();
-}
-
 function getComparableSpecValue(spec) {
   if (!spec) return "";
 
@@ -459,7 +381,7 @@ function getComparableSpecValue(spec) {
     "";
 
   const unit = String(spec.unit || spec.specUnit || spec.spec_unit || "").trim();
-  const normalizedValue = normalizeComparableValue(rawValue);
+  const normalizedValue = normalizeValueForDisplay(rawValue).trim().toLowerCase();
 
   if (!normalizedValue && !unit) return "";
   if (!unit) return normalizedValue;
@@ -475,6 +397,31 @@ function areValuesDifferent(values) {
   if (normalized.length <= 1) return false;
 
   return new Set(normalized).size > 1;
+}
+
+function formatSpecValue(spec) {
+  if (!spec) return "—";
+  if (spec.displayValue) {
+    const value = normalizeValueForDisplay(spec.displayValue);
+    return value || "—";
+  }
+
+  const rawValue =
+    spec.value ??
+    spec.specValue ??
+    spec.spec_value ??
+    spec.rawValue ??
+    spec.raw_value ??
+    "";
+
+  const unit = String(spec.unit || spec.specUnit || spec.spec_unit || "").trim();
+  const cleanValue = normalizeValueForDisplay(rawValue);
+
+  if (!cleanValue && !unit) return "—";
+  if (!unit) return cleanValue || "—";
+  if (!cleanValue) return unit;
+
+  return `${cleanValue} ${unit}`.trim();
 }
 
 function CompareHeaderCard({ product, onOpen }) {
@@ -694,10 +641,7 @@ export default function ComparePage() {
       .filter(Boolean);
   }, [variants, assets, compareIds, specsByVariant, brandsById]);
 
-  const specGroups = useMemo(
-    () => buildSpecGroupsForProducts(products),
-    [products]
-  );
+  const specGroups = useMemo(() => buildSpecGroupsForProducts(products), [products]);
 
   const visibleSpecGroups = useMemo(() => {
     if (!showDifferencesOnly) return specGroups;
@@ -716,7 +660,6 @@ export default function ComparePage() {
   }, [products, showDifferencesOnly, specGroups]);
 
   const hasProducts = products.length > 0;
-  const canCompare = products.length >= 2;
 
   if (loading) {
     return (
@@ -757,8 +700,11 @@ export default function ComparePage() {
           <div style={{ fontSize: 16, color: "#c7d5f5", marginBottom: 24 }}>
             {typeof error === "string" ? error : "Unable to load comparison catalog."}
           </div>
-          <button onClick={() => navigate("/discover")} className="compare-top-button"
-            style={primaryButtonStyle}>
+          <button
+            onClick={() => navigate("/discover")}
+            className="compare-top-button"
+            style={primaryButtonStyle}
+          >
             Home
           </button>
         </div>
@@ -816,13 +762,19 @@ export default function ComparePage() {
           </div>
 
           <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
-            <button onClick={() => navigate("/discover")} className="compare-top-button"
-              style={{ ...primaryButtonStyle, minWidth: 180 }}>
+            <button
+              onClick={() => navigate("/discover")}
+              className="compare-top-button"
+              style={{ ...primaryButtonStyle, minWidth: 180 }}
+            >
               Home
             </button>
 
-            <button onClick={() => navigate("/brands")} className="compare-top-button"
-              style={{ ...softButtonStyle, minWidth: 180 }}>
+            <button
+              onClick={() => navigate("/brands")}
+              className="compare-top-button"
+              style={{ ...softButtonStyle, minWidth: 180 }}
+            >
               Brands
             </button>
           </div>
@@ -830,6 +782,9 @@ export default function ComparePage() {
       </main>
     );
   }
+
+  const compareColumnMinWidth = 280;
+  const compareGridMinWidth = Math.max(products.length * compareColumnMinWidth, 280);
 
   return (
     <main style={pageShellStyle}>
@@ -851,18 +806,27 @@ export default function ComparePage() {
           }}
         >
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
-            <button onClick={() => navigate("/discover")} className="compare-top-button"
-              style={softButtonStyle}>
+            <button
+              onClick={() => navigate("/discover")}
+              className="compare-top-button"
+              style={softButtonStyle}
+            >
               Home
             </button>
 
-            <button onClick={() => navigate("/brands")} className="compare-top-button"
-              style={softButtonStyle}>
+            <button
+              onClick={() => navigate("/brands")}
+              className="compare-top-button"
+              style={softButtonStyle}
+            >
               Brands
             </button>
 
-            <button onClick={() => navigate(-1)} className="compare-top-button"
-              style={softButtonStyle}>
+            <button
+              onClick={() => navigate(-1)}
+              className="compare-top-button"
+              style={softButtonStyle}
+            >
               Back
             </button>
           </div>
@@ -891,7 +855,7 @@ export default function ComparePage() {
 
           <h1
             style={{
-              fontSize: "clamp(3.8rem, 6vw, 5.8rem)",
+              fontSize: "clamp(3rem, 6vw, 5.8rem)",
               fontWeight: 800,
               textAlign: "center",
               margin: "0 0 14px",
@@ -968,84 +932,91 @@ export default function ComparePage() {
           </div>
 
           <div className="compare-main-column">
-            <div
-              className="compare-products-grid"
-              style={{
-                gridTemplateColumns: `repeat(${products.length}, 1fr)`,
-              }}
-            >
-              {products.map((product) => (
-                <CompareHeaderCard
-                  key={product.id}
-                  product={product}
-                  onOpen={() => navigate(`/product/${product.slug || product.id}`)}
-                />
-              ))}
+            <div className="compare-scroll-shell">
+              <div
+                className="compare-products-grid"
+                style={{
+                  gridTemplateColumns: `repeat(${products.length}, minmax(${compareColumnMinWidth}px, 1fr))`,
+                  minWidth: `${compareGridMinWidth}px`,
+                }}
+              >
+                {products.map((product) => (
+                  <CompareHeaderCard
+                    key={product.id}
+                    product={product}
+                    onOpen={() => navigate(`/product/${product.slug || product.id}`)}
+                  />
+                ))}
+              </div>
             </div>
 
-            <div
-              className="compare-products-grid"
-              style={{
-                gridTemplateColumns: `repeat(${products.length}, 1fr)`,
-                marginTop: 16,
-              }}
-            >
-              {products.map((product) => (
-                <CompareRemoveCard
-                  key={`${product.id}-remove`}
-                  onRemove={() => removeItem(product.id)}
-                />
-              ))}
+            <div className="compare-scroll-shell">
+              <div
+                className="compare-products-grid"
+                style={{
+                  gridTemplateColumns: `repeat(${products.length}, minmax(${compareColumnMinWidth}px, 1fr))`,
+                  minWidth: `${compareGridMinWidth}px`,
+                  marginTop: 16,
+                }}
+              >
+                {products.map((product) => (
+                  <CompareRemoveCard
+                    key={`${product.id}-remove`}
+                    onRemove={() => removeItem(product.id)}
+                  />
+                ))}
+              </div>
             </div>
 
             {visibleSpecGroups.map((group) => (
               <div key={group.groupName} className="compare-group-block">
-                <div
-                  className="compare-group-grid"
-                  style={{
-                    gridTemplateColumns: `repeat(${products.length}, 1fr)`,
-                  }}
-                >
-                  {group.specs.map((entry) => {
-                    const comparableValues = products.map((product) =>
-                      getComparableSpecValue(getSpecForProduct(product, entry.key))
-                    );
-                    const isDifferent = areValuesDifferent(comparableValues);
-
-                    return products.map((product) => {
-                      const spec = getSpecForProduct(product, entry.key);
-                      const formatted = formatSpecValue(spec);
-
-                      return (
-                        <div
-                          key={`${product.id}-${entry.key}`}
-                          className="compare-spec-card"
-                          role="button"
-                          tabIndex={0}
-                          onClick={() =>
-                            navigate(`/product/${product.slug || product.id}`)
-                          }
-                          onKeyDown={(event) => {
-                            if (event.key === "Enter" || event.key === " ") {
-                              event.preventDefault();
-                              navigate(`/product/${product.slug || product.id}`);
-                            }
-                          }}
-                          style={{
-                            background: isDifferent
-                              ? "linear-gradient(180deg, rgba(28,43,78,0.92) 0%, rgba(10,15,24,0.98) 100%)"
-                              : "linear-gradient(180deg, rgba(15,23,36,0.92), rgba(9,14,24,0.92))",
-                            border: isDifferent
-                              ? "1px solid rgba(98,144,255,0.38)"
-                              : "1px solid rgba(117, 163, 255, 0.14)",
-                          }}
-                        >
-                          <div className="compare-spec-label">{entry.label}</div>
-                          <div className="compare-spec-value">{formatted}</div>
-                        </div>
+                <div className="compare-scroll-shell">
+                  <div
+                    className="compare-group-grid"
+                    style={{
+                      gridTemplateColumns: `repeat(${products.length}, minmax(${compareColumnMinWidth}px, 1fr))`,
+                      minWidth: `${compareGridMinWidth}px`,
+                    }}
+                  >
+                    {group.specs.flatMap((entry) => {
+                      const comparableValues = products.map((product) =>
+                        getComparableSpecValue(getSpecForProduct(product, entry.key))
                       );
-                    });
-                  })}
+                      const isDifferent = areValuesDifferent(comparableValues);
+
+                      return products.map((product) => {
+                        const spec = getSpecForProduct(product, entry.key);
+                        const formatted = formatSpecValue(spec);
+
+                        return (
+                          <div
+                            key={`${product.id}-${entry.key}`}
+                            className="compare-spec-card"
+                            role="button"
+                            tabIndex={0}
+                            onClick={() => navigate(`/product/${product.slug || product.id}`)}
+                            onKeyDown={(event) => {
+                              if (event.key === "Enter" || event.key === " ") {
+                                event.preventDefault();
+                                navigate(`/product/${product.slug || product.id}`);
+                              }
+                            }}
+                            style={{
+                              background: isDifferent
+                                ? "linear-gradient(180deg, rgba(28,43,78,0.92) 0%, rgba(10,15,24,0.98) 100%)"
+                                : "linear-gradient(180deg, rgba(15,23,36,0.92), rgba(9,14,24,0.92))",
+                              border: isDifferent
+                                ? "1px solid rgba(98,144,255,0.38)"
+                                : "1px solid rgba(117, 163, 255, 0.14)",
+                            }}
+                          >
+                            <div className="compare-spec-label">{entry.label}</div>
+                            <div className="compare-spec-value">{formatted}</div>
+                          </div>
+                        );
+                      });
+                    })}
+                  </div>
                 </div>
               </div>
             ))}
@@ -1105,7 +1076,7 @@ export default function ComparePage() {
 
         .compare-grid-shell {
           display: grid;
-          grid-template-columns: 260px minmax(0, 1fr);
+          grid-template-columns: minmax(220px, 260px) 1fr;
           gap: 18px;
           align-items: start;
         }
@@ -1164,6 +1135,13 @@ export default function ComparePage() {
           gap: 16px;
         }
 
+        .compare-scroll-shell {
+          width: 100%;
+          overflow-x: auto;
+          overflow-y: visible;
+          padding-bottom: 2px;
+        }
+
         .compare-products-grid,
         .compare-group-grid {
           display: grid;
@@ -1203,6 +1181,7 @@ export default function ComparePage() {
           padding: 18px;
           box-shadow: 0 14px 34px rgba(0,0,0,0.24);
           cursor: pointer;
+          min-height: 132px;
         }
 
         .compare-spec-label {
@@ -1220,8 +1199,8 @@ export default function ComparePage() {
           font-weight: 700;
           line-height: 1.35;
           letter-spacing: -0.02em;
+          word-break: break-word;
         }
-
 
         .compare-top-button,
         .compare-action-button {
@@ -1247,7 +1226,7 @@ export default function ComparePage() {
           outline-offset: 2px;
         }
 
-                body.compare-page-active div[style*="position: fixed"][style*="z-index: 1000"][style*="bottom: 20px"] {
+        body.compare-page-active div[style*="position: fixed"][style*="z-index: 1000"][style*="bottom: 20px"] {
           display: none !important;
         }
 
@@ -1260,9 +1239,19 @@ export default function ComparePage() {
           }
         }
 
-        @media (max-width: 1480px) {
+        @media (max-width: 1180px) {
           .compare-grid-shell {
-            grid-template-columns: 220px minmax(0, 1fr);
+            grid-template-columns: 1fr;
+          }
+
+          .compare-side-column {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            align-items: start;
+          }
+
+          .compare-side-sticky {
+            position: static;
+            top: auto;
           }
         }
 
@@ -1273,21 +1262,22 @@ export default function ComparePage() {
           }
         }
 
-        @media (max-width: 1180px) {
-          .compare-grid-shell {
+        @media (max-width: 768px) {
+          .compare-side-column {
             grid-template-columns: 1fr;
           }
 
-          .compare-side-column {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            align-items: start;
+          .compare-spec-card {
+            padding: 16px;
+            min-height: 120px;
           }
 
-          .compare-side-sticky {
-            position: static;
+          .compare-spec-value {
+            font-size: 18px;
           }
         }
-          * {
+
+        * {
           overscroll-behavior: none;
         }
 
@@ -1296,12 +1286,6 @@ export default function ComparePage() {
         .compare-products-grid,
         .compare-group-grid {
           overflow: visible !important;
-        }
-
-        @media (max-width: 768px) {
-          .compare-side-column {
-            grid-template-columns: 1fr;
-          }
         }
       `}</style>
     </main>
