@@ -1,10 +1,507 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import pkg from './package.json'
+import React, { useEffect, useState } from "react";
+import BRcreatedLogo from "./BRcreatedLogo";
 
-export default defineConfig({
-  plugins: [react()],
-  define: {
-    __APP_VERSION__: JSON.stringify(pkg.version),
-  },
-})
+function formatUpdatedAt(isoString) {
+  if (!isoString) return "Unknown";
+
+  try {
+    return new Intl.DateTimeFormat("en-US", {
+      dateStyle: "medium",
+      timeStyle: "short",
+    }).format(new Date(isoString));
+  } catch {
+    return isoString;
+  }
+}
+
+export default function AboutModal({ isOpen, onClose }) {
+  const STORE_LOGO_URL =
+    "https://bbqcompareassets.brcreated.app/assets/branding/logo.svg";
+
+  const appVersion = __APP_VERSION__;
+
+  const [commitMessage, setCommitMessage] = useState("Unknown");
+  const [updateVersion, setUpdateVersion] = useState("Unknown");
+  const [updatedAtLabel, setUpdatedAtLabel] = useState("Unknown");
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    let cancelled = false;
+
+    async function loadVersion() {
+      try {
+        const response = await fetch(`/app-version.json?t=${Date.now()}`, {
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to load app-version.json");
+        }
+
+        const data = await response.json();
+
+        if (cancelled) return;
+
+        setCommitMessage(data?.commitMessage || "Unknown");
+        setUpdateVersion(data?.updateVersion || "Unknown");
+        setUpdatedAtLabel(formatUpdatedAt(data?.updatedAt));
+      } catch (error) {
+        if (!cancelled) {
+          console.error("Failed to load app version info:", error);
+          setCommitMessage("Unknown");
+          setUpdateVersion("Unknown");
+          setUpdatedAtLabel("Unknown");
+        }
+      }
+    }
+
+    loadVersion();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    function handleKeyDown(event) {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
+
+  const year = new Date().getFullYear();
+
+  return (
+    <>
+      <style>{`
+        .about-modal-overlay {
+          position: fixed;
+          inset: 0;
+          z-index: 9999;
+          background: rgba(3, 8, 16, 0.78);
+          backdrop-filter: blur(12px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 24px;
+        }
+
+        .about-modal-card {
+          width: min(980px, 100%);
+          border-radius: 28px;
+          overflow: hidden;
+          background:
+            radial-gradient(circle at top, rgba(76, 201, 240, 0.10), transparent 26%),
+            linear-gradient(180deg, rgba(7, 12, 24, 0.98) 0%, rgba(4, 8, 18, 0.99) 100%);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          box-shadow: 0 40px 100px rgba(0, 0, 0, 0.50);
+          color: #ffffff;
+          font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+          position: relative;
+        }
+
+        .about-modal-content {
+          padding: 28px 32px 28px;
+        }
+
+        .about-modal-hero {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 4px 0 10px;
+        }
+
+        .about-modal-hero-link {
+          text-decoration: none;
+          color: inherit;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 18px;
+          padding: 28px 30px;
+          border-radius: 24px;
+          background: linear-gradient(180deg, rgba(10, 18, 35, 0.88) 0%, rgba(5, 10, 20, 0.96) 100%);
+          border: 1px solid rgba(76, 201, 240, 0.14);
+          box-shadow:
+            0 0 0 1px rgba(76, 201, 240, 0.08),
+            0 0 36px rgba(76, 201, 240, 0.10);
+          transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+          width: min(100%, 760px);
+        }
+
+        .about-modal-hero-link:hover {
+          transform: translateY(-4px) scale(1.01);
+          border-color: rgba(76, 201, 240, 0.24);
+          box-shadow:
+            0 0 0 1px rgba(76, 201, 240, 0.16),
+            0 0 56px rgba(76, 201, 240, 0.18);
+        }
+
+        .about-modal-badge {
+          padding: 8px 14px;
+          border-radius: 999px;
+          background: rgba(76, 201, 240, 0.08);
+          border: 1px solid rgba(76, 201, 240, 0.16);
+          color: #9fe6ff;
+          font-size: 12px;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+        }
+
+        .about-modal-hero-text {
+          text-align: center;
+        }
+
+        .about-modal-title {
+          margin: 0;
+          font-size: 14px;
+          letter-spacing: 0.34em;
+          text-transform: uppercase;
+          color: #8bd1ff;
+        }
+
+        .about-modal-subtitle {
+          margin: 10px 0 0;
+          font-size: 16px;
+          color: #c8d4e6;
+          line-height: 1.55;
+        }
+
+        .about-modal-built-for {
+          margin-top: 10px;
+          width: 100%;
+          padding-top: 24px;
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 18px;
+        }
+
+        .about-modal-built-for-label {
+          margin: 0;
+          font-size: 12px;
+          color: #8bd1ff;
+          text-transform: uppercase;
+          letter-spacing: 0.24em;
+        }
+
+        .about-modal-store-card {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 12px;
+        }
+
+        .about-modal-store-logo {
+          max-width: 100%;
+          max-height: 84px;
+          object-fit: contain;
+          display: block;
+        }
+
+        .about-modal-store-name {
+          margin: 0;
+          text-align: center;
+          color: #d8e4f2;
+          font-size: 14px;
+          font-weight: 500;
+          line-height: 1.5;
+          opacity: 0.7;
+        }
+
+        .about-modal-copy {
+          max-width: 760px;
+          margin: 28px auto 0;
+          color: #b9c7d8;
+          text-align: center;
+          line-height: 1.75;
+          font-size: 17px;
+        }
+
+        .about-modal-status {
+          margin-top: 28px;
+          display: grid;
+          gap: 16px;
+        }
+
+        .about-modal-detail-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 16px;
+        }
+
+        .about-modal-detail-card {
+          padding: 18px 20px;
+          border-radius: 18px;
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid rgba(255, 255, 255, 0.06);
+          min-height: 114px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+
+        .about-modal-label {
+          margin: 0;
+          font-size: 12px;
+          color: #8bd1ff;
+          text-transform: uppercase;
+          letter-spacing: 0.16em;
+        }
+
+        .about-modal-version-chip {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          width: fit-content;
+          padding: 10px 14px;
+          border-radius: 999px;
+          background: rgba(76, 201, 240, 0.08);
+          border: 1px solid rgba(76, 201, 240, 0.18);
+          box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+          margin-top: 12px;
+        }
+
+        .about-modal-version-dot {
+          width: 10px;
+          height: 10px;
+          border-radius: 999px;
+          background: #4cc9f0;
+          box-shadow: 0 0 12px rgba(76, 201, 240, 0.55);
+          flex: 0 0 auto;
+        }
+
+        .about-modal-version-text {
+          font-size: 16px;
+          font-weight: 700;
+          letter-spacing: 0.01em;
+          word-break: break-word;
+        }
+
+        .about-modal-commit-text {
+          margin-top: 12px;
+          font-size: 18px;
+          font-weight: 600;
+          line-height: 1.45;
+          color: #ffffff;
+          word-break: break-word;
+        }
+
+        .about-modal-detail-value {
+          margin-top: 12px;
+          font-size: 20px;
+          font-weight: 700;
+          line-height: 1.35;
+          color: #ffffff;
+          word-break: break-word;
+        }
+
+        .about-modal-actions {
+          display: flex;
+          justify-content: center;
+          margin-top: 24px;
+        }
+
+        .about-modal-close-button {
+          appearance: none;
+          border: 1px solid rgba(76, 201, 240, 0.22);
+          background: linear-gradient(180deg, rgba(76, 201, 240, 0.16) 0%, rgba(76, 201, 240, 0.08) 100%);
+          color: #ffffff;
+          min-width: 220px;
+          height: 52px;
+          border-radius: 16px;
+          font-size: 16px;
+          font-weight: 700;
+          letter-spacing: 0.02em;
+          cursor: pointer;
+          transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background 160ms ease;
+          box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22);
+        }
+
+        .about-modal-close-button:hover {
+          transform: translateY(-2px);
+          border-color: rgba(76, 201, 240, 0.34);
+          box-shadow: 0 18px 38px rgba(0, 0, 0, 0.28);
+          background: linear-gradient(180deg, rgba(76, 201, 240, 0.20) 0%, rgba(76, 201, 240, 0.10) 100%);
+        }
+
+        .about-modal-close-button:active {
+          transform: translateY(0);
+        }
+
+        .about-modal-footer {
+          margin-top: 28px;
+          padding-top: 20px;
+          border-top: 1px solid rgba(255, 255, 255, 0.06);
+          text-align: center;
+          font-size: 14px;
+          color: #b9c7d8;
+        }
+
+        .about-modal-footer a {
+          color: #4cc9f0;
+          text-decoration: none;
+          font-weight: 600;
+        }
+
+        @media (max-width: 800px) {
+          .about-modal-detail-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .about-modal-content {
+            padding: 20px 18px 20px;
+          }
+
+          .about-modal-hero-link {
+            padding: 22px 18px;
+            width: 100%;
+          }
+
+          .about-modal-copy {
+            font-size: 15px;
+          }
+
+          .about-modal-store-logo {
+            max-height: 64px;
+          }
+
+          .about-modal-close-button {
+            width: 100%;
+            min-width: 0;
+          }
+
+          .about-modal-commit-text {
+            font-size: 16px;
+          }
+
+          .about-modal-detail-value {
+            font-size: 18px;
+          }
+        }
+      `}</style>
+
+      <div
+        className="about-modal-overlay"
+        onClick={onClose}
+        role="dialog"
+        aria-modal="true"
+        aria-label="About this app"
+      >
+        <div
+          className="about-modal-card"
+          onClick={(event) => event.stopPropagation()}
+        >
+          <div className="about-modal-content">
+            <div className="about-modal-hero">
+              <a
+                className="about-modal-hero-link"
+                href="https://brcreated.app"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div className="about-modal-badge">Custom experience by</div>
+
+                <BRcreatedLogo />
+
+                <div className="about-modal-hero-text">
+                  <h2 className="about-modal-title">Created by</h2>
+                  <p className="about-modal-subtitle">
+                    Built for premium retail experiences.
+                  </p>
+                </div>
+
+                <div className="about-modal-built-for">
+                  <p className="about-modal-built-for-label">Built for</p>
+
+                  <div className="about-modal-store-card">
+                    <img
+                      className="about-modal-store-logo"
+                      src={STORE_LOGO_URL}
+                      alt="American Fire BBQ and The Kansas City BBQ Store"
+                    />
+
+                    <p className="about-modal-store-name">
+                      American Fire BBQ &amp; The Kansas City BBQ Store
+                    </p>
+                  </div>
+                </div>
+              </a>
+            </div>
+
+            <p className="about-modal-copy">
+              A fast, interactive showroom experience designed to help customers
+              compare products, understand differences, and choose with confidence.
+            </p>
+
+            <div className="about-modal-status">
+              <div className="about-modal-detail-grid">
+                <div className="about-modal-detail-card">
+                  <p className="about-modal-label">App Version</p>
+                  <div className="about-modal-version-chip">
+                    <span className="about-modal-version-dot" />
+                    <span className="about-modal-version-text">{appVersion}</span>
+                  </div>
+                </div>
+
+                <div className="about-modal-detail-card">
+                  <p className="about-modal-label">Latest App Version Update</p>
+                  <div className="about-modal-commit-text">{commitMessage}</div>
+                </div>
+
+                <div className="about-modal-detail-card">
+                  <p className="about-modal-label">Update Version</p>
+                  <div className="about-modal-detail-value">{updateVersion}</div>
+                </div>
+
+                <div className="about-modal-detail-card">
+                  <p className="about-modal-label">Version Updated On</p>
+                  <div className="about-modal-detail-value">{updatedAtLabel}</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="about-modal-actions">
+              <button
+                type="button"
+                className="about-modal-close-button"
+                onClick={onClose}
+              >
+                Close
+              </button>
+            </div>
+
+            <div className="about-modal-footer">
+              Copyright © {year} | Powered by{" "}
+              <a
+                href="https://brcreated.app"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                brcreated.app
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
