@@ -66,21 +66,21 @@ export default function useAppUpdateManager({
 
     async function checkForUpdates() {
       const data = await fetchVersion();
-      if (!data || !data.version) return;
+      if (!data || !data.appVersion) return;
 
-      setAppVersion(data.version);
+      setAppVersion(data.appVersion);
       setUpdatedAt(data.updatedAt || null);
       setUpdatedAtLabel(formatTimestamp(data.updatedAt));
 
       if (!initializedRef.current) {
-        currentVersionRef.current = data.version;
+        currentVersionRef.current = data.appVersion;
         initializedRef.current = true;
         return;
       }
 
       if (
         currentVersionRef.current &&
-        data.version !== currentVersionRef.current &&
+        data.appVersion !== currentVersionRef.current &&
         !reloadGuardRef.current
       ) {
         reloadGuardRef.current = true;

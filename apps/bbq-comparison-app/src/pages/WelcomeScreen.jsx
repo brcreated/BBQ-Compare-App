@@ -1,5 +1,5 @@
 // src/pages/WelcomeScreen.jsx
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const ASSET_BASE_URL = import.meta.env.VITE_ASSET_BASE_URL;
@@ -17,15 +17,15 @@ export default function WelcomeScreen() {
     return {
       ...styles.cta,
       transform: isPressed
-        ? "scale(0.98)"
+        ? "scale(0.94)"
         : isHovered
-        ? "translateY(-1px)"
+        ? "translateY(-2px) scale(1.01)"
         : "scale(1)",
       boxShadow: isPressed
-        ? "0 10px 24px rgba(0,0,0,0.24)"
+        ? "0 8px 20px rgba(0,0,0,0.22)"
         : isHovered
-        ? "0 18px 40px rgba(0,0,0,0.32)"
-        : "0 14px 32px rgba(0,0,0,0.28)",
+        ? "0 22px 48px rgba(0,0,0,0.36)"
+        : "0 14px 40px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.9)",
     };
   }, [isHovered, isPressed]);
 
@@ -181,15 +181,16 @@ const styles = {
   cta: {
     border: "none",
     borderRadius: "999px",
-    background: "#fff",
-    color: "#111",
-    minWidth: "min(280px, 90vw)",
-    minHeight: "clamp(52px, 7vw, 64px)",
-    padding: "clamp(14px, 2vw, 18px) clamp(24px, 4vw, 34px)",
-    fontSize: "clamp(16px, 2vw, 18px)",
-    fontWeight: 600,
+    background: "linear-gradient(180deg, #ffffff 0%, #e8eef8 100%)",
+    color: "#111827",
+    minWidth: "min(340px, 90vw)",
+    minHeight: "clamp(60px, 8vw, 76px)",
+    padding: "clamp(16px, 2.2vw, 22px) clamp(32px, 5vw, 52px)",
+    fontSize: "clamp(18px, 2.2vw, 22px)",
+    fontWeight: 700,
+    letterSpacing: "0.04em",
     cursor: "pointer",
-    transition: "transform 180ms ease, box-shadow 180ms ease",
+    transition: "transform 140ms ease, box-shadow 140ms ease, filter 100ms ease",
   },
 };
 

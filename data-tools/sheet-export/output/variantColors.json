@@ -1575,13 +1575,6 @@
     "isActive": true
   },
   {
-    "id": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station__stainless_steel",
-    "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_infrared_rotisserie_and_sear_station",
-    "colorId": "stainless_steel",
-    "sortOrder": null,
-    "isActive": true
-  },
-  {
     "id": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard__stainless_steel",
     "variantId": "twin_eagles_c_series_built_in_gas_grill_30_inch_standard",
     "colorId": "stainless_steel",
@@ -1591,13 +1584,6 @@
   {
     "id": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie__stainless_steel",
     "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie",
-    "colorId": "stainless_steel",
-    "sortOrder": null,
-    "isActive": true
-  },
-  {
-    "id": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station__stainless_steel",
-    "variantId": "twin_eagles_c_series_built_in_gas_grill_36_inch_infrared_rotisserie_and_sear_station",
     "colorId": "stainless_steel",
     "sortOrder": null,
     "isActive": true
@@ -1617,22 +1603,8 @@
     "isActive": true
   },
   {
-    "id": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station__stainless_steel",
-    "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_infrared_rotisserie_and_sear_station",
-    "colorId": "stainless_steel",
-    "sortOrder": null,
-    "isActive": true
-  },
-  {
     "id": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard__stainless_steel",
     "variantId": "twin_eagles_c_series_built_in_gas_grill_42_inch_standard",
-    "colorId": "stainless_steel",
-    "sortOrder": null,
-    "isActive": true
-  },
-  {
-    "id": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station__stainless_steel",
-    "variantId": "twin_eagles_c_series_built_in_gas_grill_54_inch_infrared_rotisserie_and_sear_station",
     "colorId": "stainless_steel",
     "sortOrder": null,
     "isActive": true

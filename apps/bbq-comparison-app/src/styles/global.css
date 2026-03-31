@@ -8,15 +8,16 @@
 
 html {
   width: 100%;
-  min-height: 100%;
+  height: 100%;
+  overflow: hidden;
   -webkit-text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
   width: 100%;
-  min-height: 100dvh;
-  overflow-x: hidden;
+  height: 100%;
+  overflow: hidden;
   font-family: Inter, ui-sans-serif, system-ui;
   background: #05070d;
   color: #ffffff;
@@ -24,7 +25,9 @@ body {
 
 #root {
   width: 100%;
-  min-height: 100dvh;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
 }
@@ -40,12 +43,6 @@ img, video, canvas, svg {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: clamp(16px, 2vw, 36px);
-}
-
-.brand-selection-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: clamp(16px, 2vw, 28px);
 }
 
 /* ===== CARD IMAGE FIX ===== */

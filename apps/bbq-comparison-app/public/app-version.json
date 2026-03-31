@@ -1,7 +1,7 @@
 {
-  "appVersion": "1.5.1",
+  "appVersion": "1.6",
   "commitMessage": "Apps now automatically update on GitHub pushes. Naming changed in backend. Photos updated and changed.",
-  "updateVersion": "2026-03-27T20:52:33.353Z-bab4cc0",
-  "updatedAt": "2026-03-27T20:52:33.353Z",
+  "updateVersion": "2026-03-31T15:46:09.014Z-bab4cc0",
+  "updatedAt": "2026-03-31T15:46:09.014Z",
   "commit": "bab4cc0"
 }\n

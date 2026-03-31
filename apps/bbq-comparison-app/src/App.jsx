@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import useAppUpdateManager from "./hooks/useAppUpdateManager";
 import WelcomeScreen from "./pages/WelcomeScreen";
@@ -17,7 +17,6 @@ function AppShell() {
   const location = useLocation();
   const timeoutMs = 60000;
   const lastActivityRef = useRef(0);
-  const [secondsLeft, setSecondsLeft] = useState(60);
 
   const { updatedAtLabel, updatedAt, appVersion } = useAppUpdateManager({
     checkIntervalMs: 60000,
@@ -46,12 +45,7 @@ function AppShell() {
     };
 
     const checkIdle = () => {
-      const now = Date.now();
-      const idleMs = now - lastActivityRef.current;
-      const remaining = Math.max(0, Math.ceil((timeoutMs - idleMs) / 1000));
-
-      setSecondsLeft(remaining);
-
+      const idleMs = Date.now() - lastActivityRef.current;
       if (idleMs >= timeoutMs) {
         runReset();
       }
@@ -76,7 +70,6 @@ function AppShell() {
 
     events.forEach((eventName) => {
       window.addEventListener(eventName, markActivity, { passive: true });
-      document.addEventListener(eventName, markActivity, { passive: true });
     });
 
     window.addEventListener("focus", markActivity);
@@ -98,7 +91,6 @@ function AppShell() {
 
       events.forEach((eventName) => {
         window.removeEventListener(eventName, markActivity);
-        document.removeEventListener(eventName, markActivity);
       });
 
       window.removeEventListener("focus", markActivity);

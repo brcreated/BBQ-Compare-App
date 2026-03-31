@@ -60,7 +60,7 @@ function buildCompareItems(compareIds, variants, assets) {
       const heroAsset = getHeroAsset(variantId, assets);
 
       return {
-        id: variantId,
+        id: selectedId,
         slug: variant.slug || variantId,
         name: variant.name || variant.variantName || variant.variant_name || "Product",
         imageUrl: getAssetUrl(heroAsset),

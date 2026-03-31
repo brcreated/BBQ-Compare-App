@@ -1025,16 +1025,8 @@ export default function ComparePage() {
       </div>
 
       <style>{`
-        html, body {
-          overflow-y: auto !important;
-        }
-
-        body.compare-page-active {
-          overflow: auto !important;
-        }
-
         main {
-          overflow: visible !important;
+          overflow: visible;
         }
 
         .ambient-light {

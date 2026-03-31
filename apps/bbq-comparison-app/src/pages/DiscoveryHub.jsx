@@ -356,7 +356,7 @@ export default function DiscoveryHub() {
           min-height: 100dvh;
           width: 100%;
           overflow-x: hidden;
-          overflow-y: auto;
+          overflow-y: visible;
           background:
             radial-gradient(circle at 18% 14%, rgba(76, 110, 168, 0.09), transparent 28%),
             radial-gradient(circle at 82% 88%, rgba(76, 110, 168, 0.08), transparent 32%),
