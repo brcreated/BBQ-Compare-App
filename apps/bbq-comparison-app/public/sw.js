@@ -1,13 +1,10 @@
 // Service Worker — BBQ Showroom App
 // Strategy:
-//   - App shell (HTML, JS, CSS): cache-first, update in background
+//   - App shell (HTML, JS, CSS): network-first, cache fallback (offline)
 //   - Product data (JSON): network-first, cache fallback
 //   - Images/assets: stale-while-revalidate
-//
-// This makes idle-reset reloads nearly instant since the app shell
-// is served from cache rather than the network.
 
-const CACHE_VERSION = "bbq-showroom-v2";
+const CACHE_VERSION = "bbq-showroom-v3";
 const SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const DATA_CACHE = `${CACHE_VERSION}-data`;
 const ASSET_CACHE = `${CACHE_VERSION}-assets`;
@@ -49,20 +46,22 @@ self.addEventListener("fetch", (event) => {
   // Skip non-GET and cross-origin requests we don't want to cache
   if (request.method !== "GET") return;
 
-  // Navigation requests (HTML) → cache-first, background revalidate
+  // Navigation requests (HTML) → network-first, cache fallback for offline
   if (request.mode === "navigate") {
     event.respondWith(
-      caches.match("/index.html", { cacheName: SHELL_CACHE }).then(
-        (cached) =>
-          cached ||
-          fetch(request).then((response) => {
-            if (response.ok) {
-              const clone = response.clone();
-              caches.open(SHELL_CACHE).then((c) => c.put("/index.html", clone));
-            }
-            return response;
-          })
-      )
+      fetch(request)
+        .then((response) => {
+          if (response.ok) {
+            const clone = response.clone();
+            caches.open(SHELL_CACHE).then((c) => c.put("/index.html", clone));
+          }
+          return response;
+        })
+        .catch(() =>
+          caches
+            .match("/index.html", { cacheName: SHELL_CACHE })
+            .then((cached) => cached || Response.error())
+        )
     );
     return;
   }
@@ -84,16 +83,19 @@ self.addEventListener("fetch", (event) => {
   }
 
   // Product data JSON files → network-first, cache fallback
+  // Use the pathname (no query params) as the cache key so that
+  // cache-busting ?t= timestamps don't cause cache misses on fallback.
   if (/\.json(\?|$)/.test(url.pathname)) {
+    const cacheKey = new Request(url.origin + url.pathname);
     event.respondWith(
       fetch(request)
         .then((response) => {
           if (response.ok) {
-            caches.open(DATA_CACHE).then((c) => c.put(request, response.clone()));
+            caches.open(DATA_CACHE).then((c) => c.put(cacheKey, response.clone()));
           }
           return response;
         })
-        .catch(() => caches.match(request, { cacheName: DATA_CACHE }))
+        .catch(() => caches.match(cacheKey, { cacheName: DATA_CACHE }))
     );
     return;
   }
