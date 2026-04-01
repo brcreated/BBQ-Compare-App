@@ -51,7 +51,7 @@ const payload = {
 };
 
 fs.mkdirSync(publicDir, { recursive: true });
-fs.writeFileSync(outputPath, JSON.stringify(payload, null, 2) + "\\n", "utf8");
+fs.writeFileSync(outputPath, JSON.stringify(payload, null, 2) + "\n", "utf8");
 
 console.log(`Wrote ${outputPath}`);
 console.log(payload);
