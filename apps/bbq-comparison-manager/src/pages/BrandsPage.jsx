@@ -67,8 +67,24 @@ function BrandForm({ initial, onSave, onCancel }) {
   );
 }
 
+const ASSET_BASE = "https://bbqcompareassets.brcreated.app/assets";
+
+function getBrandLogoUrl(brand, assets, assetBaseUrl) {
+  if (brand.logoUrl) return brand.logoUrl;
+  const base = assetBaseUrl || ASSET_BASE;
+  const logo = assets.find((a) =>
+    (a.entityId === brand.id || a.brandId === brand.id) &&
+    a.entityType === "brand" &&
+    ["logo", "brand-logo", "brand_logo"].includes(a.imageType)
+  );
+  if (!logo) return null;
+  const fp = logo.filePath || logo.file_path || "";
+  if (!fp) return logo.url || null;
+  return `${base}/${fp}`;
+}
+
 export default function BrandsPage() {
-  const { brands, loading, loadAll, addBrand, updateBrand, removeBrand, saveDataset } = useDataStore();
+  const { brands, assets, assetBaseUrl, loading, loadAll, addBrand, updateBrand, removeBrand, saveDataset } = useDataStore();
   const { addToast } = useToastStore();
   const [modal, setModal] = useState(null);
   const [search, setSearch] = useState("");
@@ -133,7 +149,9 @@ export default function BrandsPage() {
         <div style={{ color: "rgba(180,200,240,0.5)" }}>Loading…</div>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-          {filtered.map((brand) => (
+          {filtered.map((brand) => {
+            const logoUrl = getBrandLogoUrl(brand, assets, assetBaseUrl);
+            return (
             <div key={brand.id} style={{
               display: "flex", alignItems: "center", gap: 16,
               background: "linear-gradient(180deg, rgba(15,23,36,0.6), rgba(9,14,24,0.7))",
@@ -141,8 +159,8 @@ export default function BrandsPage() {
               borderRadius: 10,
               padding: "14px 18px",
             }}>
-              {brand.logoUrl ? (
-                <img src={brand.logoUrl} alt={brand.name} style={{ width: 40, height: 40, objectFit: "contain", borderRadius: 6, background: "rgba(9,13,20,0.8)", padding: 4 }} />
+              {logoUrl ? (
+                <img src={logoUrl} alt={brand.name} style={{ width: 40, height: 40, objectFit: "contain", borderRadius: 6, background: "rgba(9,13,20,0.8)", padding: 4 }} />
               ) : (
                 <div style={{ width: 40, height: 40, borderRadius: 6, background: "rgba(9,13,20,0.8)", display: "flex", alignItems: "center", justifyContent: "center", color: "rgba(180,200,240,0.4)", fontSize: 18 }}>◈</div>
               )}
@@ -168,7 +186,8 @@ export default function BrandsPage() {
                 Remove
               </button>
             </div>
-          ))}
+            );
+          })}
           {filtered.length === 0 && (
             <div style={{ color: "rgba(180,200,240,0.5)", fontSize: 14, padding: "20px 0" }}>No brands found.</div>
           )}
