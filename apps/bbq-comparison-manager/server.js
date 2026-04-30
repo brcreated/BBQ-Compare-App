@@ -73,19 +73,23 @@ async function writeToR2(key, body, contentType = "application/json; charset=utf
 
 async function loadCache() {
   console.log("Loading data from R2…");
+  console.log("R2 endpoint:", `https://${process.env.CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com`);
+  console.log("Bucket:", process.env.R2_BUCKET);
+  console.log("Data prefix:", DATA_PREFIX);
   const result = {};
   await Promise.all(
     DATASETS.map(async (ds) => {
       try {
         const content = await readFromR2(`${DATA_PREFIX}/${ds}.json`);
         result[ds] = JSON.parse(content);
-      } catch {
+        console.log(`  ✓ ${ds}: ${result[ds].length} records`);
+      } catch (e) {
+        console.error(`  ✗ ${ds}: ${e.message}`);
         result[ds] = [];
       }
     })
   );
   dataCache = result;
-  console.log("Data loaded:", Object.fromEntries(DATASETS.map((ds) => [ds, result[ds].length])));
   return dataCache;
 }
 
