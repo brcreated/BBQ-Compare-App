@@ -419,7 +419,6 @@ function CompareHeaderCard({ product, onOpen }) {
   return (
     <div
       className="compare-header-card"
-      role="button"
       tabIndex={0}
       onClick={onOpen}
       onKeyDown={(event) => {
@@ -930,7 +929,6 @@ export default function ComparePage() {
                           <div
                             key={`${product.id}-${entry.key}`}
                             className="compare-spec-card"
-                            role="button"
                             tabIndex={0}
                             onClick={() =>
                               navigate(`/product/${product.slug || product.id}`)
