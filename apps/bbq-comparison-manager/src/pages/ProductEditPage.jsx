@@ -76,9 +76,21 @@ function Grid({ children, cols = 2 }) {
 
 // ── Info tab ─────────────────────────────────────────────────────────────────
 
-function InfoTab({ form, setForm, brands, families }) {
+function InfoTab({ form, setForm, brands, families, onCreateFamily }) {
   const set = (key, val) => setForm((f) => ({ ...f, [key]: val }));
   const brandFamilies = families.filter((f) => f.brandId === form.brandId);
+  const [creatingFamily, setCreatingFamily] = useState(false);
+  const [newFamilyName, setNewFamilyName] = useState("");
+
+  function handleCreateFamily() {
+    const name = newFamilyName.trim();
+    if (!name || !form.brandId) return;
+    const id = `${form.brandId}_${name.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "")}`;
+    onCreateFamily({ id, brandId: form.brandId, name, description: "", sortOrder: null, isActive: true });
+    set("familyId", id);
+    setNewFamilyName("");
+    setCreatingFamily(false);
+  }
 
   const FUEL_TYPES = ["Charcoal", "Gas", "Pellet", "Wood", "Electric", "Dual Fuel"].map((v) => ({ value: v, label: v }));
   const CATEGORIES = ["offset_smoker", "pellet_grill", "gas_grill", "charcoal_grill", "kamado", "pizza_oven", "flat_top", "charcoal_smoker", "wood_smoker", "electric_smoker"].map((v) => ({ value: v, label: v }));
@@ -94,7 +106,44 @@ function InfoTab({ form, setForm, brands, families }) {
         <Field label="Product ID (slug)" value={form.id} onChange={(v) => set("id", v)} disabled={form._isExisting} />
         <Field label="Name" value={form.name} onChange={(v) => set("name", v)} />
         <Select label="Brand" value={form.brandId} onChange={(v) => { set("brandId", v); set("familyId", ""); }} options={brands.map((b) => ({ value: b.id, label: b.name }))} />
-        <Select label="Family" value={form.familyId} onChange={(v) => set("familyId", v)} options={brandFamilies.map((f) => ({ value: f.id, label: f.name }))} />
+        <div style={{ marginBottom: 14 }}>
+          <label style={fieldLabelStyle}>Family</label>
+          {creatingFamily ? (
+            <div style={{ display: "flex", gap: 6 }}>
+              <input
+                autoFocus
+                value={newFamilyName}
+                onChange={(e) => setNewFamilyName(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") handleCreateFamily(); if (e.key === "Escape") setCreatingFamily(false); }}
+                placeholder="Family name…"
+                className="field-input"
+                style={{ fontSize: 13, flex: 1 }}
+              />
+              <button onClick={handleCreateFamily} className="btn-primary" style={{ padding: "8px 14px", fontSize: 13 }}>Add</button>
+              <button onClick={() => setCreatingFamily(false)} className="btn-ghost" style={{ padding: "8px 12px", fontSize: 13 }}>✕</button>
+            </div>
+          ) : (
+            <div style={{ display: "flex", gap: 6 }}>
+              <select
+                value={form.familyId ?? ""}
+                onChange={(e) => set("familyId", e.target.value)}
+                className="field-input"
+                style={{ fontSize: 13, flex: 1 }}
+              >
+                <option value="">— Select —</option>
+                {brandFamilies.map((f) => <option key={f.id} value={f.id}>{f.name}</option>)}
+              </select>
+              <button
+                onClick={() => { if (!form.brandId) return; setCreatingFamily(true); }}
+                title={form.brandId ? "Create new family" : "Select a brand first"}
+                className="btn-ghost"
+                style={{ padding: "8px 12px", fontSize: 13, opacity: form.brandId ? 1 : 0.4, cursor: form.brandId ? "pointer" : "not-allowed" }}
+              >
+                + New
+              </button>
+            </div>
+          )}
+        </div>
         <Field label="Model Number" value={form.modelNumber} onChange={(v) => set("modelNumber", v)} />
         <Field label="SKU" value={form.sku} onChange={(v) => set("sku", v)} />
         <Field label="UPC" value={form.upc} onChange={(v) => set("upc", v)} />
@@ -481,6 +530,7 @@ export default function ProductEditPage() {
   const {
     brands, families, variants, specs, assets, assetBaseUrl,
     loading, loadAll, addVariant, updateVariant,
+    addFamily,
     addSpec, updateSpec, removeSpec,
     addAsset, updateAsset, removeAsset,
     saveDataset,
@@ -619,7 +669,13 @@ export default function ProductEditPage() {
 
       <div style={{ background: "linear-gradient(180deg, rgba(15,23,36,0.98), rgba(9,14,24,0.98))", border: "1px solid rgba(117,163,255,0.18)", borderTop: "none", borderRadius: "0 0 14px 14px", padding: "22px 24px" }}>
         {tab === "info" && (
-          <InfoTab form={form} setForm={setForm} brands={brands} families={families} />
+          <InfoTab
+            form={form}
+            setForm={setForm}
+            brands={brands}
+            families={families}
+            onCreateFamily={(family) => { addFamily(family); saveDataset("families"); }}
+          />
         )}
         {tab === "specs" && !isNew && (
           <SpecsTab
