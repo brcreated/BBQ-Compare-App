@@ -13,28 +13,22 @@ const EMPTY_BRAND = {
   isActive: true,
 };
 
+const labelStyle = {
+  display: "block", fontSize: 11, fontWeight: 700,
+  color: "rgba(180,200,240,0.7)", marginBottom: 5,
+  textTransform: "uppercase", letterSpacing: "0.1em",
+};
+
 function Field({ label, value, onChange, type = "text", placeholder = "" }) {
   return (
     <div style={{ marginBottom: 14 }}>
-      <label style={{ display: "block", fontSize: 12, fontWeight: 600, color: "#8b949e", marginBottom: 5, textTransform: "uppercase", letterSpacing: "0.08em" }}>
-        {label}
-      </label>
+      <label style={labelStyle}>{label}</label>
       <input
         type={type}
         value={value ?? ""}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        style={{
-          width: "100%",
-          background: "#0d1117",
-          border: "1px solid rgba(255,255,255,0.12)",
-          borderRadius: 8,
-          padding: "9px 12px",
-          color: "#e6edf3",
-          fontSize: 14,
-          outline: "none",
-          boxSizing: "border-box",
-        }}
+        className="field-input"
       />
     </div>
   );
@@ -52,27 +46,22 @@ function BrandForm({ initial, onSave, onCancel }) {
       <Field label="Background Image URL" value={form.brandBackgroundUrl} onChange={(v) => set("brandBackgroundUrl", v)} placeholder="https://..." />
       <Field label="Website URL" value={form.websiteUrl} onChange={(v) => set("websiteUrl", v)} placeholder="https://..." />
       <div style={{ marginBottom: 14 }}>
-        <label style={{ display: "block", fontSize: 12, fontWeight: 600, color: "#8b949e", marginBottom: 5, textTransform: "uppercase", letterSpacing: "0.08em" }}>
-          Description
-        </label>
+        <label style={labelStyle}>Description</label>
         <textarea
           value={form.description ?? ""}
           onChange={(e) => set("description", e.target.value)}
           rows={3}
-          style={{ width: "100%", background: "#0d1117", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 8, padding: "9px 12px", color: "#e6edf3", fontSize: 14, outline: "none", resize: "vertical", boxSizing: "border-box" }}
+          className="field-input"
+          style={{ resize: "vertical" }}
         />
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
         <input type="checkbox" checked={form.isActive} onChange={(e) => set("isActive", e.target.checked)} id="brand-active" />
-        <label htmlFor="brand-active" style={{ fontSize: 14, color: "#e6edf3" }}>Active</label>
+        <label htmlFor="brand-active" style={{ fontSize: 14, color: "#e7edf7" }}>Active</label>
       </div>
       <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
-        <button onClick={onCancel} style={{ padding: "9px 18px", borderRadius: 8, border: "1px solid rgba(255,255,255,0.12)", background: "transparent", color: "#8b949e", fontSize: 14, cursor: "pointer" }}>
-          Cancel
-        </button>
-        <button onClick={() => onSave(form)} style={{ padding: "9px 18px", borderRadius: 8, border: "none", background: "#4c75db", color: "#fff", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
-          Save Brand
-        </button>
+        <button onClick={onCancel} className="btn-ghost">Cancel</button>
+        <button onClick={() => onSave(form)} className="btn-primary">Save Brand</button>
       </div>
     </div>
   );
@@ -127,64 +116,61 @@ export default function BrandsPage() {
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
         <div>
           <h1 style={{ fontSize: 26, fontWeight: 800, letterSpacing: "-0.03em", margin: 0 }}>Brands</h1>
-          <p style={{ color: "#8b949e", marginTop: 6, fontSize: 14 }}>{brands.length} brands total</p>
+          <p style={{ color: "rgba(180,200,240,0.6)", marginTop: 6, fontSize: 14 }}>{brands.length} brands total</p>
         </div>
-        <button
-          onClick={() => setModal("new")}
-          style={{ padding: "10px 20px", borderRadius: 9, border: "none", background: "#4c75db", color: "#fff", fontSize: 14, fontWeight: 600, cursor: "pointer" }}
-        >
-          + Add Brand
-        </button>
+        <button onClick={() => setModal("new")} className="btn-primary">+ Add Brand</button>
       </div>
 
       <input
         placeholder="Search brands…"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        style={{ width: "100%", maxWidth: 360, background: "#161b22", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "9px 14px", color: "#e6edf3", fontSize: 14, outline: "none", marginBottom: 20, boxSizing: "border-box" }}
+        className="field-input"
+        style={{ maxWidth: 360, marginBottom: 20 }}
       />
 
       {loading ? (
-        <div style={{ color: "#8b949e" }}>Loading…</div>
+        <div style={{ color: "rgba(180,200,240,0.5)" }}>Loading…</div>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
           {filtered.map((brand) => (
             <div key={brand.id} style={{
               display: "flex", alignItems: "center", gap: 16,
-              background: "#161b22",
-              border: "1px solid rgba(255,255,255,0.06)",
+              background: "linear-gradient(180deg, rgba(15,23,36,0.6), rgba(9,14,24,0.7))",
+              border: "1px solid rgba(117,163,255,0.1)",
               borderRadius: 10,
               padding: "14px 18px",
-              marginBottom: 6,
             }}>
               {brand.logoUrl ? (
-                <img src={brand.logoUrl} alt={brand.name} style={{ width: 40, height: 40, objectFit: "contain", borderRadius: 6, background: "#0d1117", padding: 4 }} />
+                <img src={brand.logoUrl} alt={brand.name} style={{ width: 40, height: 40, objectFit: "contain", borderRadius: 6, background: "rgba(9,13,20,0.8)", padding: 4 }} />
               ) : (
-                <div style={{ width: 40, height: 40, borderRadius: 6, background: "#0d1117", display: "flex", alignItems: "center", justifyContent: "center", color: "#8b949e", fontSize: 18 }}>◈</div>
+                <div style={{ width: 40, height: 40, borderRadius: 6, background: "rgba(9,13,20,0.8)", display: "flex", alignItems: "center", justifyContent: "center", color: "rgba(180,200,240,0.4)", fontSize: 18 }}>◈</div>
               )}
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontWeight: 600, fontSize: 15, color: "#e6edf3" }}>{brand.name || "—"}</div>
-                <div style={{ fontSize: 12, color: "#8b949e", marginTop: 2 }}>{brand.id}</div>
+                <div style={{ fontWeight: 600, fontSize: 15, color: "#f3f7ff" }}>{brand.name || "—"}</div>
+                <div style={{ fontSize: 12, color: "rgba(180,200,240,0.5)", marginTop: 2 }}>{brand.id}</div>
               </div>
               <div style={{ fontSize: 12, color: brand.isActive ? "#3fb950" : "#f85149", fontWeight: 600, marginRight: 8 }}>
                 {brand.isActive ? "Active" : "Inactive"}
               </div>
               <button
                 onClick={() => setModal(brand)}
-                style={{ padding: "7px 14px", borderRadius: 7, border: "1px solid rgba(255,255,255,0.12)", background: "transparent", color: "#e6edf3", fontSize: 13, cursor: "pointer" }}
+                className="btn-ghost"
+                style={{ padding: "7px 14px", fontSize: 13 }}
               >
                 Edit
               </button>
               <button
                 onClick={() => setConfirmDelete(brand)}
-                style={{ padding: "7px 14px", borderRadius: 7, border: "1px solid rgba(248,81,73,0.3)", background: "transparent", color: "#f85149", fontSize: 13, cursor: "pointer" }}
+                className="btn-danger"
+                style={{ padding: "7px 14px", fontSize: 13 }}
               >
                 Remove
               </button>
             </div>
           ))}
           {filtered.length === 0 && (
-            <div style={{ color: "#8b949e", fontSize: 14, padding: "20px 0" }}>No brands found.</div>
+            <div style={{ color: "rgba(180,200,240,0.5)", fontSize: 14, padding: "20px 0" }}>No brands found.</div>
           )}
         </div>
       )}
@@ -204,16 +190,12 @@ export default function BrandsPage() {
 
       {confirmDelete && (
         <Modal title="Remove Brand" onClose={() => setConfirmDelete(null)} width={420}>
-          <p style={{ color: "#e6edf3", fontSize: 14, marginTop: 0 }}>
+          <p style={{ color: "#e7edf7", fontSize: 14, marginTop: 0 }}>
             Remove <strong>{confirmDelete.name}</strong>? This cannot be undone.
           </p>
           <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
-            <button onClick={() => setConfirmDelete(null)} style={{ padding: "9px 18px", borderRadius: 8, border: "1px solid rgba(255,255,255,0.12)", background: "transparent", color: "#8b949e", fontSize: 14, cursor: "pointer" }}>
-              Cancel
-            </button>
-            <button onClick={() => handleDelete(confirmDelete.id)} style={{ padding: "9px 18px", borderRadius: 8, border: "none", background: "#da3633", color: "#fff", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
-              Remove
-            </button>
+            <button onClick={() => setConfirmDelete(null)} className="btn-ghost">Cancel</button>
+            <button onClick={() => handleDelete(confirmDelete.id)} className="btn-danger">Remove</button>
           </div>
         </Modal>
       )}

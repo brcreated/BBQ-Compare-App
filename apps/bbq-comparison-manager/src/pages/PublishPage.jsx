@@ -50,7 +50,7 @@ export default function PublishPage() {
     <div>
       <div style={{ marginBottom: 28 }}>
         <h1 style={{ fontSize: 26, fontWeight: 800, letterSpacing: "-0.03em", margin: 0 }}>Publish</h1>
-        <p style={{ color: "#8b949e", marginTop: 6, fontSize: 14 }}>
+        <p style={{ color: "rgba(180,200,240,0.6)", marginTop: 6, fontSize: 14 }}>
           Save changes locally and push to Cloudflare R2 to update the live site.
         </p>
       </div>
@@ -60,14 +60,12 @@ export default function PublishPage() {
         {Object.entries(DATASET_LABELS).map(([key, label]) => {
           const isDirty = dirtyDatasets.has(key);
           return (
-            <div key={key} style={{
-              background: "#161b22",
-              border: `1px solid ${isDirty ? "rgba(240,136,62,0.4)" : "rgba(255,255,255,0.08)"}`,
-              borderRadius: 10,
+            <div key={key} className="glass-card" style={{
               padding: "14px 16px",
+              borderColor: isDirty ? "rgba(240,136,62,0.4)" : undefined,
             }}>
-              <div style={{ fontSize: 22, fontWeight: 800, color: "#e6edf3" }}>{counts[key]}</div>
-              <div style={{ fontSize: 12, color: "#8b949e", marginTop: 2 }}>{label}</div>
+              <div style={{ fontSize: 22, fontWeight: 800, color: "#f3f7ff" }}>{counts[key]}</div>
+              <div style={{ fontSize: 12, color: "rgba(180,200,240,0.6)", marginTop: 2 }}>{label}</div>
               {isDirty && (
                 <div style={{ fontSize: 11, color: "#f0883e", marginTop: 6, fontWeight: 600 }}>Unsaved changes</div>
               )}
@@ -76,18 +74,18 @@ export default function PublishPage() {
         })}
       </div>
 
-      {/* Last published */}
-      <div style={{ background: "#161b22", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "18px 22px", marginBottom: 24 }}>
-        <div style={{ fontSize: 13, fontWeight: 600, color: "#8b949e", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 10 }}>
+      {/* Status card */}
+      <div className="glass-card" style={{ padding: "18px 22px", marginBottom: 24 }}>
+        <div style={{ fontSize: 11, fontWeight: 800, color: "rgba(180,200,240,0.6)", textTransform: "uppercase", letterSpacing: "0.14em", marginBottom: 12 }}>
           Status
         </div>
-        <div style={{ fontSize: 14, color: "#e6edf3", display: "flex", flexDirection: "column", gap: 8 }}>
+        <div style={{ fontSize: 14, color: "#e7edf7", display: "flex", flexDirection: "column", gap: 8 }}>
           <div>
-            <span style={{ color: "#8b949e" }}>Last published this session: </span>
+            <span style={{ color: "rgba(180,200,240,0.6)" }}>Last published this session: </span>
             {lastPublishedAt ? new Date(lastPublishedAt).toLocaleString() : "Not yet"}
           </div>
           <div>
-            <span style={{ color: "#8b949e" }}>Unsaved datasets: </span>
+            <span style={{ color: "rgba(180,200,240,0.6)" }}>Unsaved datasets: </span>
             {dirtyDatasets.size === 0 ? (
               <span style={{ color: "#3fb950", fontWeight: 600 }}>All saved</span>
             ) : (
@@ -104,12 +102,8 @@ export default function PublishPage() {
         <button
           onClick={handleSaveAll}
           disabled={saving || dirtyDatasets.size === 0}
-          style={{
-            padding: "12px 24px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.15)",
-            background: "transparent", color: dirtyDatasets.size > 0 ? "#e6edf3" : "#8b949e",
-            fontSize: 14, fontWeight: 600, cursor: dirtyDatasets.size > 0 && !saving ? "pointer" : "not-allowed",
-            opacity: dirtyDatasets.size === 0 ? 0.5 : 1,
-          }}
+          className="btn-ghost"
+          style={{ padding: "12px 24px", opacity: dirtyDatasets.size === 0 ? 0.5 : 1, cursor: dirtyDatasets.size === 0 ? "not-allowed" : "pointer" }}
         >
           {saving ? "Saving…" : "Save Local Changes"}
         </button>
@@ -117,13 +111,8 @@ export default function PublishPage() {
         <button
           onClick={handlePublish}
           disabled={publishing}
-          style={{
-            padding: "12px 28px", borderRadius: 10, border: "none",
-            background: publishing ? "rgba(76,117,219,0.5)" : "#4c75db",
-            color: "#fff", fontSize: 14, fontWeight: 700,
-            cursor: publishing ? "not-allowed" : "pointer",
-            boxShadow: "0 4px 18px rgba(76,117,219,0.3)",
-          }}
+          className="btn-primary"
+          style={{ padding: "12px 28px" }}
         >
           {publishing ? "Publishing…" : "↑ Publish to Live Site"}
         </button>
@@ -131,11 +120,11 @@ export default function PublishPage() {
 
       {/* Publish result */}
       {publishResult && (
-        <div style={{ background: "rgba(63,185,80,0.08)", border: "1px solid rgba(63,185,80,0.3)", borderRadius: 10, padding: "16px 20px" }}>
+        <div style={{ background: "rgba(63,185,80,0.08)", border: "1px solid rgba(63,185,80,0.3)", borderRadius: 12, padding: "16px 20px", marginBottom: 24 }}>
           <div style={{ fontSize: 14, fontWeight: 600, color: "#3fb950", marginBottom: 8 }}>
             ✓ Published successfully
           </div>
-          <div style={{ fontSize: 13, color: "#e6edf3" }}>
+          <div style={{ fontSize: 13, color: "#e7edf7" }}>
             Uploaded: {publishResult.published?.map((d) => DATASET_LABELS[d] || d).join(", ")}
           </div>
           {publishResult.errors?.length > 0 && (
@@ -146,13 +135,13 @@ export default function PublishPage() {
         </div>
       )}
 
-      {/* Instructions */}
-      <div style={{ marginTop: 32, background: "#161b22", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "18px 22px" }}>
-        <div style={{ fontSize: 13, fontWeight: 600, color: "#8b949e", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 12 }}>How it works</div>
-        <ol style={{ color: "#8b949e", fontSize: 13, lineHeight: 1.8, paddingLeft: 18, margin: 0 }}>
+      {/* How it works */}
+      <div className="glass-card" style={{ padding: "18px 22px" }}>
+        <div style={{ fontSize: 11, fontWeight: 800, color: "rgba(180,200,240,0.6)", textTransform: "uppercase", letterSpacing: "0.14em", marginBottom: 12 }}>How it works</div>
+        <ol style={{ color: "rgba(180,200,240,0.6)", fontSize: 13, lineHeight: 1.8, paddingLeft: 18, margin: 0 }}>
           <li>Make your edits on the Brands and Products pages.</li>
-          <li>Changes are held in memory until you save — click <strong style={{ color: "#e6edf3" }}>Save Local Changes</strong> to write them to disk.</li>
-          <li>Click <strong style={{ color: "#e6edf3" }}>Publish to Live Site</strong> to upload all JSON files to Cloudflare R2.</li>
+          <li>Changes are held in memory until you save — click <strong style={{ color: "#e7edf7" }}>Save Local Changes</strong> to write them to disk.</li>
+          <li>Click <strong style={{ color: "#e7edf7" }}>Publish to Live Site</strong> to upload all JSON files to Cloudflare R2.</li>
           <li>The live site will reflect your changes immediately (no cache, no rebuild needed).</li>
         </ol>
       </div>

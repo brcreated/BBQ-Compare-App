@@ -7,17 +7,24 @@ import Modal from "../components/shared/Modal";
 
 // ── Shared field components ──────────────────────────────────────────────────
 
+const fieldLabelStyle = {
+  display: "block", fontSize: 11, fontWeight: 700,
+  color: "rgba(180,200,240,0.7)", marginBottom: 4,
+  textTransform: "uppercase", letterSpacing: "0.1em",
+};
+
 function Field({ label, value, onChange, type = "text", placeholder = "", disabled = false }) {
   return (
     <div style={{ marginBottom: 14 }}>
-      <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "#8b949e", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.08em" }}>{label}</label>
+      <label style={fieldLabelStyle}>{label}</label>
       <input
         type={type}
         value={value ?? ""}
         onChange={(e) => onChange(type === "number" ? (e.target.value === "" ? null : Number(e.target.value)) : e.target.value)}
         placeholder={placeholder}
         disabled={disabled}
-        style={{ width: "100%", background: disabled ? "#0a0e14" : "#0d1117", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 7, padding: "8px 11px", color: disabled ? "#8b949e" : "#e6edf3", fontSize: 13, outline: "none", boxSizing: "border-box" }}
+        className="field-input"
+        style={{ fontSize: 13, opacity: disabled ? 0.5 : 1, cursor: disabled ? "not-allowed" : undefined }}
       />
     </div>
   );
@@ -26,11 +33,12 @@ function Field({ label, value, onChange, type = "text", placeholder = "", disabl
 function Select({ label, value, onChange, options }) {
   return (
     <div style={{ marginBottom: 14 }}>
-      <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "#8b949e", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.08em" }}>{label}</label>
+      <label style={fieldLabelStyle}>{label}</label>
       <select
         value={value ?? ""}
         onChange={(e) => onChange(e.target.value)}
-        style={{ width: "100%", background: "#0d1117", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 7, padding: "8px 11px", color: "#e6edf3", fontSize: 13, outline: "none", boxSizing: "border-box" }}
+        className="field-input"
+        style={{ fontSize: 13 }}
       >
         <option value="">— Select —</option>
         {options.map((o) => (
@@ -45,14 +53,14 @@ function Toggle({ label, value, onChange }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
       <input type="checkbox" checked={!!value} onChange={(e) => onChange(e.target.checked)} id={`toggle-${label}`} />
-      <label htmlFor={`toggle-${label}`} style={{ fontSize: 13, color: "#e6edf3" }}>{label}</label>
+      <label htmlFor={`toggle-${label}`} style={{ fontSize: 13, color: "#e7edf7" }}>{label}</label>
     </div>
   );
 }
 
 function SectionHeader({ title }) {
   return (
-    <div style={{ fontSize: 11, fontWeight: 700, color: "#4c75db", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 12, marginTop: 20, paddingBottom: 6, borderBottom: "1px solid rgba(76,117,219,0.2)" }}>
+    <div style={{ fontSize: 11, fontWeight: 700, color: "#7aa3f5", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 12, marginTop: 20, paddingBottom: 6, borderBottom: "1px solid rgba(76,117,219,0.2)" }}>
       {title}
     </div>
   );
@@ -93,8 +101,14 @@ function InfoTab({ form, setForm, brands, families }) {
         <Field label="Slug" value={form.slug} onChange={(v) => set("slug", v)} />
       </Grid>
       <div style={{ marginBottom: 14 }}>
-        <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "#8b949e", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.08em" }}>Description</label>
-        <textarea value={form.description ?? ""} onChange={(e) => set("description", e.target.value)} rows={3} style={{ width: "100%", background: "#0d1117", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 7, padding: "8px 11px", color: "#e6edf3", fontSize: 13, outline: "none", resize: "vertical", boxSizing: "border-box" }} />
+        <label style={fieldLabelStyle}>Description</label>
+        <textarea
+          value={form.description ?? ""}
+          onChange={(e) => set("description", e.target.value)}
+          rows={3}
+          className="field-input"
+          style={{ fontSize: 13, resize: "vertical" }}
+        />
       </div>
 
       <SectionHeader title="Pricing" />
@@ -203,6 +217,14 @@ function SpecsTab({ variantId, specs, addSpec, updateSpec, removeSpec }) {
     isActive: true,
   };
 
+  const th = { padding: "9px 12px", textAlign: "left", fontSize: 11, fontWeight: 700, color: "rgba(180,200,240,0.6)", textTransform: "uppercase", letterSpacing: "0.08em", borderBottom: "1px solid rgba(117,163,255,0.1)" };
+  const td = { padding: "9px 12px", fontSize: 13, color: "#e7edf7", borderBottom: "1px solid rgba(117,163,255,0.06)", verticalAlign: "middle" };
+  const inputStyle = { background: "rgba(9,13,20,0.8)", border: "1px solid rgba(117,163,255,0.16)", borderRadius: 5, padding: "5px 8px", color: "#e7edf7", fontSize: 12, outline: "none", width: "100%", boxSizing: "border-box" };
+  const btnEdit = { padding: "4px 10px", borderRadius: 5, border: "1px solid rgba(117,163,255,0.2)", background: "rgba(9,13,20,0.6)", color: "#c4d4f5", fontSize: 12, cursor: "pointer", marginRight: 4 };
+  const btnDelete = { padding: "4px 8px", borderRadius: 5, border: "1px solid rgba(248,81,73,0.3)", background: "transparent", color: "#f85149", fontSize: 12, cursor: "pointer" };
+  const btnSave = { padding: "4px 10px", borderRadius: 5, border: "none", background: "linear-gradient(135deg, #4c75db, #2f57bc)", color: "#fff", fontSize: 12, cursor: "pointer", marginRight: 4 };
+  const btnCancel = { padding: "4px 10px", borderRadius: 5, border: "1px solid rgba(117,163,255,0.2)", background: "rgba(9,13,20,0.6)", color: "rgba(180,200,240,0.7)", fontSize: 12, cursor: "pointer" };
+
   function SpecRow({ spec }) {
     const [form, setForm] = useState({ ...spec });
     const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
@@ -226,9 +248,9 @@ function SpecsTab({ variantId, specs, addSpec, updateSpec, removeSpec }) {
       <tr>
         <td style={td}>{spec.group || "—"}</td>
         <td style={td}>{spec.label}</td>
-        <td style={{ ...td, color: "#8b949e", fontSize: 12 }}>{spec.key}</td>
+        <td style={{ ...td, color: "rgba(180,200,240,0.5)", fontSize: 12 }}>{spec.key}</td>
         <td style={td}>{spec.value || "—"}</td>
-        <td style={{ ...td, color: "#8b949e" }}>{spec.unit || ""}</td>
+        <td style={{ ...td, color: "rgba(180,200,240,0.5)" }}>{spec.unit || ""}</td>
         <td style={{ ...td, whiteSpace: "nowrap" }}>
           <button onClick={() => setEditingId(spec.id)} style={btnEdit}>Edit</button>
           <button onClick={() => removeSpec(spec.id)} style={btnDelete}>✕</button>
@@ -255,20 +277,10 @@ function SpecsTab({ variantId, specs, addSpec, updateSpec, removeSpec }) {
     );
   }
 
-  const th = { padding: "9px 12px", textAlign: "left", fontSize: 11, fontWeight: 700, color: "#8b949e", textTransform: "uppercase", letterSpacing: "0.08em", borderBottom: "1px solid rgba(255,255,255,0.08)" };
-  const td = { padding: "9px 12px", fontSize: 13, color: "#e6edf3", borderBottom: "1px solid rgba(255,255,255,0.05)", verticalAlign: "middle" };
-  const inputStyle = { background: "#0d1117", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 5, padding: "5px 8px", color: "#e6edf3", fontSize: 12, outline: "none", width: "100%", boxSizing: "border-box" };
-  const btnEdit = { padding: "4px 10px", borderRadius: 5, border: "1px solid rgba(255,255,255,0.12)", background: "transparent", color: "#e6edf3", fontSize: 12, cursor: "pointer", marginRight: 4 };
-  const btnDelete = { padding: "4px 8px", borderRadius: 5, border: "1px solid rgba(248,81,73,0.3)", background: "transparent", color: "#f85149", fontSize: 12, cursor: "pointer" };
-  const btnSave = { padding: "4px 10px", borderRadius: 5, border: "none", background: "#4c75db", color: "#fff", fontSize: 12, cursor: "pointer", marginRight: 4 };
-  const btnCancel = { padding: "4px 10px", borderRadius: 5, border: "1px solid rgba(255,255,255,0.12)", background: "transparent", color: "#8b949e", fontSize: 12, cursor: "pointer" };
-
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 14 }}>
-        <button onClick={() => setNewSpec(true)} style={{ padding: "8px 16px", borderRadius: 8, border: "none", background: "#4c75db", color: "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
-          + Add Spec
-        </button>
+        <button onClick={() => setNewSpec(true)} className="btn-primary" style={{ fontSize: 13 }}>+ Add Spec</button>
       </div>
       <div style={{ overflowX: "auto" }}>
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
@@ -285,7 +297,7 @@ function SpecsTab({ variantId, specs, addSpec, updateSpec, removeSpec }) {
           <tbody>
             {newSpec && <NewSpecRow />}
             {variantSpecs.length === 0 && !newSpec ? (
-              <tr><td colSpan={6} style={{ ...td, color: "#8b949e", textAlign: "center", padding: "24px 0" }}>No specs yet. Click "Add Spec" to add one.</td></tr>
+              <tr><td colSpan={6} style={{ ...td, color: "rgba(180,200,240,0.5)", textAlign: "center", padding: "24px 0" }}>No specs yet. Click "Add Spec" to add one.</td></tr>
             ) : (
               variantSpecs.map((spec) => <SpecRow key={spec.id} spec={spec} />)
             )}
@@ -360,6 +372,7 @@ function ImagesTab({ variantId, brandId, assets, addAsset, updateAsset, removeAs
   }
 
   const IMAGE_TYPES = ["hero", "gallery", "main", "detail", "lifestyle"];
+  const smallInput = { background: "rgba(9,13,20,0.8)", border: "1px solid rgba(117,163,255,0.16)", borderRadius: 5, padding: "5px 8px", color: "#e7edf7", fontSize: 11, outline: "none", boxSizing: "border-box" };
 
   return (
     <div>
@@ -368,14 +381,15 @@ function ImagesTab({ variantId, brandId, assets, addAsset, updateAsset, removeAs
         <button
           onClick={() => fileRef.current?.click()}
           disabled={uploading}
-          style={{ padding: "9px 18px", borderRadius: 8, border: "none", background: "#4c75db", color: "#fff", fontSize: 13, fontWeight: 600, cursor: uploading ? "not-allowed" : "pointer", opacity: uploading ? 0.6 : 1 }}
+          className="btn-primary"
+          style={{ fontSize: 13, opacity: uploading ? 0.6 : 1, cursor: uploading ? "not-allowed" : "pointer" }}
         >
           {uploading ? "Uploading…" : "Upload Images"}
         </button>
       </div>
 
       {variantAssets.length === 0 ? (
-        <div style={{ color: "#8b949e", fontSize: 14, textAlign: "center", padding: "40px 0" }}>
+        <div style={{ color: "rgba(180,200,240,0.5)", fontSize: 14, textAlign: "center", padding: "40px 0" }}>
           No images yet. Upload some above.
         </div>
       ) : (
@@ -383,32 +397,32 @@ function ImagesTab({ variantId, brandId, assets, addAsset, updateAsset, removeAs
           {variantAssets.map((asset) => {
             const url = imgUrl(asset);
             return (
-              <div key={asset.id} style={{ background: "#161b22", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 10, overflow: "hidden" }}>
-                <div style={{ background: "#0d1117", height: 160, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+              <div key={asset.id} style={{ background: "linear-gradient(180deg, rgba(15,23,36,0.88), rgba(9,14,24,0.92))", border: "1px solid rgba(117,163,255,0.14)", borderRadius: 10, overflow: "hidden" }}>
+                <div style={{ background: "rgba(9,13,20,0.8)", height: 160, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
                   {url ? (
                     <img src={url} alt={asset.altText || asset.fileName} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
                   ) : (
-                    <span style={{ color: "#8b949e", fontSize: 32 }}>▦</span>
+                    <span style={{ color: "rgba(180,200,240,0.3)", fontSize: 32 }}>▦</span>
                   )}
                 </div>
                 <div style={{ padding: "10px 12px" }}>
-                  <div style={{ fontSize: 11, color: "#8b949e", marginBottom: 8, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{asset.fileName}</div>
+                  <div style={{ fontSize: 11, color: "rgba(180,200,240,0.5)", marginBottom: 8, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{asset.fileName}</div>
                   <div style={{ marginBottom: 8 }}>
                     <select
                       value={asset.imageType || "gallery"}
                       onChange={(e) => updateAsset(asset.id, { imageType: e.target.value })}
-                      style={{ width: "100%", background: "#0d1117", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 6, padding: "5px 8px", color: "#e6edf3", fontSize: 12, outline: "none" }}
+                      style={{ ...smallInput, width: "100%" }}
                     >
                       {IMAGE_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
                     </select>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
-                    <label style={{ fontSize: 11, color: "#8b949e" }}>Order:</label>
+                    <label style={{ fontSize: 11, color: "rgba(180,200,240,0.5)" }}>Order:</label>
                     <input
                       type="number"
                       value={asset.sortOrder ?? ""}
                       onChange={(e) => updateAsset(asset.id, { sortOrder: e.target.value === "" ? null : Number(e.target.value) })}
-                      style={{ width: 60, background: "#0d1117", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 5, padding: "4px 7px", color: "#e6edf3", fontSize: 12, outline: "none" }}
+                      style={{ ...smallInput, width: 60 }}
                     />
                   </div>
                   <input
@@ -416,11 +430,12 @@ function ImagesTab({ variantId, brandId, assets, addAsset, updateAsset, removeAs
                     value={asset.altText || ""}
                     onChange={(e) => updateAsset(asset.id, { altText: e.target.value })}
                     placeholder="Alt text…"
-                    style={{ width: "100%", background: "#0d1117", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 5, padding: "5px 8px", color: "#e6edf3", fontSize: 11, outline: "none", marginBottom: 8, boxSizing: "border-box" }}
+                    style={{ ...smallInput, width: "100%", marginBottom: 8 }}
                   />
                   <button
                     onClick={() => handleDelete(asset)}
-                    style={{ width: "100%", padding: "6px 0", borderRadius: 6, border: "1px solid rgba(248,81,73,0.3)", background: "transparent", color: "#f85149", fontSize: 12, cursor: "pointer" }}
+                    className="btn-danger"
+                    style={{ width: "100%", padding: "6px 0", fontSize: 12 }}
                   >
                     Remove
                   </button>
@@ -477,7 +492,7 @@ export default function ProductEditPage() {
   const [form, setForm] = useState(null);
   const [tab, setTab] = useState("info");
   const [saving, setSaving] = useState(false);
-  const [lockStatus, setLockStatus] = useState(null); // null | "acquired" | { lockedBy }
+  const [lockStatus, setLockStatus] = useState(null);
   const renewIntervalRef = useRef(null);
 
   useEffect(() => {
@@ -493,7 +508,6 @@ export default function ProductEditPage() {
     }
   }, [variants, id]);
 
-  // Acquire lock for existing products
   useEffect(() => {
     if (isNew) return;
     let cancelled = false;
@@ -549,15 +563,15 @@ export default function ProductEditPage() {
   const TAB_STYLE = (active) => ({
     padding: "9px 20px", borderRadius: "8px 8px 0 0",
     border: "1px solid",
-    borderColor: active ? "rgba(255,255,255,0.1)" : "transparent",
-    borderBottom: active ? "1px solid #161b22" : "1px solid transparent",
-    background: active ? "#161b22" : "transparent",
-    color: active ? "#e6edf3" : "#8b949e",
+    borderColor: active ? "rgba(117,163,255,0.18)" : "transparent",
+    borderBottom: active ? "1px solid rgba(9,14,24,0.98)" : "1px solid transparent",
+    background: active ? "linear-gradient(180deg, rgba(15,23,36,0.98), rgba(9,14,24,0.98))" : "transparent",
+    color: active ? "#f3f7ff" : "rgba(180,200,240,0.5)",
     fontSize: 13, fontWeight: 600, cursor: "pointer", marginBottom: -1,
   });
 
   if (loading || !form) {
-    return <div style={{ color: "#8b949e", fontSize: 14 }}>Loading…</div>;
+    return <div style={{ color: "rgba(180,200,240,0.5)", fontSize: 14 }}>Loading…</div>;
   }
 
   return (
@@ -565,18 +579,19 @@ export default function ProductEditPage() {
       {/* Header */}
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 24 }}>
         <div>
-          <button onClick={() => navigate("/products")} style={{ background: "none", border: "none", color: "#8b949e", fontSize: 13, cursor: "pointer", padding: 0, marginBottom: 8 }}>
+          <button onClick={() => navigate("/products")} style={{ background: "none", border: "none", color: "rgba(180,200,240,0.6)", fontSize: 13, cursor: "pointer", padding: 0, marginBottom: 8 }}>
             ← Back to Products
           </button>
           <h1 style={{ fontSize: 24, fontWeight: 800, letterSpacing: "-0.03em", margin: 0 }}>
             {isNew ? "New Product" : form.name || id}
           </h1>
-          {!isNew && <div style={{ fontSize: 12, color: "#8b949e", marginTop: 4 }}>{id}</div>}
+          {!isNew && <div style={{ fontSize: 12, color: "rgba(180,200,240,0.5)", marginTop: 4 }}>{id}</div>}
         </div>
         <button
           onClick={handleSave}
           disabled={saving || isLocked}
-          style={{ padding: "10px 22px", borderRadius: 9, border: "none", background: isLocked ? "#30363d" : "#4c75db", color: isLocked ? "#8b949e" : "#fff", fontSize: 14, fontWeight: 600, cursor: (saving || isLocked) ? "not-allowed" : "pointer", opacity: saving ? 0.7 : 1 }}
+          className="btn-primary"
+          style={{ opacity: (saving || isLocked) ? 0.5 : 1, cursor: (saving || isLocked) ? "not-allowed" : "pointer" }}
         >
           {saving ? "Saving…" : "Save"}
         </button>
@@ -596,13 +611,13 @@ export default function ProductEditPage() {
       )}
 
       {/* Tabs */}
-      <div style={{ display: "flex", gap: 4, marginBottom: 0, borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+      <div style={{ display: "flex", gap: 4, marginBottom: 0, borderBottom: "1px solid rgba(117,163,255,0.1)" }}>
         <button style={TAB_STYLE(tab === "info")} onClick={() => setTab("info")}>Info</button>
         {!isNew && <button style={TAB_STYLE(tab === "specs")} onClick={() => setTab("specs")}>Specs</button>}
         {!isNew && <button style={TAB_STYLE(tab === "images")} onClick={() => setTab("images")}>Images</button>}
       </div>
 
-      <div style={{ background: "#161b22", border: "1px solid rgba(255,255,255,0.08)", borderTop: "none", borderRadius: "0 0 12px 12px", padding: "22px 24px" }}>
+      <div style={{ background: "linear-gradient(180deg, rgba(15,23,36,0.98), rgba(9,14,24,0.98))", border: "1px solid rgba(117,163,255,0.18)", borderTop: "none", borderRadius: "0 0 14px 14px", padding: "22px 24px" }}>
         {tab === "info" && (
           <InfoTab form={form} setForm={setForm} brands={brands} families={families} />
         )}
