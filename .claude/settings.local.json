@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la /Users/brichardson/Documents/BBQ Compare App/*.js)",
+      "Bash(grep \"\\\\.js$\")",
+      "Bash(wc -l \"/Users/brichardson/Documents/BBQ Compare App/apps/bbq-comparison-app/src/styles\"/*.css)",
+      "Bash(npm run:*)",
+      "Bash(grep -n \"overflow\\\\|html, body\\\\|body {\" \"/Users/brichardson/Documents/BBQ Compare App/apps/bbq-comparison-app/src/pages/ComparePage.jsx\")",
+      "Bash(node -e \":*)",
+      "Bash(find '/Users/brichardson/Documents/BBQ Compare App' -maxdepth 3 -name wrangler* -o -name *.toml -o -name netlify.toml -o -name vercel.json)",
+      "Skill(keybindings-help)",
+      "Skill(keybindings-help:*)"
+    ]
+  }
+}

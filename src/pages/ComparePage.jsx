@@ -435,6 +435,7 @@ function CompareHeaderCard({ product, onOpen }) {
         flexDirection: "column",
         minHeight: 390,
         cursor: "pointer",
+        touchAction: "pan-y",
         transition:
           "transform 220ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 220ms ease, border-color 220ms ease",
       }}
@@ -951,6 +952,7 @@ export default function ComparePage() {
                               padding: 18,
                               boxShadow: "0 12px 36px rgba(0,0,0,0.24)",
                               cursor: "pointer",
+                              touchAction: "pan-y",
                               transition:
                                 "transform 220ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 220ms ease, border-color 220ms ease",
                             }}

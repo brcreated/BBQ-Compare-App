@@ -1,69 +1,52 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useEffect } from "react";
+import AppShell from "./components/layout/AppShell";
+import Dashboard from "./pages/Dashboard";
+import BrandsPage from "./pages/BrandsPage";
+import ProductsPage from "./pages/ProductsPage";
+import ProductEditPage from "./pages/ProductEditPage";
+import PublishPage from "./pages/PublishPage";
+import LoginPage from "./pages/LoginPage";
+import { useDataStore } from "./store/dataStore";
+import { useAuthStore } from "./store/authStore";
 
-function Dashboard() {
-  return <div>Manager Dashboard</div>;
+function DataLoader() {
+  const { loadAll, brands, loading } = useDataStore();
+  const { token } = useAuthStore();
+  useEffect(() => {
+    if (token && !brands.length && !loading) loadAll();
+  }, [token]);
+  return null;
 }
 
-function ReviewQueue() {
-  return <div>Review Queue</div>;
-}
-
-function Products() {
-  return <div>Product Manager</div>;
-}
-
-function Publish() {
-  return <div>Publish Screen</div>;
-}
-
-function Nav() {
-  return (
-    <div
-      style={{
-        display: "flex",
-        gap: "12px",
-        padding: "12px",
-        background: "#1b1b1b",
-        borderBottom: "1px solid #333",
-      }}
-    >
-      <Link to="/" style={{ color: "#fff" }}>
-        Dashboard
-      </Link>
-      <Link to="/review" style={{ color: "#fff" }}>
-        Review
-      </Link>
-      <Link to="/products" style={{ color: "#fff" }}>
-        Products
-      </Link>
-      <Link to="/publish" style={{ color: "#fff" }}>
-        Publish
-      </Link>
-    </div>
-  );
+function RequireAuth({ children }) {
+  const { token } = useAuthStore();
+  if (!token) return <Navigate to="/login" replace />;
+  return children;
 }
 
 export default function App() {
   return (
     <BrowserRouter>
-      <div
-        style={{
-          minHeight: "100vh",
-          background: "#111",
-          color: "#fff",
-          fontFamily: "Arial, sans-serif",
-        }}
-      >
-        <Nav />
-        <div style={{ padding: "24px" }}>
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/review" element={<ReviewQueue />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/publish" element={<Publish />} />
-          </Routes>
-        </div>
-      </div>
+      <DataLoader />
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/"
+          element={
+            <RequireAuth>
+              <AppShell />
+            </RequireAuth>
+          }
+        >
+          <Route index element={<Dashboard />} />
+          <Route path="brands" element={<BrandsPage />} />
+          <Route path="products" element={<ProductsPage />} />
+          <Route path="products/:id" element={<ProductEditPage />} />
+          <Route path="publish" element={<PublishPage />} />
+        </Route>
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
     </BrowserRouter>
   );
 }
