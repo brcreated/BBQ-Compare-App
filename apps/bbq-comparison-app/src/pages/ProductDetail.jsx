@@ -535,7 +535,7 @@ function buildTopCards(variant, specs) {
     { label: "Width", value: width ? formatInches(width) || titleize(width) : "—" },
     { label: "Installation", value: installation ? normalizeInstallationLabel(installation) : "—" },
     { label: "Temp Range", value: temperatureRange || "—" },
-    { label: "Primary Area", value: primaryCookingArea || "—" },
+    { label: "Cooking Space", value: primaryCookingArea || "—" },
     { label: "Made in USA", value: madeInUsa || "—" },
   ];
 }
