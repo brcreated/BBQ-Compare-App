@@ -76,12 +76,6 @@ export default function KioskHeader({ isWarning, secondsLeft, onStartOver }) {
           }}>
             🔥
           </div>
-          <span style={{
-            fontSize: 18, fontWeight: 800, color: "#f0f6ff",
-            letterSpacing: "-0.02em",
-          }}>
-            BBQ Compare
-          </span>
         </button>
       </div>
 
