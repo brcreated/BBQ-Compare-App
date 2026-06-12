@@ -1073,6 +1073,7 @@ function BrandResults() {
         size: findVariantSize(primary, specMap, familyMap),
         cookingArea,
         category,
+        familyId: getFamilyId(primary),
         familySortOrder: family?.sortOrder ?? 9999,
         variantSortOrder: primary?.sortOrder ?? 9999,
         isDiscontinued: !!primary.isDiscontinued,
@@ -1222,8 +1223,10 @@ function BrandResults() {
     const normalizedFuel = normalizeId(searchParams.get("fuel"));
     const normalizedCategory = normalizeId(searchParams.get("category"));
     const normalizedInstallation = normalizeId(searchParams.get("installation"));
+    const normalizedFamily = normalizeId(searchParams.get("family"));
 
     return baseProducts.filter((product) => {
+      if (normalizedFamily && normalizeId(product.familyId) !== normalizedFamily) return false;
       if (normalizedFuel) {
         if (normalizedFuel === "pellet" && !product.fuelOptions.includes("Pellet")) {
           return false;
