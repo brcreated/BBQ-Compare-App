@@ -877,93 +877,89 @@ export default function ComparePage() {
           </div>
 
           <div className="compare-main-column">
+            {/* Single scroll shell — all rows share one horizontal scroll context */}
             <div className="compare-scroll-shell">
-              <div
-                className="compare-products-grid"
-                style={{
-                  gridTemplateColumns: `repeat(${products.length}, minmax(${compareColumnMinWidth}px, 1fr))`,
-                  minWidth: `${compareGridMinWidth}px`,
-                }}
-              >
-                {products.map((product) => (
-                  <CompareHeaderCard
-                    key={product.id}
-                    product={product}
-                    onOpen={() => navigate(`/product/${product.slug || product.id}`)}
-                  />
-                ))}
-              </div>
-            </div>
-
-            <div className="compare-scroll-shell">
-              <div
-                className="compare-products-grid"
-                style={{
-                  gridTemplateColumns: `repeat(${products.length}, minmax(${compareColumnMinWidth}px, 1fr))`,
-                  minWidth: `${compareGridMinWidth}px`,
-                  marginTop: 16,
-                }}
-              >
-                {products.map((product) => (
-                  <CompareRemoveCard
-                    key={`${product.id}-remove`}
-                    onRemove={() => removeItem(product.id)}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {visibleSpecGroups.map((group) => (
-              <div key={group.groupName} className="compare-group-block">
-                <div className="compare-scroll-shell">
-                  <div
-                    className="compare-group-grid"
-                    style={{
-                      gridTemplateColumns: `repeat(${products.length}, minmax(${compareColumnMinWidth}px, 1fr))`,
-                      minWidth: `${compareGridMinWidth}px`,
-                    }}
-                  >
-                    {group.specs.flatMap((entry) => {
-                      const comparableValues = products.map((product) =>
-                        getComparableSpecValue(getSpecForProduct(product, entry.key))
-                      );
-                      const isDifferent = areValuesDifferent(comparableValues);
-
-                      return products.map((product) => {
-                        const spec = getSpecForProduct(product, entry.key);
-                        const formatted = formatSpecValue(spec);
-
-                        return (
-                          <div
-                            key={`${product.id}-${entry.key}`}
-                            className="compare-spec-card"
-                            tabIndex={0}
-                            onClick={() => navigate(`/product/${product.slug || product.id}`)}
-                            onKeyDown={(event) => {
-                              if (event.key === "Enter" || event.key === " ") {
-                                event.preventDefault();
-                                navigate(`/product/${product.slug || product.id}`);
-                              }
-                            }}
-                            style={{
-                              background: isDifferent
-                                ? "linear-gradient(180deg, rgba(28,43,78,0.92) 0%, rgba(10,15,24,0.98) 100%)"
-                                : "linear-gradient(180deg, rgba(15,23,36,0.92), rgba(9,14,24,0.92))",
-                              border: isDifferent
-                                ? "1px solid rgba(98,144,255,0.38)"
-                                : "1px solid rgba(117, 163, 255, 0.14)",
-                            }}
-                          >
-                            <div className="compare-spec-label">{entry.label}</div>
-                            <div className="compare-spec-value">{formatted}</div>
-                          </div>
-                        );
-                      });
-                    })}
-                  </div>
+              <div style={{ minWidth: `${compareGridMinWidth}px` }}>
+                <div
+                  className="compare-products-grid"
+                  style={{
+                    gridTemplateColumns: `repeat(${products.length}, minmax(${compareColumnMinWidth}px, 1fr))`,
+                  }}
+                >
+                  {products.map((product) => (
+                    <CompareHeaderCard
+                      key={product.id}
+                      product={product}
+                      onOpen={() => navigate(`/product/${product.slug || product.id}`)}
+                    />
+                  ))}
                 </div>
+
+                <div
+                  className="compare-products-grid"
+                  style={{
+                    gridTemplateColumns: `repeat(${products.length}, minmax(${compareColumnMinWidth}px, 1fr))`,
+                    marginTop: 16,
+                  }}
+                >
+                  {products.map((product) => (
+                    <CompareRemoveCard
+                      key={`${product.id}-remove`}
+                      onRemove={() => removeItem(product.id)}
+                    />
+                  ))}
+                </div>
+
+                {visibleSpecGroups.map((group) => (
+                  <div key={group.groupName} className="compare-group-block">
+                    <div
+                      className="compare-group-grid"
+                      style={{
+                        gridTemplateColumns: `repeat(${products.length}, minmax(${compareColumnMinWidth}px, 1fr))`,
+                      }}
+                    >
+                      {group.specs.flatMap((entry) => {
+                        const comparableValues = products.map((product) =>
+                          getComparableSpecValue(getSpecForProduct(product, entry.key))
+                        );
+                        const isDifferent = areValuesDifferent(comparableValues);
+
+                        return products.map((product) => {
+                          const spec = getSpecForProduct(product, entry.key);
+                          const formatted = formatSpecValue(spec);
+
+                          return (
+                            <div
+                              key={`${product.id}-${entry.key}`}
+                              className="compare-spec-card"
+                              tabIndex={0}
+                              onClick={() => navigate(`/product/${product.slug || product.id}`)}
+                              onKeyDown={(event) => {
+                                if (event.key === "Enter" || event.key === " ") {
+                                  event.preventDefault();
+                                  navigate(`/product/${product.slug || product.id}`);
+                                }
+                              }}
+                              style={{
+                                background: isDifferent
+                                  ? "linear-gradient(180deg, rgba(28,43,78,0.92) 0%, rgba(10,15,24,0.98) 100%)"
+                                  : "linear-gradient(180deg, rgba(15,23,36,0.92), rgba(9,14,24,0.92))",
+                                border: isDifferent
+                                  ? "1px solid rgba(98,144,255,0.38)"
+                                  : "1px solid rgba(117, 163, 255, 0.14)",
+                              }}
+                            >
+                              <div className="compare-spec-label">{entry.label}</div>
+                              <div className="compare-spec-value">{formatted}</div>
+                            </div>
+                          );
+                        });
+                      })}
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </div>
@@ -1075,7 +1071,20 @@ export default function ComparePage() {
           width: 100%;
           overflow-x: auto;
           overflow-y: visible;
-          padding-bottom: 2px;
+          -webkit-overflow-scrolling: touch;
+          padding-bottom: 8px;
+          scrollbar-width: thin;
+          scrollbar-color: rgba(117,163,255,0.25) transparent;
+        }
+        .compare-scroll-shell::-webkit-scrollbar {
+          height: 6px;
+        }
+        .compare-scroll-shell::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .compare-scroll-shell::-webkit-scrollbar-thumb {
+          background: rgba(117,163,255,0.25);
+          border-radius: 3px;
         }
 
         .compare-products-grid,
@@ -1213,15 +1222,10 @@ export default function ComparePage() {
           }
         }
 
-        * {
-          overscroll-behavior: none;
-        }
-
-        .compare-main-column,
         .compare-grid-shell,
         .compare-products-grid,
         .compare-group-grid {
-          overflow: visible !important;
+          overflow: visible;
         }
       `}</style>
     </main>
