@@ -307,9 +307,25 @@ function FuelInstallSection({ form, setForm }) {
   );
 }
 
+function computeSalePreview(form) {
+  if (!form.saleEnabled) return null;
+  const base = parseFloat(form.price || form.msrp || 0);
+  const discount = parseFloat(form.saleDiscount || 0);
+  if (!base || !discount) return null;
+  const sale = form.saleDiscountType === "dollar" ? base - discount : base * (1 - discount / 100);
+  if (sale <= 0) return null;
+  const fmt = (n) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(n);
+  return `${fmt(sale)} (save ${form.saleDiscountType === "dollar" ? fmt(discount) : `${discount}%`})`;
+}
+
 function PricingSection({ form, setForm }) {
   const set = (key, val) => setForm((f) => ({ ...f, [key]: val }));
   const dualGasDiff = form.supportsPropane && form.supportsNaturalGas && form.gasPricingMode === "different";
+  const salePreview = computeSalePreview(form);
+
+  const endLabel = form.saleEndDate
+    ? new Date(form.saleEndDate + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+    : null;
 
   return (
     <div>
@@ -337,10 +353,65 @@ function PricingSection({ form, setForm }) {
           ) : (
             <Field label="Price ($)" value={form.price} onChange={(v) => set("price", v)} type="number" placeholder="0.00" />
           )}
-          <Grid cols={2}>
-            <Field label="MSRP ($)" value={form.msrp} onChange={(v) => set("msrp", v)} type="number" />
-            <Field label="Sale Price ($)" value={form.salePrice} onChange={(v) => set("salePrice", v)} type="number" />
-          </Grid>
+          <Field label="MSRP ($)" value={form.msrp} onChange={(v) => set("msrp", v)} type="number" />
+
+          {/* Sale / Promotion */}
+          <div style={{ marginTop: 20, paddingTop: 16, borderTop: "1px solid rgba(117,163,255,0.1)" }}>
+            <CheckCard
+              label="Product is on sale"
+              icon="🏷️"
+              checked={!!form.saleEnabled}
+              onChange={(v) => set("saleEnabled", v)}
+            />
+
+            {form.saleEnabled && (
+              <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 12 }}>
+                <Grid cols={2}>
+                  <div>
+                    <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(180,200,240,0.6)", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                      Discount Type
+                    </div>
+                    <select
+                      value={form.saleDiscountType || "percent"}
+                      onChange={(e) => set("saleDiscountType", e.target.value)}
+                      className="field-input"
+                      style={{ width: "100%" }}
+                    >
+                      <option value="percent">Percent Off (%)</option>
+                      <option value="dollar">Dollar Off ($)</option>
+                    </select>
+                  </div>
+                  <Field
+                    label={form.saleDiscountType === "dollar" ? "Discount Amount ($)" : "Discount Amount (%)"}
+                    value={form.saleDiscount}
+                    onChange={(v) => set("saleDiscount", v)}
+                    type="number"
+                    placeholder={form.saleDiscountType === "dollar" ? "e.g. 500" : "e.g. 20"}
+                  />
+                </Grid>
+
+                <Field
+                  label="Sale Ends On"
+                  value={form.saleEndDate || ""}
+                  onChange={(v) => set("saleEndDate", v)}
+                  type="date"
+                />
+
+                {salePreview && (
+                  <div style={{
+                    padding: "10px 14px", borderRadius: 10,
+                    background: "rgba(48,180,120,0.1)",
+                    border: "1px solid rgba(48,180,120,0.25)",
+                    fontSize: 13, color: "rgba(180,240,200,0.9)",
+                    display: "flex", flexDirection: "column", gap: 2,
+                  }}>
+                    <span style={{ fontWeight: 700 }}>Sale price: {salePreview}</span>
+                    {endLabel && <span style={{ opacity: 0.75 }}>Ends {endLabel}</span>}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </>
       )}
     </div>
@@ -1030,6 +1101,7 @@ const BLANK_VARIANT = {
   supportsCharcoal: false, supportsPellet: false, supportsWood: false,
   fuelConversionSupported: false, compatibleConversionKit: "",
   price: null, msrp: null, mapPrice: null, salePrice: null, priceSource: "",
+  saleEnabled: false, saleDiscountType: "percent", saleDiscount: null, saleEndDate: "",
   shopifyProductId: "", shopifyVariantId: "", shopifyHandle: "",
   dataSource: "", lastUpdatedAt: "", status: "active", sortOrder: null, isActive: true,
   grateMaterial: "", bodyMaterial: "", madeIn: "", gasPricingMode: "", propanePrice: null, naturalGasPrice: null,

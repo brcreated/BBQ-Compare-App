@@ -250,10 +250,33 @@ function formatDisplayValue(label, value) {
   return titleize(raw) === raw ? raw : titleize(raw);
 }
 
+function parsePriceNum(v) {
+  if (v === null || v === undefined || v === "") return null;
+  const n = Number(String(v).replace(/[^0-9.-]/g, ""));
+  return Number.isFinite(n) && n > 0 ? n : null;
+}
+
+function computeActiveSale(product) {
+  if (!product?.saleEnabled) return null;
+  const endDate = product?.saleEndDate;
+  if (endDate && new Date(endDate + "T23:59:59") < new Date()) return null;
+  const base = parsePriceNum(product?.price) ?? parsePriceNum(product?.msrp) ?? parsePriceNum(product?.map_price);
+  if (!base) return null;
+  const discountType = product?.saleDiscountType || "percent";
+  const discountVal = parseFloat(product?.saleDiscount || 0);
+  if (!discountVal) return null;
+  const saleAmt = discountType === "dollar" ? base - discountVal : base * (1 - discountVal / 100);
+  if (saleAmt <= 0) return null;
+  const fmt = (n) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(n);
+  const savingsLabel = discountType === "dollar" ? `Save ${fmt(discountVal)}` : `Save ${discountVal}%`;
+  const endsLabel = endDate
+    ? new Date(endDate + "T12:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })
+    : null;
+  return { salePrice: Math.round(saleAmt), originalPrice: base, savingsLabel, endsLabel, fmt };
+}
+
 function findPrice(product, specs) {
   const direct =
-    product?.salePrice ??
-    product?.sale_price ??
     product?.price ??
     product?.mapPrice ??
     product?.map_price ??
@@ -263,7 +286,7 @@ function findPrice(product, specs) {
     return formatPriceDisplay(direct);
   }
 
-  for (const key of ["price", "sale_price", "map_price", "msrp", "starting_price"]) {
+  for (const key of ["price", "map_price", "msrp", "starting_price"]) {
     const value = specValue(specs, [key]);
     if (value) return formatPriceDisplay(value);
   }
@@ -995,9 +1018,36 @@ export default function ProductDetail() {
                       {product?.name || family?.name || "Product"}
                     </h1>
 
-                    <div style={{ marginTop: 16, fontSize: 26, fontWeight: 800, color: "#9fc3ff" }}>
-                      {findPrice(product, productSpecs)}
-                    </div>
+                    {(() => {
+                      const sale = computeActiveSale(product);
+                      if (sale) {
+                        return (
+                          <div style={{ marginTop: 16 }}>
+                            <div style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap" }}>
+                              <span style={{ fontSize: 30, fontWeight: 900, color: "#f87c3f", letterSpacing: "-0.03em" }}>
+                                {sale.fmt(sale.salePrice)}
+                              </span>
+                              <span style={{ fontSize: 18, fontWeight: 700, color: "#8fa0b8", textDecoration: "line-through", textDecorationThickness: "2px" }}>
+                                {sale.fmt(sale.originalPrice)}
+                              </span>
+                              <span style={{ fontSize: 13, fontWeight: 800, color: "rgba(250,160,80,0.9)", background: "rgba(250,120,60,0.12)", border: "1px solid rgba(250,120,60,0.25)", borderRadius: 8, padding: "3px 10px" }}>
+                                {sale.savingsLabel}
+                              </span>
+                            </div>
+                            {sale.endsLabel && (
+                              <div style={{ marginTop: 6, fontSize: 12, fontWeight: 700, color: "rgba(250,160,80,0.7)", letterSpacing: "0.06em" }}>
+                                SALE ENDS {sale.endsLabel.toUpperCase()}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      }
+                      return (
+                        <div style={{ marginTop: 16, fontSize: 26, fontWeight: 800, color: "#9fc3ff" }}>
+                          {findPrice(product, productSpecs)}
+                        </div>
+                      );
+                    })()}
                   </div>
 
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 10 }}>

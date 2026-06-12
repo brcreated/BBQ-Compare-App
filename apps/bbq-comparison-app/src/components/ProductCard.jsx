@@ -142,75 +142,77 @@ function formatCurrency(value) {
   }).format(numeric);
 }
 
+function computeActiveSale(variant) {
+  if (!variant?.saleEnabled) return null;
+  const endDate = variant?.saleEndDate;
+  if (endDate) {
+    const end = new Date(endDate + "T23:59:59");
+    if (end < new Date()) return null;
+  }
+  const base =
+    parsePriceNumber(variant?.price) ??
+    parsePriceNumber(variant?.msrp) ??
+    parsePriceNumber(variant?.map_price);
+  if (base === null || base <= 0) return null;
+  const discountType = variant?.saleDiscountType || "percent";
+  const discountVal = parseFloat(variant?.saleDiscount || 0);
+  if (!discountVal || discountVal <= 0) return null;
+  const salePrice =
+    discountType === "dollar" ? base - discountVal : base * (1 - discountVal / 100);
+  if (salePrice <= 0) return null;
+  const savingsLabel =
+    discountType === "dollar"
+      ? `Save ${formatCurrency(discountVal)}`
+      : `Save ${discountVal}%`;
+  const endsLabel = endDate
+    ? new Date(endDate + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" })
+    : null;
+  return { salePrice: Math.round(salePrice), originalPrice: base, savingsLabel, endsLabel };
+}
+
 function getPricingData(variant) {
-  const sale = parsePriceNumber(variant?.sale_price);
+  const activeSale = computeActiveSale(variant);
   const map = parsePriceNumber(variant?.map_price);
   const price = parsePriceNumber(variant?.price);
   const msrp = parsePriceNumber(variant?.msrp);
 
-  if (sale !== null) {
-    const reference =
-      msrp !== null && msrp > sale
-        ? msrp
-        : map !== null && map > sale
-        ? map
-        : price !== null && price > sale
-        ? price
-        : null;
-
+  if (activeSale) {
     return {
       label: "Sale Price",
-      primary: formatCurrency(sale),
-      secondary: reference ? formatCurrency(reference) : "",
-      savings:
-        reference && reference > sale ? formatCurrency(reference - sale) : "",
+      primary: formatCurrency(activeSale.salePrice),
+      secondary: formatCurrency(activeSale.originalPrice),
+      savings: activeSale.savingsLabel,
+      saleEnds: activeSale.endsLabel,
     };
   }
 
   if (map !== null) {
-    const reference =
-      msrp !== null && msrp > map
-        ? msrp
-        : price !== null && price > map
-        ? price
-        : null;
-
+    const reference = msrp !== null && msrp > map ? msrp : price !== null && price > map ? price : null;
     return {
       label: "Our Price",
       primary: formatCurrency(map),
       secondary: reference ? formatCurrency(reference) : "",
-      savings:
-        reference && reference > map ? formatCurrency(reference - map) : "",
+      savings: reference && reference > map ? formatCurrency(reference - map) + " off" : "",
+      saleEnds: null,
     };
   }
 
   if (price !== null) {
     const reference = msrp !== null && msrp > price ? msrp : null;
-
     return {
       label: "Starting At",
       primary: formatCurrency(price),
       secondary: reference ? formatCurrency(reference) : "",
-      savings:
-        reference && reference > price ? formatCurrency(reference - price) : "",
+      savings: reference && reference > price ? formatCurrency(reference - price) + " off" : "",
+      saleEnds: null,
     };
   }
 
   if (msrp !== null) {
-    return {
-      label: "MSRP",
-      primary: formatCurrency(msrp),
-      secondary: "",
-      savings: "",
-    };
+    return { label: "MSRP", primary: formatCurrency(msrp), secondary: "", savings: "", saleEnds: null };
   }
 
-  return {
-    label: "Pricing",
-    primary: "",
-    secondary: "",
-    savings: "",
-  };
+  return { label: "Pricing", primary: "", secondary: "", savings: "", saleEnds: null };
 }
 
 function getSelectionHeadline(isSelected) {
@@ -862,6 +864,12 @@ function ProductCard({
                 </span>
               ) : null}
             </div>
+
+            {pricing.saleEnds && (
+              <div style={{ marginTop: 6, fontSize: 11, fontWeight: 700, color: "rgba(250,160,80,0.9)", letterSpacing: "0.06em" }}>
+                SALE ENDS {pricing.saleEnds.toUpperCase()}
+              </div>
+            )}
           </div>
         </div>
 
