@@ -530,6 +530,12 @@ function KeySpecsSection({ form, setForm }) {
         <Field label="Depth (in)" value={form.productDepth ?? form.depth} onChange={(v) => { set("productDepth", v); set("depth", v); }} type="number" />
         <Field label="Height (in)" value={form.productHeight ?? form.height} onChange={(v) => { set("productHeight", v); set("height", v); }} type="number" />
       </Grid>
+      <SectionHeader title="Cutout Dimensions (Built-In)" />
+      <Grid cols={3}>
+        <Field label="Cutout Width (in)" value={form.cutoutWidth} onChange={(v) => set("cutoutWidth", v)} type="number" />
+        <Field label="Cutout Depth (in)" value={form.cutoutDepth} onChange={(v) => set("cutoutDepth", v)} type="number" />
+        <Field label="Cutout Height (in)" value={form.cutoutHeight} onChange={(v) => set("cutoutHeight", v)} type="number" />
+      </Grid>
       <Grid cols={2}>
         <Field label="Number of Grates" value={form.grateLevels} onChange={(v) => set("grateLevels", v)} type="number" placeholder="e.g. 2" />
         <Field label="Grate Material" value={form.grateMaterial} onChange={(v) => set("grateMaterial", v)} placeholder="e.g. Stainless Steel, Cast Iron" />
@@ -1295,6 +1301,7 @@ const BLANK_VARIANT = {
   defaultFuel: "", installType: "", defaultInstallation: "", cookingStyle: "", useCase: "",
   sizeClass: "", priceTier: "", skillLevel: "", portabilityClass: "",
   productWidth: null, productDepth: null, productHeight: null, productLength: null, productWeight: null,
+  cutoutWidth: null, cutoutDepth: null, cutoutHeight: null,
   width: null, depth: null, height: null, length: null, weight: null,
   temperatureRangeMin: null, temperatureRangeMax: null,
   primaryCookingArea: null, secondaryCookingArea: null, totalCookingArea: null, pizzaCapacity: null,

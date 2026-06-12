@@ -540,7 +540,17 @@ function buildTopCards(variant, specs) {
     normalizeText(variant?.madeIn || variant?.made_in || variant?.countryOfOrigin || variant?.country_of_origin) ||
     specValue(specs, ["made_in", "made_in_usa", "country_of_origin", "manufactured_in"]);
 
-  return [
+  const cwRaw = normalizeText(variant?.cutoutWidth  || variant?.cutout_width);
+  const cdRaw = normalizeText(variant?.cutoutDepth  || variant?.cutout_depth);
+  const chRaw = normalizeText(variant?.cutoutHeight || variant?.cutout_height);
+  const cutoutParts = [
+    cwRaw ? `${formatNumber(cwRaw)}"W` : "",
+    cdRaw ? `${formatNumber(cdRaw)}"D` : "",
+    chRaw ? `${formatNumber(chRaw)}"H` : "",
+  ].filter(Boolean);
+  const cutoutDimensions = cutoutParts.join(" × ");
+
+  const cards = [
     { label: "Fuel",             value: fuel        ? normalizeFuelLabel(fuel) : "—" },
     { label: "Dimensions",       value: dimensions  || "—" },
     { label: "Temp Range",       value: temperatureRange || "—" },
@@ -548,6 +558,12 @@ function buildTopCards(variant, specs) {
     { label: "Number of Grates", value: gratesRaw   || "—" },
     { label: "Made In",          value: madeIn      || "—" },
   ];
+
+  if (cutoutDimensions) {
+    cards.push({ label: "Cutout Dimensions", value: cutoutDimensions });
+  }
+
+  return cards;
 }
 
 function buildWhyThisIsGoodChoice(variant, specs) {
