@@ -43,7 +43,7 @@ function guessLabel(name) {
 export default function ProductsPage() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { brands, families, variants, assets, loading, loadAll, removeVariant, updateVariant, addVariant, saveDataset } = useDataStore();
+  const { brands, families, variants, assets, loading, loadAll, removeVariant, updateVariant, updateFamily, addVariant, saveDataset } = useDataStore();
   const { addToast } = useToastStore();
   const [search, setSearch] = useState("");
   const filterBrand = searchParams.get("brand") || "";
@@ -196,14 +196,15 @@ export default function ProductsPage() {
       const familyIds = new Set(brandFamilies.map((f) => f.id));
       const brandRows = [];
 
-      for (const family of brandFamilies) {
+      for (let familyIdx = 0; familyIdx < brandFamilies.length; familyIdx++) {
+        const family = brandFamilies[familyIdx];
         if (filterFamily && family.id !== filterFamily) continue;
         const prods = variants
           .filter((v) => v.brandId === brand.id && v.familyId === family.id)
           .sort((a, b) => (a.sortOrder ?? 9999) - (b.sortOrder ?? 9999) || a.name?.localeCompare(b.name));
         const visible = prods.filter(matchesFilters);
         if (visible.length > 0 || (!search && !filterFamily)) {
-          brandRows.push({ family, prods, visible });
+          brandRows.push({ family, prods, visible, familyIdx, totalBrandFamilies: brandFamilies.length });
         }
       }
 
@@ -243,6 +244,25 @@ export default function ProductsPage() {
   // ── Reorder ───────────────────────────────────────────────────────────────────
 
   async function moveProduct(variantId, familyId, brandId, direction) {
+    const familyMembers = variants.filter((v) => v.familyId === familyId && v.brandId === brandId);
+
+    // Single-product family: reorder the family within the brand instead
+    if (familyMembers.length <= 1 && familyId) {
+      const brandFamilies = families
+        .filter((f) => f.brandId === brandId)
+        .sort((a, b) => (a.sortOrder ?? 999) - (b.sortOrder ?? 999) || a.name?.localeCompare(b.name));
+      const idx = brandFamilies.findIndex((f) => f.id === familyId);
+      if (idx < 0) return;
+      const targetIdx = idx + direction;
+      if (targetIdx < 0 || targetIdx >= brandFamilies.length) return;
+      const reordered = [...brandFamilies];
+      [reordered[idx], reordered[targetIdx]] = [reordered[targetIdx], reordered[idx]];
+      reordered.forEach((f, i) => updateFamily(f.id, { sortOrder: i + 1 }));
+      await saveDataset("families");
+      return;
+    }
+
+    // Multi-product family: reorder variants within the family
     const group = variants
       .filter((v) => v.familyId === familyId && v.brandId === brandId)
       .sort((a, b) => (a.sortOrder ?? 9999) - (b.sortOrder ?? 9999) || a.name?.localeCompare(b.name));
@@ -370,9 +390,10 @@ export default function ProductsPage() {
               </div>
 
               <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-                {rows.map(({ family, prods, visible }) => {
+                {rows.map(({ family, prods, visible, familyIdx, totalBrandFamilies }) => {
                   const familyVisibleIds = visible.map((v) => v.id);
                   const allFamilySelected = familyVisibleIds.length > 0 && familyVisibleIds.every((id) => selectedIds.has(id));
+                  const isSoloFamily = prods.length <= 1;
 
                   return (
                     <div key={family?.id ?? "__no_family"}>
@@ -399,8 +420,9 @@ export default function ProductsPage() {
                       <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
                         {visible.map((variant) => {
                           const groupIdx = prods.findIndex((p) => p.id === variant.id);
-                          const isFirst = groupIdx === 0;
-                          const isLast = groupIdx === prods.length - 1;
+                          // Solo-family products: first/last determined by family position within brand
+                          const isFirst = isSoloFamily ? familyIdx === 0 : groupIdx === 0;
+                          const isLast = isSoloFamily ? familyIdx === totalBrandFamilies - 1 : groupIdx === prods.length - 1;
                           const heroUrl = getHeroUrl(variant.id);
                           const isChecked = selectedIds.has(variant.id);
 
