@@ -94,6 +94,55 @@ function OptionCard({ option, logoUrl, layout, onClick }) {
   );
 }
 
+// ── Shared helper: build sorted family options from a variant list ─────────────
+
+function buildFamilyOptions(matchingVariants, families) {
+  const seen = new Set();
+  const options = [];
+  for (const v of matchingVariants) {
+    const fid = v.familyId || v.family_id;
+    if (!fid || seen.has(fid)) continue;
+    seen.add(fid);
+    const fam = families.find((f) => (f.id || f.familyId || f.family_id) === fid);
+    options.push({ value: fid, label: fam?.name || fid, familyMatch: fid });
+  }
+  return options.sort((a, b) => {
+    const famA = families.find((f) => (f.id || f.familyId || f.family_id) === a.value);
+    const famB = families.find((f) => (f.id || f.familyId || f.family_id) === b.value);
+    const orderA = famA?.sortOrder ?? 999;
+    const orderB = famB?.sortOrder ?? 999;
+    if (orderA !== orderB) return orderA - orderB;
+    return a.label.localeCompare(b.label);
+  });
+}
+
+function filterByFuel(variants, fuelFilter) {
+  if (!fuelFilter) return variants;
+  const ff = nid(fuelFilter);
+  return variants.filter((v) => {
+    const ft = nid(v.fuelType || v.fuel_type || v.fuel || "");
+    if (ff === "gas") {
+      return v.supportsPropane || v.supportsNaturalGas ||
+             v.supportsLP || v.supportsLp || v.supports_lp ||
+             ft.includes("gas") || ft === "propane" || ft === "lp";
+    }
+    if (ff === "charcoal") return !!v.supportsCharcoal || ft.includes("charcoal");
+    if (ff === "pellet")   return !!v.supportsPellet   || ft.includes("pellet");
+    return true;
+  });
+}
+
+function filterByInstall(variants, installFilter) {
+  if (!installFilter) return variants;
+  const inst = nid(installFilter);
+  return variants.filter((v) => {
+    const it = nid(v.installType || v.install_type || "");
+    if (inst === "freestanding") return !!v.supportsFreestanding || it === "freestanding" || it === "both";
+    if (inst === "built_in")     return !!v.supportsBuiltIn || it === "built_in" || it === "both";
+    return true;
+  });
+}
+
 // ── Main navigator ────────────────────────────────────────────────────────────
 
 export default function BrandNavigatorPage() {
@@ -114,98 +163,42 @@ export default function BrandNavigatorPage() {
     ) || null
   ), [brands, brandId]);
 
-  const brandLogo = useMemo(() => {
-    if (!brand) return "";
-    const direct = brand.logoUrl || brand.logo_url || brand.brandLogoUrl || brand.brand_logo_url;
-    if (direct) return direct;
-    const logAsset = assets.find((a) => {
-      const et = a.entityType || a.entity_type;
-      const eid = a.entityId || a.entity_id;
-      const type = a.imageType || a.image_type;
-      return et === "brand" && eid === (brand.id || brand.brandId) &&
-        ["logo", "brand-logo", "brand_logo"].includes(type);
-    });
-    return logAsset ? resolveAsset(logAsset.filePath || logAsset.file_path) : "";
-  }, [brand, assets]);
-
   const params = Object.fromEntries(searchParams);
   const currentStep = config ? config.getNextStep(params) : null;
 
-  // For "dynamic_families" steps: derive the option list live from catalog variants.
-  // This means adding a new product in admin automatically makes it appear here.
+  // Active brand variants (shared across both dynamic step types)
+  const brandVariants = useMemo(() => {
+    if (!brand) return [];
+    const bid = brand.id || brand.brandId || brand.brand_id;
+    return variants.filter((v) => (v.brandId || v.brand_id) === bid && v.isActive !== false);
+  }, [brand, variants]);
+
+  // dynamic_families: flat option list
   const dynamicFamilyOptions = useMemo(() => {
-    if (!currentStep || currentStep.type !== "dynamic_families" || !brand) return null;
+    if (!currentStep || currentStep.type !== "dynamic_families") return null;
+    const filtered = filterByInstall(filterByFuel(brandVariants, currentStep.fuelFilter), currentStep.installFilter);
+    return buildFamilyOptions(filtered, families);
+  }, [currentStep, brandVariants, families]);
 
-    const brandActualId = brand.id || brand.brandId || brand.brand_id;
+  // sectioned_families: array of { label, options }
+  const dynamicSections = useMemo(() => {
+    if (!currentStep || currentStep.type !== "sectioned_families") return null;
+    return currentStep.sections
+      .map((section) => ({
+        label: section.label,
+        options: buildFamilyOptions(filterByFuel(brandVariants, section.fuelFilter), families),
+      }))
+      .filter((s) => s.options.length > 0);
+  }, [currentStep, brandVariants, families]);
 
-    let matching = variants.filter((v) => {
-      const vBrand = v.brandId || v.brand_id;
-      return vBrand === brandActualId && v.isActive !== false;
-    });
+  // Flat option list used for logo map (covers both step types)
+  const resolvedOptions = useMemo(() => {
+    if (currentStep?.type === "dynamic_families") return dynamicFamilyOptions ?? [];
+    if (currentStep?.type === "sectioned_families") return (dynamicSections ?? []).flatMap((s) => s.options);
+    return currentStep?.options ?? [];
+  }, [currentStep, dynamicFamilyOptions, dynamicSections]);
 
-    // Filter by fuel — handle both old field names (supportsLP) and new (supportsPropane)
-    if (currentStep.fuelFilter) {
-      const ff = nid(currentStep.fuelFilter);
-      matching = matching.filter((v) => {
-        const ft = nid(v.fuelType || v.fuel_type || v.fuel || "");
-        if (ff === "gas") {
-          return v.supportsPropane || v.supportsNaturalGas ||
-                 v.supportsLP || v.supportsLp || v.supports_lp ||
-                 ft.includes("gas") || ft === "propane" || ft === "lp";
-        }
-        if (ff === "charcoal") return !!v.supportsCharcoal || ft.includes("charcoal");
-        if (ff === "pellet")   return !!v.supportsPellet   || ft.includes("pellet");
-        return true;
-      });
-    }
-
-    // Filter by install type — handle old (installType string) and new (boolean flags)
-    if (currentStep.installFilter) {
-      const inst = nid(currentStep.installFilter);
-      matching = matching.filter((v) => {
-        const it = nid(v.installType || v.install_type || "");
-        if (inst === "freestanding") {
-          return !!v.supportsFreestanding || it === "freestanding" || it === "both";
-        }
-        if (inst === "built_in") {
-          return !!v.supportsBuiltIn || it === "built_in" || it === "both";
-        }
-        return true;
-      });
-    }
-
-    // Get unique familyIds and look up names
-    const seen = new Set();
-    const options = [];
-    for (const v of matching) {
-      const fid = v.familyId || v.family_id;
-      if (!fid || seen.has(fid)) continue;
-      seen.add(fid);
-      const fam = families.find((f) => (f.id || f.familyId || f.family_id) === fid);
-      options.push({
-        value: fid,
-        label: fam?.name || fid,
-        familyMatch: fid,
-      });
-    }
-
-    // Sort by family sortOrder, then alphabetically
-    return options.sort((a, b) => {
-      const famA = families.find((f) => (f.id || f.familyId || f.family_id) === a.value);
-      const famB = families.find((f) => (f.id || f.familyId || f.family_id) === b.value);
-      const orderA = famA?.sortOrder ?? 999;
-      const orderB = famB?.sortOrder ?? 999;
-      if (orderA !== orderB) return orderA - orderB;
-      return a.label.localeCompare(b.label);
-    });
-  }, [currentStep, brand, variants, families]);
-
-  // Use dynamically computed options for dynamic_families, otherwise use step's static options
-  const resolvedOptions = currentStep?.type === "dynamic_families"
-    ? (dynamicFamilyOptions ?? [])
-    : (currentStep?.options ?? []);
-
-  // Build logo map + navRow map for logo-layout steps
+  // Build logo map + navRow map
   const { familyLogoMap, familyNavRowMap } = useMemo(() => {
     if (!currentStep || currentStep.layout !== "logos") return { familyLogoMap: {}, familyNavRowMap: {} };
     const logoMap = {};
@@ -234,6 +227,11 @@ export default function BrandNavigatorPage() {
   const crumbs = config ? buildBreadcrumb(config, params) : [];
 
   function handleSelect(option) {
+    // For sectioned_families, navigate with only the family param (no fuel/install accumulation)
+    if (currentStep?.type === "sectioned_families") {
+      navigate(`/brand/${brandSlug}?family=${encodeURIComponent(option.value)}`);
+      return;
+    }
     const next = new URLSearchParams(searchParams);
     next.set(currentStep.param, option.value);
     navigate(`/brand/${brandSlug}?${next.toString()}`);
@@ -243,29 +241,53 @@ export default function BrandNavigatorPage() {
   if (!config) return <BrandResults />;
   if (!currentStep) return <BrandResults />;
 
-  // If dynamic step has no matching products, skip straight to results
   if (currentStep.type === "dynamic_families" && dynamicFamilyOptions !== null && dynamicFamilyOptions.length === 0) {
     return <BrandResults />;
   }
 
-  const isLogos = currentStep.layout === "logos";
-  const hasNavRows = isLogos && resolvedOptions.some((o) => familyNavRowMap[o.value] != null);
+  // ── Helpers for rendering rows (with navRow grouping) ──────────────────────
 
-  // Group options into rows by navRow value (plain derivation — no hook needed)
-  const optionRows = (() => {
-    if (!hasNavRows) return [resolvedOptions];
+  function buildRows(options) {
+    const hasRows = options.some((o) => familyNavRowMap[o.value] != null);
+    if (!hasRows) return [options];
     const groups = {};
-    resolvedOptions.forEach((o) => {
+    options.forEach((o) => {
       const row = familyNavRowMap[o.value] ?? 999;
       if (!groups[row]) groups[row] = [];
       groups[row].push(o);
     });
     return Object.keys(groups).sort((a, b) => Number(a) - Number(b)).map((k) => groups[k]);
-  })();
+  }
 
-  const cols = isLogos
-    ? Math.min(resolvedOptions.length, 3)
-    : Math.min(resolvedOptions.length, 2);
+  function renderOptionRows(options) {
+    const rows = buildRows(options);
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        {rows.map((row, ri) => (
+          <div key={ri} style={{
+            display: "grid",
+            gridTemplateColumns: `repeat(${Math.min(row.length, 3)}, minmax(0, 280px))`,
+            gap: 16,
+            margin: "0 auto",
+          }}>
+            {row.map((option) => (
+              <OptionCard
+                key={option.value}
+                option={option}
+                layout={currentStep.layout}
+                logoUrl={familyLogoMap[option.value]}
+                onClick={() => handleSelect(option)}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  const isSectioned = currentStep.type === "sectioned_families";
+  const isLogos = currentStep.layout === "logos";
+  const cols = isLogos ? Math.min(resolvedOptions.length, 3) : Math.min(resolvedOptions.length, 2);
 
   return (
     <div style={{
@@ -290,7 +312,6 @@ export default function BrandNavigatorPage() {
             ))}
           </div>
         )}
-
         <h1 style={{
           fontSize: 38,
           fontWeight: 800,
@@ -309,35 +330,32 @@ export default function BrandNavigatorPage() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: "52px 40px 60px",
+        padding: "40px 40px 60px",
       }}>
         {resolvedOptions.length === 0 ? (
           <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 16 }}>Loading…</div>
-        ) : hasNavRows ? (
-          <div style={{ display: "flex", flexDirection: "column", gap: 20, maxWidth: 940, width: "100%" }}>
-            {optionRows.map((row, ri) => (
-              <div key={ri} style={{
-                display: "grid",
-                gridTemplateColumns: `repeat(${Math.min(row.length, 3)}, 1fr)`,
-                gap: 20,
-                justifyItems: "center",
-                maxWidth: Math.min(row.length, 3) * 300 + Math.min(row.length - 1, 2) * 20,
-                margin: "0 auto",
-                width: "100%",
-              }}>
-                {row.map((option) => (
-                  <OptionCard
-                    key={option.value}
-                    option={option}
-                    layout={currentStep.layout}
-                    logoUrl={familyLogoMap[option.value]}
-                    onClick={() => handleSelect(option)}
-                  />
-                ))}
+        ) : isSectioned ? (
+          // Sectioned layout: Gas Grills / Charcoal with family cards under each
+          <div style={{ display: "flex", flexDirection: "column", gap: 40, maxWidth: 940, width: "100%" }}>
+            {(dynamicSections || []).map((section) => (
+              <div key={section.label}>
+                <div style={{
+                  fontSize: 11,
+                  fontWeight: 800,
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  color: "rgba(245,158,11,0.7)",
+                  marginBottom: 16,
+                  textAlign: "center",
+                }}>
+                  {section.label}
+                </div>
+                {renderOptionRows(section.options)}
               </div>
             ))}
           </div>
         ) : (
+          // Standard flat grid (dynamic_families or static options)
           <div style={{
             display: "grid",
             gridTemplateColumns: `repeat(${cols}, 1fr)`,

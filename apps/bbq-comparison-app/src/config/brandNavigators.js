@@ -68,41 +68,20 @@ export const BRAND_NAVIGATORS = {
 
   napoleon: {
     getNextStep(params) {
-      if (!params.fuel) return {
-        id: "fuel",
-        type: "options",
-        question: "What type of grill?",
-        param: "fuel",
-        options: [
-          { value: "gas",      label: "Gas",      icon: "🔥", description: "Propane or natural gas" },
-          { value: "charcoal", label: "Charcoal", icon: "⚫", description: "Charcoal & wood" },
+      if (!params.family) return {
+        id: "collection",
+        type: "sectioned_families",
+        question: "Which collection?",
+        param: "family",
+        layout: "logos",
+        sections: [
+          { label: "Gas Grills", fuelFilter: "gas" },
+          { label: "Charcoal", fuelFilter: "charcoal" },
         ],
       };
-
-      if (nid(params.fuel) === "charcoal" && !params.family) return familyStep({
-        id: "charcoal_line",
-        question: "Which collection?",
-        fuelFilter: "charcoal",
-        installFilter: null,
-      });
-
-      if (nid(params.fuel) === "gas" && !params.installation) return INSTALL_STEP;
-
-      if (nid(params.fuel) === "gas" && nid(params.installation) === "freestanding" && !params.family) return familyStep({
-        id: "gas_freestanding_line",
-        question: "Which collection?",
-        fuelFilter: "gas",
-        installFilter: "freestanding",
-      });
-
-      // gas + built_in → no family step, go straight to results
       return null;
     },
-    breadcrumbLabel(key, value) {
-      if (key === "fuel") return value === "gas" ? "Gas" : "Charcoal";
-      if (key === "installation") return value === "built_in" ? "Built-In" : "Freestanding";
-      return value;
-    },
+    breadcrumbLabel() { return ""; },
   },
 
   twin_eagles: {
