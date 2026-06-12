@@ -179,6 +179,21 @@ function computeActiveSale(variant) {
   return { salePrice: Math.round(salePrice), originalPrice: base, savingsLabel, endsLabel };
 }
 
+function computeFamilySaleInfo(family, basePrice) {
+  if (!family) return null;
+  const pct = Number(family.salePercent ?? 0);
+  if (!pct || pct <= 0) return null;
+  const endDate = family.saleEnd;
+  if (endDate && new Date(endDate + "T23:59:59") < new Date()) return null;
+  if (!basePrice || basePrice <= 0) return null;
+  const salePrice = Math.round(basePrice * (1 - pct / 100));
+  if (salePrice <= 0) return null;
+  const endsLabel = endDate
+    ? new Date(endDate + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" })
+    : null;
+  return { salePrice, originalPrice: basePrice, savingsLabel: `Save ${pct}%`, endsLabel };
+}
+
 function getMatrixMinPrice(variant) {
   const matrix = Array.isArray(variant?.pricingMatrix) ? variant.pricingMatrix : [];
   if (matrix.length === 0) return null;
@@ -466,7 +481,22 @@ function ProductCard({
   const installType = getInstallType(variant);
 
   const metaChips = buildMetaChips(variant, family);
-  const pricing = getPricingData(variant);
+  const rawPricing = getPricingData(variant);
+  const familySaleInfo = (() => {
+    if (rawPricing.savings) return null;
+    const matrixMin = getMatrixMinPrice(variant);
+    const basePrice = matrixMin ?? parsePriceNumber(variant?.map_price ?? variant?.mapPrice ?? variant?.price ?? variant?.msrp);
+    return computeFamilySaleInfo(family, basePrice);
+  })();
+  const pricing = familySaleInfo
+    ? {
+        label: "Sale Price",
+        primary: formatCurrency(familySaleInfo.salePrice),
+        secondary: formatCurrency(familySaleInfo.originalPrice),
+        savings: familySaleInfo.savingsLabel,
+        saleEnds: familySaleInfo.endsLabel,
+      }
+    : rawPricing;
   const recommendationLine = getGuideRecommendation({
     cookingCategory,
     fuelType,

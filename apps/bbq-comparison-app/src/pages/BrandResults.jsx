@@ -259,6 +259,22 @@ function formatPrice(value) {
   }).format(amount);
 }
 
+function computeFamilySaleInfo(variant, familyMap, basePrice) {
+  const family = familyMap.get(getFamilyId(variant));
+  if (!family) return null;
+  const pct = Number(family.salePercent ?? 0);
+  if (!pct || pct <= 0) return null;
+  const endDate = family.saleEnd;
+  if (endDate && new Date(endDate + "T23:59:59") < new Date()) return null;
+  if (!basePrice || basePrice <= 0) return null;
+  const salePrice = Math.round(basePrice * (1 - pct / 100));
+  if (salePrice <= 0) return null;
+  const endsLabel = endDate
+    ? new Date(endDate + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" })
+    : null;
+  return { salePrice, originalPrice: basePrice, savingsLabel: `Save ${pct}%`, endsLabel };
+}
+
 function computeActiveSale(variant) {
   if (!variant?.saleEnabled) return null;
   const endDate = variant?.saleEndDate;
@@ -965,7 +981,12 @@ function BrandResults() {
         size: findVariantSize(variant, specMap, familyMap),
         cookingArea,
         category,
-        saleInfo: computeActiveSale(variant),
+        saleInfo: (() => {
+          const variantSale = computeActiveSale(variant);
+          if (variantSale) return variantSale;
+          const priceNum = findVariantPriceNumber(variant, specMap);
+          return computeFamilySaleInfo(variant, familyMap, priceNum);
+        })(),
       };
     });
   }, [filteredVariants, assets, assetBaseUrl, familyMap, brandMap, specMap, brands]);

@@ -29,7 +29,7 @@ function Field({ label, value, onChange, type = "text", placeholder = "", disabl
   );
 }
 
-const EMPTY_FAMILY = { id: "", brandId: "", name: "", description: "", sortOrder: null, isActive: true };
+const EMPTY_FAMILY = { id: "", brandId: "", name: "", description: "", sortOrder: null, isActive: true, salePercent: null, saleEnd: "" };
 
 function FamilyForm({ initial, isNew, brands, onSave, onCancel }) {
   const [form, setForm] = useState(initial);
@@ -93,6 +93,31 @@ function FamilyForm({ initial, isNew, brands, onSave, onCancel }) {
           style={{ resize: "vertical" }}
         />
       </div>
+      {/* Sale pricing */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
+        <div>
+          <label style={labelStyle}>Sale Discount (%)</label>
+          <input
+            type="number"
+            min={0}
+            max={99}
+            value={form.salePercent ?? ""}
+            onChange={(e) => set("salePercent", e.target.value === "" ? null : Number(e.target.value))}
+            placeholder="e.g. 15"
+            className="field-input"
+          />
+        </div>
+        <div>
+          <label style={labelStyle}>Sale Ends (leave blank = no expiry)</label>
+          <input
+            type="date"
+            value={form.saleEnd ?? ""}
+            onChange={(e) => set("saleEnd", e.target.value)}
+            className="field-input"
+          />
+        </div>
+      </div>
+
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
         <input type="checkbox" checked={!!form.isActive} onChange={(e) => set("isActive", e.target.checked)} id="fam-active" />
         <label htmlFor="fam-active" style={{ fontSize: 14, color: "#e7edf7" }}>Active</label>
@@ -291,6 +316,17 @@ export default function FamiliesPage() {
                         <div style={{ fontSize: 12, color: "rgba(180,200,240,0.5)", whiteSpace: "nowrap" }}>
                           {prodCount} {prodCount === 1 ? "product" : "products"}
                         </div>
+
+                        {fam.salePercent > 0 && (
+                          <div style={{
+                            fontSize: 11, fontWeight: 800, color: "#f87c3f",
+                            background: "rgba(248,120,60,0.12)", border: "1px solid rgba(248,120,60,0.25)",
+                            borderRadius: 6, padding: "3px 8px", whiteSpace: "nowrap",
+                          }}>
+                            {fam.salePercent}% OFF
+                            {fam.saleEnd ? ` · ends ${new Date(fam.saleEnd + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" })}` : ""}
+                          </div>
+                        )}
 
                         <div style={{ fontSize: 12, color: fam.isActive ? "#3fb950" : "#f85149", fontWeight: 600 }}>
                           {fam.isActive ? "Active" : "Inactive"}

@@ -256,6 +256,32 @@ function parsePriceNum(v) {
   return Number.isFinite(n) && n > 0 ? n : null;
 }
 
+function computeFamilySale(family, product) {
+  if (!family) return null;
+  const pct = Number(family.salePercent ?? 0);
+  if (!pct || pct <= 0) return null;
+  const endDate = family.saleEnd;
+  if (endDate && new Date(endDate + "T23:59:59") < new Date()) return null;
+
+  // Base price: prefer matrix min, then direct fields
+  const matrix = Array.isArray(product?.pricingMatrix) ? product.pricingMatrix : [];
+  const matrixNums = matrix
+    .map((r) => parsePriceNum(r.mapPrice ?? r.price ?? r.msrp))
+    .filter((n) => n !== null && n > 0);
+  const matrixMin = matrixNums.length > 0 ? Math.min(...matrixNums) : null;
+  const basePrice = matrixMin ??
+    parsePriceNum(product?.mapPrice ?? product?.map_price ?? product?.price ?? product?.msrp);
+  if (!basePrice) return null;
+
+  const salePrice = Math.round(basePrice * (1 - pct / 100));
+  if (salePrice <= 0) return null;
+  const fmt = (n) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(n);
+  const endsLabel = endDate
+    ? new Date(endDate + "T12:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })
+    : null;
+  return { salePrice, originalPrice: basePrice, savingsLabel: `Save ${pct}%`, endsLabel, fmt };
+}
+
 function computeActiveSale(product) {
   if (!product?.saleEnabled) return null;
   const endDate = product?.saleEndDate;
@@ -1107,7 +1133,7 @@ export default function ProductDetail() {
                     )}
 
                     {(() => {
-                      const sale = computeActiveSale(product);
+                      const sale = computeActiveSale(product) || computeFamilySale(family, product);
                       if (sale) {
                         return (
                           <div style={{ marginTop: 16 }}>
