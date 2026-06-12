@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import AppShell from "./components/layout/AppShell";
 import Dashboard from "./pages/Dashboard";
 import BrandsPage from "./pages/BrandsPage";
+import FamiliesPage from "./pages/FamiliesPage";
 import ProductsPage from "./pages/ProductsPage";
 import ProductEditPage from "./pages/ProductEditPage";
 import PublishPage from "./pages/PublishPage";
@@ -41,6 +42,7 @@ export default function App() {
         >
           <Route index element={<Dashboard />} />
           <Route path="brands" element={<BrandsPage />} />
+          <Route path="families" element={<FamiliesPage />} />
           <Route path="products" element={<ProductsPage />} />
           <Route path="products/:id" element={<ProductEditPage />} />
           <Route path="publish" element={<PublishPage />} />

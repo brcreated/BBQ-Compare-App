@@ -6,6 +6,7 @@ import ToastContainer from "../shared/Toast";
 const NAV = [
   { to: "/", label: "Dashboard", icon: "⊞" },
   { to: "/brands", label: "Brands", icon: "◈" },
+  { to: "/families", label: "Families", icon: "⬡" },
   { to: "/products", label: "Products", icon: "▦" },
   { to: "/publish", label: "Publish", icon: "↑" },
 ];
