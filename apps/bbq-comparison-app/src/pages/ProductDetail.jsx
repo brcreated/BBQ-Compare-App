@@ -874,6 +874,9 @@ export default function ProductDetail() {
     [colorChoices, selectedColorId]
   );
 
+  const family = product?.familyId ? familyById.get(product.familyId) || null : null;
+  const brand = product?.brandId ? brandById.get(product.brandId) || null : null;
+
   const familyAssets = useMemo(() => {
     if (!family?.id) return [];
     return (Array.isArray(assets) ? assets : []).filter((a) => {
@@ -897,8 +900,6 @@ export default function ProductDetail() {
     setSelectedImageId(heroImages[0]?.id || "");
   }, [heroImages, product?.id]);
 
-  const family = product?.familyId ? familyById.get(product.familyId) || null : null;
-  const brand = product?.brandId ? brandById.get(product.brandId) || null : null;
   const brandLogoUrl = useMemo(() => findBrandLogo(brand, brandAssetsByBrandId), [brand, brandAssetsByBrandId]);
 
   const topCards = useMemo(() => buildTopCards(product, productSpecs), [product, productSpecs]);
