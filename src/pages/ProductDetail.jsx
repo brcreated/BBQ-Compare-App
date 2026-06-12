@@ -1052,7 +1052,11 @@ export default function ProductDetail() {
                   </div>
                 );
               })()}
-            </div>
+            {product?.description ? (
+              <p style={{ margin: 0, fontSize: "clamp(0.95rem, 1.8vw, 1.1rem)", color: "rgba(220,232,255,0.75)", lineHeight: 1.65 }}>
+                {product.description}
+              </p>
+            ) : null}
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 10 }}>
               {topCards.map((card) => (
