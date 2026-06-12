@@ -4,9 +4,35 @@ import { useDataStore, useToastStore } from "../store/dataStore";
 import { fetchLocks } from "../services/api";
 import Modal from "../components/shared/Modal";
 
+// Fields used to calculate spec completeness
+const KEY_FIELDS = [
+  "primaryCookingArea", "productWidth", "productDepth", "productHeight",
+  "grateMaterial", "bodyMaterial", "madeIn", "temperatureRangeMax",
+];
+
+function specCompleteness(variant) {
+  const filled = KEY_FIELDS.filter((f) => {
+    const v = variant?.[f];
+    return v !== null && v !== undefined && String(v).trim() !== "";
+  }).length;
+  return Math.round((filled / KEY_FIELDS.length) * 100);
+}
+
+function CompletenessDot({ pct }) {
+  const color = pct >= 80 ? "#3fb950" : pct >= 40 ? "#f0883e" : "#f85149";
+  const title = `${pct}% of key specs filled`;
+  return (
+    <div title={title} style={{
+      width: 10, height: 10, borderRadius: "50%",
+      background: color, flexShrink: 0,
+      boxShadow: `0 0 6px ${color}80`,
+    }} />
+  );
+}
+
 export default function ProductsPage() {
   const navigate = useNavigate();
-  const { brands, families, variants, assets, loading, loadAll, removeVariant, updateVariant, saveDataset } = useDataStore();
+  const { brands, families, variants, assets, loading, loadAll, removeVariant, updateVariant, addVariant, saveDataset } = useDataStore();
   const { addToast } = useToastStore();
   const [search, setSearch] = useState("");
   const [filterBrand, setFilterBrand] = useState("");
@@ -167,6 +193,27 @@ export default function ProductsPage() {
     }
   }
 
+  async function handleDuplicate(variant) {
+    const timestamp = Date.now().toString(36);
+    const newId = `${variant.id}_copy_${timestamp}`;
+    const copy = {
+      ...variant,
+      id: newId,
+      slug: newId,
+      name: `${variant.name} (Copy)`,
+      sortOrder: null,
+      isActive: false,
+    };
+    try {
+      addVariant(copy);
+      await saveDataset("variants");
+      addToast(`Duplicated as "${copy.name}" — click Edit to update it`);
+      navigate(`/products/${newId}`);
+    } catch (e) {
+      addToast(e.message, "error");
+    }
+  }
+
   // ── Render ────────────────────────────────────────────────────────────────────
 
   return (
@@ -314,12 +361,15 @@ export default function ProductsPage() {
                             </div>
 
                             {/* Name / ID */}
-                            <div style={{ flex: 1, minWidth: 0 }}>
-                              <div style={{ fontWeight: 600, fontSize: 15, color: "#f3f7ff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                                {variant.name}
-                              </div>
-                              <div style={{ fontSize: 12, color: "rgba(180,200,240,0.4)", marginTop: 2 }}>
-                                {variant.id}
+                            <div style={{ flex: 1, minWidth: 0, display: "flex", alignItems: "center", gap: 8 }}>
+                              <CompletenessDot pct={specCompleteness(variant)} />
+                              <div style={{ minWidth: 0 }}>
+                                <div style={{ fontWeight: 600, fontSize: 15, color: "#f3f7ff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                                  {variant.name}
+                                </div>
+                                <div style={{ fontSize: 12, color: "rgba(180,200,240,0.4)", marginTop: 2 }}>
+                                  {variant.id}
+                                </div>
                               </div>
                             </div>
 
@@ -356,6 +406,14 @@ export default function ProductsPage() {
                               </div>
                             )}
 
+                            <button
+                              onClick={() => handleDuplicate(variant)}
+                              className="btn-ghost"
+                              style={{ padding: "7px 12px", fontSize: 12, whiteSpace: "nowrap", opacity: 0.75 }}
+                              title="Duplicate this product"
+                            >
+                              ⧉ Copy
+                            </button>
                             <button
                               onClick={() => navigate(`/products/${variant.id}`)}
                               className="btn-ghost"

@@ -224,6 +224,21 @@ function BasicInfoSection({ form, setForm, brands, families, onCreateFamily }) {
           style={{ fontSize: 13, resize: "vertical" }}
         />
       </div>
+      <div style={{ marginBottom: 14 }}>
+        <label style={fieldLabelStyle}>Product Type</label>
+        <select
+          value={form.productType ?? ""}
+          onChange={(e) => set("productType", e.target.value)}
+          className="field-input"
+          style={{ fontSize: 13 }}
+        >
+          <option value="">— Select type —</option>
+          <option value="grill">Grill</option>
+          <option value="smoker">Smoker</option>
+          <option value="griddle">Griddle</option>
+          <option value="pizza-oven">Pizza Oven</option>
+        </select>
+      </div>
     </div>
   );
 }
@@ -1018,7 +1033,7 @@ const BLANK_VARIANT = {
   shopifyProductId: "", shopifyVariantId: "", shopifyHandle: "",
   dataSource: "", lastUpdatedAt: "", status: "active", sortOrder: null, isActive: true,
   grateMaterial: "", bodyMaterial: "", madeIn: "", gasPricingMode: "", propanePrice: null, naturalGasPrice: null,
-  askForPricing: false,
+  askForPricing: false, productType: "",
 };
 
 // ── Main page ────────────────────────────────────────────────────────────────

@@ -508,6 +508,8 @@ function findVariantFuelOptions(variant, specMap) {
 function findVariantCategory(variant, familyMap, specMap) {
   const directCategory = cleanLabel(
     pickFirst(
+      variant?.productType,
+      variant?.product_type,
       variant?.category,
       variant?.cookingCategory,
       variant?.cooking_category,
@@ -605,6 +607,20 @@ function getCollectionMeta({ routeBrandId, brandSlug, selectedBrand, searchParam
     };
   }
 
+  if (normalizedCategory === "smoker" || normalizedCategory === "smokers") {
+    return {
+      title: "All Smokers",
+      subtitle: "Browse offset, pellet, kamado, and cabinet smokers.",
+    };
+  }
+
+  if (normalizedCategory === "grill" || normalizedCategory === "grills") {
+    return {
+      title: "All Grills",
+      subtitle: "Browse gas, charcoal, and flat top grills.",
+    };
+  }
+
   if (normalizedCategory === "griddle" || normalizedCategory === "griddles") {
     return {
       title: "All Griddles",
@@ -679,6 +695,7 @@ function BrandResults() {
   const [selectedSize, setSelectedSize] = useState("All");
   const [selectedPrice, setSelectedPrice] = useState("All");
   const [selectedBrandFilter, setSelectedBrandFilter] = useState("All");
+  const [selectedSort, setSelectedSort] = useState("Default");
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [compareState, setCompareState] = useState(getState());
 
@@ -694,6 +711,7 @@ function BrandResults() {
     setSelectedSize("All");
     setSelectedPrice("All");
     setSelectedBrandFilter("All");
+    setSelectedSort("Default");
   }, [searchParams]);
 
   const familyMap = useMemo(() => {
@@ -866,6 +884,8 @@ function BrandResults() {
         sizeBucket: getSizeBucket(cookingArea),
         category,
         familyId: normalizeId(getFamilyId(variant) || ""),
+        cookingAreaNumber: findVariantCookingArea(variant, specMap),
+        sortOrder: variant?.sortOrder ?? null,
       };
     });
   }, [filteredVariants, assets, assetBaseUrl, familyMap, brandMap, specMap, brands]);
@@ -1042,11 +1062,25 @@ function BrandResults() {
           return false;
         }
 
+        const isSmokerCategory =
+          normalizedCategory === "smoker" || normalizedCategory === "smokers";
+
+        const isGrillCategory =
+          normalizedCategory === "grill" || normalizedCategory === "grills";
+
         if (isGriddleCategory && !product.category.includes("griddle")) {
           return false;
         }
 
         if (isPizzaCategory && !product.category.includes("pizza")) {
+          return false;
+        }
+
+        if (isSmokerCategory && !product.category.includes("smoker")) {
+          return false;
+        }
+
+        if (isGrillCategory && !product.category.includes("grill")) {
           return false;
         }
       }
@@ -1102,6 +1136,42 @@ function BrandResults() {
 
       return true;
     });
+
+    // Sort
+    if (selectedSort === "Price: Low to High") {
+      filtered.sort((a, b) => {
+        if (a.priceNumber === null && b.priceNumber === null) return 0;
+        if (a.priceNumber === null) return 1;
+        if (b.priceNumber === null) return -1;
+        return a.priceNumber - b.priceNumber;
+      });
+    } else if (selectedSort === "Price: High to Low") {
+      filtered.sort((a, b) => {
+        if (a.priceNumber === null && b.priceNumber === null) return 0;
+        if (a.priceNumber === null) return 1;
+        if (b.priceNumber === null) return -1;
+        return b.priceNumber - a.priceNumber;
+      });
+    } else if (selectedSort === "Size: Small to Large") {
+      filtered.sort((a, b) => {
+        if (a.cookingAreaNumber === null && b.cookingAreaNumber === null) return 0;
+        if (a.cookingAreaNumber === null) return 1;
+        if (b.cookingAreaNumber === null) return -1;
+        return a.cookingAreaNumber - b.cookingAreaNumber;
+      });
+    } else if (selectedSort === "Size: Large to Small") {
+      filtered.sort((a, b) => {
+        if (a.cookingAreaNumber === null && b.cookingAreaNumber === null) return 0;
+        if (a.cookingAreaNumber === null) return 1;
+        if (b.cookingAreaNumber === null) return -1;
+        return b.cookingAreaNumber - a.cookingAreaNumber;
+      });
+    } else {
+      // Default: respect manual sortOrder from admin
+      filtered.sort((a, b) => (a.sortOrder ?? 9999) - (b.sortOrder ?? 9999));
+    }
+
+    return filtered;
   }, [
     productCards,
     searchParams,
@@ -1110,6 +1180,7 @@ function BrandResults() {
     selectedInstallation,
     selectedSize,
     selectedPrice,
+    selectedSort,
     location.state,
   ]);
 
@@ -1317,6 +1388,24 @@ function BrandResults() {
               </select>
             </div>
 
+            <div className="filter-group">
+              <label className="filter-label" htmlFor="sort-select">
+                Sort By
+              </label>
+              <select
+                id="sort-select"
+                className="filter-select"
+                value={selectedSort}
+                onChange={(e) => setSelectedSort(e.target.value)}
+              >
+                <option value="Default">Default Order</option>
+                <option value="Price: Low to High">Price: Low to High</option>
+                <option value="Price: High to Low">Price: High to Low</option>
+                <option value="Size: Small to Large">Size: Small to Large</option>
+                <option value="Size: Large to Small">Size: Large to Small</option>
+              </select>
+            </div>
+
             <div className="filter-group filter-group-reset">
               <button
                 type="button"
@@ -1327,6 +1416,7 @@ function BrandResults() {
                   setSelectedSize("All");
                   setSelectedPrice("All");
                   setSelectedBrandFilter("All");
+                  setSelectedSort("Default");
                 }}
               >
                 <span className="button-sheen" />

@@ -127,6 +127,19 @@ export default function FamiliesPage() {
     return variants.filter((v) => v.familyId === familyId).length;
   }
 
+  async function moveFamily(familyId, brandId, direction) {
+    const group = [...families]
+      .filter((f) => f.brandId === brandId)
+      .sort((a, b) => (a.sortOrder ?? 999) - (b.sortOrder ?? 999) || a.name?.localeCompare(b.name));
+    const idx = group.findIndex((f) => f.id === familyId);
+    const targetIdx = idx + direction;
+    if (targetIdx < 0 || targetIdx >= group.length) return;
+    const reordered = [...group];
+    [reordered[idx], reordered[targetIdx]] = [reordered[targetIdx], reordered[idx]];
+    reordered.forEach((f, i) => updateFamily(f.id, { sortOrder: i + 1 }));
+    await saveDataset("families");
+  }
+
   function brandName(brandId) {
     return brands.find((b) => b.id === brandId)?.name || brandId;
   }
@@ -253,12 +266,18 @@ export default function FamiliesPage() {
                     const prodCount = productCountFor(fam.id);
                     return (
                       <div key={fam.id} style={{
-                        display: "flex", alignItems: "center", gap: 14,
+                        display: "flex", alignItems: "center", gap: 12,
                         padding: "13px 18px",
                         background: "linear-gradient(180deg, rgba(15,23,36,0.6), rgba(9,14,24,0.7))",
                         border: "1px solid rgba(117,163,255,0.1)",
                         borderRadius: 10,
                       }}>
+                        {/* Sort controls */}
+                        <div style={{ display: "flex", flexDirection: "column", gap: 2, flexShrink: 0 }}>
+                          <button onClick={() => moveFamily(fam.id, fam.brandId, -1)} disabled={grouped[fam.brandId]?.indexOf(fam) === 0} style={{ width: 24, height: 20, borderRadius: 4, border: "1px solid rgba(117,163,255,0.15)", background: "rgba(117,163,255,0.08)", color: grouped[fam.brandId]?.indexOf(fam) === 0 ? "rgba(180,200,240,0.2)" : "rgba(117,163,255,0.8)", cursor: grouped[fam.brandId]?.indexOf(fam) === 0 ? "default" : "pointer", fontSize: 9, display: "flex", alignItems: "center", justifyContent: "center" }}>▲</button>
+                          <button onClick={() => moveFamily(fam.id, fam.brandId, 1)} disabled={grouped[fam.brandId]?.indexOf(fam) === grouped[fam.brandId]?.length - 1} style={{ width: 24, height: 20, borderRadius: 4, border: "1px solid rgba(117,163,255,0.15)", background: "rgba(117,163,255,0.08)", color: grouped[fam.brandId]?.indexOf(fam) === grouped[fam.brandId]?.length - 1 ? "rgba(180,200,240,0.2)" : "rgba(117,163,255,0.8)", cursor: grouped[fam.brandId]?.indexOf(fam) === grouped[fam.brandId]?.length - 1 ? "default" : "pointer", fontSize: 9, display: "flex", alignItems: "center", justifyContent: "center" }}>▼</button>
+                        </div>
+
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{ fontWeight: 700, fontSize: 15, color: "#f3f7ff" }}>{fam.name}</div>
                           <div style={{ fontSize: 12, color: "rgba(180,200,240,0.4)", marginTop: 2 }}>

@@ -209,6 +209,30 @@ export default function BrandsPage() {
     setExpanded((e) => ({ ...e, [brandId]: !e[brandId] }));
   }
 
+  async function moveBrand(brandId, direction) {
+    const sorted = [...brands].sort((a, b) => (a.sortOrder ?? 999) - (b.sortOrder ?? 999) || a.name?.localeCompare(b.name));
+    const idx = sorted.findIndex((b) => b.id === brandId);
+    const targetIdx = idx + direction;
+    if (targetIdx < 0 || targetIdx >= sorted.length) return;
+    const reordered = [...sorted];
+    [reordered[idx], reordered[targetIdx]] = [reordered[targetIdx], reordered[idx]];
+    reordered.forEach((b, i) => updateBrand(b.id, { sortOrder: i + 1 }));
+    await saveDataset("brands");
+  }
+
+  async function moveFamily(familyId, brandId, direction) {
+    const sorted = families
+      .filter((f) => f.brandId === brandId)
+      .sort((a, b) => (a.sortOrder ?? 999) - (b.sortOrder ?? 999) || a.name?.localeCompare(b.name));
+    const idx = sorted.findIndex((f) => f.id === familyId);
+    const targetIdx = idx + direction;
+    if (targetIdx < 0 || targetIdx >= sorted.length) return;
+    const reordered = [...sorted];
+    [reordered[idx], reordered[targetIdx]] = [reordered[targetIdx], reordered[idx]];
+    reordered.forEach((f, i) => updateFamily(f.id, { sortOrder: i + 1 }));
+    await saveDataset("families");
+  }
+
   // ── Brand handlers ──
 
   async function handleSaveBrand(form) {
@@ -337,6 +361,12 @@ export default function BrandsPage() {
                     {brand.isActive ? "Active" : "Inactive"}
                   </div>
 
+                  {/* Sort order */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                    <button onClick={() => moveBrand(brand.id, -1)} disabled={filtered.indexOf(brand) === 0} title="Move up" style={{ width: 24, height: 20, borderRadius: 4, border: "1px solid rgba(117,163,255,0.15)", background: "rgba(117,163,255,0.08)", color: filtered.indexOf(brand) === 0 ? "rgba(180,200,240,0.2)" : "rgba(117,163,255,0.8)", cursor: filtered.indexOf(brand) === 0 ? "default" : "pointer", fontSize: 9, display: "flex", alignItems: "center", justifyContent: "center" }}>▲</button>
+                    <button onClick={() => moveBrand(brand.id, 1)} disabled={filtered.indexOf(brand) === filtered.length - 1} title="Move down" style={{ width: 24, height: 20, borderRadius: 4, border: "1px solid rgba(117,163,255,0.15)", background: "rgba(117,163,255,0.08)", color: filtered.indexOf(brand) === filtered.length - 1 ? "rgba(180,200,240,0.2)" : "rgba(117,163,255,0.8)", cursor: filtered.indexOf(brand) === filtered.length - 1 ? "default" : "pointer", fontSize: 9, display: "flex", alignItems: "center", justifyContent: "center" }}>▼</button>
+                  </div>
+
                   {/* Actions */}
                   <button onClick={() => setModal(brand)} className="btn-ghost" style={{ padding: "7px 14px", fontSize: 13 }}>Edit</button>
                   <button onClick={() => setConfirmDelete({ type: "brand", item: brand })} className="btn-danger" style={{ padding: "7px 12px", fontSize: 13 }}>✕</button>
@@ -393,6 +423,12 @@ export default function BrandsPage() {
                             </div>
                             <div style={{ fontSize: 12, color: "rgba(180,200,240,0.5)", marginRight: 6 }}>
                               {productCountFor(fam.id)} products
+                            </div>
+                            <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                              {(() => { const famIdx = brandFamilies.indexOf(fam); return (<>
+                                <button onClick={() => moveFamily(fam.id, brand.id, -1)} disabled={famIdx === 0} style={{ width: 22, height: 18, borderRadius: 3, border: "1px solid rgba(117,163,255,0.12)", background: "rgba(117,163,255,0.06)", color: famIdx === 0 ? "rgba(180,200,240,0.2)" : "rgba(117,163,255,0.7)", cursor: famIdx === 0 ? "default" : "pointer", fontSize: 8, display: "flex", alignItems: "center", justifyContent: "center" }}>▲</button>
+                                <button onClick={() => moveFamily(fam.id, brand.id, 1)} disabled={famIdx === brandFamilies.length - 1} style={{ width: 22, height: 18, borderRadius: 3, border: "1px solid rgba(117,163,255,0.12)", background: "rgba(117,163,255,0.06)", color: famIdx === brandFamilies.length - 1 ? "rgba(180,200,240,0.2)" : "rgba(117,163,255,0.7)", cursor: famIdx === brandFamilies.length - 1 ? "default" : "pointer", fontSize: 8, display: "flex", alignItems: "center", justifyContent: "center" }}>▼</button>
+                              </>); })()}
                             </div>
                             <button
                               onClick={() => setEditingFamily(fam.id)}

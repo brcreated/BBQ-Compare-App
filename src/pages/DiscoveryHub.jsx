@@ -259,25 +259,44 @@ export default function DiscoveryHub() {
           </section>
 
           <section className="discovery-section discovery-section-experience interactive-panel">
-            <div className="section-title center-title">Browse by Cooking Experience</div>
+            <div className="section-title center-title">Browse by Product Type</div>
 
-            <div className="specialty-grid">
+            <div className="specialty-grid specialty-grid-4">
               <button
                 type="button"
                 className="specialty-card interactive-button"
-                onClick={() => navigate("/brand/all?installation=built-in")}
+                onClick={() => navigate("/brand/all?category=grill")}
               >
                 <span className="button-sheen" />
                 <div
                   className="specialty-bg"
                   style={{
-                    backgroundImage: `url("${import.meta.env.VITE_ASSET_BASE_URL}/fuel/outdoor-kitchen.png")`,
+                    backgroundImage: `url("${import.meta.env.VITE_ASSET_BASE_URL}/fuel/gas.png")`,
                   }}
                 />
                 <div className="specialty-overlay" />
                 <div className="specialty-content">
-                  <h2>Outdoor Kitchen</h2>
-                  <p>Explore Built-In Grills</p>
+                  <h2>Grills</h2>
+                  <p>Gas, Charcoal &amp; Flat Top</p>
+                </div>
+              </button>
+
+              <button
+                type="button"
+                className="specialty-card interactive-button"
+                onClick={() => navigate("/brand/all?category=smoker")}
+              >
+                <span className="button-sheen" />
+                <div
+                  className="specialty-bg"
+                  style={{
+                    backgroundImage: `url("${import.meta.env.VITE_ASSET_BASE_URL}/fuel/pellets.png")`,
+                  }}
+                />
+                <div className="specialty-overlay" />
+                <div className="specialty-content">
+                  <h2>Smokers</h2>
+                  <p>Pellet, Offset &amp; Kamado</p>
                 </div>
               </button>
 
@@ -290,13 +309,13 @@ export default function DiscoveryHub() {
                 <div
                   className="specialty-bg"
                   style={{
-                    backgroundImage: `url("https://bbqcompareassets.brcreated.app/assets/fuel/griddle.png")`,
+                    backgroundImage: `url("${import.meta.env.VITE_ASSET_BASE_URL}/fuel/griddle.png")`,
                   }}
                 />
                 <div className="specialty-overlay" />
                 <div className="specialty-content">
                   <h2>Griddles</h2>
-                  <p>Explore Flat Top Cooking</p>
+                  <p>Flat Top Cooking</p>
                 </div>
               </button>
 
@@ -315,7 +334,7 @@ export default function DiscoveryHub() {
                 <div className="specialty-overlay" />
                 <div className="specialty-content">
                   <h2>Pizza Ovens</h2>
-                  <p>Explore Gas or Wood-Fired Pizza Ovens</p>
+                  <p>Gas &amp; Wood-Fired</p>
                 </div>
               </button>
             </div>
@@ -671,6 +690,10 @@ export default function DiscoveryHub() {
           height: calc(100% - 58px);
         }
 
+        .specialty-grid-4 {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
         .specialty-card {
           position: relative;
           overflow: hidden;
@@ -802,7 +825,12 @@ export default function DiscoveryHub() {
           }
 
           .specialty-grid {
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(2, 1fr);
+            height: auto;
+          }
+
+          .specialty-grid-4 {
+            grid-template-columns: repeat(2, 1fr);
           }
         }
 

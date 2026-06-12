@@ -1059,6 +1059,49 @@ export default function ProductDetail() {
               </p>
             ) : null}
 
+            {/* Key feature badges */}
+            {(() => {
+              const FEATURE_BADGES = [
+                { key: "hasSideBurner",          label: "Side Burner" },
+                { key: "sideBurner",              label: "Side Burner" },
+                { key: "rearInfraredRotisserie",  label: "Rear Infrared" },
+                { key: "hasRotisserie",           label: "Rotisserie Ready" },
+                { key: "rotisserie",              label: "Rotisserie Ready" },
+                { key: "hasSearStation",          label: "Sear Station" },
+                { key: "searStation",             label: "Sear Station" },
+                { key: "hasSearZone",             label: "Sear Zone" },
+                { key: "hasSmokebox",             label: "Smoke Box" },
+                { key: "smokebox",                label: "Smoke Box" },
+                { key: "hasWiFi",                 label: "Wi-Fi" },
+                { key: "wifi",                    label: "Wi-Fi" },
+                { key: "hasFoldingShelves",       label: "Folding Shelves" },
+                { key: "foldingSideShelves",      label: "Folding Shelves" },
+              ];
+              const seen = new Set();
+              const badges = FEATURE_BADGES.filter(({ key, label }) => {
+                const v = product?.[key];
+                const active = v === true || v === 1 || v === "true" || v === "yes";
+                if (!active || seen.has(label)) return false;
+                seen.add(label);
+                return true;
+              });
+              if (badges.length === 0) return null;
+              return (
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                  {badges.map(({ label }) => (
+                    <span key={label} style={{
+                      display: "inline-flex", alignItems: "center", gap: 5,
+                      background: "rgba(63,185,80,0.1)", border: "1px solid rgba(63,185,80,0.28)",
+                      borderRadius: 20, padding: "5px 12px",
+                      fontSize: 12, fontWeight: 700, color: "#3fb950",
+                    }}>
+                      <span style={{ fontSize: 9 }}>✓</span> {label}
+                    </span>
+                  ))}
+                </div>
+              );
+            })()}
+
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 10 }}>
               {topCards.map((card) => (
                 <div
