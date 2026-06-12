@@ -594,6 +594,7 @@ function buildSpecGroups(specs) {
   const groups = new Map();
 
   for (const spec of Array.isArray(specs) ? specs : []) {
+    if (!spec?.showOnSite) continue;
     const rawValue = normalizeText(spec?.value);
     if (!rawValue) continue;
     if (shouldHideSpecValue(spec?.key, rawValue)) continue;
@@ -1331,6 +1332,26 @@ export default function ProductDetail() {
                   </section>
                 ) : null;
               })()}
+
+              {specGroups.length ? (
+                <section style={{ marginTop: 22, display: "grid", gap: 18 }}>
+                  {specGroups.map((group) => (
+                    <div key={group.groupName} className="interactive-panel" style={{ padding: 18 }}>
+                      <div style={{ fontSize: 15, letterSpacing: "0.10em", textTransform: "uppercase", opacity: 0.72, marginBottom: 14 }}>
+                        {group.groupName}
+                      </div>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12 }}>
+                        {group.items.map((item) => (
+                          <div key={item.id} style={{ borderRadius: 16, border: "1px solid rgba(117,163,255,0.10)", background: "rgba(255,255,255,0.03)", padding: 14 }}>
+                            <div style={{ fontSize: 12, opacity: 0.66, marginBottom: 6 }}>{item.label}</div>
+                            <div style={{ fontSize: 17, fontWeight: 700 }}>{item.value}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </section>
+              ) : null}
 
               {similarProducts.length ? (
                 <section style={{ marginTop: 22 }}>

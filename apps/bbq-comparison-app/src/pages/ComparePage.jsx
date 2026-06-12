@@ -275,6 +275,8 @@ function buildSpecsByVariant(specs = []) {
   const map = new Map();
 
   specs.forEach((spec) => {
+    if (!spec.showOnSite) return;
+
     const entityType = String(spec.entityType || spec.entity_type || "").toLowerCase();
     if (entityType !== "variant") return;
 

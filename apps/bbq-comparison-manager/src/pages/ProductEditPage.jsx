@@ -655,6 +655,7 @@ function SpecsTab({ variantId, specs, addSpec, updateSpec, removeSpec }) {
     group: "Features",
     sortOrder: null,
     isActive: true,
+    showOnSite: true,
   };
 
   const th = { padding: "9px 12px", textAlign: "left", fontSize: 11, fontWeight: 700, color: "rgba(180,200,240,0.6)", textTransform: "uppercase", letterSpacing: "0.08em", borderBottom: "1px solid rgba(117,163,255,0.1)" };
@@ -672,6 +673,9 @@ function SpecsTab({ variantId, specs, addSpec, updateSpec, removeSpec }) {
     if (editingId === spec.id) {
       return (
         <tr>
+          <td style={{ ...td, textAlign: "center" }}>
+            <input type="checkbox" checked={!!form.showOnSite} onChange={(e) => set("showOnSite", e.target.checked)} style={{ cursor: "pointer", width: 16, height: 16 }} />
+          </td>
           <td style={td}><input value={form.group} onChange={(e) => set("group", e.target.value)} style={inputStyle} /></td>
           <td style={td}><input value={form.label} onChange={(e) => set("label", e.target.value)} style={inputStyle} /></td>
           <td style={td}><input value={form.key} onChange={(e) => set("key", e.target.value)} style={inputStyle} /></td>
@@ -686,6 +690,15 @@ function SpecsTab({ variantId, specs, addSpec, updateSpec, removeSpec }) {
     }
     return (
       <tr>
+        <td style={{ ...td, textAlign: "center" }}>
+          <input
+            type="checkbox"
+            checked={!!spec.showOnSite}
+            onChange={() => updateSpec(spec.id, { ...spec, showOnSite: !spec.showOnSite })}
+            style={{ cursor: "pointer", width: 16, height: 16, accentColor: "#4c75db" }}
+            title={spec.showOnSite ? "Visible on site — uncheck to hide" : "Hidden — check to show on site"}
+          />
+        </td>
         <td style={td}>{spec.group || "—"}</td>
         <td style={td}>{spec.label}</td>
         <td style={{ ...td, color: "rgba(180,200,240,0.5)", fontSize: 12 }}>{spec.key}</td>
@@ -704,6 +717,9 @@ function SpecsTab({ variantId, specs, addSpec, updateSpec, removeSpec }) {
     const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
     return (
       <tr style={{ background: "rgba(76,117,219,0.08)" }}>
+        <td style={{ ...td, textAlign: "center" }}>
+          <input type="checkbox" checked={!!form.showOnSite} onChange={(e) => set("showOnSite", e.target.checked)} style={{ cursor: "pointer", width: 16, height: 16, accentColor: "#4c75db" }} />
+        </td>
         <td style={td}><input value={form.group} onChange={(e) => set("group", e.target.value)} style={inputStyle} placeholder="Features" /></td>
         <td style={td}><input value={form.label} onChange={(e) => set("label", e.target.value)} style={inputStyle} placeholder="Label" /></td>
         <td style={td}><input value={form.key} onChange={(e) => set("key", e.target.value)} style={inputStyle} placeholder="key_name" /></td>
@@ -726,6 +742,7 @@ function SpecsTab({ variantId, specs, addSpec, updateSpec, removeSpec }) {
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
             <tr>
+              <th style={{ ...th, textAlign: "center", width: 52 }} title="Show on comparison and product pages">Show</th>
               <th style={th}>Group</th>
               <th style={th}>Label</th>
               <th style={th}>Key</th>
@@ -737,7 +754,7 @@ function SpecsTab({ variantId, specs, addSpec, updateSpec, removeSpec }) {
           <tbody>
             {newSpec && <NewSpecRow />}
             {variantSpecs.length === 0 && !newSpec ? (
-              <tr><td colSpan={6} style={{ ...td, color: "rgba(180,200,240,0.5)", textAlign: "center", padding: "24px 0" }}>No specs yet. Click "Add Spec" to add one.</td></tr>
+              <tr><td colSpan={7} style={{ ...td, color: "rgba(180,200,240,0.5)", textAlign: "center", padding: "24px 0" }}>No specs yet. Click "Add Spec" to add one.</td></tr>
             ) : (
               variantSpecs.map((spec) => <SpecRow key={spec.id} spec={spec} />)
             )}
