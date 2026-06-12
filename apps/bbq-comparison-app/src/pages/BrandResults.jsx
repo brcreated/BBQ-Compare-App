@@ -1055,6 +1055,8 @@ function BrandResults() {
         size: findVariantSize(primary, specMap, familyMap),
         cookingArea,
         category,
+        familySortOrder: family?.sortOrder ?? 9999,
+        variantSortOrder: primary?.sortOrder ?? 9999,
         isDiscontinued: !!primary.isDiscontinued,
         saleInfo: (() => {
           if (primary.isDiscontinued) return null;
@@ -1063,6 +1065,16 @@ function BrandResults() {
           return computeFamilySaleInfo(primary, familyMap, minPrice);
         })(),
       };
+    }).sort((a, b) => {
+      // Primary: admin sort order (family, then variant within family)
+      const famDiff = a.familySortOrder - b.familySortOrder;
+      if (famDiff !== 0) return famDiff;
+      const varDiff = a.variantSortOrder - b.variantSortOrder;
+      if (varDiff !== 0) return varDiff;
+      // Fallback: lowest price first; unpriced items go last
+      const pa = a.priceNumber ?? Infinity;
+      const pb = b.priceNumber ?? Infinity;
+      return pa - pb;
     });
   }, [filteredVariants, variants, assets, assetBaseUrl, familyMap, brandMap, specMap, brands]);
 
