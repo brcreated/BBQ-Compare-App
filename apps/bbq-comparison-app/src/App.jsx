@@ -1,6 +1,6 @@
 // src/App.jsx
 import React, { useEffect, useRef, useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import useAppUpdateManager from "./hooks/useAppUpdateManager";
 import WelcomeScreen from "./pages/WelcomeScreen";
 import DiscoveryHub from "./pages/DiscoveryHub";
@@ -30,6 +30,8 @@ function AppShell() {
   const lastActivityRef = useRef(Date.now());
   const [secondsLeft, setSecondsLeft] = useState(IDLE_MS / 1000);
   const isWarning = secondsLeft <= WARN_MS / 1000;
+  const location = useLocation();
+  const isStartScreen = location.pathname === "/";
 
   const { updatedAtLabel, updatedAt, appVersion } = useAppUpdateManager({
     checkIntervalMs: 60000,
@@ -151,7 +153,7 @@ function AppShell() {
         }
       `}</style>
 
-      <div style={{ paddingTop: HEADER_H }}>
+      <div style={{ paddingTop: isStartScreen ? 0 : HEADER_H }}>
         <Routes>
           <Route path="/" element={<WelcomeScreen />} />
           <Route path="/discover" element={<DiscoveryHub />} />

@@ -5,6 +5,7 @@ import { getState, subscribe } from "../state/comparisonStore";
 export const HEADER_H = 68;
 
 const HOME_PATHS = new Set(["/", "/discover"]);
+const HEADER_HIDDEN_PATHS = new Set(["/"]);  // start screen gets no header
 
 const navBtnStyle = {
   background: "none", border: "1px solid rgba(255,255,255,0.1)",
@@ -27,6 +28,8 @@ export default function KioskHeader({ isWarning, secondsLeft, onStartOver }) {
   const pathname = location.pathname;
   const onComparePage = pathname === "/compare";
   const showBack = !HOME_PATHS.has(pathname);
+
+  if (HEADER_HIDDEN_PATHS.has(pathname)) return null;
 
   return (
     <header style={{
