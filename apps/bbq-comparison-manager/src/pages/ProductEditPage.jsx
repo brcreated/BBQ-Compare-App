@@ -387,6 +387,15 @@ function PricingSection({ form, setForm, colors, variantColors, variantId }) {
         )}
       </div>
 
+      <div style={{ marginBottom: 16 }}>
+        <CheckCard label="Discontinued" icon="🚫" checked={!!form.isDiscontinued} onChange={(v) => set("isDiscontinued", v)} />
+        {form.isDiscontinued && (
+          <div style={{ fontSize: 12, color: "rgba(180,200,240,0.5)", marginTop: 8, paddingLeft: 4 }}>
+            Hidden from browse &amp; search listings. Still accessible on its product page and in side-by-side comparisons.
+          </div>
+        )}
+      </div>
+
       {!form.askForPricing && (
         <>
           {dualGasDiff ? (
@@ -1320,7 +1329,7 @@ const BLANK_VARIANT = {
   shopifyProductId: "", shopifyVariantId: "", shopifyHandle: "",
   dataSource: "", lastUpdatedAt: "", status: "active", sortOrder: null, isActive: true,
   grateMaterial: "", bodyMaterial: "", madeIn: "", gasPricingMode: "", propanePrice: null, naturalGasPrice: null,
-  askForPricing: false, productType: "",
+  askForPricing: false, isDiscontinued: false, productType: "",
 };
 
 // ── Main page ────────────────────────────────────────────────────────────────

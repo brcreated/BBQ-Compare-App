@@ -1139,6 +1139,24 @@ export default function ProductDetail() {
                       </div>
                     ) : null}
 
+                    {product?.isDiscontinued && (
+                      <div style={{
+                        display: "inline-flex", alignItems: "center", gap: 6,
+                        marginBottom: 12,
+                        padding: "5px 14px",
+                        borderRadius: 999,
+                        background: "rgba(180,60,60,0.15)",
+                        border: "1px solid rgba(248,113,113,0.3)",
+                        color: "#fca5a5",
+                        fontSize: 12,
+                        fontWeight: 700,
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                      }}>
+                        Discontinued
+                      </div>
+                    )}
+
                     <h1
                       style={{
                         margin: "0 0 8px",

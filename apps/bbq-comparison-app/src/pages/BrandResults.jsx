@@ -920,6 +920,8 @@ function BrandResults() {
       if (!isActiveRecord(variant)) return false;
       // Hide non-primary config variants — they're reachable via the config toggle on the detail page
       if (variant.configGroupId && !variant.isConfigPrimary) return false;
+      // Hide discontinued products from listings (still visible on product page and in comparisons)
+      if (variant.isDiscontinued) return false;
 
       if (isAllBrands) return true;
 
