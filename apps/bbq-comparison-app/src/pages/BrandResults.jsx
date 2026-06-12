@@ -934,11 +934,20 @@ function BrandResults() {
   }, [variants, familyMap, routeBrandId]);
 
   const productCards = useMemo(() => {
-    return filteredVariants.map((variant) => {
-      const variantId = getVariantId(variant);
+    // Group filteredVariants by familyId so each family shows as one card
+    const familyGroups = new Map();
+    filteredVariants.forEach((variant) => {
+      const key = getFamilyId(variant) || getVariantId(variant);
+      if (!familyGroups.has(key)) familyGroups.set(key, []);
+      familyGroups.get(key).push(variant);
+    });
+
+    return Array.from(familyGroups.values()).map((variantGroup) => {
+      const primary = variantGroup.find((v) => v.isConfigPrimary) || variantGroup[0];
+      const variantId = getVariantId(primary);
+
       const bestAsset = pickBestAssetForVariant(variantId, assets);
       const filePath = getAssetFilePath(bestAsset);
-
       let imageUrl = "";
       if (filePath) {
         if (/^https?:\/\//i.test(filePath)) {
@@ -950,13 +959,61 @@ function BrandResults() {
         }
       }
 
-      const cookingArea = findVariantCookingArea(variant, specMap);
-      const fuelOptions = findVariantFuelOptions(variant, specMap);
-      const category = findVariantCategory(variant, familyMap, specMap);
-      const family = familyMap.get(getFamilyId(variant));
-      const resolvedBrandId = getBrandId(variant) || getBrandId(family);
-      const resolvedBrand =
-        brands.find((brand) => getRecordId(brand) === resolvedBrandId) || null;
+      // Price range: collect all prices across every variant + their pricingMatrix rows
+      const allPriceNums = variantGroup.flatMap((v) => {
+        const nums = [];
+        const direct = findVariantPriceNumber(v, specMap);
+        if (direct && direct > 0) nums.push(direct);
+        const matrix = Array.isArray(v.pricingMatrix) ? v.pricingMatrix : [];
+        matrix.forEach((r) => {
+          const p = parsePriceNumber(r.mapPrice ?? r.price ?? r.msrp);
+          if (p && p > 0) nums.push(p);
+        });
+        return nums;
+      }).filter((n) => n > 0);
+
+      const minPrice = allPriceNums.length > 0 ? Math.min(...allPriceNums) : null;
+      const maxPrice = allPriceNums.length > 0 ? Math.max(...allPriceNums) : null;
+      let priceDisplay;
+      if (minPrice && maxPrice && Math.round(minPrice) !== Math.round(maxPrice)) {
+        priceDisplay = `${formatPrice(minPrice)} – ${formatPrice(maxPrice)}`;
+      } else if (minPrice) {
+        priceDisplay = formatPrice(minPrice);
+      } else {
+        priceDisplay = findVariantPrice(primary, specMap) || "";
+      }
+
+      // Union of fuel options across all variants in the family
+      const normalizeMatrixFuel = (f) => {
+        const n = String(f).toLowerCase();
+        if (n === "natural_gas" || n === "ng" || n === "naturalgas") return "Natural Gas";
+        if (n === "propane" || n === "lp") return "Propane";
+        if (n === "wood") return "Wood";
+        if (n === "charcoal") return "Charcoal";
+        if (n === "pellet") return "Pellet";
+        return f;
+      };
+      const allFuelOptions = [
+        ...new Set(
+          variantGroup.flatMap((v) => {
+            const opts = findVariantFuelOptions(v, specMap);
+            const matrix = Array.isArray(v.pricingMatrix) ? v.pricingMatrix : [];
+            const matrixFuels = matrix.map((r) => r.fuelType).filter(Boolean).map(normalizeMatrixFuel);
+            return [...opts, ...matrixFuels];
+          })
+        ),
+      ].filter(Boolean);
+
+      // Union of install options across all variants in the family
+      const allInstallations = [
+        ...new Set(variantGroup.map((v) => findVariantInstallation(v, specMap)).filter(Boolean)),
+      ];
+
+      const cookingArea = findVariantCookingArea(primary, specMap);
+      const category = findVariantCategory(primary, familyMap, specMap);
+      const family = familyMap.get(getFamilyId(primary));
+      const resolvedBrandId = getBrandId(primary) || getBrandId(family);
+      const resolvedBrand = brands.find((brand) => getRecordId(brand) === resolvedBrandId) || null;
       const resolvedBrandName = cleanLabel(
         pickFirst(
           resolvedBrand?.name,
@@ -967,28 +1024,25 @@ function BrandResults() {
       );
 
       return {
-        id: variantId || getRecordId(variant),
-        routeValue: getVariantRouteValue(variant),
-        name: getVariantName(variant, familyMap, brandMap),
+        id: variantId || getRecordId(primary),
+        routeValue: getVariantRouteValue(primary),
+        name: getVariantName(primary, familyMap, brandMap),
         imageUrl,
-        price: findVariantPrice(variant, specMap),
-        priceNumber: findVariantPriceNumber(variant, specMap),
+        price: priceDisplay,
+        priceNumber: minPrice,
         brandId: resolvedBrandId,
         brandName: resolvedBrandName,
-        fuelOptions,
-        fuelSummary:
-          fuelOptions.includes("Propane") && fuelOptions.includes("Natural Gas")
-            ? "Propane / Natural Gas"
-            : fuelOptions.join(" / "),
-        installation: findVariantInstallation(variant, specMap),
-        size: findVariantSize(variant, specMap, familyMap),
+        fuelOptions: allFuelOptions,
+        fuelSummary: allFuelOptions.join(" / "),
+        installation: allInstallations[0] || "",
+        allInstallations,
+        size: findVariantSize(primary, specMap, familyMap),
         cookingArea,
         category,
         saleInfo: (() => {
-          const variantSale = computeActiveSale(variant);
+          const variantSale = computeActiveSale(primary);
           if (variantSale) return variantSale;
-          const priceNum = findVariantPriceNumber(variant, specMap);
-          return computeFamilySaleInfo(variant, familyMap, priceNum);
+          return computeFamilySaleInfo(primary, familyMap, minPrice);
         })(),
       };
     });
@@ -1059,7 +1113,7 @@ function BrandResults() {
 
   const installationOptions = useMemo(() => {
     const values = Array.from(
-      new Set(productCards.map((product) => product.installation).filter(Boolean))
+      new Set(productCards.flatMap((product) => product.allInstallations || []).filter(Boolean))
     ).sort((a, b) => a.localeCompare(b));
 
     return values.length ? ["All", ...values] : ["All"];
@@ -1156,11 +1210,11 @@ function BrandResults() {
       }
 
       if (normalizedInstallation) {
-        if (normalizedInstallation.includes("built") && product.installation !== "Built-In") {
+        if (normalizedInstallation.includes("built") && !product.allInstallations.includes("Built-In")) {
           return false;
         }
 
-        if (normalizedInstallation.includes("free") && product.installation !== "Freestanding") {
+        if (normalizedInstallation.includes("free") && !product.allInstallations.includes("Freestanding")) {
           return false;
         }
       }
@@ -1177,7 +1231,7 @@ function BrandResults() {
           normalizedCategory === "pizza-ovens" ||
           normalizedCategory === "pizza";
 
-        if (isBuiltInCategory && product.installation !== "Built-In") {
+        if (isBuiltInCategory && !product.allInstallations.includes("Built-In")) {
           return false;
         }
 
@@ -1211,7 +1265,7 @@ function BrandResults() {
 
       if (
         selectedInstallation !== "All" &&
-        product.installation !== selectedInstallation
+        !product.allInstallations.includes(selectedInstallation)
       ) {
         return false;
       }
@@ -1464,15 +1518,10 @@ function BrandResults() {
           ) : (
             <div className="brand-results-grid">
               {visibleProducts.map((product) => {
-                const inCompare =
-                  isSelected(product.routeValue) || isSelected(product.id);
-                const compareCount = compareState?.items?.length || 0;
-                const isCompareFull = compareCount >= 4;
-
                 return (
                   <article
                     key={product.id}
-                    className={`product-card interactive-button ${inCompare ? "product-card-selected" : ""}`}
+                    className="product-card interactive-button"
                     role="button"
                     tabIndex={0}
                     onClick={() => navigate(`/product/${product.routeValue}`)}
@@ -1484,11 +1533,8 @@ function BrandResults() {
                     }}
                   >
                     <span className="button-sheen" />
-                    {inCompare ? (
-                      <div className="product-selected-badge">✓ In Compare</div>
-                    ) : null}
 
-                    {product.saleInfo && !inCompare && (
+                    {product.saleInfo && (
                       <div className="product-sale-ribbon">
                         🏷️ {product.saleInfo.savingsLabel}
                       </div>
@@ -1508,14 +1554,12 @@ function BrandResults() {
                       </div>
 
                       <div className="product-spec-row">
-                        {product.fuelSummary ? (
-                          <span className="product-badge">{product.fuelSummary}</span>
-                        ) : null}
-
-                        {product.installation ? (
-                          <span className="product-badge">{product.installation}</span>
-                        ) : null}
-
+                        {product.fuelOptions.map((f) => (
+                          <span key={f} className="product-badge">{f}</span>
+                        ))}
+                        {product.allInstallations.map((i) => (
+                          <span key={i} className="product-badge">{i}</span>
+                        ))}
                         {product.size ? (
                           <span className="product-badge">{product.size}</span>
                         ) : null}
@@ -1543,36 +1587,6 @@ function BrandResults() {
                             product.price || "View Details"
                           )}
                         </div>
-
-                        <button
-                          type="button"
-                          className="product-action interactive-button"
-                          onClick={(event) => {
-                            event.stopPropagation();
-
-                            if (inCompare) {
-                              removeItem(product.routeValue);
-                              removeItem(product.id);
-                              return;
-                            }
-
-                            if (isCompareFull) return;
-
-                            addItem(product.routeValue || product.id);
-                          }}
-                          disabled={!inCompare && isCompareFull}
-                          style={{
-                            opacity: !inCompare && isCompareFull ? 0.5 : 1,
-                            cursor: !inCompare && isCompareFull ? "not-allowed" : "pointer",
-                          }}
-                        >
-                          <span className="button-sheen" />
-                          {inCompare
-                            ? "Remove"
-                            : isCompareFull
-                            ? "Compare Full"
-                            : "Add to Compare"}
-                        </button>
                       </div>
                     </div>
                   </article>
