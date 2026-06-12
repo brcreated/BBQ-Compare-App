@@ -804,6 +804,12 @@ export default function ProductDetail() {
       });
   }, [product, variants]);
 
+  // Always show name + description from the primary config in the group
+  const primaryConfig = useMemo(() => {
+    if (!configGroup.length) return product;
+    return [product, ...configGroup].find((c) => c.isConfigPrimary) || product;
+  }, [product, configGroup]);
+
   const productSpecs = useMemo(
     () => (product?.id ? specsByVariantId.get(product.id) || [] : []),
     [product, specsByVariantId]
@@ -869,10 +875,6 @@ export default function ProductDetail() {
   const brandLogoUrl = useMemo(() => findBrandLogo(brand, brandAssetsByBrandId), [brand, brandAssetsByBrandId]);
 
   const topCards = useMemo(() => buildTopCards(product, productSpecs), [product, productSpecs]);
-  const whyThisIsGoodChoice = useMemo(
-    () => buildWhyThisIsGoodChoice(product, productSpecs),
-    [product, productSpecs]
-  );
   const specGroups = useMemo(() => buildSpecGroups(productSpecs), [productSpecs]);
 
   const isInCompare = useMemo(() => {
@@ -1097,7 +1099,7 @@ export default function ProductDetail() {
                         color: "#f2f6fb",
                       }}
                     >
-                      {product?.name || family?.name || "Product"}
+                      {primaryConfig?.name || family?.name || "Product"}
                     </h1>
 
                     {configGroup.length > 0 && (() => {
@@ -1287,61 +1289,41 @@ export default function ProductDetail() {
                     </div>
                   ) : null}
 
-                  {whyThisIsGoodChoice.length ? (
-                    <div style={{ ...glassCardStyle, padding: 18 }}>
-                      <div
-                        style={{
-                          fontSize: 14,
-                          letterSpacing: "0.12em",
-                          textTransform: "uppercase",
-                          opacity: 0.74,
-                          marginBottom: 12,
-                        }}
-                      >
-                        Why This Grill Is a Good Choice
-                      </div>
-                      <div style={{ display: "grid", gap: 12 }}>
-                        {whyThisIsGoodChoice.map((reason) => (
-                          <div key={reason} style={{ lineHeight: 1.6, opacity: 0.92 }}>
-                            {reason}
-                          </div>
-                        ))}
-                      </div>
-
-                      <div style={{ marginTop: 18 }}>
-                        <button
-                          type="button"
-                          onClick={handleCompareClick}
-                          disabled={!isInCompare && isCompareFull}
-                          style={{
-                            width: "100%",
-                            minHeight: 58,
-                            borderRadius: 18,
-                            border: isInCompare ? "1px solid rgba(120,193,152,0.35)" : "none",
-                            background: isInCompare
-                              ? "rgba(80,144,104,0.22)"
-                              : "linear-gradient(180deg, #5a78a8 0%, #435d83 100%)",
-                            color: "#fff",
-                            fontSize: "0.96rem",
-                            fontWeight: 900,
-                            letterSpacing: "0.08em",
-                            textTransform: "uppercase",
-                            boxShadow: isInCompare ? "none" : "0 16px 34px rgba(67, 93, 131, 0.32)",
-                            cursor: !isInCompare && isCompareFull ? "not-allowed" : "pointer",
-                            opacity: !isInCompare && isCompareFull ? 0.5 : 1,
-                          }}
-                        >
-                          <span className="button-sheen" />
-
-                          {isInCompare
-                            ? "Remove from Compare"
-                            : isCompareFull
-                            ? "Compare Full"
-                            : "Add to Compare"}
-                        </button>
-                      </div>
-                    </div>
-                  ) : null}
+                  <div style={{ ...glassCardStyle, padding: 18 }}>
+                    {(() => {
+                      const desc = primaryConfig?.description || product?.description || family?.description;
+                      return desc ? (
+                        <p style={{ margin: "0 0 16px", lineHeight: 1.65, fontSize: 15, opacity: 0.88, color: "#e0e8f5" }}>
+                          {desc}
+                        </p>
+                      ) : null;
+                    })()}
+                    <button
+                      type="button"
+                      onClick={handleCompareClick}
+                      disabled={!isInCompare && isCompareFull}
+                      style={{
+                        width: "100%",
+                        minHeight: 58,
+                        borderRadius: 18,
+                        border: isInCompare ? "1px solid rgba(120,193,152,0.35)" : "none",
+                        background: isInCompare
+                          ? "rgba(80,144,104,0.22)"
+                          : "linear-gradient(180deg, #5a78a8 0%, #435d83 100%)",
+                        color: "#fff",
+                        fontSize: "0.96rem",
+                        fontWeight: 900,
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                        boxShadow: isInCompare ? "none" : "0 16px 34px rgba(67, 93, 131, 0.32)",
+                        cursor: !isInCompare && isCompareFull ? "not-allowed" : "pointer",
+                        opacity: !isInCompare && isCompareFull ? 0.5 : 1,
+                      }}
+                    >
+                      <span className="button-sheen" />
+                      {isInCompare ? "Remove from Compare" : isCompareFull ? "Compare Full" : "Add to Compare"}
+                    </button>
+                  </div>
                 </div>
               </section>
 
@@ -1416,8 +1398,7 @@ export default function ProductDetail() {
               position: relative;
               min-height: 100vh;
               width: 100%;
-              overflow-x: hidden;
-              overflow-y: visible;
+              overflow-x: clip;
               background:
                 radial-gradient(circle at 18% 14%, rgba(76, 110, 168, 0.09), transparent 28%),
                 radial-gradient(circle at 82% 88%, rgba(76, 110, 168, 0.08), transparent 32%),
