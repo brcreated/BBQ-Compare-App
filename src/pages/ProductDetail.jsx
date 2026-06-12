@@ -217,6 +217,7 @@ function formatDisplayValue(label, value) {
 }
 
 function findPrice(product, specs) {
+  if (product?.askForPricing) return "Ask for Pricing";
   // Dual-gas pricing: show lower price as "From $X"
   const propaneP = toNumber(product?.propanePrice);
   const naturalGasP = toNumber(product?.naturalGasPrice);
@@ -1034,7 +1035,7 @@ export default function ProductDetail() {
               {(() => {
                 const propaneP = toNumber(product?.propanePrice);
                 const naturalGasP = toNumber(product?.naturalGasPrice);
-                const hasDualDiff = propaneP && naturalGasP && propaneP !== naturalGasP;
+                const hasDualDiff = !product?.askForPricing && propaneP && naturalGasP && propaneP !== naturalGasP;
                 return hasDualDiff ? (
                   <div style={{ marginTop: 16, display: "flex", gap: 12, flexWrap: "wrap" }}>
                     <div style={{ background: "rgba(117,163,255,0.1)", border: "1px solid rgba(117,163,255,0.2)", borderRadius: 12, padding: "8px 16px" }}>

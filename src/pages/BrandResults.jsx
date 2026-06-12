@@ -266,6 +266,7 @@ function numericPrice(value) {
 }
 
 function findVariantPrice(variant, specMap) {
+  if (variant?.askForPricing) return "Ask for Pricing";
   // Dual-gas pricing: propanePrice / naturalGasPrice set separately in admin
   const propaneP = numericPrice(variant?.propanePrice);
   const naturalGasP = numericPrice(variant?.naturalGasPrice);

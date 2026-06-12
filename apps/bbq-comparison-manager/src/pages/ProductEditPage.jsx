@@ -298,18 +298,36 @@ function PricingSection({ form, setForm }) {
 
   return (
     <div>
-      {dualGasDiff ? (
-        <Grid cols={2}>
-          <Field label="Propane Price ($)" value={form.propanePrice} onChange={(v) => set("propanePrice", v)} type="number" placeholder="0.00" />
-          <Field label="Natural Gas Price ($)" value={form.naturalGasPrice} onChange={(v) => set("naturalGasPrice", v)} type="number" placeholder="0.00" />
-        </Grid>
-      ) : (
-        <Field label="Price ($)" value={form.price} onChange={(v) => set("price", v)} type="number" placeholder="0.00" />
+      <div style={{ marginBottom: 16 }}>
+        <CheckCard
+          label="Ask for Pricing"
+          icon="💬"
+          checked={!!form.askForPricing}
+          onChange={(v) => set("askForPricing", v)}
+        />
+        {form.askForPricing && (
+          <div style={{ fontSize: 12, color: "rgba(180,200,240,0.5)", marginTop: 8, paddingLeft: 4 }}>
+            Price fields are hidden from customers. The app will show "Ask for Pricing".
+          </div>
+        )}
+      </div>
+
+      {!form.askForPricing && (
+        <>
+          {dualGasDiff ? (
+            <Grid cols={2}>
+              <Field label="Propane Price ($)" value={form.propanePrice} onChange={(v) => set("propanePrice", v)} type="number" placeholder="0.00" />
+              <Field label="Natural Gas Price ($)" value={form.naturalGasPrice} onChange={(v) => set("naturalGasPrice", v)} type="number" placeholder="0.00" />
+            </Grid>
+          ) : (
+            <Field label="Price ($)" value={form.price} onChange={(v) => set("price", v)} type="number" placeholder="0.00" />
+          )}
+          <Grid cols={2}>
+            <Field label="MSRP ($)" value={form.msrp} onChange={(v) => set("msrp", v)} type="number" />
+            <Field label="Sale Price ($)" value={form.salePrice} onChange={(v) => set("salePrice", v)} type="number" />
+          </Grid>
+        </>
       )}
-      <Grid cols={2}>
-        <Field label="MSRP ($)" value={form.msrp} onChange={(v) => set("msrp", v)} type="number" />
-        <Field label="Sale Price ($)" value={form.salePrice} onChange={(v) => set("salePrice", v)} type="number" />
-      </Grid>
     </div>
   );
 }
@@ -1000,6 +1018,7 @@ const BLANK_VARIANT = {
   shopifyProductId: "", shopifyVariantId: "", shopifyHandle: "",
   dataSource: "", lastUpdatedAt: "", status: "active", sortOrder: null, isActive: true,
   grateMaterial: "", bodyMaterial: "", madeIn: "", gasPricingMode: "", propanePrice: null, naturalGasPrice: null,
+  askForPricing: false,
 };
 
 // ── Main page ────────────────────────────────────────────────────────────────

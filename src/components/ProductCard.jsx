@@ -143,6 +143,7 @@ function formatCurrency(value) {
 }
 
 function getPricingData(variant) {
+  if (variant?.askForPricing) return { label: "", primary: "Ask for Pricing", secondary: "", savings: "" };
   // Dual-gas pricing: show the lower price as "From $X"
   const propaneP = parsePriceNumber(variant?.propanePrice);
   const naturalGasP = parsePriceNumber(variant?.naturalGasPrice);

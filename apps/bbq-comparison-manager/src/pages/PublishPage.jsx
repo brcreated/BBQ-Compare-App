@@ -12,7 +12,7 @@ const DATASET_LABELS = {
 };
 
 export default function PublishPage() {
-  const { brands, families, variants, specs, assets, colors, variantColors, dirtyDatasets, lastPublishedAt, publish, saveAll, clearProducts } = useDataStore();
+  const { brands, families, variants, specs, assets, colors, variantColors, dirtyDatasets, lastPublishedAt, publish, saveAll, clearAll } = useDataStore();
   const { addToast } = useToastStore();
   const [publishing, setPublishing] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -161,9 +161,9 @@ export default function PublishPage() {
         {!confirmClear ? (
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
             <div>
-              <div style={{ fontSize: 14, fontWeight: 600, color: "#e7edf7" }}>Clear All Products</div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: "#e7edf7" }}>Clear Everything</div>
               <div style={{ fontSize: 13, color: "rgba(180,200,240,0.5)", marginTop: 3 }}>
-                Removes all {variants.length} products and their specs from the catalog. Brand logos and family data are kept. Export a backup first.
+                Removes all {brands.length} brands, {families.length} families, {variants.length} products, and all associated data so you can start fresh. The live site is NOT affected until you click Publish. Export a backup first.
               </div>
             </div>
             <button
@@ -174,20 +174,20 @@ export default function PublishPage() {
                 color: "#f85149", fontSize: 13, fontWeight: 700,
               }}
             >
-              Clear All Products…
+              Clear Everything…
             </button>
           </div>
         ) : (
           <div>
             <div style={{ fontSize: 14, color: "#f85149", fontWeight: 700, marginBottom: 10 }}>
-              Are you sure? This will remove all {variants.length} products and {specs.length} spec records. This cannot be undone without re-publishing from a backup.
+              Are you sure? This will wipe all {brands.length} brands, {families.length} families, {variants.length} products, {specs.length} specs, and {assets.length} images from the admin. The live site stays intact until you click Publish.
             </div>
             <div style={{ display: "flex", gap: 10 }}>
               <button
                 onClick={() => {
-                  clearProducts();
+                  clearAll();
                   setConfirmClear(false);
-                  addToast("All products cleared — publish to push to live site");
+                  addToast("Cleared everything — publish when ready to update the live site");
                 }}
                 style={{
                   padding: "10px 20px", borderRadius: 8, cursor: "pointer",
