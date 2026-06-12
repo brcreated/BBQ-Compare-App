@@ -1031,6 +1031,36 @@ button:active {
   background-clip: padding-box;
 }
 
+/* Compare panel — always-visible, wide scrollbar for kiosk/showroom use */
+.compare-scroll-area {
+  overflow-y: scroll !important;
+  scrollbar-gutter: stable;
+}
+
+.compare-scroll-area::-webkit-scrollbar {
+  width: 20px;
+}
+
+.compare-scroll-area::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  margin: 6px 0;
+}
+
+.compare-scroll-area::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(117, 163, 255, 0.5), rgba(76, 117, 219, 0.35));
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background-clip: padding-box;
+  min-height: 60px;
+}
+
+.compare-scroll-area::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(245, 158, 11, 0.7), rgba(245, 158, 11, 0.45));
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

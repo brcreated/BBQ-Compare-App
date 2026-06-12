@@ -1025,10 +1025,10 @@ export default function ComparisonView({
 
       {isOpen && compareReady && (
         <div
+          className="compare-scroll-area"
           style={{
             borderTop: "1px solid rgba(255,255,255,0.08)",
             maxHeight: "65vh",
-            overflow: "auto",
             padding: 20,
             display: "grid",
             gap: 20,
