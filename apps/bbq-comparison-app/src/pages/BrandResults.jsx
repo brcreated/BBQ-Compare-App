@@ -1226,7 +1226,10 @@ function BrandResults() {
     const normalizedFamily = normalizeId(searchParams.get("family"));
 
     return baseProducts.filter((product) => {
-      if (normalizedFamily && normalizeId(product.familyId) !== normalizedFamily) return false;
+      // Family filter is the final navigator selection — skip fuel/install URL filters when set
+      if (normalizedFamily) {
+        return normalizeId(product.familyId) === normalizedFamily;
+      }
       if (normalizedFuel) {
         if (normalizedFuel === "pellet" && !product.fuelOptions.includes("Pellet")) {
           return false;
