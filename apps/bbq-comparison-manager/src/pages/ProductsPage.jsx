@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDataStore, useToastStore } from "../store/dataStore";
 import { fetchLocks } from "../services/api";
 import Modal from "../components/shared/Modal";
@@ -32,11 +32,29 @@ function CompletenessDot({ pct }) {
 
 export default function ProductsPage() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { brands, families, variants, assets, loading, loadAll, removeVariant, updateVariant, addVariant, saveDataset } = useDataStore();
   const { addToast } = useToastStore();
   const [search, setSearch] = useState("");
-  const [filterBrand, setFilterBrand] = useState("");
-  const [filterFamily, setFilterFamily] = useState("");
+  const filterBrand = searchParams.get("brand") || "";
+  const filterFamily = searchParams.get("family") || "";
+
+  function setFilterBrand(val) {
+    setSearchParams((p) => {
+      const next = new URLSearchParams(p);
+      if (val) next.set("brand", val); else next.delete("brand");
+      next.delete("family");
+      return next;
+    }, { replace: true });
+  }
+
+  function setFilterFamily(val) {
+    setSearchParams((p) => {
+      const next = new URLSearchParams(p);
+      if (val) next.set("family", val); else next.delete("family");
+      return next;
+    }, { replace: true });
+  }
   const [confirmDelete, setConfirmDelete] = useState(null);
   const [locks, setLocks] = useState({});
 
@@ -239,7 +257,7 @@ export default function ProductsPage() {
         />
         <select
           value={filterBrand}
-          onChange={(e) => { setFilterBrand(e.target.value); setFilterFamily(""); }}
+          onChange={(e) => setFilterBrand(e.target.value)}
           className="field-input"
           style={{ width: "auto" }}
         >
