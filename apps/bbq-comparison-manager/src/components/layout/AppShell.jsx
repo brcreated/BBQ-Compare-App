@@ -147,7 +147,7 @@ export default function AppShell() {
       </aside>
 
       {/* Main content */}
-      <main style={{ flex: 1, minWidth: 0, padding: "36px 40px" }}>
+      <main style={{ flex: 1, minWidth: 0, padding: "28px 32px" }}>
         <Outlet />
       </main>
 

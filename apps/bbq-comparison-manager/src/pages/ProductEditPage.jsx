@@ -1054,7 +1054,7 @@ export default function ProductEditPage() {
   }
 
   return (
-    <div style={{ display: "grid", gap: 20, maxWidth: 900 }}>
+    <div style={{ display: "grid", gap: 20 }}>
       {/* Header */}
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
         <div>
@@ -1089,18 +1089,38 @@ export default function ProductEditPage() {
         </div>
       )}
 
-      {/* Section 1: Basic Info */}
-      <SectionCard title="Basic Info">
-        <BasicInfoSection
-          form={form}
-          setForm={setForm}
-          brands={brands}
-          families={families}
-          onCreateFamily={(family) => { addFamily(family); saveDataset("families"); }}
-        />
-      </SectionCard>
+      {/* Two-column main layout */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, alignItems: "start" }}>
+        {/* Left column */}
+        <div style={{ display: "grid", gap: 20 }}>
+          <SectionCard title="Basic Info">
+            <BasicInfoSection
+              form={form}
+              setForm={setForm}
+              brands={brands}
+              families={families}
+              onCreateFamily={(family) => { addFamily(family); saveDataset("families"); }}
+            />
+          </SectionCard>
 
-      {/* Section 2: Photos */}
+          <SectionCard title="Key Specs">
+            <KeySpecsSection form={form} setForm={setForm} />
+          </SectionCard>
+        </div>
+
+        {/* Right column */}
+        <div style={{ display: "grid", gap: 20 }}>
+          <SectionCard title="Fuel & Installation">
+            <FuelInstallSection form={form} setForm={setForm} />
+          </SectionCard>
+
+          <SectionCard title="Pricing">
+            <PricingSection form={form} setForm={setForm} />
+          </SectionCard>
+        </div>
+      </div>
+
+      {/* Full-width: Photos */}
       <SectionCard title="Photos">
         {isNew ? (
           <div style={{ color: "rgba(180,200,240,0.5)", fontSize: 14, textAlign: "center", padding: "24px 0" }}>
@@ -1119,7 +1139,7 @@ export default function ProductEditPage() {
         )}
       </SectionCard>
 
-      {/* Section 3: Color Variants */}
+      {/* Full-width: Color Variants */}
       <SectionCard title="Color Variants">
         {isNew ? (
           <div style={{ color: "rgba(180,200,240,0.5)", fontSize: 13, textAlign: "center", padding: "24px 0" }}>
@@ -1143,22 +1163,7 @@ export default function ProductEditPage() {
         )}
       </SectionCard>
 
-      {/* Section 4: Fuel & Installation */}
-      <SectionCard title="Fuel & Installation">
-        <FuelInstallSection form={form} setForm={setForm} />
-      </SectionCard>
-
-      {/* Section 4: Pricing */}
-      <SectionCard title="Pricing">
-        <PricingSection form={form} setForm={setForm} />
-      </SectionCard>
-
-      {/* Section 5: Key Specs */}
-      <SectionCard title="Key Specs">
-        <KeySpecsSection form={form} setForm={setForm} />
-      </SectionCard>
-
-      {/* Section 6: Advanced (collapsible) */}
+      {/* Full-width: Advanced (collapsible) */}
       <Collapsible title="Advanced">
         <AdvancedSection form={form} setForm={setForm} />
         {!isNew && (
