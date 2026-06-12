@@ -249,6 +249,22 @@ function pickBestAssetForVariant(variantId, assets) {
   )[0];
 }
 
+function pickBestAssetForFamily(familyId, assets) {
+  if (!familyId) return null;
+  const matching = assets.filter((asset) => {
+    if (!isActiveRecord(asset)) return false;
+    const entityType = getAssetEntityType(asset);
+    const entityId = getAssetEntityId(asset);
+    return entityType === "family" && entityId === familyId;
+  });
+  if (matching.length === 0) return null;
+  const heroAssets = matching
+    .filter((asset) => getAssetType(asset) === "hero")
+    .sort((a, b) => getAssetSortOrder(a) - getAssetSortOrder(b));
+  if (heroAssets.length > 0) return heroAssets[0];
+  return [...matching].sort((a, b) => getAssetSortOrder(a) - getAssetSortOrder(b))[0];
+}
+
 function formatPrice(value) {
   const amount = Number(String(value).replace(/[^0-9.]/g, ""));
   if (!Number.isFinite(amount)) return "";
@@ -962,7 +978,9 @@ function BrandResults() {
         });
       }
 
-      const bestAsset = pickBestAssetForVariant(variantId, assets);
+      const familyId = getFamilyId(primary);
+      const bestAsset = pickBestAssetForVariant(variantId, assets)
+        || pickBestAssetForFamily(familyId, assets);
       const filePath = getAssetFilePath(bestAsset);
       let imageUrl = "";
       if (filePath) {

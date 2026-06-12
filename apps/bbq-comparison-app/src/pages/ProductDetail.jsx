@@ -874,9 +874,18 @@ export default function ProductDetail() {
     [colorChoices, selectedColorId]
   );
 
+  const familyAssets = useMemo(() => {
+    if (!family?.id) return [];
+    return (Array.isArray(assets) ? assets : []).filter((a) => {
+      const et = normalizeLower(a?.entityType || a?.entity_type);
+      const eid = normalizeText(a?.entityId || a?.entity_id);
+      return et === "family" && eid === family.id;
+    });
+  }, [assets, family]);
+
   const heroImages = useMemo(
-    () => buildHeroImages({ selectedColor, variantAssets: productAssets }),
-    [selectedColor, productAssets]
+    () => buildHeroImages({ selectedColor, variantAssets: productAssets.length > 0 ? productAssets : familyAssets }),
+    [selectedColor, productAssets, familyAssets]
   );
 
   const selectedImage = useMemo(
