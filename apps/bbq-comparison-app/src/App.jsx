@@ -27,6 +27,14 @@ function doReset() {
   window.location.replace("/?_r=" + Date.now());
 }
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
+
 function AppShell() {
   const lastActivityRef = useRef(Date.now());
   const [secondsLeft, setSecondsLeft] = useState(IDLE_MS / 1000);
@@ -154,6 +162,7 @@ function AppShell() {
         }
       `}</style>
 
+      <ScrollToTop />
       <div style={{ paddingTop: isStartScreen ? 0 : HEADER_H }}>
         <Routes>
           <Route path="/" element={<WelcomeScreen />} />
