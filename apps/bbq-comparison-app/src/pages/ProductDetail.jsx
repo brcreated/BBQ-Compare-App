@@ -275,7 +275,41 @@ function computeActiveSale(product) {
   return { salePrice: Math.round(saleAmt), originalPrice: base, savingsLabel, endsLabel, fmt };
 }
 
+const DETAIL_FUEL_LABELS = {
+  propane: "Propane",
+  natural_gas: "Natural Gas",
+  wood: "Wood",
+  charcoal: "Charcoal",
+  pellet: "Pellet",
+};
+
+function getPricingMatrixRows(product) {
+  const matrix = Array.isArray(product?.pricingMatrix) ? product.pricingMatrix : [];
+  if (matrix.length === 0) return null;
+  return matrix.map((r) => ({
+    ...r,
+    fuelLabel: r.fuelType ? (DETAIL_FUEL_LABELS[r.fuelType] || r.fuelType) : null,
+    displayPrice: r.mapPrice ?? r.price ?? r.msrp ?? null,
+    msrpDisplay: r.msrp && r.msrp > (r.mapPrice ?? r.price ?? 0) ? r.msrp : null,
+  }));
+}
+
 function findPrice(product, specs) {
+  const matrix = Array.isArray(product?.pricingMatrix) ? product.pricingMatrix : [];
+  if (matrix.length > 0) {
+    const base = matrix.find((r) => !r.fuelType && !r.colorId);
+    const nums = matrix
+      .map((r) => { const v = r.mapPrice ?? r.price ?? r.msrp; return v ? Number(v) : null; })
+      .filter((n) => n !== null && n > 0);
+    if (nums.length > 0) {
+      const min = Math.min(...nums);
+      const max = Math.max(...nums);
+      const usePrice = base ? (Number(base.mapPrice ?? base.price ?? base.msrp) || min) : min;
+      if (min !== max && !base) return `From ${formatPriceDisplay(min)}`;
+      return formatPriceDisplay(usePrice);
+    }
+  }
+
   const direct =
     product?.price ??
     product?.mapPrice ??
@@ -722,6 +756,19 @@ export default function ProductDetail() {
     return variantBySlug.get(resolvedProductId) || variantById.get(resolvedProductId) || null;
   }, [resolvedProductId, variantBySlug, variantById]);
 
+  // Config group — other products linked via configGroupId
+  const configGroup = useMemo(() => {
+    if (!product?.configGroupId) return [];
+    return (Array.isArray(variants) ? variants : [])
+      .filter((v) => v.configGroupId === product.configGroupId && v.id !== product.id && v.isActive !== false)
+      .sort((a, b) => {
+        // Primary first, then alphabetical by configLabel
+        if (a.isConfigPrimary && !b.isConfigPrimary) return -1;
+        if (!a.isConfigPrimary && b.isConfigPrimary) return 1;
+        return (a.configLabel || a.name || "").localeCompare(b.configLabel || b.name || "");
+      });
+  }, [product, variants]);
+
   const productSpecs = useMemo(
     () => (product?.id ? specsByVariantId.get(product.id) || [] : []),
     [product, specsByVariantId]
@@ -1018,6 +1065,47 @@ export default function ProductDetail() {
                       {product?.name || family?.name || "Product"}
                     </h1>
 
+                    {configGroup.length > 0 && (
+                      <div style={{ marginTop: 14, marginBottom: 4, display: "flex", gap: 8, flexWrap: "wrap" }}>
+                        {/* Current product tab */}
+                        <button
+                          style={{
+                            padding: "9px 18px", borderRadius: 999, cursor: "default",
+                            border: "1px solid rgba(245,158,11,0.55)",
+                            background: "rgba(245,158,11,0.14)",
+                            color: "#f5c06a", fontSize: 14, fontWeight: 700,
+                          }}
+                        >
+                          {product.configLabel || product.name}
+                        </button>
+                        {configGroup.map((cfg) => (
+                          <button
+                            key={cfg.id}
+                            onClick={() => navigate(`/product/${cfg.slug || cfg.id}`)}
+                            style={{
+                              padding: "9px 18px", borderRadius: 999, cursor: "pointer",
+                              border: "1px solid rgba(255,255,255,0.14)",
+                              background: "rgba(255,255,255,0.04)",
+                              color: "rgba(255,255,255,0.75)", fontSize: 14, fontWeight: 600,
+                              transition: "border-color 0.15s, background 0.15s, color 0.15s",
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.borderColor = "rgba(245,158,11,0.4)";
+                              e.currentTarget.style.background = "rgba(245,158,11,0.08)";
+                              e.currentTarget.style.color = "#f5c06a";
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.borderColor = "rgba(255,255,255,0.14)";
+                              e.currentTarget.style.background = "rgba(255,255,255,0.04)";
+                              e.currentTarget.style.color = "rgba(255,255,255,0.75)";
+                            }}
+                          >
+                            {cfg.configLabel || cfg.name}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+
                     {(() => {
                       const sale = computeActiveSale(product);
                       if (sale) {
@@ -1042,6 +1130,40 @@ export default function ProductDetail() {
                           </div>
                         );
                       }
+
+                      const matrixRows = getPricingMatrixRows(product);
+                      const hasFuelRows = matrixRows && matrixRows.some((r) => r.fuelType);
+
+                      if (hasFuelRows) {
+                        const fmt = (n) => n
+                          ? new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(Number(n))
+                          : null;
+                        return (
+                          <div style={{ marginTop: 16 }}>
+                            <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(180,210,255,0.55)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 10 }}>
+                              Pricing Options
+                            </div>
+                            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                              {matrixRows.map((r) => (
+                                <div key={r.id} style={{ display: "flex", alignItems: "baseline", gap: 14 }}>
+                                  {r.fuelLabel && (
+                                    <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(180,210,255,0.65)", minWidth: 100 }}>{r.fuelLabel}</span>
+                                  )}
+                                  <span style={{ fontSize: 22, fontWeight: 800, color: "#9fc3ff", letterSpacing: "-0.02em" }}>
+                                    {fmt(r.displayPrice) || "—"}
+                                  </span>
+                                  {r.msrpDisplay && (
+                                    <span style={{ fontSize: 13, fontWeight: 600, color: "#8fa0b8", textDecoration: "line-through" }}>
+                                      {fmt(r.msrpDisplay)}
+                                    </span>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      }
+
                       return (
                         <div style={{ marginTop: 16, fontSize: 26, fontWeight: 800, color: "#9fc3ff" }}>
                           {findPrice(product, productSpecs)}

@@ -94,6 +94,15 @@ function getCookingCategory(variant, family) {
   );
 }
 
+function getProductTypeMeta(cookingCategory) {
+  const cat = normalizeText(cookingCategory);
+  if (cat.includes("pizza")) return { label: "Pizza Oven", color: "#ef4444", bg: "rgba(239,68,68,0.15)", border: "rgba(239,68,68,0.35)" };
+  if (cat.includes("griddle")) return { label: "Griddle", color: "#a855f7", bg: "rgba(168,85,247,0.15)", border: "rgba(168,85,247,0.35)" };
+  if (cat.includes("smok")) return { label: "Smoker", color: "#f59e0b", bg: "rgba(245,158,11,0.15)", border: "rgba(245,158,11,0.35)" };
+  if (cat.includes("grill") || cat.includes("gas") || cat.includes("charcoal") || cat.includes("pellet")) return { label: "Grill", color: "#3b82f6", bg: "rgba(59,130,246,0.15)", border: "rgba(59,130,246,0.35)" };
+  return null;
+}
+
 function getFuelType(variant, family) {
   return titleCaseWords(
     variant?.fuel_type ||
@@ -170,11 +179,17 @@ function computeActiveSale(variant) {
   return { salePrice: Math.round(salePrice), originalPrice: base, savingsLabel, endsLabel };
 }
 
+function getMatrixMinPrice(variant) {
+  const matrix = Array.isArray(variant?.pricingMatrix) ? variant.pricingMatrix : [];
+  if (matrix.length === 0) return null;
+  const nums = matrix
+    .map((r) => parsePriceNumber(r.mapPrice ?? r.price ?? r.msrp))
+    .filter((n) => n !== null && n > 0);
+  return nums.length > 0 ? Math.min(...nums) : null;
+}
+
 function getPricingData(variant) {
   const activeSale = computeActiveSale(variant);
-  const map = parsePriceNumber(variant?.map_price);
-  const price = parsePriceNumber(variant?.price);
-  const msrp = parsePriceNumber(variant?.msrp);
 
   if (activeSale) {
     return {
@@ -185,6 +200,26 @@ function getPricingData(variant) {
       saleEnds: activeSale.endsLabel,
     };
   }
+
+  // Check pricingMatrix
+  const matrix = Array.isArray(variant?.pricingMatrix) ? variant.pricingMatrix : [];
+  if (matrix.length > 0) {
+    const base = matrix.find((r) => !r.fuelType && !r.colorId);
+    const nums = matrix
+      .map((r) => parsePriceNumber(r.mapPrice ?? r.price ?? r.msrp))
+      .filter((n) => n !== null && n > 0);
+    if (nums.length > 0) {
+      const minPrice = Math.min(...nums);
+      const maxPrice = Math.max(...nums);
+      const usePrice = base ? (parsePriceNumber(base.mapPrice ?? base.price ?? base.msrp) ?? minPrice) : minPrice;
+      const label = (minPrice !== maxPrice && !base) ? "From" : "Our Price";
+      return { label, primary: formatCurrency(usePrice), secondary: "", savings: "", saleEnds: null };
+    }
+  }
+
+  const map = parsePriceNumber(variant?.map_price);
+  const price = parsePriceNumber(variant?.price);
+  const msrp = parsePriceNumber(variant?.msrp);
 
   if (map !== null) {
     const reference = msrp !== null && msrp > map ? msrp : price !== null && price > map ? price : null;
@@ -750,6 +785,29 @@ function ProductCard({
               {familyName}
             </div>
           ) : null}
+
+          {(() => {
+            const typeMeta = getProductTypeMeta(cookingCategory);
+            if (!typeMeta) return null;
+            return (
+              <span style={{
+                display: "inline-flex",
+                alignSelf: "flex-start",
+                alignItems: "center",
+                padding: "2px 9px",
+                borderRadius: 999,
+                border: `1px solid ${typeMeta.border}`,
+                background: typeMeta.bg,
+                color: typeMeta.color,
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+              }}>
+                {typeMeta.label}
+              </span>
+            );
+          })()}
 
           <div
             className="product-card__name"

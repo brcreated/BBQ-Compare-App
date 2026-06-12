@@ -684,7 +684,7 @@ export default function ComparePage() {
               marginBottom: 14,
             }}
           >
-            Compare Grills
+            Product Comparison
           </div>
           <div style={{ fontSize: 32, fontWeight: 800, letterSpacing: "-0.03em", marginBottom: 12 }}>
             Unable to Load Comparison
@@ -718,7 +718,7 @@ export default function ComparePage() {
               marginBottom: 16,
             }}
           >
-            Compare Grills
+            Product Comparison
           </div>
 
           <div
@@ -801,7 +801,7 @@ export default function ComparePage() {
               lineHeight: 0.96,
             }}
           >
-            Compare Grills
+            Product Comparison
           </h1>
 
           <div

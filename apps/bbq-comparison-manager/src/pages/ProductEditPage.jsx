@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDataStore, useToastStore } from "../store/dataStore";
 import * as api from "../services/api";
@@ -318,10 +318,58 @@ function computeSalePreview(form) {
   return `${fmt(sale)} (save ${form.saleDiscountType === "dollar" ? fmt(discount) : `${discount}%`})`;
 }
 
-function PricingSection({ form, setForm }) {
+const MATRIX_FUEL_OPTIONS = [
+  { value: "", label: "All Fuels" },
+  { value: "propane", label: "Propane" },
+  { value: "natural_gas", label: "Natural Gas" },
+  { value: "wood", label: "Wood" },
+  { value: "charcoal", label: "Charcoal" },
+  { value: "pellet", label: "Pellet" },
+];
+
+function PricingSection({ form, setForm, colors, variantColors, variantId }) {
   const set = (key, val) => setForm((f) => ({ ...f, [key]: val }));
   const dualGasDiff = form.supportsPropane && form.supportsNaturalGas && form.gasPricingMode === "different";
   const salePreview = computeSalePreview(form);
+
+  const [addingRow, setAddingRow] = useState(false);
+  const [newFuel, setNewFuel] = useState("");
+  const [newColorId, setNewColorId] = useState("");
+  const [newPrice, setNewPrice] = useState("");
+  const [newMsrp, setNewMsrp] = useState("");
+  const [newMap, setNewMap] = useState("");
+
+  const matrix = Array.isArray(form.pricingMatrix) ? form.pricingMatrix : [];
+
+  const variantColorList = variantId
+    ? (variantColors || [])
+        .filter((vc) => vc.variantId === variantId)
+        .map((vc) => {
+          const c = (colors || []).find((col) => col.id === vc.colorId);
+          return c ? { id: c.id, name: c.name, hex: c.hex } : null;
+        })
+        .filter(Boolean)
+    : [];
+
+  function addMatrixRow() {
+    const price = parseFloat(newPrice) || null;
+    const msrp = parseFloat(newMsrp) || null;
+    const mapP = parseFloat(newMap) || null;
+    if (!price && !msrp && !mapP) return;
+    const row = { id: `pm_${Date.now()}`, fuelType: newFuel || null, colorId: newColorId || null, price, msrp, mapPrice: mapP };
+    set("pricingMatrix", [...matrix, row]);
+    setAddingRow(false);
+    setNewFuel(""); setNewColorId(""); setNewPrice(""); setNewMsrp(""); setNewMap("");
+  }
+
+  const fmtN = (n) => n ? `$${Number(n).toLocaleString()}` : "—";
+  const getFuelLabel = (ft) => MATRIX_FUEL_OPTIONS.find((o) => o.value === (ft || ""))?.label || "All Fuels";
+  const getColorLabel = (cid) => cid ? (variantColorList.find((c) => c.id === cid)?.name || cid) : "All Colors";
+  const getColorHex = (cid) => cid ? variantColorList.find((c) => c.id === cid)?.hex : null;
+
+  const mTh = { padding: "6px 10px", textAlign: "left", fontSize: 11, fontWeight: 700, color: "rgba(180,200,240,0.5)", textTransform: "uppercase", letterSpacing: "0.08em", borderBottom: "1px solid rgba(117,163,255,0.1)" };
+  const mTd = { padding: "7px 10px", fontSize: 13, color: "#e7edf7", borderBottom: "1px solid rgba(117,163,255,0.06)", verticalAlign: "middle" };
+  const inputS = { background: "rgba(9,13,20,0.8)", border: "1px solid rgba(117,163,255,0.16)", borderRadius: 5, padding: "5px 8px", color: "#e7edf7", fontSize: 12, outline: "none", width: "100%", boxSizing: "border-box" };
 
   const endLabel = form.saleEndDate
     ? new Date(form.saleEndDate + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
@@ -330,12 +378,7 @@ function PricingSection({ form, setForm }) {
   return (
     <div>
       <div style={{ marginBottom: 16 }}>
-        <CheckCard
-          label="Ask for Pricing"
-          icon="💬"
-          checked={!!form.askForPricing}
-          onChange={(v) => set("askForPricing", v)}
-        />
+        <CheckCard label="Ask for Pricing" icon="💬" checked={!!form.askForPricing} onChange={(v) => set("askForPricing", v)} />
         {form.askForPricing && (
           <div style={{ fontSize: 12, color: "rgba(180,200,240,0.5)", marginTop: 8, paddingLeft: 4 }}>
             Price fields are hidden from customers. The app will show "Ask for Pricing".
@@ -351,60 +394,111 @@ function PricingSection({ form, setForm }) {
               <Field label="Natural Gas Price ($)" value={form.naturalGasPrice} onChange={(v) => set("naturalGasPrice", v)} type="number" placeholder="0.00" />
             </Grid>
           ) : (
-            <Field label="Price ($)" value={form.price} onChange={(v) => set("price", v)} type="number" placeholder="0.00" />
+            <Field label="Base Price ($)" value={form.price} onChange={(v) => set("price", v)} type="number" placeholder="0.00" />
           )}
           <Field label="MSRP ($)" value={form.msrp} onChange={(v) => set("msrp", v)} type="number" />
 
+          {/* Configuration Pricing */}
+          <div style={{ marginTop: 20, paddingTop: 16, borderTop: "1px solid rgba(117,163,255,0.1)" }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "#7aa3f5", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 6 }}>
+              Configuration Pricing
+            </div>
+            <div style={{ fontSize: 12, color: "rgba(180,200,240,0.45)", marginBottom: 14, lineHeight: 1.5 }}>
+              Set prices per fuel type or color. Overrides the base price for matching configurations.
+            </div>
+
+            {matrix.length > 0 && (
+              <div style={{ overflowX: "auto", marginBottom: 12, borderRadius: 8, border: "1px solid rgba(117,163,255,0.12)" }}>
+                <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 480 }}>
+                  <thead>
+                    <tr>
+                      <th style={mTh}>Fuel</th>
+                      <th style={mTh}>Color</th>
+                      <th style={mTh}>Price</th>
+                      <th style={mTh}>MSRP</th>
+                      <th style={mTh}>MAP</th>
+                      <th style={{ ...mTh, width: 36 }}></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {matrix.map((row) => (
+                      <tr key={row.id}>
+                        <td style={mTd}>{getFuelLabel(row.fuelType)}</td>
+                        <td style={mTd}>
+                          <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+                            {getColorHex(row.colorId) && (
+                              <div style={{ width: 14, height: 14, borderRadius: 3, background: getColorHex(row.colorId), border: "1px solid rgba(255,255,255,0.2)", flexShrink: 0 }} />
+                            )}
+                            {getColorLabel(row.colorId)}
+                          </div>
+                        </td>
+                        <td style={mTd}>{fmtN(row.price)}</td>
+                        <td style={mTd}>{fmtN(row.msrp)}</td>
+                        <td style={mTd}>{fmtN(row.mapPrice)}</td>
+                        <td style={mTd}>
+                          <button
+                            onClick={() => set("pricingMatrix", matrix.filter((r) => r.id !== row.id))}
+                            style={{ background: "none", border: "none", color: "rgba(248,81,73,0.7)", fontSize: 15, cursor: "pointer", padding: "2px 6px" }}
+                            title="Remove"
+                          >✕</button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {addingRow ? (
+              <div style={{ border: "1px solid rgba(76,117,219,0.3)", borderRadius: 10, padding: "12px 14px", background: "rgba(76,117,219,0.06)" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8, marginBottom: 10 }}>
+                  {[
+                    { label: "Fuel Type", node: <select value={newFuel} onChange={(e) => setNewFuel(e.target.value)} style={inputS}>{MATRIX_FUEL_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}</select> },
+                    { label: "Color", node: <select value={newColorId} onChange={(e) => setNewColorId(e.target.value)} style={inputS}><option value="">All Colors</option>{variantColorList.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}</select> },
+                    { label: "Price ($)", node: <input type="number" value={newPrice} onChange={(e) => setNewPrice(e.target.value)} placeholder="0.00" style={inputS} /> },
+                    { label: "MSRP ($)", node: <input type="number" value={newMsrp} onChange={(e) => setNewMsrp(e.target.value)} placeholder="0.00" style={inputS} /> },
+                    { label: "MAP ($)", node: <input type="number" value={newMap} onChange={(e) => setNewMap(e.target.value)} placeholder="0.00" style={inputS} /> },
+                  ].map(({ label, node }) => (
+                    <div key={label}>
+                      <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(180,200,240,0.5)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4 }}>{label}</div>
+                      {node}
+                    </div>
+                  ))}
+                </div>
+                <div style={{ display: "flex", gap: 8 }}>
+                  <button onClick={addMatrixRow} className="btn-primary" style={{ fontSize: 13, padding: "7px 16px" }}>Add</button>
+                  <button onClick={() => setAddingRow(false)} className="btn-ghost" style={{ fontSize: 13, padding: "7px 14px" }}>Cancel</button>
+                </div>
+              </div>
+            ) : (
+              <button onClick={() => setAddingRow(true)} className="btn-ghost" style={{ fontSize: 13, padding: "8px 16px" }}>
+                + Add Pricing Option
+              </button>
+            )}
+          </div>
+
           {/* Sale / Promotion */}
           <div style={{ marginTop: 20, paddingTop: 16, borderTop: "1px solid rgba(117,163,255,0.1)" }}>
-            <CheckCard
-              label="Product is on sale"
-              icon="🏷️"
-              checked={!!form.saleEnabled}
-              onChange={(v) => set("saleEnabled", v)}
-            />
-
+            <CheckCard label="Product is on sale" icon="🏷️" checked={!!form.saleEnabled} onChange={(v) => set("saleEnabled", v)} />
             {form.saleEnabled && (
               <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 12 }}>
                 <Grid cols={2}>
                   <div>
-                    <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(180,200,240,0.6)", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>
-                      Discount Type
-                    </div>
-                    <select
-                      value={form.saleDiscountType || "percent"}
-                      onChange={(e) => set("saleDiscountType", e.target.value)}
-                      className="field-input"
-                      style={{ width: "100%" }}
-                    >
+                    <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(180,200,240,0.6)", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>Discount Type</div>
+                    <select value={form.saleDiscountType || "percent"} onChange={(e) => set("saleDiscountType", e.target.value)} className="field-input" style={{ width: "100%" }}>
                       <option value="percent">Percent Off (%)</option>
                       <option value="dollar">Dollar Off ($)</option>
                     </select>
                   </div>
                   <Field
                     label={form.saleDiscountType === "dollar" ? "Discount Amount ($)" : "Discount Amount (%)"}
-                    value={form.saleDiscount}
-                    onChange={(v) => set("saleDiscount", v)}
-                    type="number"
+                    value={form.saleDiscount} onChange={(v) => set("saleDiscount", v)} type="number"
                     placeholder={form.saleDiscountType === "dollar" ? "e.g. 500" : "e.g. 20"}
                   />
                 </Grid>
-
-                <Field
-                  label="Sale Ends On"
-                  value={form.saleEndDate || ""}
-                  onChange={(v) => set("saleEndDate", v)}
-                  type="date"
-                />
-
+                <Field label="Sale Ends On" value={form.saleEndDate || ""} onChange={(v) => set("saleEndDate", v)} type="date" />
                 {salePreview && (
-                  <div style={{
-                    padding: "10px 14px", borderRadius: 10,
-                    background: "rgba(48,180,120,0.1)",
-                    border: "1px solid rgba(48,180,120,0.25)",
-                    fontSize: 13, color: "rgba(180,240,200,0.9)",
-                    display: "flex", flexDirection: "column", gap: 2,
-                  }}>
+                  <div style={{ padding: "10px 14px", borderRadius: 10, background: "rgba(48,180,120,0.1)", border: "1px solid rgba(48,180,120,0.25)", fontSize: 13, color: "rgba(180,240,200,0.9)", display: "flex", flexDirection: "column", gap: 2 }}>
                     <span style={{ fontWeight: 700 }}>Sale price: {salePreview}</span>
                     {endLabel && <span style={{ opacity: 0.75 }}>Ends {endLabel}</span>}
                   </div>
@@ -428,6 +522,7 @@ function KeySpecsSection({ form, setForm }) {
         <Field label="Max Temperature (°F)" value={form.temperatureRangeMax} onChange={(v) => set("temperatureRangeMax", v)} type="number" placeholder="e.g. 700" />
       </Grid>
       <Field label="Cooking Space (sq in)" value={form.primaryCookingArea} onChange={(v) => set("primaryCookingArea", v)} type="number" placeholder="e.g. 700" />
+      <Field label="Pizza Capacity (# of pizzas)" value={form.pizzaCapacity} onChange={(v) => set("pizzaCapacity", v)} type="number" placeholder="e.g. 2" />
       <SectionHeader title="Dimensions" />
       <Grid cols={3}>
         <Field label="Width (in)" value={form.productWidth ?? form.width} onChange={(v) => { set("productWidth", v); set("width", v); }} type="number" />
@@ -1037,12 +1132,15 @@ function ColorsSection({ variantId, brandId, colors, variantColors, assets, addC
       {/* Add color form */}
       {adding ? (
         <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 16px", border: "1px solid rgba(76,117,219,0.3)", borderRadius: 10, background: "rgba(76,117,219,0.06)" }}>
-          <input
-            type="color"
-            value={newHex}
-            onChange={(e) => setNewHex(e.target.value)}
-            style={{ width: 36, height: 36, borderRadius: 6, border: "1px solid rgba(255,255,255,0.15)", cursor: "pointer", padding: 2, background: "transparent" }}
-          />
+          <label style={{ position: "relative", display: "inline-block", width: 36, height: 36, cursor: "pointer", borderRadius: 6, overflow: "hidden", border: "1px solid rgba(255,255,255,0.2)", flexShrink: 0 }}>
+            <div style={{ width: "100%", height: "100%", background: newHex }} />
+            <input
+              type="color"
+              value={newHex}
+              onChange={(e) => setNewHex(e.target.value)}
+              style={{ position: "absolute", inset: 0, opacity: 0, width: "100%", height: "100%", cursor: "pointer" }}
+            />
+          </label>
           <input
             autoFocus
             value={newName}
@@ -1081,6 +1179,96 @@ const KEY_SPEC_DEFS = [
   { key: "country_of_origin", label: "Made In",             unit: "",      group: "Construction", variantField: "madeIn" },
 ];
 
+function ProductConfigSection({ form, setForm, variants, currentId }) {
+  const set = (key, val) => setForm((f) => ({ ...f, [key]: val }));
+
+  // All unique group IDs from other variants (for datalist suggestions)
+  const existingGroupIds = useMemo(() => {
+    const ids = new Set();
+    for (const v of variants || []) {
+      if (v.configGroupId && v.id !== currentId) ids.add(v.configGroupId);
+    }
+    return Array.from(ids).sort();
+  }, [variants, currentId]);
+
+  // Siblings — other variants with the same configGroupId
+  const siblings = useMemo(() => {
+    if (!form.configGroupId) return [];
+    return (variants || []).filter(
+      (v) => v.configGroupId === form.configGroupId && v.id !== currentId
+    );
+  }, [variants, form.configGroupId, currentId]);
+
+  return (
+    <div>
+      <div style={{ fontSize: 12, color: "rgba(180,200,240,0.45)", marginBottom: 16, lineHeight: 1.6 }}>
+        Group related configurations (e.g. Built-In and Cart of the same model) so customers see one card with a toggle instead of separate listings.
+      </div>
+
+      <div style={{ marginBottom: 14 }}>
+        <label style={fieldLabelStyle}>Config Group ID</label>
+        <input
+          list="config-group-datalist"
+          value={form.configGroupId || ""}
+          onChange={(e) => set("configGroupId", e.target.value)}
+          placeholder="e.g. delta_heat_32_gas  (shared across linked products)"
+          className="field-input"
+          style={{ width: "100%", boxSizing: "border-box", fontSize: 13 }}
+          autoComplete="off"
+        />
+        <datalist id="config-group-datalist">
+          {existingGroupIds.map((id) => <option key={id} value={id} />)}
+        </datalist>
+      </div>
+
+      <div style={{ marginBottom: 14 }}>
+        <label style={fieldLabelStyle}>Config Label</label>
+        <input
+          value={form.configLabel || ""}
+          onChange={(e) => set("configLabel", e.target.value)}
+          placeholder="e.g. Built-In, Cart, Built-In + Infrared Rotisserie"
+          className="field-input"
+          style={{ width: "100%", boxSizing: "border-box", fontSize: 13 }}
+        />
+        <div style={{ fontSize: 11, color: "rgba(180,200,240,0.35)", marginTop: 4 }}>
+          Shown on the toggle button in the app (e.g. "Built-In" or "Cart")
+        </div>
+      </div>
+
+      <CheckCard
+        label="Show in product listings (primary)"
+        icon="👁️"
+        checked={!!form.isConfigPrimary}
+        onChange={(v) => set("isConfigPrimary", v)}
+      />
+      <div style={{ fontSize: 11, color: "rgba(180,200,240,0.35)", marginTop: 6, paddingLeft: 4, marginBottom: 16 }}>
+        Only the primary product appears in browse/search. Others are reachable via the config toggle on the detail page.
+      </div>
+
+      {siblings.length > 0 && (
+        <div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "#7aa3f5", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 8 }}>
+            {siblings.length} other product{siblings.length !== 1 ? "s" : ""} in this group
+          </div>
+          {siblings.map((s) => (
+            <div key={s.id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 12px", borderRadius: 8, background: "rgba(76,117,219,0.07)", border: "1px solid rgba(76,117,219,0.15)", marginBottom: 6 }}>
+              <span style={{ fontSize: 13, fontWeight: 700, color: s.isConfigPrimary ? "#6ea8f7" : "#e7edf7", flex: 1 }}>
+                {s.configLabel || s.name || s.id}
+              </span>
+              {s.isConfigPrimary && (
+                <span style={{ fontSize: 10, fontWeight: 700, color: "#6ea8f7", background: "rgba(76,117,219,0.22)", padding: "2px 8px", borderRadius: 4 }}>
+                  PRIMARY
+                </span>
+              )}
+              <span style={{ fontSize: 11, color: "rgba(180,200,240,0.35)" }}>{s.id}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── BLANK_VARIANT ─────────────────────────────────────────────────────────────
 
 const BLANK_VARIANT = {
@@ -1091,7 +1279,7 @@ const BLANK_VARIANT = {
   productWidth: null, productDepth: null, productHeight: null, productLength: null, productWeight: null,
   width: null, depth: null, height: null, length: null, weight: null,
   temperatureRangeMin: null, temperatureRangeMax: null,
-  primaryCookingArea: null, secondaryCookingArea: null, totalCookingArea: null,
+  primaryCookingArea: null, secondaryCookingArea: null, totalCookingArea: null, pizzaCapacity: null,
   grateLevels: null, rackWidth: null, rackDepth: null,
   burgerCapacity: null, brisketCapacity: null, ribRackCapacity: null, porkButtCapacity: null, chickenCapacity: null,
   wifiEnabled: false, rotisserieCompatible: false, directFlameAccess: false, sideBurner: false, rearInfraredRotisserie: false,
@@ -1101,7 +1289,9 @@ const BLANK_VARIANT = {
   supportsCharcoal: false, supportsPellet: false, supportsWood: false,
   fuelConversionSupported: false, compatibleConversionKit: "",
   price: null, msrp: null, mapPrice: null, salePrice: null, priceSource: "",
+  pricingMatrix: [],
   saleEnabled: false, saleDiscountType: "percent", saleDiscount: null, saleEndDate: "",
+  configGroupId: "", configLabel: "", isConfigPrimary: false,
   shopifyProductId: "", shopifyVariantId: "", shopifyHandle: "",
   dataSource: "", lastUpdatedAt: "", status: "active", sortOrder: null, isActive: true,
   grateMaterial: "", bodyMaterial: "", madeIn: "", gasPricingMode: "", propanePrice: null, naturalGasPrice: null,
@@ -1303,7 +1493,7 @@ export default function ProductEditPage() {
           </SectionCard>
 
           <SectionCard title="Pricing">
-            <PricingSection form={form} setForm={setForm} />
+            <PricingSection form={form} setForm={setForm} colors={colors} variantColors={variantColors} variantId={id} />
           </SectionCard>
         </div>
       </div>
@@ -1349,6 +1539,11 @@ export default function ProductEditPage() {
             assetBaseUrl={assetBaseUrl}
           />
         )}
+      </SectionCard>
+
+      {/* Full-width: Product Group / Config Linking */}
+      <SectionCard title="Product Group">
+        <ProductConfigSection form={form} setForm={setForm} variants={variants} currentId={id} />
       </SectionCard>
 
       {/* Full-width: Advanced (collapsible) */}

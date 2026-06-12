@@ -291,7 +291,31 @@ function numericPrice(value) {
   return Number.isFinite(amount) ? amount : null;
 }
 
+function getMatrixMinPrice(variant) {
+  const matrix = Array.isArray(variant?.pricingMatrix) ? variant.pricingMatrix : [];
+  if (matrix.length === 0) return null;
+  const nums = matrix
+    .map((r) => parsePriceNumber(r.mapPrice ?? r.price ?? r.msrp))
+    .filter((n) => n !== null && n > 0);
+  return nums.length > 0 ? Math.min(...nums) : null;
+}
+
 function findVariantPrice(variant, specMap) {
+  const matrix = Array.isArray(variant?.pricingMatrix) ? variant.pricingMatrix : [];
+  if (matrix.length > 0) {
+    const base = matrix.find((r) => !r.fuelType && !r.colorId);
+    const nums = matrix
+      .map((r) => parsePriceNumber(r.mapPrice ?? r.price ?? r.msrp))
+      .filter((n) => n !== null && n > 0);
+    if (nums.length > 0) {
+      const min = Math.min(...nums);
+      const max = Math.max(...nums);
+      const usePrice = base ? (parsePriceNumber(base.mapPrice ?? base.price ?? base.msrp) ?? min) : min;
+      if (min !== max && !base) return `From ${formatPriceDisplay(min)}`;
+      return formatPriceDisplay(usePrice);
+    }
+  }
+
   const directPrice = pickFirst(
     variant?.price,
     variant?.msrp,
@@ -352,6 +376,9 @@ function formatPriceDisplay(value) {
 }
 
 function findVariantPriceNumber(variant, specMap) {
+  const matrixMin = getMatrixMinPrice(variant);
+  if (matrixMin !== null) return matrixMin;
+
   const directPrice = pickFirst(
     variant?.price,
     variant?.msrp,
@@ -403,11 +430,30 @@ function findVariantCookingArea(variant, specMap) {
   return null;
 }
 
-function findVariantSize(variant, specMap) {
+function isPizzaOven(variant, familyMap) {
+  const cat = normalizeText(
+    pickFirst(
+      variant?.cookingCategory, variant?.cooking_category,
+      variant?.category,
+      familyMap.get(getFamilyId(variant))?.cookingCategory,
+      familyMap.get(getFamilyId(variant))?.cooking_category,
+      ""
+    )
+  );
+  return cat.includes("pizza");
+}
+
+function findVariantSize(variant, specMap, familyMap) {
   const directSize = cleanLabel(
     pickFirst(variant?.size, variant?.sizeLabel, variant?.size_label)
   );
   if (directSize) return directSize;
+
+  // Pizza ovens: prefer pizza capacity over sq in
+  if (isPizzaOven(variant, familyMap || new Map())) {
+    const cap = parseInt(variant?.pizzaCapacity, 10);
+    if (!isNaN(cap) && cap > 0) return cap === 1 ? "1 Pizza" : `${cap} Pizzas`;
+  }
 
   const cookingArea = findVariantCookingArea(variant, specMap);
   if (cookingArea !== null) return `${cookingArea} sq in`;
@@ -727,6 +773,7 @@ function BrandResults() {
   const [selectedSize, setSelectedSize] = useState("All");
   const [selectedPrice, setSelectedPrice] = useState("All");
   const [selectedBrandFilter, setSelectedBrandFilter] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
   const [compareState, setCompareState] = useState(getState());
 
   const assetBaseUrl = import.meta.env.VITE_ASSET_BASE_URL || "";
@@ -852,6 +899,8 @@ function BrandResults() {
 
     return variants.filter((variant) => {
       if (!isActiveRecord(variant)) return false;
+      // Hide non-primary config variants — they're reachable via the config toggle on the detail page
+      if (variant.configGroupId && !variant.isConfigPrimary) return false;
 
       if (isAllBrands) return true;
 
@@ -913,7 +962,7 @@ function BrandResults() {
             ? "Propane / Natural Gas"
             : fuelOptions.join(" / "),
         installation: findVariantInstallation(variant, specMap),
-        size: findVariantSize(variant, specMap),
+        size: findVariantSize(variant, specMap, familyMap),
         cookingArea,
         category,
         saleInfo: computeActiveSale(variant),
@@ -1163,6 +1212,13 @@ function BrandResults() {
         }
       }
 
+      if (searchQuery.trim()) {
+        const q = normalizeText(searchQuery.trim());
+        const nameMatch = normalizeText(product.name).includes(q);
+        const brandMatch = normalizeText(product.brandName).includes(q);
+        if (!nameMatch && !brandMatch) return false;
+      }
+
       return true;
     });
   }, [
@@ -1176,6 +1232,7 @@ function BrandResults() {
     sizeBuckets,
     priceBuckets,
     location.state,
+    searchQuery,
   ]);
 
   const compareIds = compareState.items || [];
@@ -1243,6 +1300,19 @@ function BrandResults() {
         </header>
 
         <section className="brand-results-filters interactive-panel" aria-label="Product filters">
+          <div className="filter-search-wrap">
+            <input
+              type="search"
+              id="product-search"
+              className="filter-search-input"
+              placeholder="Search by name or model…"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              autoComplete="off"
+              autoCorrect="off"
+              spellCheck={false}
+            />
+          </div>
           <div className="filter-section">
             <div className="filter-group">
               <label className="filter-label" htmlFor="fuel-filter">
@@ -1346,6 +1416,7 @@ function BrandResults() {
                   setSelectedSize("All");
                   setSelectedPrice("All");
                   setSelectedBrandFilter("All");
+                  setSearchQuery("");
                 }}
               >
                 <span className="button-sheen" />
@@ -1761,6 +1832,39 @@ function BrandResults() {
           grid-template-columns: repeat(6, minmax(0, 1fr));
           gap: 16px;
           align-items: end;
+        }
+
+        .filter-search-wrap {
+          margin-bottom: 18px;
+        }
+
+        .filter-search-input {
+          width: 100%;
+          height: 56px;
+          padding: 0 20px 0 46px;
+          border-radius: 16px;
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          background: rgba(15, 22, 32, 0.82) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='rgba(180,200,230,0.55)' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 16px center;
+          color: #f4f7fc;
+          font-size: 1rem;
+          font-weight: 600;
+          outline: none;
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+          box-sizing: border-box;
+        }
+
+        .filter-search-input::placeholder {
+          color: rgba(180, 200, 230, 0.42);
+          font-weight: 500;
+        }
+
+        .filter-search-input:focus {
+          border-color: rgba(110, 145, 210, 0.4);
+        }
+
+        .filter-search-input::-webkit-search-cancel-button {
+          -webkit-appearance: none;
+          appearance: none;
         }
 
         .filter-group {
