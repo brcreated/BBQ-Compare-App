@@ -1290,14 +1290,6 @@ export default function ProductDetail() {
                   ) : null}
 
                   <div style={{ ...glassCardStyle, padding: 18 }}>
-                    {(() => {
-                      const desc = primaryConfig?.description || product?.description || family?.description;
-                      return desc ? (
-                        <p style={{ margin: "0 0 16px", lineHeight: 1.65, fontSize: 15, opacity: 0.88, color: "#e0e8f5" }}>
-                          {desc}
-                        </p>
-                      ) : null;
-                    })()}
                     <button
                       type="button"
                       onClick={handleCompareClick}
@@ -1327,41 +1319,18 @@ export default function ProductDetail() {
                 </div>
               </section>
 
-              {specGroups.length ? (
-                <section style={{ marginTop: 22, display: "grid", gap: 18 }}>
-                  {specGroups.map((group) => (
-                    <div key={group.groupName} className="interactive-panel" style={{ padding: 18 }}>
-                      <div
-                        style={{
-                          fontSize: 15,
-                          letterSpacing: "0.10em",
-                          textTransform: "uppercase",
-                          opacity: 0.72,
-                          marginBottom: 14,
-                        }}
-                      >
-                        {group.groupName}
-                      </div>
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 12 }}>
-                        {group.items.map((item) => (
-                          <div
-                            key={item.id}
-                            style={{
-                              borderRadius: 16,
-                              border: "1px solid rgba(117,163,255,0.10)",
-                              background: "rgba(255,255,255,0.03)",
-                              padding: 14,
-                            }}
-                          >
-                            <div style={{ fontSize: 12, opacity: 0.66, marginBottom: 6 }}>{item.label}</div>
-                            <div style={{ fontSize: 17, fontWeight: 700 }}>{item.value}</div>
-                          </div>
-                        ))}
-                      </div>
+              {(() => {
+                const desc = primaryConfig?.description || product?.description || family?.description;
+                return desc ? (
+                  <section style={{ marginTop: 22 }}>
+                    <div className="interactive-panel" style={{ padding: 22 }}>
+                      <p style={{ margin: 0, lineHeight: 1.7, fontSize: 15, color: "#dce8f5", opacity: 0.9 }}>
+                        {desc}
+                      </p>
                     </div>
-                  ))}
-                </section>
-              ) : null}
+                  </section>
+                ) : null;
+              })()}
 
               {similarProducts.length ? (
                 <section style={{ marginTop: 22 }}>
