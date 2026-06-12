@@ -24,13 +24,22 @@ function doReset() {
     localStorage.clear();
     sessionStorage.clear();
   } catch (_) {}
-  window.location.href = window.location.origin + "/";
+  // Append a timestamp so the URL always changes — guarantees a true
+  // full reload even when already sitting on "/".
+  window.location.replace("/?_r=" + Date.now());
 }
 
 function AppShell() {
   const lastActivityRef = useRef(Date.now());
   const [secondsLeft, setSecondsLeft] = useState(IDLE_MS / 1000);
   const isWarning = secondsLeft <= WARN_MS / 1000;
+
+  // Strip the reset param from the URL without a page reload
+  useEffect(() => {
+    if (window.location.search.includes("_r=")) {
+      window.history.replaceState(null, "", "/");
+    }
+  }, []);
 
   function doStay() {
     lastActivityRef.current = Date.now();

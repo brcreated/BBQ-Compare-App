@@ -250,46 +250,6 @@ export default function BrandNavigatorPage() {
       display: "flex",
       flexDirection: "column",
     }}>
-      {/* Top bar */}
-      <div style={{
-        padding: "24px 40px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        borderBottom: "1px solid rgba(255,255,255,0.05)",
-      }}>
-        <button
-          type="button"
-          onClick={() => navigate(-1)}
-          style={{
-            background: "rgba(255,255,255,0.05)",
-            border: "1px solid rgba(255,255,255,0.1)",
-            borderRadius: 12,
-            padding: "10px 18px",
-            color: "rgba(255,255,255,0.7)",
-            fontSize: 14,
-            fontWeight: 600,
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: 6,
-          }}
-        >
-          ← Back
-        </button>
-
-        {brandLogo ? (
-          <img src={brandLogo} alt={brand?.name} style={{ height: 38, objectFit: "contain", opacity: 0.9 }} />
-        ) : (
-          <div style={{ fontSize: 18, fontWeight: 800, color: "rgba(255,255,255,0.6)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-            {brand?.name || brandSlug}
-          </div>
-        )}
-
-        {/* Spacer to balance flex */}
-        <div style={{ width: 80 }} />
-      </div>
-
       {/* Brand name + breadcrumb */}
       <div style={{ padding: "56px 40px 0", textAlign: "center" }}>
         {crumbs.length > 0 && (
