@@ -1073,18 +1073,6 @@ export default function ComparePage() {
           overflow-y: visible;
           -webkit-overflow-scrolling: touch;
           padding-bottom: 8px;
-          scrollbar-width: thin;
-          scrollbar-color: rgba(117,163,255,0.25) transparent;
-        }
-        .compare-scroll-shell::-webkit-scrollbar {
-          height: 6px;
-        }
-        .compare-scroll-shell::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .compare-scroll-shell::-webkit-scrollbar-thumb {
-          background: rgba(117,163,255,0.25);
-          border-radius: 3px;
         }
 
         .compare-products-grid,
