@@ -1324,7 +1324,7 @@ export default function ProductDetail() {
                 return desc ? (
                   <section style={{ marginTop: 22 }}>
                     <div className="interactive-panel" style={{ padding: 22 }}>
-                      <p style={{ margin: 0, lineHeight: 1.7, fontSize: 15, color: "#dce8f5", opacity: 0.9 }}>
+                      <p style={{ margin: 0, lineHeight: 1.7, fontSize: 15, color: "#dce8f5", opacity: 0.9, whiteSpace: "pre-wrap" }}>
                         {desc}
                       </p>
                     </div>
