@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useDataStore, useToastStore } from "../store/dataStore";
 import Modal from "../components/shared/Modal";
+import * as api from "../services/api";
 
 const labelStyle = {
   display: "block", fontSize: 11, fontWeight: 700,
@@ -135,16 +136,139 @@ function FamilyForm({ initial, isNew, brands, onSave, onCancel }) {
   );
 }
 
+function FamilyPhotoModal({ family, assets, assetBaseUrl, addAsset, removeAsset, onClose }) {
+  const fileRef = useRef();
+  const [uploading, setUploading] = useState(false);
+  const { addToast } = useToastStore();
+
+  const familyAssets = assets
+    .filter((a) => a.entityType === "family" && a.entityId === family.id)
+    .sort((a, b) => (a.sortOrder ?? 999) - (b.sortOrder ?? 999));
+
+  const base = assetBaseUrl || "https://bbqcompareassets.brcreated.app/assets";
+
+  function imgUrl(asset) {
+    if (asset.url) return asset.url;
+    const fp = asset.filePath || asset.file_path || "";
+    return fp ? `${base}/${fp}` : null;
+  }
+
+  async function handleUpload(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const result = await api.uploadImage(file, family.brandId, family.id);
+      const nextOrder = familyAssets.length > 0
+        ? Math.max(...familyAssets.map((a) => a.sortOrder ?? 0)) + 1
+        : 0;
+      addAsset({
+        id: `family_${family.id}_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+        entityType: "family",
+        entityId: family.id,
+        imageType: familyAssets.length === 0 ? "hero" : "gallery",
+        fileName: result.filename,
+        filePath: result.filePath,
+        sortOrder: nextOrder,
+        isActive: true,
+      });
+      await useDataStore.getState().saveDataset("assets");
+      addToast("Photo uploaded");
+    } catch (err) {
+      addToast(err.message, "error");
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
+  }
+
+  async function handleDelete(asset) {
+    try {
+      if (asset.filePath) await api.deleteImage(asset.filePath);
+      removeAsset(asset.id);
+      await useDataStore.getState().saveDataset("assets");
+      addToast("Photo removed");
+    } catch (err) {
+      addToast(err.message, "error");
+    }
+  }
+
+  return (
+    <Modal title={`Photos — ${family.name}`} onClose={onClose} width={600}>
+      <input
+        type="file"
+        ref={fileRef}
+        accept="image/*"
+        onChange={handleUpload}
+        style={{ display: "none" }}
+      />
+
+      {familyAssets.length === 0 ? (
+        <div style={{
+          border: "2px dashed rgba(117,163,255,0.2)", borderRadius: 12,
+          padding: "40px 24px", textAlign: "center",
+          color: "rgba(180,200,240,0.45)", fontSize: 14, marginBottom: 20,
+        }}>
+          No photos yet
+        </div>
+      ) : (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: 12, marginBottom: 20 }}>
+          {familyAssets.map((asset) => (
+            <div key={asset.id} style={{ position: "relative" }}>
+              <div style={{
+                height: 130, borderRadius: 10, overflow: "hidden",
+                background: "rgba(9,13,20,0.8)", border: "1px solid rgba(117,163,255,0.15)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
+                {imgUrl(asset)
+                  ? <img src={imgUrl(asset)} alt={asset.fileName} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                  : <span style={{ color: "rgba(180,200,240,0.3)", fontSize: 28 }}>▦</span>
+                }
+              </div>
+              <div style={{ fontSize: 10, color: "rgba(180,200,240,0.35)", marginTop: 4, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                {asset.imageType === "hero" ? "🌟 Hero" : "Gallery"} · {asset.fileName}
+              </div>
+              <button
+                onClick={() => handleDelete(asset)}
+                style={{
+                  position: "absolute", top: 6, right: 6,
+                  width: 24, height: 24, borderRadius: "50%",
+                  border: "none", background: "rgba(248,81,73,0.85)",
+                  color: "#fff", fontSize: 11, fontWeight: 700,
+                  cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+                }}
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <button
+        onClick={() => fileRef.current?.click()}
+        disabled={uploading}
+        className="btn-primary"
+        style={{ width: "100%" }}
+      >
+        {uploading ? "Uploading…" : familyAssets.length === 0 ? "Upload Photo" : "Add Another Photo"}
+      </button>
+    </Modal>
+  );
+}
+
 export default function FamiliesPage() {
   const {
-    brands, families, variants, loading, loadAll,
+    brands, families, variants, assets, assetBaseUrl, loading, loadAll,
     addFamily, updateFamily, removeFamily,
+    addAsset, removeAsset,
     saveDataset,
   } = useDataStore();
   const { addToast } = useToastStore();
 
   const [modal, setModal] = useState(null); // null | "new" | family object
   const [confirmDelete, setConfirmDelete] = useState(null);
+  const [photoFamily, setPhotoFamily] = useState(null);
   const [search, setSearch] = useState("");
   const [brandFilter, setBrandFilter] = useState("");
 
@@ -333,6 +457,16 @@ export default function FamiliesPage() {
                         </div>
 
                         <button
+                          onClick={() => setPhotoFamily(fam)}
+                          className="btn-ghost"
+                          style={{ padding: "7px 14px", fontSize: 13 }}
+                        >
+                          {(() => {
+                            const count = assets.filter((a) => a.entityType === "family" && a.entityId === fam.id).length;
+                            return count > 0 ? `📷 ${count}` : "📷 Photos";
+                          })()}
+                        </button>
+                        <button
                           onClick={() => setModal(fam)}
                           className="btn-ghost"
                           style={{ padding: "7px 14px", fontSize: 13 }}
@@ -353,6 +487,18 @@ export default function FamiliesPage() {
               </div>
             ))}
         </div>
+      )}
+
+      {/* Photo modal */}
+      {photoFamily && (
+        <FamilyPhotoModal
+          family={photoFamily}
+          assets={assets}
+          assetBaseUrl={assetBaseUrl}
+          addAsset={addAsset}
+          removeAsset={removeAsset}
+          onClose={() => setPhotoFamily(null)}
+        />
       )}
 
       {/* Add / Edit modal */}
