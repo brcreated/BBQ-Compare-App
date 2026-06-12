@@ -920,8 +920,6 @@ function BrandResults() {
       if (!isActiveRecord(variant)) return false;
       // Hide non-primary config variants — they're reachable via the config toggle on the detail page
       if (variant.configGroupId && !variant.isConfigPrimary) return false;
-      // Hide discontinued products from listings (still visible on product page and in comparisons)
-      if (variant.isDiscontinued) return false;
 
       if (isAllBrands) return true;
 
@@ -1057,7 +1055,9 @@ function BrandResults() {
         size: findVariantSize(primary, specMap, familyMap),
         cookingArea,
         category,
+        isDiscontinued: !!primary.isDiscontinued,
         saleInfo: (() => {
+          if (primary.isDiscontinued) return null;
           const variantSale = computeActiveSale(primary);
           if (variantSale) return variantSale;
           return computeFamilySaleInfo(primary, familyMap, minPrice);
@@ -1585,7 +1585,11 @@ function BrandResults() {
 
                       <div className="product-bottom">
                         <div className="product-price">
-                          {product.saleInfo ? (
+                          {product.isDiscontinued ? (
+                            <span style={{ color: "#fca5a5", fontSize: "0.92rem", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" }}>
+                              Discontinued
+                            </span>
+                          ) : product.saleInfo ? (
                             <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
                               <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
                                 <span style={{ color: "#f87c3f", fontWeight: 900 }}>
