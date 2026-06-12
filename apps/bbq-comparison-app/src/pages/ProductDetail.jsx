@@ -982,7 +982,39 @@ export default function ProductDetail() {
         <div className="ambient-light ambient-light-2" />
         <div className="ambient-light ambient-light-3" />
 
-        <section className="brand-results-shell">
+        <section className="brand-results-shell" style={{ position: "relative" }}>
+          {/* Close button — returns to the brand page, avoiding pill-click history entries */}
+          <button
+            type="button"
+            aria-label="Close"
+            onClick={() => {
+              const slug = brand?.slug || brand?.brandSlug || brand?.brand_slug || brand?.id || product?.brandId;
+              navigate(slug ? `/brand/${slug}` : "/brands");
+            }}
+            style={{
+              position: "absolute",
+              top: 22,
+              right: 28,
+              zIndex: 10,
+              width: 48,
+              height: 48,
+              borderRadius: "50%",
+              border: "1px solid rgba(255,255,255,0.14)",
+              background: "rgba(255,255,255,0.07)",
+              backdropFilter: "blur(10px)",
+              color: "rgba(230,237,247,0.85)",
+              fontSize: 22,
+              fontWeight: 300,
+              lineHeight: 1,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            ✕
+          </button>
+
           {loading ? (
             <div style={{ ...glassCardStyle, padding: 32, textAlign: "center" }}>Loading product…</div>
           ) : error ? (

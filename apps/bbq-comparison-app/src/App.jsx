@@ -18,10 +18,17 @@ import { clearAll } from "./state/comparisonStore";
 const IDLE_MS = 300000;
 const WARN_MS = 60000;
 
+// Disable browser scroll restoration so our manual scrollTo calls always win
+if (typeof window !== "undefined" && "scrollRestoration" in window.history) {
+  window.history.scrollRestoration = "manual";
+}
+
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
   }, [pathname]);
   return null;
 }
