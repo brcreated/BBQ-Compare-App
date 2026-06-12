@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDataStore, useToastStore } from "../store/dataStore";
-import { useAuthStore } from "../store/authStore";
 import * as api from "../services/api";
-import Modal from "../components/shared/Modal";
 
 // ── Shared field components ──────────────────────────────────────────────────
 
@@ -74,9 +72,76 @@ function Grid({ children, cols = 2 }) {
   );
 }
 
-// ── Info tab ─────────────────────────────────────────────────────────────────
+// ── Layout helpers ───────────────────────────────────────────────────────────
 
-function InfoTab({ form, setForm, brands, families, onCreateFamily }) {
+function SectionCard({ title, children }) {
+  return (
+    <div style={{
+      background: "linear-gradient(180deg, rgba(15,23,36,0.98), rgba(9,14,24,0.98))",
+      border: "1px solid rgba(117,163,255,0.18)",
+      borderRadius: 14,
+      padding: "20px 24px",
+    }}>
+      <div style={{ fontSize: 15, fontWeight: 700, color: "#c4d4f5", marginBottom: 18, paddingBottom: 12, borderBottom: "1px solid rgba(117,163,255,0.1)" }}>
+        {title}
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function Collapsible({ title, children, defaultOpen = false }) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <div style={{ border: "1px solid rgba(117,163,255,0.12)", borderRadius: 14, overflow: "hidden" }}>
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        style={{
+          width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between",
+          padding: "16px 24px", background: "rgba(9,13,20,0.6)", border: "none",
+          color: "rgba(180,200,240,0.8)", fontSize: 14, fontWeight: 700, cursor: "pointer",
+        }}
+      >
+        {title}
+        <span style={{ fontSize: 11, opacity: 0.6 }}>{open ? "▲ Hide" : "▼ Show"}</span>
+      </button>
+      {open && (
+        <div style={{ padding: "20px 24px", background: "linear-gradient(180deg, rgba(15,23,36,0.98), rgba(9,14,24,0.98))" }}>
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function CheckCard({ label, checked, onChange, icon }) {
+  return (
+    <label style={{
+      display: "flex", alignItems: "center", gap: 10, padding: "12px 16px",
+      borderRadius: 10,
+      border: `1px solid ${checked ? "rgba(76,117,219,0.5)" : "rgba(117,163,255,0.12)"}`,
+      background: checked ? "rgba(76,117,219,0.12)" : "rgba(9,13,20,0.4)",
+      cursor: "pointer",
+    }}>
+      <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} style={{ display: "none" }} />
+      <span style={{ fontSize: 18 }}>{icon}</span>
+      <span style={{ fontSize: 13, fontWeight: 600, color: checked ? "#b0ccff" : "rgba(180,200,240,0.7)" }}>{label}</span>
+      <span style={{
+        marginLeft: "auto", width: 18, height: 18, borderRadius: 5, flexShrink: 0,
+        border: `2px solid ${checked ? "#4c75db" : "rgba(117,163,255,0.3)"}`,
+        background: checked ? "#4c75db" : "transparent",
+        display: "flex", alignItems: "center", justifyContent: "center",
+      }}>
+        {checked && <span style={{ color: "#fff", fontSize: 11 }}>✓</span>}
+      </span>
+    </label>
+  );
+}
+
+// ── Form sections ────────────────────────────────────────────────────────────
+
+function BasicInfoSection({ form, setForm, brands, families, onCreateFamily }) {
   const set = (key, val) => setForm((f) => ({ ...f, [key]: val }));
   const brandFamilies = families.filter((f) => f.brandId === form.brandId);
   const [creatingFamily, setCreatingFamily] = useState(false);
@@ -92,20 +157,23 @@ function InfoTab({ form, setForm, brands, families, onCreateFamily }) {
     setCreatingFamily(false);
   }
 
-  const FUEL_TYPES = ["Charcoal", "Gas", "Pellet", "Wood", "Electric", "Dual Fuel"].map((v) => ({ value: v, label: v }));
-  const CATEGORIES = ["offset_smoker", "pellet_grill", "gas_grill", "charcoal_grill", "kamado", "pizza_oven", "flat_top", "charcoal_smoker", "wood_smoker", "electric_smoker"].map((v) => ({ value: v, label: v }));
-  const SIZE_CLASSES = ["small", "medium", "large", "extra_large"].map((v) => ({ value: v, label: v }));
-  const PRICE_TIERS = ["budget", "mid_range", "premium", "luxury"].map((v) => ({ value: v, label: v }));
-  const SKILL_LEVELS = ["beginner", "intermediate", "advanced"].map((v) => ({ value: v, label: v }));
-  const PORTABILITY = ["stationary", "portable", "semi_portable"].map((v) => ({ value: v, label: v }));
-
   return (
     <div>
-      <SectionHeader title="Identification" />
       <Grid>
-        <Field label="Product ID (slug)" value={form.id} onChange={(v) => set("id", v)} disabled={form._isExisting} />
-        <Field label="Name" value={form.name} onChange={(v) => set("name", v)} />
-        <Select label="Brand" value={form.brandId} onChange={(v) => { set("brandId", v); set("familyId", ""); }} options={brands.map((b) => ({ value: b.id, label: b.name }))} />
+        <Select
+          label="Brand"
+          value={form.brandId}
+          onChange={(v) => { set("brandId", v); set("familyId", ""); }}
+          options={brands.map((b) => ({ value: b.id, label: b.name }))}
+        />
+        <Field
+          label="Product Name"
+          value={form.name}
+          onChange={(v) => {
+            const slug = v.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
+            setForm((f) => ({ ...f, name: v, ...(f._isExisting ? {} : { id: slug, slug }) }));
+          }}
+        />
         <div style={{ marginBottom: 14 }}>
           <label style={fieldLabelStyle}>Family</label>
           {creatingFamily ? (
@@ -144,10 +212,7 @@ function InfoTab({ form, setForm, brands, families, onCreateFamily }) {
             </div>
           )}
         </div>
-        <Field label="Model Number" value={form.modelNumber} onChange={(v) => set("modelNumber", v)} />
-        <Field label="SKU" value={form.sku} onChange={(v) => set("sku", v)} />
-        <Field label="UPC" value={form.upc} onChange={(v) => set("upc", v)} />
-        <Field label="Slug" value={form.slug} onChange={(v) => set("slug", v)} />
+        <Field label="Product ID" value={form.id} onChange={(v) => set("id", v)} disabled={form._isExisting} />
       </Grid>
       <div style={{ marginBottom: 14 }}>
         <label style={fieldLabelStyle}>Description</label>
@@ -159,42 +224,173 @@ function InfoTab({ form, setForm, brands, families, onCreateFamily }) {
           style={{ fontSize: 13, resize: "vertical" }}
         />
       </div>
+    </div>
+  );
+}
 
-      <SectionHeader title="Pricing" />
-      <Grid cols={4}>
-        <Field label="Price" value={form.price} onChange={(v) => set("price", v)} type="number" placeholder="0" />
-        <Field label="MSRP" value={form.msrp} onChange={(v) => set("msrp", v)} type="number" />
-        <Field label="MAP Price" value={form.mapPrice} onChange={(v) => set("mapPrice", v)} type="number" />
-        <Field label="Sale Price" value={form.salePrice} onChange={(v) => set("salePrice", v)} type="number" />
+function FuelInstallSection({ form, setForm }) {
+  function setWithInstallSync(key, val) {
+    setForm((f) => {
+      const next = { ...f, [key]: val };
+      const bi = key === "supportsBuiltIn" ? val : next.supportsBuiltIn;
+      const fs = key === "supportsFreestanding" ? val : next.supportsFreestanding;
+      next.installType = bi && fs ? "both" : bi ? "built_in" : fs ? "freestanding" : "";
+      return next;
+    });
+  }
+
+  const dualGas = form.supportsPropane && form.supportsNaturalGas;
+
+  return (
+    <div>
+      <SectionHeader title="Fuel Type — select all that apply" />
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10, marginBottom: 4 }}>
+        <CheckCard label="Pellet" icon="🪵" checked={!!form.supportsPellet} onChange={(v) => setWithInstallSync("supportsPellet", v)} />
+        <CheckCard label="Propane" icon="🔥" checked={!!form.supportsPropane} onChange={(v) => setWithInstallSync("supportsPropane", v)} />
+        <CheckCard label="Natural Gas" icon="⚡" checked={!!form.supportsNaturalGas} onChange={(v) => setWithInstallSync("supportsNaturalGas", v)} />
+        <CheckCard label="Charcoal" icon="⚫" checked={!!form.supportsCharcoal} onChange={(v) => setWithInstallSync("supportsCharcoal", v)} />
+      </div>
+
+      <SectionHeader title="Installation" />
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10 }}>
+        <CheckCard label="Freestanding" icon="🏠" checked={!!form.supportsFreestanding} onChange={(v) => setWithInstallSync("supportsFreestanding", v)} />
+        <CheckCard label="Built-In" icon="🧱" checked={!!form.supportsBuiltIn} onChange={(v) => setWithInstallSync("supportsBuiltIn", v)} />
+      </div>
+
+      {dualGas && (
+        <>
+          <SectionHeader title="Gas Pricing" />
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {[
+              { value: "same", label: "Same price for Propane & Natural Gas" },
+              { value: "different", label: "Different prices for Propane and Natural Gas" },
+            ].map((opt) => (
+              <label key={opt.value} style={{
+                display: "flex", alignItems: "center", gap: 10, padding: "12px 16px",
+                borderRadius: 10,
+                border: `1px solid ${form.gasPricingMode === opt.value ? "rgba(76,117,219,0.5)" : "rgba(117,163,255,0.12)"}`,
+                background: form.gasPricingMode === opt.value ? "rgba(76,117,219,0.12)" : "rgba(9,13,20,0.4)",
+                cursor: "pointer",
+              }}>
+                <input
+                  type="radio"
+                  name="gasPricingMode"
+                  value={opt.value}
+                  checked={form.gasPricingMode === opt.value}
+                  onChange={() => setForm((f) => ({ ...f, gasPricingMode: opt.value }))}
+                  style={{ accentColor: "#4c75db" }}
+                />
+                <span style={{ fontSize: 13, fontWeight: 600, color: form.gasPricingMode === opt.value ? "#b0ccff" : "rgba(180,200,240,0.7)" }}>
+                  {opt.label}
+                </span>
+              </label>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+function PricingSection({ form, setForm }) {
+  const set = (key, val) => setForm((f) => ({ ...f, [key]: val }));
+  const dualGasDiff = form.supportsPropane && form.supportsNaturalGas && form.gasPricingMode === "different";
+
+  return (
+    <div>
+      {dualGasDiff ? (
+        <Grid cols={2}>
+          <Field label="Propane Price ($)" value={form.propanePrice} onChange={(v) => set("propanePrice", v)} type="number" placeholder="0.00" />
+          <Field label="Natural Gas Price ($)" value={form.naturalGasPrice} onChange={(v) => set("naturalGasPrice", v)} type="number" placeholder="0.00" />
+        </Grid>
+      ) : (
+        <Field label="Price ($)" value={form.price} onChange={(v) => set("price", v)} type="number" placeholder="0.00" />
+      )}
+      <Grid cols={2}>
+        <Field label="MSRP ($)" value={form.msrp} onChange={(v) => set("msrp", v)} type="number" />
+        <Field label="Sale Price ($)" value={form.salePrice} onChange={(v) => set("salePrice", v)} type="number" />
       </Grid>
-      <Field label="Price Source" value={form.priceSource} onChange={(v) => set("priceSource", v)} />
+    </div>
+  );
+}
+
+function KeySpecsSection({ form, setForm }) {
+  const set = (key, val) => setForm((f) => ({ ...f, [key]: val }));
+
+  return (
+    <div>
+      <Grid cols={2}>
+        <Field label="Min Temperature (°F)" value={form.temperatureRangeMin} onChange={(v) => set("temperatureRangeMin", v)} type="number" placeholder="e.g. 180" />
+        <Field label="Max Temperature (°F)" value={form.temperatureRangeMax} onChange={(v) => set("temperatureRangeMax", v)} type="number" placeholder="e.g. 700" />
+      </Grid>
+      <Field label="Cooking Space (sq in)" value={form.primaryCookingArea} onChange={(v) => set("primaryCookingArea", v)} type="number" placeholder="e.g. 700" />
+      <SectionHeader title="Dimensions" />
+      <Grid cols={3}>
+        <Field label="Width (in)" value={form.productWidth ?? form.width} onChange={(v) => { set("productWidth", v); set("width", v); }} type="number" />
+        <Field label="Depth (in)" value={form.productDepth ?? form.depth} onChange={(v) => { set("productDepth", v); set("depth", v); }} type="number" />
+        <Field label="Height (in)" value={form.productHeight ?? form.height} onChange={(v) => { set("productHeight", v); set("height", v); }} type="number" />
+      </Grid>
+      <Grid cols={2}>
+        <Field label="Number of Grates" value={form.grateLevels} onChange={(v) => set("grateLevels", v)} type="number" placeholder="e.g. 2" />
+        <Field label="Grate Material" value={form.grateMaterial} onChange={(v) => set("grateMaterial", v)} placeholder="e.g. Stainless Steel, Cast Iron" />
+        <Field label="Body Material" value={form.bodyMaterial} onChange={(v) => set("bodyMaterial", v)} placeholder="e.g. 304 Stainless Steel" />
+        <Field label="Made In" value={form.madeIn} onChange={(v) => set("madeIn", v)} placeholder="e.g. USA" />
+    </div>
+  );
+}
+
+function AdvancedSection({ form, setForm }) {
+  const set = (key, val) => setForm((f) => ({ ...f, [key]: val }));
+
+  const CATEGORIES = ["offset_smoker", "pellet_grill", "gas_grill", "charcoal_grill", "kamado", "pizza_oven", "flat_top", "charcoal_smoker", "wood_smoker", "electric_smoker"].map((v) => ({ value: v, label: v }));
+  const FUEL_TYPES = ["Charcoal", "Gas", "Pellet", "Wood", "Electric", "Dual Fuel"].map((v) => ({ value: v, label: v }));
+  const SIZE_CLASSES = ["small", "medium", "large", "extra_large"].map((v) => ({ value: v, label: v }));
+  const PRICE_TIERS = ["budget", "mid_range", "premium", "luxury"].map((v) => ({ value: v, label: v }));
+  const SKILL_LEVELS = ["beginner", "intermediate", "advanced"].map((v) => ({ value: v, label: v }));
+  const PORTABILITY = ["stationary", "portable", "semi_portable"].map((v) => ({ value: v, label: v }));
+
+  return (
+    <div>
+      <SectionHeader title="Additional Identification" />
+      <Grid>
+        <Field label="Model Number" value={form.modelNumber} onChange={(v) => set("modelNumber", v)} />
+        <Field label="SKU" value={form.sku} onChange={(v) => set("sku", v)} />
+        <Field label="UPC" value={form.upc} onChange={(v) => set("upc", v)} />
+        <Field label="Slug" value={form.slug} onChange={(v) => set("slug", v)} />
+      </Grid>
+      <div style={{ marginBottom: 14 }}>
+        <label style={fieldLabelStyle}>Notes</label>
+        <textarea value={form.notes ?? ""} onChange={(e) => set("notes", e.target.value)} rows={2} className="field-input" style={{ fontSize: 13, resize: "vertical" }} />
+      </div>
 
       <SectionHeader title="Classification" />
       <Grid>
         <Select label="Category" value={form.category} onChange={(v) => set("category", v)} options={CATEGORIES} />
-        <Select label="Fuel Type" value={form.fuelType} onChange={(v) => set("fuelType", v)} options={FUEL_TYPES} />
-        <Select label="Install Type" value={form.installType} onChange={(v) => set("installType", v)} options={[{ value: "freestanding", label: "Freestanding" }, { value: "built_in", label: "Built-In" }, { value: "countertop", label: "Countertop" }]} />
+        <Select label="Fuel Type (legacy)" value={form.fuelType} onChange={(v) => set("fuelType", v)} options={FUEL_TYPES} />
         <Select label="Size Class" value={form.sizeClass} onChange={(v) => set("sizeClass", v)} options={SIZE_CLASSES} />
         <Select label="Price Tier" value={form.priceTier} onChange={(v) => set("priceTier", v)} options={PRICE_TIERS} />
         <Select label="Skill Level" value={form.skillLevel} onChange={(v) => set("skillLevel", v)} options={SKILL_LEVELS} />
         <Select label="Portability" value={form.portabilityClass} onChange={(v) => set("portabilityClass", v)} options={PORTABILITY} />
         <Select label="Use Case" value={form.useCase} onChange={(v) => set("useCase", v)} options={["grilling", "smoking", "baking", "multi"].map((v) => ({ value: v, label: v }))} />
+        <Field label="Cooking Category" value={form.cookingCategory} onChange={(v) => set("cookingCategory", v)} />
       </Grid>
 
-      <SectionHeader title="Dimensions & Weight" />
-      <Grid cols={4}>
-        <Field label="Width (in)" value={form.productWidth ?? form.width} onChange={(v) => { set("productWidth", v); set("width", v); }} type="number" />
-        <Field label="Depth (in)" value={form.productDepth ?? form.depth} onChange={(v) => { set("productDepth", v); set("depth", v); }} type="number" />
-        <Field label="Height (in)" value={form.productHeight ?? form.height} onChange={(v) => { set("productHeight", v); set("height", v); }} type="number" />
-        <Field label="Weight (lbs)" value={form.productWeight ?? form.weight} onChange={(v) => { set("productWeight", v); set("weight", v); }} type="number" />
+      <SectionHeader title="Pricing Detail" />
+      <Grid>
+        <Field label="MAP Price ($)" value={form.mapPrice} onChange={(v) => set("mapPrice", v)} type="number" />
+        <Field label="Price Source" value={form.priceSource} onChange={(v) => set("priceSource", v)} />
       </Grid>
 
-      <SectionHeader title="Cooking Area" />
+      <SectionHeader title="Additional Dimensions" />
       <Grid cols={3}>
-        <Field label="Primary (sq in)" value={form.primaryCookingArea} onChange={(v) => set("primaryCookingArea", v)} type="number" />
+        <Field label="Weight (lbs)" value={form.productWeight ?? form.weight} onChange={(v) => { set("productWeight", v); set("weight", v); }} type="number" />
+        <Field label="Length (in)" value={form.productLength ?? form.length} onChange={(v) => { set("productLength", v); set("length", v); }} type="number" />
+      </Grid>
+
+      <SectionHeader title="Additional Cooking Area" />
+      <Grid cols={3}>
         <Field label="Secondary (sq in)" value={form.secondaryCookingArea} onChange={(v) => set("secondaryCookingArea", v)} type="number" />
         <Field label="Total (sq in)" value={form.totalCookingArea} onChange={(v) => set("totalCookingArea", v)} type="number" />
-        <Field label="Grate Levels" value={form.grateLevels} onChange={(v) => set("grateLevels", v)} type="number" />
         <Field label="Rack Width (in)" value={form.rackWidth} onChange={(v) => set("rackWidth", v)} type="number" />
         <Field label="Rack Depth (in)" value={form.rackDepth} onChange={(v) => set("rackDepth", v)} type="number" />
       </Grid>
@@ -205,14 +401,8 @@ function InfoTab({ form, setForm, brands, families, onCreateFamily }) {
         <Field label="Briskets" value={form.brisketCapacity} onChange={(v) => set("brisketCapacity", v)} type="number" />
         <Field label="Rib Racks" value={form.ribRackCapacity} onChange={(v) => set("ribRackCapacity", v)} type="number" />
         <Field label="Pork Butts" value={form.porkButtCapacity} onChange={(v) => set("porkButtCapacity", v)} type="number" />
-      </Grid>
-      <Grid cols={4}>
         <Field label="Chickens" value={form.chickenCapacity} onChange={(v) => set("chickenCapacity", v)} type="number" />
-        <Field label="Temp Min (°F)" value={form.temperatureRangeMin} onChange={(v) => set("temperatureRangeMin", v)} type="number" />
-        <Field label="Temp Max (°F)" value={form.temperatureRangeMax} onChange={(v) => set("temperatureRangeMax", v)} type="number" />
         <Field label="Burner Count" value={form.burnerCount} onChange={(v) => set("burnerCount", v)} type="number" />
-      </Grid>
-      <Grid cols={3}>
         <Field label="Heat Zones" value={form.heatZones} onChange={(v) => set("heatZones", v)} type="number" />
         <Field label="Pellet Hopper (lbs)" value={form.pelletHopperCapacity} onChange={(v) => set("pelletHopperCapacity", v)} type="number" />
       </Grid>
@@ -223,24 +413,25 @@ function InfoTab({ form, setForm, brands, families, onCreateFamily }) {
         <Toggle label="Rotisserie Compatible" value={form.rotisserieCompatible} onChange={(v) => set("rotisserieCompatible", v)} />
         <Toggle label="Direct Flame Access" value={form.directFlameAccess} onChange={(v) => set("directFlameAccess", v)} />
         <Toggle label="Side Burner" value={form.sideBurner} onChange={(v) => set("sideBurner", v)} />
-        <Toggle label="Supports Built-In" value={form.supportsBuiltIn} onChange={(v) => set("supportsBuiltIn", v)} />
-        <Toggle label="Supports Freestanding" value={form.supportsFreestanding} onChange={(v) => set("supportsFreestanding", v)} />
-        <Toggle label="Supports Propane" value={form.supportsPropane} onChange={(v) => set("supportsPropane", v)} />
-        <Toggle label="Supports Natural Gas" value={form.supportsNaturalGas} onChange={(v) => set("supportsNaturalGas", v)} />
-        <Toggle label="Supports Charcoal" value={form.supportsCharcoal} onChange={(v) => set("supportsCharcoal", v)} />
-        <Toggle label="Supports Pellet" value={form.supportsPellet} onChange={(v) => set("supportsPellet", v)} />
+        <Toggle label="Rear Infrared Rotisserie" value={form.rearInfraredRotisserie} onChange={(v) => set("rearInfraredRotisserie", v)} />
         <Toggle label="Supports Wood" value={form.supportsWood} onChange={(v) => set("supportsWood", v)} />
         <Toggle label="Fuel Conversion Supported" value={form.fuelConversionSupported} onChange={(v) => set("fuelConversionSupported", v)} />
       </Grid>
       <Field label="Compatible Conversion Kit" value={form.compatibleConversionKit} onChange={(v) => set("compatibleConversionKit", v)} />
 
+      <SectionHeader title="Shopify" />
+      <Grid cols={3}>
+        <Field label="Shopify Product ID" value={form.shopifyProductId} onChange={(v) => set("shopifyProductId", v)} />
+        <Field label="Shopify Variant ID" value={form.shopifyVariantId} onChange={(v) => set("shopifyVariantId", v)} />
+        <Field label="Shopify Handle" value={form.shopifyHandle} onChange={(v) => set("shopifyHandle", v)} />
+      </Grid>
+
       <SectionHeader title="Status" />
       <Grid cols={2}>
         <Field label="Sort Order" value={form.sortOrder} onChange={(v) => set("sortOrder", v)} type="number" />
-        <div style={{ marginBottom: 14, paddingTop: 20 }}>
-          <Toggle label="Active" value={form.isActive !== false} onChange={(v) => set("isActive", v)} />
-        </div>
+        <Field label="Data Source" value={form.dataSource} onChange={(v) => set("dataSource", v)} />
       </Grid>
+      <Toggle label="Active" value={form.isActive !== false} onChange={(v) => set("isActive", v)} />
     </div>
   );
 }
@@ -498,7 +689,212 @@ function ImagesTab({ variantId, brandId, assets, addAsset, updateAsset, removeAs
   );
 }
 
-// ── Main page ────────────────────────────────────────────────────────────────
+// ── Colors section ───────────────────────────────────────────────────────────
+
+function ColorsSection({ variantId, brandId, colors, variantColors, assets, addColor, addVariantColor, removeColor, removeVariantColor, addAsset, removeAsset, assetBaseUrl }) {
+  const { addToast } = useToastStore();
+  const productVCs = variantColors.filter((vc) => vc.variantId === variantId);
+  const [adding, setAdding] = useState(false);
+  const [newName, setNewName] = useState("");
+  const [newHex, setNewHex] = useState("#8B4513");
+  const fileRefs = useRef({});
+
+  function handleAddColor() {
+    const name = newName.trim();
+    if (!name) return;
+    const colorId = `${variantId}_${name.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "")}`;
+    addColor({ id: colorId, name, hex: newHex, isActive: true });
+    addVariantColor({
+      id: `vc_${variantId}_${colorId}_${Date.now()}`,
+      variantId,
+      colorId,
+      isDefault: productVCs.length === 0,
+      sortOrder: productVCs.length + 1,
+      isActive: true,
+    });
+    setNewName("");
+    setNewHex("#8B4513");
+    setAdding(false);
+  }
+
+  async function handleUpload(e, colorId) {
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
+    try {
+      for (const file of files) {
+        const result = await api.uploadImage(file, brandId, variantId);
+        addAsset({
+          id: `${variantId}_${colorId}_${Date.now()}`,
+          entityType: "variant",
+          entityId: variantId,
+          variantId,
+          brandId: brandId || "",
+          colorId,
+          familyId: "",
+          imageType: "gallery",
+          fileName: result.filename,
+          filePath: result.filePath,
+          sourceUrl: "",
+          sourcePage: "",
+          altText: "",
+          sortOrder: 0,
+          isActive: true,
+        });
+      }
+      addToast(`${files.length} image${files.length > 1 ? "s" : ""} uploaded`);
+    } catch (err) {
+      addToast(err.message, "error");
+    } finally {
+      e.target.value = "";
+    }
+  }
+
+  async function handleDeleteAsset(asset) {
+    try {
+      if (asset.filePath) await api.deleteImage(asset.filePath);
+      removeAsset(asset.id);
+      addToast("Image removed");
+    } catch (err) {
+      addToast(err.message, "error");
+    }
+  }
+
+  function handleRemoveColor(vc) {
+    removeVariantColor(vc.id);
+    removeColor(vc.colorId);
+  }
+
+  const base = assetBaseUrl || "https://bbqcompareassets.brcreated.app/assets";
+  function imgUrl(asset) {
+    if (asset.url) return asset.url;
+    const fp = asset.filePath || asset.file_path || "";
+    return fp ? `${base}/${fp}` : null;
+  }
+
+  return (
+    <div>
+      {productVCs.length === 0 && !adding && (
+        <div style={{ color: "rgba(180,200,240,0.5)", fontSize: 13, marginBottom: 16 }}>
+          No color variants yet. Add one to upload color-specific photos.
+        </div>
+      )}
+
+      {productVCs.map((vc) => {
+        const color = colors.find((c) => c.id === vc.colorId);
+        if (!color) return null;
+        const colorAssets = assets.filter(
+          (a) => (a.variantId === variantId || a.entityId === variantId) && a.colorId === vc.colorId
+        );
+        return (
+          <div key={vc.id} style={{ marginBottom: 20, border: "1px solid rgba(117,163,255,0.14)", borderRadius: 12, overflow: "hidden" }}>
+            {/* Color header */}
+            <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 16px", background: "rgba(9,13,20,0.6)" }}>
+              <div style={{ width: 28, height: 28, borderRadius: 6, background: color.hex, border: "1px solid rgba(255,255,255,0.15)", flexShrink: 0 }} />
+              <span style={{ fontSize: 14, fontWeight: 700, color: "#e7edf7", flex: 1 }}>{color.name}</span>
+              <span style={{ fontSize: 11, color: "rgba(180,200,240,0.4)" }}>{color.hex}</span>
+              <input
+                type="file"
+                ref={(el) => { fileRefs.current[vc.colorId] = el; }}
+                accept="image/*"
+                multiple
+                onChange={(e) => handleUpload(e, vc.colorId)}
+                style={{ display: "none" }}
+              />
+              <button
+                onClick={() => fileRefs.current[vc.colorId]?.click()}
+                className="btn-ghost"
+                style={{ fontSize: 12, padding: "5px 12px" }}
+              >
+                + Photos
+              </button>
+              <button
+                onClick={() => handleRemoveColor(vc)}
+                style={{ background: "none", border: "none", color: "rgba(248,81,73,0.7)", fontSize: 16, cursor: "pointer", padding: "2px 6px" }}
+                title="Remove this color"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Color photos */}
+            {colorAssets.length > 0 ? (
+              <div style={{ padding: "12px 16px", display: "flex", flexWrap: "wrap", gap: 10 }}>
+                {colorAssets.map((asset) => {
+                  const url = imgUrl(asset);
+                  return (
+                    <div key={asset.id} style={{ position: "relative", width: 100, height: 100, borderRadius: 8, overflow: "hidden", border: "1px solid rgba(117,163,255,0.1)" }}>
+                      {url ? (
+                        <img src={url} alt={asset.altText || asset.fileName} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      ) : (
+                        <div style={{ width: "100%", height: "100%", background: "rgba(9,13,20,0.8)", display: "flex", alignItems: "center", justifyContent: "center", color: "rgba(180,200,240,0.3)", fontSize: 24 }}>▦</div>
+                      )}
+                      <button
+                        onClick={() => handleDeleteAsset(asset)}
+                        style={{ position: "absolute", top: 4, right: 4, width: 22, height: 22, borderRadius: 5, background: "rgba(0,0,0,0.7)", border: "none", color: "#f85149", fontSize: 13, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", lineHeight: 1 }}
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div style={{ padding: "12px 16px", color: "rgba(180,200,240,0.4)", fontSize: 12 }}>
+                No photos yet — click "+ Photos" to upload.
+              </div>
+            )}
+          </div>
+        );
+      })}
+
+      {/* Add color form */}
+      {adding ? (
+        <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 16px", border: "1px solid rgba(76,117,219,0.3)", borderRadius: 10, background: "rgba(76,117,219,0.06)" }}>
+          <input
+            type="color"
+            value={newHex}
+            onChange={(e) => setNewHex(e.target.value)}
+            style={{ width: 36, height: 36, borderRadius: 6, border: "1px solid rgba(255,255,255,0.15)", cursor: "pointer", padding: 2, background: "transparent" }}
+          />
+          <input
+            autoFocus
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+            onKeyDown={(e) => { if (e.key === "Enter") handleAddColor(); if (e.key === "Escape") setAdding(false); }}
+            placeholder="Color name (e.g. Matte Black)"
+            className="field-input"
+            style={{ fontSize: 13, flex: 1 }}
+          />
+          <button onClick={handleAddColor} className="btn-primary" style={{ fontSize: 13, padding: "8px 16px" }}>Add</button>
+          <button onClick={() => setAdding(false)} className="btn-ghost" style={{ fontSize: 13, padding: "8px 12px" }}>Cancel</button>
+        </div>
+      ) : (
+        <button onClick={() => setAdding(true)} className="btn-ghost" style={{ fontSize: 13, padding: "9px 18px" }}>
+          + Add Color Variant
+        </button>
+      )}
+    </div>
+  );
+}
+
+// ── Key spec definitions (synced to spec records on save) ────────────────────
+
+const KEY_SPEC_DEFS = [
+  { key: "min_temp",          label: "Minimum Temperature", unit: "°F",    group: "Temperature",  variantField: "temperatureRangeMin" },
+  { key: "max_temp",          label: "Maximum Temperature", unit: "°F",    group: "Temperature",  variantField: "temperatureRangeMax" },
+  { key: "cooking_space",     label: "Cooking Space",       unit: "sq in", group: "Cooking Area", variantField: "primaryCookingArea" },
+  { key: "overall_width",     label: "Width",               unit: "in",    group: "Dimensions",   variantField: "productWidth" },
+  { key: "overall_depth",     label: "Depth",               unit: "in",    group: "Dimensions",   variantField: "productDepth" },
+  { key: "overall_height",    label: "Height",              unit: "in",    group: "Dimensions",   variantField: "productHeight" },
+  { key: "grate_count",       label: "Number of Grates",    unit: "",      group: "Cooking Area", variantField: "grateLevels" },
+  { key: "grate_material",    label: "Grate Material",      unit: "",      group: "Construction", variantField: "grateMaterial" },
+  { key: "side_burner",              label: "Side Burner",                  unit: "", group: "Features", variantField: "sideBurner" },
+  { key: "rear_infrared_rotisserie", label: "Rear Infrared Rotisserie",     unit: "", group: "Features", variantField: "rearInfraredRotisserie" },
+  { key: "body_material",            label: "Body Material",                unit: "", group: "Construction", variantField: "bodyMaterial" },
+  { key: "country_of_origin", label: "Made In",             unit: "",      group: "Construction", variantField: "madeIn" },
+];
+
+// ── BLANK_VARIANT ─────────────────────────────────────────────────────────────
 
 const BLANK_VARIANT = {
   id: "", brandId: "", familyId: "", name: "", slug: "", modelNumber: "", sku: "", upc: "",
@@ -511,7 +907,7 @@ const BLANK_VARIANT = {
   primaryCookingArea: null, secondaryCookingArea: null, totalCookingArea: null,
   grateLevels: null, rackWidth: null, rackDepth: null,
   burgerCapacity: null, brisketCapacity: null, ribRackCapacity: null, porkButtCapacity: null, chickenCapacity: null,
-  wifiEnabled: false, rotisserieCompatible: false, directFlameAccess: false, sideBurner: false,
+  wifiEnabled: false, rotisserieCompatible: false, directFlameAccess: false, sideBurner: false, rearInfraredRotisserie: false,
   builtInCompatible: false, freestandingCompatible: true, supportsBuiltIn: false, supportsFreestanding: true,
   optionalBaseSupported: false, compatibleBase: "", burnerCount: null, heatZones: null,
   pelletHopperCapacity: null, supportsPropane: false, supportsNaturalGas: false,
@@ -520,7 +916,10 @@ const BLANK_VARIANT = {
   price: null, msrp: null, mapPrice: null, salePrice: null, priceSource: "",
   shopifyProductId: "", shopifyVariantId: "", shopifyHandle: "",
   dataSource: "", lastUpdatedAt: "", status: "active", sortOrder: null, isActive: true,
+  grateMaterial: "", bodyMaterial: "", madeIn: "", gasPricingMode: "", propanePrice: null, naturalGasPrice: null,
 };
+
+// ── Main page ────────────────────────────────────────────────────────────────
 
 export default function ProductEditPage() {
   const { id } = useParams();
@@ -528,19 +927,19 @@ export default function ProductEditPage() {
   const isNew = id === "new";
 
   const {
-    brands, families, variants, specs, assets, assetBaseUrl,
+    brands, families, variants, specs, assets, colors, variantColors, assetBaseUrl,
     loading, loadAll, addVariant, updateVariant,
     addFamily,
     addSpec, updateSpec, removeSpec,
     addAsset, updateAsset, removeAsset,
+    addColor, removeColor,
+    addVariantColor, removeVariantColor,
     saveDataset,
   } = useDataStore();
   const { addToast } = useToastStore();
-  const { username } = useAuthStore();
 
   const existing = variants.find((v) => v.id === id);
   const [form, setForm] = useState(null);
-  const [tab, setTab] = useState("info");
   const [saving, setSaving] = useState(false);
   const [lockStatus, setLockStatus] = useState(null);
   const renewIntervalRef = useRef(null);
@@ -554,7 +953,7 @@ export default function ProductEditPage() {
     if (isNew) {
       setForm({ ...BLANK_VARIANT, _isExisting: false });
     } else if (existing) {
-      setForm({ ...existing, _isExisting: true });
+      setForm({ ...BLANK_VARIANT, ...existing, _isExisting: true });
     }
   }, [variants, id]);
 
@@ -583,21 +982,60 @@ export default function ProductEditPage() {
     };
   }, [id, isNew]);
 
+  function syncKeySpecs(variantId, data) {
+    KEY_SPEC_DEFS.forEach((def, i) => {
+      const rawValue = data[def.variantField];
+      if (rawValue === null || rawValue === undefined || rawValue === "") return;
+      const value = String(rawValue);
+      const existing = specs.find(
+        (s) => (s.entityId === variantId || s.variantId === variantId) && s.key === def.key
+      );
+      if (existing) {
+        updateSpec(existing.id, { ...existing, value, isActive: true });
+      } else {
+        addSpec({
+          id: `spec_${def.key}_${variantId}`,
+          entityType: "variant",
+          entityId: variantId,
+          variantId,
+          key: def.key,
+          label: def.label,
+          value,
+          unit: def.unit,
+          group: def.group,
+          sortOrder: i + 1,
+          isActive: true,
+        });
+      }
+    });
+  }
+
   async function handleSave() {
     if (!form) return;
     setSaving(true);
     try {
       const { _isExisting, ...data } = form;
+
+      // Resolve price for dual-gas-different mode
+      if (data.supportsPropane && data.supportsNaturalGas && data.gasPricingMode === "different") {
+        if (!data.price && data.propanePrice) data.price = data.propanePrice;
+      }
+
       if (isNew) {
         if (!data.id) { addToast("Product ID is required", "error"); setSaving(false); return; }
         if (variants.find((v) => v.id === data.id)) { addToast("Product ID already exists", "error"); setSaving(false); return; }
         addVariant(data);
+        syncKeySpecs(data.id, data);
       } else {
         updateVariant(data.id, data);
+        syncKeySpecs(data.id, data);
       }
+
       await saveDataset("variants");
       await saveDataset("specs");
       await saveDataset("assets");
+      await saveDataset("colors");
+      await saveDataset("variantColors");
       addToast(isNew ? "Product created" : "Product saved");
       if (isNew) navigate(`/products/${data.id}`);
     } catch (e) {
@@ -610,27 +1048,17 @@ export default function ProductEditPage() {
   const isLocked = lockStatus && lockStatus !== "acquired";
   const canEdit = isNew || lockStatus === "acquired";
 
-  const TAB_STYLE = (active) => ({
-    padding: "9px 20px", borderRadius: "8px 8px 0 0",
-    border: "1px solid",
-    borderColor: active ? "rgba(117,163,255,0.18)" : "transparent",
-    borderBottom: active ? "1px solid rgba(9,14,24,0.98)" : "1px solid transparent",
-    background: active ? "linear-gradient(180deg, rgba(15,23,36,0.98), rgba(9,14,24,0.98))" : "transparent",
-    color: active ? "#f3f7ff" : "rgba(180,200,240,0.5)",
-    fontSize: 13, fontWeight: 600, cursor: "pointer", marginBottom: -1,
-  });
-
   if (loading || !form) {
     return <div style={{ color: "rgba(180,200,240,0.5)", fontSize: 14 }}>Loading…</div>;
   }
 
   return (
-    <div>
+    <div style={{ display: "grid", gap: 20, maxWidth: 900 }}>
       {/* Header */}
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 24 }}>
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
         <div>
-          <button onClick={() => navigate("/products")} style={{ background: "none", border: "none", color: "rgba(180,200,240,0.6)", fontSize: 13, cursor: "pointer", padding: 0, marginBottom: 8 }}>
-            ← Back to Products
+          <button onClick={() => navigate(-1)} style={{ background: "none", border: "none", color: "rgba(180,200,240,0.6)", fontSize: 13, cursor: "pointer", padding: 0, marginBottom: 8 }}>
+            ← Back
           </button>
           <h1 style={{ fontSize: 24, fontWeight: 800, letterSpacing: "-0.03em", margin: 0 }}>
             {isNew ? "New Product" : form.name || id}
@@ -643,50 +1071,41 @@ export default function ProductEditPage() {
           className="btn-primary"
           style={{ opacity: (saving || isLocked) ? 0.5 : 1, cursor: (saving || isLocked) ? "not-allowed" : "pointer" }}
         >
-          {saving ? "Saving…" : "Save"}
+          {saving ? "Saving…" : "Save Product"}
         </button>
       </div>
 
-      {/* Lock banner */}
+      {/* Lock banners */}
       {isLocked && (
-        <div style={{ background: "rgba(240,136,62,0.1)", border: "1px solid rgba(240,136,62,0.35)", borderRadius: 9, padding: "11px 16px", marginBottom: 18, fontSize: 13, color: "#f0883e", display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ fontSize: 16 }}>🔒</span>
+        <div style={{ background: "rgba(240,136,62,0.1)", border: "1px solid rgba(240,136,62,0.35)", borderRadius: 9, padding: "11px 16px", fontSize: 13, color: "#f0883e", display: "flex", alignItems: "center", gap: 8 }}>
+          <span>🔒</span>
           <span><strong>{lockStatus.lockedBy}</strong> is currently editing this product. Saving is disabled until they finish.</span>
         </div>
       )}
       {lockStatus === "acquired" && !isNew && (
-        <div style={{ background: "rgba(63,185,80,0.08)", border: "1px solid rgba(63,185,80,0.25)", borderRadius: 9, padding: "9px 16px", marginBottom: 18, fontSize: 12, color: "#3fb950", display: "flex", alignItems: "center", gap: 8 }}>
-          <span>✓</span> You have this product locked for editing. Others can view but not save.
+        <div style={{ background: "rgba(63,185,80,0.08)", border: "1px solid rgba(63,185,80,0.25)", borderRadius: 9, padding: "9px 16px", fontSize: 12, color: "#3fb950", display: "flex", alignItems: "center", gap: 8 }}>
+          <span>✓</span> You have this product locked for editing.
         </div>
       )}
 
-      {/* Tabs */}
-      <div style={{ display: "flex", gap: 4, marginBottom: 0, borderBottom: "1px solid rgba(117,163,255,0.1)" }}>
-        <button style={TAB_STYLE(tab === "info")} onClick={() => setTab("info")}>Info</button>
-        {!isNew && <button style={TAB_STYLE(tab === "specs")} onClick={() => setTab("specs")}>Specs</button>}
-        {!isNew && <button style={TAB_STYLE(tab === "images")} onClick={() => setTab("images")}>Images</button>}
-      </div>
+      {/* Section 1: Basic Info */}
+      <SectionCard title="Basic Info">
+        <BasicInfoSection
+          form={form}
+          setForm={setForm}
+          brands={brands}
+          families={families}
+          onCreateFamily={(family) => { addFamily(family); saveDataset("families"); }}
+        />
+      </SectionCard>
 
-      <div style={{ background: "linear-gradient(180deg, rgba(15,23,36,0.98), rgba(9,14,24,0.98))", border: "1px solid rgba(117,163,255,0.18)", borderTop: "none", borderRadius: "0 0 14px 14px", padding: "22px 24px" }}>
-        {tab === "info" && (
-          <InfoTab
-            form={form}
-            setForm={setForm}
-            brands={brands}
-            families={families}
-            onCreateFamily={(family) => { addFamily(family); saveDataset("families"); }}
-          />
-        )}
-        {tab === "specs" && !isNew && (
-          <SpecsTab
-            variantId={id}
-            specs={specs}
-            addSpec={addSpec}
-            updateSpec={updateSpec}
-            removeSpec={removeSpec}
-          />
-        )}
-        {tab === "images" && !isNew && (
+      {/* Section 2: Photos */}
+      <SectionCard title="Photos">
+        {isNew ? (
+          <div style={{ color: "rgba(180,200,240,0.5)", fontSize: 14, textAlign: "center", padding: "24px 0" }}>
+            Save the product first, then come back to add photos.
+          </div>
+        ) : (
           <ImagesTab
             variantId={id}
             brandId={form.brandId}
@@ -697,6 +1116,74 @@ export default function ProductEditPage() {
             assetBaseUrl={assetBaseUrl}
           />
         )}
+      </SectionCard>
+
+      {/* Section 3: Color Variants */}
+      <SectionCard title="Color Variants">
+        {isNew ? (
+          <div style={{ color: "rgba(180,200,240,0.5)", fontSize: 13, textAlign: "center", padding: "24px 0" }}>
+            Save the product first, then add color variants and photos.
+          </div>
+        ) : (
+          <ColorsSection
+            variantId={id}
+            brandId={form.brandId}
+            colors={colors}
+            variantColors={variantColors}
+            assets={assets}
+            addColor={addColor}
+            addVariantColor={addVariantColor}
+            removeColor={removeColor}
+            removeVariantColor={removeVariantColor}
+            addAsset={addAsset}
+            removeAsset={removeAsset}
+            assetBaseUrl={assetBaseUrl}
+          />
+        )}
+      </SectionCard>
+
+      {/* Section 4: Fuel & Installation */}
+      <SectionCard title="Fuel & Installation">
+        <FuelInstallSection form={form} setForm={setForm} />
+      </SectionCard>
+
+      {/* Section 4: Pricing */}
+      <SectionCard title="Pricing">
+        <PricingSection form={form} setForm={setForm} />
+      </SectionCard>
+
+      {/* Section 5: Key Specs */}
+      <SectionCard title="Key Specs">
+        <KeySpecsSection form={form} setForm={setForm} />
+      </SectionCard>
+
+      {/* Section 6: Advanced (collapsible) */}
+      <Collapsible title="Advanced">
+        <AdvancedSection form={form} setForm={setForm} />
+        {!isNew && (
+          <>
+            <SectionHeader title="All Specs" />
+            <SpecsTab
+              variantId={id}
+              specs={specs}
+              addSpec={addSpec}
+              updateSpec={updateSpec}
+              removeSpec={removeSpec}
+            />
+          </>
+        )}
+      </Collapsible>
+
+      {/* Bottom save button */}
+      <div style={{ display: "flex", justifyContent: "flex-end", paddingBottom: 40 }}>
+        <button
+          onClick={handleSave}
+          disabled={saving || isLocked}
+          className="btn-primary"
+          style={{ opacity: (saving || isLocked) ? 0.5 : 1, cursor: (saving || isLocked) ? "not-allowed" : "pointer", padding: "12px 32px", fontSize: 15 }}
+        >
+          {saving ? "Saving…" : "Save Product"}
+        </button>
       </div>
     </div>
   );

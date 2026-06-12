@@ -718,8 +718,6 @@ export default function ComparisonView({
   const compareReady = selectedEntries.length >= 2;
   const specGroups = useMemo(() => getAllSpecGroups(selectedEntries), [selectedEntries]);
   const visibleSpecGroups = useMemo(() => {
-    if (!showDifferencesOnly) return specGroups;
-
     return specGroups
       .map((group) => ({
         ...group,
@@ -729,7 +727,10 @@ export default function ComparisonView({
             return formatSpecValue(match);
           });
 
-          return valuesAreDifferent(values);
+          const hasAnyValue = values.some((v) => v !== null && v !== undefined && v !== "");
+          if (!hasAnyValue) return false;
+          if (showDifferencesOnly) return valuesAreDifferent(values);
+          return true;
         }),
       }))
       .filter((group) => group.rows.length > 0);
@@ -772,7 +773,7 @@ export default function ComparisonView({
         boxShadow: "0 24px 80px rgba(0,0,0,0.5)",
         backdropFilter: "blur(18px)",
         WebkitBackdropFilter: "blur(18px)",
-        overflow: "hidden",
+        overflow: "clip",
       }}
     >
       <div

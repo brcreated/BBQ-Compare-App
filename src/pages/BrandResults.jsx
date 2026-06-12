@@ -256,7 +256,7 @@ function formatPrice(value) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
-    maximumFractionDigits: 0,
+    maximumFractionDigits: amount % 1 === 0 ? 0 : 2,
   }).format(amount);
 }
 
@@ -266,6 +266,16 @@ function numericPrice(value) {
 }
 
 function findVariantPrice(variant, specMap) {
+  // Dual-gas pricing: propanePrice / naturalGasPrice set separately in admin
+  const propaneP = numericPrice(variant?.propanePrice);
+  const naturalGasP = numericPrice(variant?.naturalGasPrice);
+  if (propaneP !== null && naturalGasP !== null) {
+    if (propaneP === naturalGasP) return formatPrice(propaneP);
+    return `From ${formatPrice(Math.min(propaneP, naturalGasP))}`;
+  }
+  if (propaneP !== null) return formatPrice(propaneP);
+  if (naturalGasP !== null) return formatPrice(naturalGasP);
+
   const directPrice = pickFirst(
     variant?.price,
     variant?.msrp,
@@ -292,6 +302,13 @@ function findVariantPrice(variant, specMap) {
 }
 
 function findVariantPriceNumber(variant, specMap) {
+  // Dual-gas pricing: use the lower price for sorting/filtering
+  const propaneP = numericPrice(variant?.propanePrice);
+  const naturalGasP = numericPrice(variant?.naturalGasPrice);
+  if (propaneP !== null && naturalGasP !== null) return Math.min(propaneP, naturalGasP);
+  if (propaneP !== null) return propaneP;
+  if (naturalGasP !== null) return naturalGasP;
+
   const directPrice = pickFirst(
     variant?.price,
     variant?.msrp,
@@ -847,6 +864,7 @@ function BrandResults() {
         size: findVariantSize(variant, specMap),
         sizeBucket: getSizeBucket(cookingArea),
         category,
+        familyId: normalizeId(getFamilyId(variant) || ""),
       };
     });
   }, [filteredVariants, assets, assetBaseUrl, familyMap, brandMap, specMap, brands]);
@@ -1000,6 +1018,11 @@ function BrandResults() {
         if (normalizedInstallation.includes("free") && product.installation !== "Freestanding") {
           return false;
         }
+      }
+
+      const normalizedFamily = normalizeId(searchParams.get("family"));
+      if (normalizedFamily && product.familyId) {
+        if (product.familyId !== normalizedFamily) return false;
       }
 
       if (normalizedCategory) {

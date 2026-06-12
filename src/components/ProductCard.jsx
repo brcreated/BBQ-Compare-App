@@ -138,11 +138,27 @@ function formatCurrency(value) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
-    maximumFractionDigits: 0,
+    maximumFractionDigits: numeric % 1 === 0 ? 0 : 2,
   }).format(numeric);
 }
 
 function getPricingData(variant) {
+  // Dual-gas pricing: show the lower price as "From $X"
+  const propaneP = parsePriceNumber(variant?.propanePrice);
+  const naturalGasP = parsePriceNumber(variant?.naturalGasPrice);
+  if (propaneP !== null && naturalGasP !== null) {
+    const lower = Math.min(propaneP, naturalGasP);
+    const higher = Math.max(propaneP, naturalGasP);
+    return {
+      label: propaneP === naturalGasP ? "Starting At" : "From",
+      primary: formatCurrency(lower),
+      secondary: propaneP !== naturalGasP ? formatCurrency(higher) : "",
+      savings: "",
+    };
+  }
+  if (propaneP !== null) return { label: "Starting At", primary: formatCurrency(propaneP), secondary: "", savings: "" };
+  if (naturalGasP !== null) return { label: "Starting At", primary: formatCurrency(naturalGasP), secondary: "", savings: "" };
+
   const sale = parsePriceNumber(variant?.sale_price);
   const map = parsePriceNumber(variant?.map_price);
   const price = parsePriceNumber(variant?.price);

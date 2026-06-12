@@ -118,7 +118,7 @@ function formatCurrency(value) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
-    maximumFractionDigits: 0,
+    maximumFractionDigits: numeric % 1 === 0 ? 0 : 2,
   }).format(numeric);
 }
 
@@ -217,6 +217,16 @@ function formatDisplayValue(label, value) {
 }
 
 function findPrice(product, specs) {
+  // Dual-gas pricing: show lower price as "From $X"
+  const propaneP = toNumber(product?.propanePrice);
+  const naturalGasP = toNumber(product?.naturalGasPrice);
+  if (propaneP && naturalGasP) {
+    if (propaneP === naturalGasP) return formatCurrency(propaneP);
+    return `From ${formatCurrency(Math.min(propaneP, naturalGasP))}`;
+  }
+  if (propaneP) return formatCurrency(propaneP);
+  if (naturalGasP) return formatCurrency(naturalGasP);
+
   const direct =
     product?.salePrice ||
     product?.sale_price ||
@@ -1021,9 +1031,27 @@ export default function ProductDetail() {
                 {product?.name || family?.name || "Product"}
               </h1>
 
-              <div style={{ marginTop: 16, fontSize: 26, fontWeight: 800, color: "#9fc3ff" }}>
-                {findPrice(product, productSpecs)}
-              </div>
+              {(() => {
+                const propaneP = toNumber(product?.propanePrice);
+                const naturalGasP = toNumber(product?.naturalGasPrice);
+                const hasDualDiff = propaneP && naturalGasP && propaneP !== naturalGasP;
+                return hasDualDiff ? (
+                  <div style={{ marginTop: 16, display: "flex", gap: 12, flexWrap: "wrap" }}>
+                    <div style={{ background: "rgba(117,163,255,0.1)", border: "1px solid rgba(117,163,255,0.2)", borderRadius: 12, padding: "8px 16px" }}>
+                      <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(180,200,240,0.6)", marginBottom: 2 }}>Propane</div>
+                      <div style={{ fontSize: 22, fontWeight: 800, color: "#9fc3ff" }}>{formatCurrency(propaneP)}</div>
+                    </div>
+                    <div style={{ background: "rgba(117,163,255,0.1)", border: "1px solid rgba(117,163,255,0.2)", borderRadius: 12, padding: "8px 16px" }}>
+                      <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(180,200,240,0.6)", marginBottom: 2 }}>Natural Gas</div>
+                      <div style={{ fontSize: 22, fontWeight: 800, color: "#9fc3ff" }}>{formatCurrency(naturalGasP)}</div>
+                    </div>
+                  </div>
+                ) : (
+                  <div style={{ marginTop: 16, fontSize: 26, fontWeight: 800, color: "#9fc3ff" }}>
+                    {findPrice(product, productSpecs)}
+                  </div>
+                );
+              })()}
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 10 }}>

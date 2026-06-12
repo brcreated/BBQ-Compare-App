@@ -48,7 +48,7 @@ const fuelOptions = [
 
 export default function DiscoveryHub() {
   const navigate = useNavigate();
-  const { isIdleFading } = useIdleReset(60000, 5000);
+  const { isIdleFading } = useIdleReset({ timeout: 300000 });
 
   const brandScrollRef = useRef(null);
   const isResettingRef = useRef(false);

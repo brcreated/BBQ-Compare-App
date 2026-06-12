@@ -2,7 +2,7 @@
 import { useEffect, useRef } from "react";
 
 export default function useIdleReset({
-  timeout = 60000,
+  timeout = 300000,
   onReset,
   resetUrl = "/",
   enabled = true,

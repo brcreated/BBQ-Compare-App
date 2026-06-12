@@ -116,6 +116,23 @@ export default function PublishPage() {
         >
           {publishing ? "Publishing…" : "↑ Publish to Live Site"}
         </button>
+
+        <button
+          onClick={() => {
+            const data = { brands, families, variants, specs, assets, colors, variantColors };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `bbq-compare-backup-${new Date().toISOString().split("T")[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+          }}
+          className="btn-ghost"
+          style={{ padding: "12px 24px" }}
+        >
+          ↓ Export Backup
+        </button>
       </div>
 
       {/* Publish result */}

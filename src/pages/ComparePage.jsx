@@ -150,7 +150,7 @@ function toCurrency(value) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
-    maximumFractionDigits: 0,
+    maximumFractionDigits: num % 1 === 0 ? 0 : 2,
   }).format(num);
 }
 
@@ -550,10 +550,7 @@ function RemoveRowButton({ onRemove }) {
 export default function ComparePage() {
   const navigate = useNavigate();
 
-  useIdleReset(60000, 5000, () => {
-    clearAll();
-    navigate("/", { replace: true });
-  });
+  useIdleReset({ timeout: 300000, onReset: () => { clearAll(); navigate("/", { replace: true }); } });
 
   const { brands, variants, specs, assets, loading, error } = useCatalog();
 

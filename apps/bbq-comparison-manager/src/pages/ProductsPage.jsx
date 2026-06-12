@@ -6,7 +6,7 @@ import Modal from "../components/shared/Modal";
 
 export default function ProductsPage() {
   const navigate = useNavigate();
-  const { brands, families, variants, assets, loading, loadAll, removeVariant, saveDataset } = useDataStore();
+  const { brands, families, variants, assets, loading, loadAll, removeVariant, updateVariant, saveDataset } = useDataStore();
   const { addToast } = useToastStore();
   const [search, setSearch] = useState("");
   const [filterBrand, setFilterBrand] = useState("");
@@ -124,11 +124,34 @@ export default function ProductsPage() {
                   </div>
                 </div>
                 <div style={{ fontSize: 14, fontWeight: 600, color: "#e7edf7", marginRight: 8, whiteSpace: "nowrap" }}>
-                  {variant.price ? `$${Number(variant.price).toLocaleString()}` : "—"}
+                  {(() => {
+                    const p = variant.propanePrice ? Number(variant.propanePrice) : null;
+                    const ng = variant.naturalGasPrice ? Number(variant.naturalGasPrice) : null;
+                    if (p && ng && p !== ng) return `From $${Math.min(p, ng).toLocaleString()}`;
+                    const single = p || ng || (variant.price ? Number(variant.price) : null);
+                    return single ? `$${single.toLocaleString()}` : "—";
+                  })()}
                 </div>
-                <div style={{ fontSize: 12, color: variant.isActive !== false ? "#3fb950" : "#f85149", fontWeight: 600, marginRight: 8 }}>
+                <button
+                  title={variant.isActive !== false ? "Click to deactivate" : "Click to activate"}
+                  onClick={async () => {
+                    updateVariant(variant.id, { isActive: variant.isActive === false });
+                    await saveDataset("variants");
+                    addToast(variant.isActive === false ? `${variant.name} activated` : `${variant.name} deactivated`);
+                  }}
+                  style={{
+                    display: "flex", alignItems: "center", gap: 5, marginRight: 4,
+                    background: variant.isActive !== false ? "rgba(63,185,80,0.12)" : "rgba(248,81,73,0.1)",
+                    border: `1px solid ${variant.isActive !== false ? "rgba(63,185,80,0.3)" : "rgba(248,81,73,0.25)"}`,
+                    borderRadius: 6, padding: "4px 10px", cursor: "pointer",
+                    fontSize: 12, fontWeight: 600,
+                    color: variant.isActive !== false ? "#3fb950" : "#f85149",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  <span style={{ fontSize: 9, lineHeight: 1 }}>{variant.isActive !== false ? "●" : "○"}</span>
                   {variant.isActive !== false ? "Active" : "Inactive"}
-                </div>
+                </button>
                 {locks[variant.id] && (
                   <div style={{ fontSize: 11, color: "#f0883e", fontWeight: 600, background: "rgba(240,136,62,0.12)", border: "1px solid rgba(240,136,62,0.3)", borderRadius: 5, padding: "3px 8px", whiteSpace: "nowrap" }}>
                     ✎ {locks[variant.id].username}

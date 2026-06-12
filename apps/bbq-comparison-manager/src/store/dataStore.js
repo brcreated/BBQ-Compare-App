@@ -119,6 +119,34 @@ export const useDataStore = create((set, get) => ({
       ...markDirty(s, "assets"),
     })),
 
+  // ── Colors ───────────────────────────────────────────────
+  addColor: (color) =>
+    set((s) => ({ colors: [...s.colors, color], ...markDirty(s, "colors") })),
+  updateColor: (id, changes) =>
+    set((s) => ({
+      colors: s.colors.map((c) => (c.id === id ? { ...c, ...changes } : c)),
+      ...markDirty(s, "colors"),
+    })),
+  removeColor: (id) =>
+    set((s) => ({
+      colors: s.colors.filter((c) => c.id !== id),
+      ...markDirty(s, "colors"),
+    })),
+
+  // ── Variant Colors ───────────────────────────────────────
+  addVariantColor: (vc) =>
+    set((s) => ({ variantColors: [...s.variantColors, vc], ...markDirty(s, "variantColors") })),
+  updateVariantColor: (id, changes) =>
+    set((s) => ({
+      variantColors: s.variantColors.map((vc) => (vc.id === id ? { ...vc, ...changes } : vc)),
+      ...markDirty(s, "variantColors"),
+    })),
+  removeVariantColor: (id) =>
+    set((s) => ({
+      variantColors: s.variantColors.filter((vc) => vc.id !== id),
+      ...markDirty(s, "variantColors"),
+    })),
+
   // ── Persist ──────────────────────────────────────────────
   saveDataset: async (dataset) => {
     const state = get();
