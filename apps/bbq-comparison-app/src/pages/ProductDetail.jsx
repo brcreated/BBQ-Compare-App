@@ -506,37 +506,46 @@ function buildTopCards(variant, specs) {
   const fuel =
     normalizeText(variant?.fuelType) ||
     normalizeText(variant?.fuel_type) ||
-    normalizeText(variant?.defaultFuel) ||
     specValue(specs, ["fuel_type", "fuel", "primary_fuel"]);
 
-  const width = specValue(specs, ["overall_width", "width", "product_width", "cutout_width"]);
-
-  const installation =
-    normalizeText(variant?.installType) ||
-    normalizeText(variant?.install_type) ||
-    normalizeText(variant?.defaultInstallation) ||
-    specValue(specs, ["installation", "install_type", "default_installation"]);
+  // Dimensions: W × D × H from variant fields first, then specs
+  const wRaw = normalizeText(variant?.productWidth  || variant?.product_width)  || specValue(specs, ["product_width",  "overall_width",  "width"]);
+  const dRaw = normalizeText(variant?.productDepth  || variant?.product_depth)  || specValue(specs, ["product_depth",  "overall_depth",  "depth"]);
+  const hRaw = normalizeText(variant?.productHeight || variant?.product_height) || specValue(specs, ["product_height", "overall_height", "height"]);
+  const dimParts = [
+    wRaw ? `${formatNumber(wRaw)}"W` : "",
+    dRaw ? `${formatNumber(dRaw)}"D` : "",
+    hRaw ? `${formatNumber(hRaw)}"H` : "",
+  ].filter(Boolean);
+  const dimensions = dimParts.join(" × ");
 
   const temperatureRange = formatTemperatureRange(
-    specValue(specs, ["temperature_range_min", "min_temp", "minimum_temperature"]),
-    specValue(specs, ["temperature_range_max", "max_temp", "maximum_temperature"])
+    normalizeText(variant?.temperatureRangeMin || variant?.temperature_range_min) ||
+      specValue(specs, ["temperature_range_min", "min_temp", "minimum_temperature"]),
+    normalizeText(variant?.temperatureRangeMax || variant?.temperature_range_max) ||
+      specValue(specs, ["temperature_range_max", "max_temp", "maximum_temperature"])
   );
 
-  const primaryCookingArea = formatAreaValue(
-    specValue(specs, ["primary_cooking_area", "main_cooking_area", "primary_grilling_area"])
-  );
+  const cookingAreaRaw =
+    normalizeText(variant?.primaryCookingArea || variant?.primary_cooking_area) ||
+    specValue(specs, ["primary_cooking_area", "main_cooking_area", "primary_grilling_area"]);
+  const cookingSpace = cookingAreaRaw ? formatAreaValue(cookingAreaRaw) : "";
 
-  const madeInUsa = formatMadeInUsaValue(
-    specValue(specs, ["made_in_usa", "made_in_the_usa", "usa_made", "manufactured_in_usa"])
-  );
+  const gratesRaw =
+    normalizeText(variant?.numberOfGrates || variant?.number_of_grates || variant?.grateCount || variant?.grate_count) ||
+    specValue(specs, ["number_of_grates", "grate_count", "num_grates", "grates"]);
+
+  const madeIn =
+    normalizeText(variant?.madeIn || variant?.made_in || variant?.countryOfOrigin || variant?.country_of_origin) ||
+    specValue(specs, ["made_in", "made_in_usa", "country_of_origin", "manufactured_in"]);
 
   return [
-    { label: "Fuel", value: fuel ? normalizeFuelLabel(fuel) : "—" },
-    { label: "Width", value: width ? formatInches(width) || titleize(width) : "—" },
-    { label: "Installation", value: installation ? normalizeInstallationLabel(installation) : "—" },
-    { label: "Temp Range", value: temperatureRange || "—" },
-    { label: "Cooking Space", value: primaryCookingArea || "—" },
-    { label: "Made in USA", value: madeInUsa || "—" },
+    { label: "Fuel",             value: fuel        ? normalizeFuelLabel(fuel) : "—" },
+    { label: "Dimensions",       value: dimensions  || "—" },
+    { label: "Temp Range",       value: temperatureRange || "—" },
+    { label: "Cooking Space",    value: cookingSpace || "—" },
+    { label: "Number of Grates", value: gratesRaw   || "—" },
+    { label: "Made In",          value: madeIn      || "—" },
   ];
 }
 
