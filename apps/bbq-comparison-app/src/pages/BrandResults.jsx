@@ -259,6 +259,33 @@ function formatPrice(value) {
   }).format(amount);
 }
 
+function computeActiveSale(variant) {
+  if (!variant?.saleEnabled) return null;
+  const endDate = variant?.saleEndDate;
+  if (endDate && new Date(endDate + "T23:59:59") < new Date()) return null;
+  const base =
+    numericPrice(variant?.price) ??
+    numericPrice(variant?.msrp) ??
+    numericPrice(variant?.map_price);
+  if (!base || base <= 0) return null;
+  const discountType = variant?.saleDiscountType || "percent";
+  const discountVal = parseFloat(variant?.saleDiscount || 0);
+  if (!discountVal || discountVal <= 0) return null;
+  const saleAmt = discountType === "dollar" ? base - discountVal : base * (1 - discountVal / 100);
+  if (saleAmt <= 0) return null;
+  const savingsLabel =
+    discountType === "dollar" ? `Save ${formatPrice(discountVal)}` : `Save ${discountVal}%`;
+  const endsLabel = endDate
+    ? new Date(endDate + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" })
+    : null;
+  return {
+    salePrice: Math.round(saleAmt),
+    originalPrice: base,
+    savingsLabel,
+    endsLabel,
+  };
+}
+
 function numericPrice(value) {
   const amount = Number(String(value).replace(/[^0-9.]/g, ""));
   return Number.isFinite(amount) ? amount : null;
@@ -889,6 +916,7 @@ function BrandResults() {
         size: findVariantSize(variant, specMap),
         cookingArea,
         category,
+        saleInfo: computeActiveSale(variant),
       };
     });
   }, [filteredVariants, assets, assetBaseUrl, familyMap, brandMap, specMap, brands]);
@@ -1365,6 +1393,12 @@ function BrandResults() {
                       <div className="product-selected-badge">✓ In Compare</div>
                     ) : null}
 
+                    {product.saleInfo && !inCompare && (
+                      <div className="product-sale-ribbon">
+                        🏷️ {product.saleInfo.savingsLabel}
+                      </div>
+                    )}
+
                     <div className="product-image-wrap">
                       {product.imageUrl ? (
                         <img src={product.imageUrl} alt={product.name} />
@@ -1394,7 +1428,25 @@ function BrandResults() {
 
                       <div className="product-bottom">
                         <div className="product-price">
-                          {product.price || "View Details"}
+                          {product.saleInfo ? (
+                            <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                              <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+                                <span style={{ color: "#f87c3f", fontWeight: 900 }}>
+                                  {formatPrice(product.saleInfo.salePrice)}
+                                </span>
+                                <span style={{ fontSize: "0.82rem", fontWeight: 700, color: "#8fa0b8", textDecoration: "line-through" }}>
+                                  {formatPrice(product.saleInfo.originalPrice)}
+                                </span>
+                              </div>
+                              {product.saleInfo.endsLabel && (
+                                <span style={{ fontSize: "0.68rem", fontWeight: 700, color: "rgba(250,160,80,0.8)", letterSpacing: "0.05em" }}>
+                                  ENDS {product.saleInfo.endsLabel.toUpperCase()}
+                                </span>
+                              )}
+                            </div>
+                          ) : (
+                            product.price || "View Details"
+                          )}
                         </div>
 
                         <button
@@ -2051,6 +2103,27 @@ function BrandResults() {
           letter-spacing: 0.08em;
           text-transform: uppercase;
           box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);
+          backdrop-filter: blur(8px);
+        }
+
+        .product-sale-ribbon {
+          position: absolute;
+          top: 14px;
+          left: 14px;
+          z-index: 3;
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+          padding: 5px 12px;
+          border-radius: 999px;
+          background: linear-gradient(135deg, rgba(240,100,40,0.92), rgba(200,60,20,0.88));
+          border: 1px solid rgba(255,140,80,0.4);
+          color: #fff;
+          font-size: 0.72rem;
+          font-weight: 900;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          box-shadow: 0 6px 18px rgba(220,80,20,0.35);
           backdrop-filter: blur(8px);
         }
 
