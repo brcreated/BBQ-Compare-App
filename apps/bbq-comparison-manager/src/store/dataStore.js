@@ -104,6 +104,18 @@ export const useDataStore = create((set, get) => ({
       specs: s.specs.filter((sp) => sp.id !== id),
       ...markDirty(s, "specs"),
     })),
+  clearProducts: () =>
+    set((s) => ({
+      variants: [],
+      specs: [],
+      assets: s.assets.filter((a) => {
+        const et = a.entityType || a.entity_type || "";
+        return et === "brand" || et === "family";
+      }),
+      ...markDirty(s, "variants"),
+      ...markDirty(s, "specs"),
+      ...markDirty(s, "assets"),
+    })),
 
   // ── Assets ───────────────────────────────────────────────
   addAsset: (asset) =>

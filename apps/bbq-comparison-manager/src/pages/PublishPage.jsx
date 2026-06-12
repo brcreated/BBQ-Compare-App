@@ -12,11 +12,12 @@ const DATASET_LABELS = {
 };
 
 export default function PublishPage() {
-  const { brands, families, variants, specs, assets, colors, variantColors, dirtyDatasets, lastPublishedAt, publish, saveAll } = useDataStore();
+  const { brands, families, variants, specs, assets, colors, variantColors, dirtyDatasets, lastPublishedAt, publish, saveAll, clearProducts } = useDataStore();
   const { addToast } = useToastStore();
   const [publishing, setPublishing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [publishResult, setPublishResult] = useState(null);
+  const [confirmClear, setConfirmClear] = useState(false);
 
   const counts = { brands: brands.length, families: families.length, variants: variants.length, specs: specs.length, assets: assets.length, colors: colors.length, variantColors: variantColors.length };
 
@@ -151,6 +152,58 @@ export default function PublishPage() {
           )}
         </div>
       )}
+
+      {/* Danger zone */}
+      <div style={{ border: "1px solid rgba(248,81,73,0.25)", borderRadius: 12, padding: "18px 22px", marginBottom: 24 }}>
+        <div style={{ fontSize: 11, fontWeight: 800, color: "rgba(248,81,73,0.7)", textTransform: "uppercase", letterSpacing: "0.14em", marginBottom: 10 }}>
+          Danger Zone
+        </div>
+        {!confirmClear ? (
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+            <div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: "#e7edf7" }}>Clear All Products</div>
+              <div style={{ fontSize: 13, color: "rgba(180,200,240,0.5)", marginTop: 3 }}>
+                Removes all {variants.length} products and their specs from the catalog. Brand logos and family data are kept. Export a backup first.
+              </div>
+            </div>
+            <button
+              onClick={() => setConfirmClear(true)}
+              style={{
+                padding: "10px 20px", borderRadius: 8, cursor: "pointer", whiteSpace: "nowrap",
+                background: "rgba(248,81,73,0.08)", border: "1px solid rgba(248,81,73,0.35)",
+                color: "#f85149", fontSize: 13, fontWeight: 700,
+              }}
+            >
+              Clear All Products…
+            </button>
+          </div>
+        ) : (
+          <div>
+            <div style={{ fontSize: 14, color: "#f85149", fontWeight: 700, marginBottom: 10 }}>
+              Are you sure? This will remove all {variants.length} products and {specs.length} spec records. This cannot be undone without re-publishing from a backup.
+            </div>
+            <div style={{ display: "flex", gap: 10 }}>
+              <button
+                onClick={() => {
+                  clearProducts();
+                  setConfirmClear(false);
+                  addToast("All products cleared — publish to push to live site");
+                }}
+                style={{
+                  padding: "10px 20px", borderRadius: 8, cursor: "pointer",
+                  background: "rgba(248,81,73,0.15)", border: "1px solid rgba(248,81,73,0.5)",
+                  color: "#f85149", fontSize: 13, fontWeight: 700,
+                }}
+              >
+                Yes, Clear Everything
+              </button>
+              <button onClick={() => setConfirmClear(false)} className="btn-ghost" style={{ padding: "10px 20px" }}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* How it works */}
       <div className="glass-card" style={{ padding: "18px 22px" }}>
