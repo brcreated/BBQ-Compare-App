@@ -38,8 +38,7 @@ const PAGE_FONT =
 const pageShellStyle = {
   minHeight: "100dvh",
   position: "relative",
-  overflowX: "hidden",
-  overflowY: "visible",
+  overflowX: "clip",
   background:
     "radial-gradient(circle at 18% 14%, rgba(76, 110, 168, 0.10), transparent 28%), radial-gradient(circle at 82% 88%, rgba(76, 110, 168, 0.08), transparent 32%), linear-gradient(180deg, #0a0d12 0%, #0f141b 48%, #090c11 100%)",
   color: "#f3f7ff",
