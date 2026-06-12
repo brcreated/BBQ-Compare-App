@@ -433,11 +433,17 @@ function findVariantInstallation(variant, specMap) {
   return "";
 }
 
-function getSizeBucket(area) {
-  if (area === null) return "Unknown";
-  if (area < 500) return "Small";
-  if (area < 900) return "Medium";
-  return "Large";
+function computeRangeBuckets(values, rounder, formatter) {
+  const sorted = values.filter((v) => v !== null && v > 0).sort((a, b) => a - b);
+  if (sorted.length < 2) return null;
+  const cut1 = rounder(sorted[Math.floor(sorted.length / 3)]);
+  const cut2 = rounder(sorted[Math.floor((sorted.length * 2) / 3)]);
+  if (cut1 >= cut2) return null;
+  return [
+    { label: `Under ${formatter(cut1)}`, min: null, max: cut1 },
+    { label: `${formatter(cut1)} – ${formatter(cut2)}`, min: cut1, max: cut2 },
+    { label: `${formatter(cut2)}+`, min: cut2, max: null },
+  ];
 }
 
 function findVariantFuelOptions(variant, specMap) {
@@ -881,7 +887,7 @@ function BrandResults() {
             : fuelOptions.join(" / "),
         installation: findVariantInstallation(variant, specMap),
         size: findVariantSize(variant, specMap),
-        sizeBucket: getSizeBucket(cookingArea),
+        cookingArea,
         category,
       };
     });
@@ -958,15 +964,35 @@ function BrandResults() {
     return values.length ? ["All", ...values] : ["All"];
   }, [productCards]);
 
-  const sizeOptions = useMemo(() => {
-    const ordered = ["Small", "Medium", "Large"];
-    const present = ordered.filter((value) =>
-      productCards.some((product) => product.sizeBucket === value)
+  const sizeBuckets = useMemo(() => {
+    const areas = productCards.map((p) => p.cookingArea).filter((v) => v !== null);
+    return computeRangeBuckets(
+      areas,
+      (v) => Math.round(v / 50) * 50,
+      (v) => `${v} sq in`
     );
-    return ["All", ...present];
   }, [productCards]);
 
-  const priceOptions = ["All", "Under $2,000", "$2,000–$4,999", "$5,000+"];
+  const sizeOptions = useMemo(
+    () => (sizeBuckets ? ["All", ...sizeBuckets.map((b) => b.label)] : ["All"]),
+    [sizeBuckets]
+  );
+
+  const priceBuckets = useMemo(() => {
+    const prices = productCards.map((p) => p.priceNumber).filter((v) => v !== null);
+    const fmt = (v) =>
+      new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0,
+      }).format(v);
+    return computeRangeBuckets(prices, (v) => Math.round(v / 500) * 500, fmt);
+  }, [productCards]);
+
+  const priceOptions = useMemo(
+    () => (priceBuckets ? ["All", ...priceBuckets.map((b) => b.label)] : ["All"]),
+    [priceBuckets]
+  );
 
   const visibleProducts = useMemo(() => {
     const quizResults = location.state?.quizResults || null;
@@ -1089,26 +1115,23 @@ function BrandResults() {
         return false;
       }
 
-      if (selectedSize !== "All" && product.sizeBucket !== selectedSize) {
-        return false;
+      if (selectedSize !== "All") {
+        const sizeBucket = sizeBuckets?.find((b) => b.label === selectedSize);
+        if (sizeBucket) {
+          const area = product.cookingArea;
+          if (area === null || area <= 0) return false;
+          if (sizeBucket.min !== null && area < sizeBucket.min) return false;
+          if (sizeBucket.max !== null && area >= sizeBucket.max) return false;
+        }
       }
 
       if (selectedPrice !== "All") {
-        if (product.priceNumber === null) return false;
-
-        if (selectedPrice === "Under $2,000" && !(product.priceNumber < 2000)) {
-          return false;
-        }
-
-        if (
-          selectedPrice === "$2,000–$4,999" &&
-          !(product.priceNumber >= 2000 && product.priceNumber < 5000)
-        ) {
-          return false;
-        }
-
-        if (selectedPrice === "$5,000+" && !(product.priceNumber >= 5000)) {
-          return false;
+        const priceBucket = priceBuckets?.find((b) => b.label === selectedPrice);
+        if (priceBucket) {
+          const price = product.priceNumber;
+          if (price === null || price <= 0) return false;
+          if (priceBucket.min !== null && price < priceBucket.min) return false;
+          if (priceBucket.max !== null && price >= priceBucket.max) return false;
         }
       }
 
@@ -1122,6 +1145,8 @@ function BrandResults() {
     selectedInstallation,
     selectedSize,
     selectedPrice,
+    sizeBuckets,
+    priceBuckets,
     location.state,
   ]);
 
