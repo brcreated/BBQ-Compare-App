@@ -84,6 +84,18 @@ function titleCaseWords(value) {
     .replace(/\b\w/g, (match) => match.toUpperCase());
 }
 
+const PRODUCT_TYPE_META = {
+  grill:       { label: "Grill",       bg: "rgba(43,88,190,0.22)",  border: "rgba(117,163,255,0.35)", color: "#b8d0ff" },
+  smoker:      { label: "Smoker",      bg: "rgba(180,80,0,0.22)",   border: "rgba(255,140,50,0.35)",  color: "#ffc080" },
+  griddle:     { label: "Griddle",     bg: "rgba(100,40,180,0.22)", border: "rgba(180,120,255,0.35)", color: "#d0a0ff" },
+  "pizza-oven":{ label: "Pizza Oven",  bg: "rgba(180,20,20,0.22)",  border: "rgba(255,80,60,0.35)",   color: "#ffb0a0" },
+};
+
+function getProductTypeMeta(variant) {
+  const raw = (variant?.productType || variant?.product_type || "").toLowerCase().trim();
+  return PRODUCT_TYPE_META[raw] || null;
+}
+
 function getCookingCategory(variant, family) {
   return titleCaseWords(
     variant?.cooking_category ||
@@ -444,6 +456,7 @@ function ProductCard({
   const cookingCategory = getCookingCategory(variant, family);
   const fuelType = getFuelType(variant, family);
   const installType = getInstallType(variant);
+  const productTypeMeta = getProductTypeMeta(variant);
 
   const metaChips = buildMetaChips(variant, family);
   const pricing = getPricingData(variant);
@@ -751,20 +764,36 @@ function ProductCard({
             gap: 10,
           }}
         >
-          {familyName ? (
-            <div
-              className="product-card__family"
-              style={{
-                color: "#f2b84b",
-                fontSize: 12,
-                fontWeight: 800,
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-              }}
-            >
-              {familyName}
-            </div>
-          ) : null}
+          <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+            {familyName ? (
+              <div
+                className="product-card__family"
+                style={{
+                  color: "#f2b84b",
+                  fontSize: 12,
+                  fontWeight: 800,
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                }}
+              >
+                {familyName}
+              </div>
+            ) : null}
+
+            {productTypeMeta && (
+              <span style={{
+                display: "inline-flex", alignItems: "center",
+                padding: "3px 10px", borderRadius: 999,
+                background: productTypeMeta.bg,
+                border: `1px solid ${productTypeMeta.border}`,
+                color: productTypeMeta.color,
+                fontSize: 11, fontWeight: 800,
+                letterSpacing: "0.07em", textTransform: "uppercase",
+              }}>
+                {productTypeMeta.label}
+              </span>
+            )}
+          </div>
 
           <div
             className="product-card__name"
@@ -1178,7 +1207,7 @@ function ProductCard({
             onPointerCancel={(event) => event.stopPropagation()}
             aria-pressed={isSelected}
             style={{
-              minHeight: 58,
+              minHeight: 64,
               borderRadius: 18,
               border: isSelected
                 ? "1px solid rgba(245,158,11,0.56)"

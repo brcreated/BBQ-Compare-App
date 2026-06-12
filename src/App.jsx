@@ -10,6 +10,7 @@ import BrandNavigatorPage from "./pages/BrandNavigatorPage";
 import ProductDetail from "./pages/ProductDetail";
 import ComparePage from "./pages/ComparePage";
 import CompareMiniBar from "./components/CompareMiniBar";
+import KioskHeader, { HEADER_H } from "./components/KioskHeader";
 import { CatalogProvider } from "./context/CatalogContext";
 import AboutPage from "./pages/AboutPage";
 import { clearAll } from "./state/comparisonStore";
@@ -23,7 +24,6 @@ function doReset() {
     localStorage.clear();
     sessionStorage.clear();
   } catch (_) {}
-  // Force a true hard reload — adding timestamp ensures browser treats it as new URL
   window.location.href = window.location.origin + "/";
 }
 
@@ -75,6 +75,13 @@ function AppShell() {
 
   return (
     <>
+      {/* Fixed top header */}
+      <KioskHeader
+        isWarning={isWarning}
+        secondsLeft={secondsLeft}
+        onStartOver={doReset}
+      />
+
       {/* Full-screen dim overlay — appears in last 60 seconds */}
       {isWarning && (
         <div
@@ -132,33 +139,6 @@ function AppShell() {
         </div>
       )}
 
-      {/* Start Over button — always visible bottom-right */}
-      <div style={{
-        position: "fixed", right: 20, bottom: 20, zIndex: 99999,
-        display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6,
-      }}>
-        <button
-          onClick={doReset}
-          style={{
-            background: isWarning
-              ? "linear-gradient(135deg, rgba(248,81,73,0.9), rgba(200,40,40,0.85))"
-              : "linear-gradient(135deg, rgba(15,22,36,0.92), rgba(9,14,24,0.95))",
-            border: isWarning ? "1px solid rgba(248,81,73,0.6)" : "1px solid rgba(117,163,255,0.2)",
-            color: isWarning ? "#fff" : "rgba(180,200,240,0.7)",
-            borderRadius: 14, padding: "12px 22px",
-            fontSize: 14, fontWeight: 700, cursor: "pointer",
-            boxShadow: isWarning
-              ? "0 8px 28px rgba(248,81,73,0.35)"
-              : "0 8px 28px rgba(0,0,0,0.4)",
-            backdropFilter: "blur(12px)",
-            transition: "all 250ms ease",
-            letterSpacing: "0.02em",
-          }}
-        >
-          ↺ Start Over
-        </button>
-      </div>
-
       <style>{`
         @keyframes pulseWarn {
           0%, 100% { opacity: 1; transform: scale(1); }
@@ -170,15 +150,18 @@ function AppShell() {
         }
       `}</style>
 
-      <Routes>
-        <Route path="/" element={<WelcomeScreen />} />
-        <Route path="/discover" element={<DiscoveryHub />} />
-        <Route path="/brands" element={<BrandSelection />} />
-        <Route path="/brand/:brandSlug" element={<BrandNavigatorPage />} />
-        <Route path="/product/:productId" element={<ProductDetail />} />
-        <Route path="/compare" element={<ComparePage />} />
-        <Route path="/about" element={<AboutPage />} />
-      </Routes>
+      {/* Page content — padded below the fixed header */}
+      <div style={{ paddingTop: HEADER_H }}>
+        <Routes>
+          <Route path="/" element={<WelcomeScreen />} />
+          <Route path="/discover" element={<DiscoveryHub />} />
+          <Route path="/brands" element={<BrandSelection />} />
+          <Route path="/brand/:brandSlug" element={<BrandNavigatorPage />} />
+          <Route path="/product/:productId" element={<ProductDetail />} />
+          <Route path="/compare" element={<ComparePage />} />
+          <Route path="/about" element={<AboutPage />} />
+        </Routes>
+      </div>
 
       <CompareMiniBar />
     </>

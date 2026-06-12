@@ -695,38 +695,27 @@ export default function ComparePage() {
 
   if (!hasProducts) {
     return (
-      <main style={{ ...pageShellStyle, padding: 24, display: "grid", placeItems: "center" }}>
+      <main style={{ ...pageShellStyle, padding: 32, display: "grid", placeItems: "center" }}>
         <div
           style={{
             ...glassCardStyle,
-            width: "min(860px, 100%)",
-            padding: "42px 32px",
+            width: "min(900px, 100%)",
+            padding: "52px 40px",
             textAlign: "center",
           }}
         >
-          <div
-            style={{
-              fontSize: 14,
-              textTransform: "uppercase",
-              letterSpacing: "0.18em",
-              color: "#8da9e6",
-              fontWeight: 800,
-              marginBottom: 16,
-            }}
-          >
-            Compare Products
-          </div>
+          <div style={{ fontSize: 56, marginBottom: 20 }}>🔥</div>
 
           <div
             style={{
-              fontSize: "clamp(2rem, 3vw, 3.2rem)",
+              fontSize: "clamp(1.8rem, 3vw, 2.8rem)",
               fontWeight: 900,
-              letterSpacing: "-0.05em",
-              lineHeight: 1,
-              marginBottom: 16,
+              letterSpacing: "-0.04em",
+              lineHeight: 1.05,
+              marginBottom: 14,
             }}
           >
-            No grills selected yet
+            Nothing in compare yet
           </div>
 
           <div
@@ -734,21 +723,20 @@ export default function ComparePage() {
               fontSize: 17,
               color: "#c6d3f0",
               lineHeight: 1.7,
-              maxWidth: 620,
-              margin: "0 auto 30px",
+              maxWidth: 580,
+              margin: "0 auto 36px",
             }}
           >
-            Add products from the product detail page, then come back here for a
-            full side-by-side comparison with images, pricing, and grouped specs.
+            Browse our brands, tap any product, and hit <strong style={{ color: "#f2b84b" }}>Compare</strong> to
+            add it here. You can compare up to 4 products side by side.
           </div>
 
           <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
-            <button onClick={() => navigate("/discover")} style={{ ...primaryButtonStyle, minWidth: 180 }}>
-              Home
+            <button onClick={() => navigate("/brands")} style={{ ...primaryButtonStyle, minWidth: 200, minHeight: 56, fontSize: 16 }}>
+              Browse Brands
             </button>
-
-            <button onClick={() => navigate("/brands")} style={{ ...softButtonStyle, minWidth: 180 }}>
-              Brands
+            <button onClick={() => navigate("/discover")} style={{ ...softButtonStyle, minWidth: 160, minHeight: 56, fontSize: 16 }}>
+              Home
             </button>
           </div>
         </div>
@@ -759,77 +747,67 @@ export default function ComparePage() {
   return (
     <main style={pageShellStyle}>
       <div style={containerStyle}>
-        <section
-          style={{
+
+        {/* 1-item prompt banner */}
+        {products.length === 1 && (
+          <section style={{
             ...glassCardStyle,
-            padding: 18,
+            padding: "18px 24px",
             marginBottom: 18,
-          }}
-        >
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
-            <button onClick={() => navigate("/discover")} style={softButtonStyle}>
-              Home
+            border: "1px solid rgba(43,88,190,0.35)",
+            background: "linear-gradient(135deg, rgba(43,88,190,0.14), rgba(15,22,40,0.6))",
+            display: "flex", alignItems: "center",
+            justifyContent: "space-between", gap: 16, flexWrap: "wrap",
+          }}>
+            <div>
+              <div style={{ fontWeight: 800, fontSize: 15, color: "#d0e4ff" }}>
+                Add one more product to start comparing
+              </div>
+              <div style={{ fontSize: 13, color: "rgba(180,200,240,0.6)", marginTop: 4 }}>
+                Browse brands and tap Compare on any product to add it here
+              </div>
+            </div>
+            <button
+              onClick={() => navigate("/brands")}
+              style={{ ...primaryButtonStyle, minHeight: 48, padding: "0 24px", fontSize: 14, whiteSpace: "nowrap" }}
+            >
+              Browse Products
             </button>
-
-            <button onClick={() => navigate("/brands")} style={softButtonStyle}>
-              Go to Brands
-            </button>
-
-            <button onClick={() => navigate(-1)} style={softButtonStyle}>
-              Back
-            </button>
-          </div>
-        </section>
+          </section>
+        )}
 
         <section
           style={{
             ...glassCardStyle,
-            padding: 22,
+            padding: "18px 22px",
             marginBottom: 24,
           }}
         >
-          <div
-            style={{
-              display: "grid",
-              gap: 18,
-              justifyItems: "center",
-            }}
-          >
-            <h1
-  style={{
-    fontSize: "clamp(60px, 6vw, 80px)",
-    fontWeight: 600,
-    textAlign: "center",
-    marginBottom: "20px",
-    letterSpacing: "-0.02em",
-  }}
->
-  Compare Grills
-</h1>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+            <h1 style={{
+              fontSize: "clamp(28px, 4vw, 48px)",
+              fontWeight: 900,
+              letterSpacing: "-0.03em",
+              margin: 0,
+            }}>
+              Product Comparison
+            </h1>
 
-            <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
               <button
                 onClick={() => setShowDifferencesOnly((current) => !current)}
                 style={
                   showDifferencesOnly
-                    ? {
-                        ...softButtonStyle,
-                        border: "1px solid rgba(98,144,255,0.55)",
-                        background: "rgba(43,88,190,0.24)",
-                      }
+                    ? { ...softButtonStyle, border: "1px solid rgba(98,144,255,0.55)", background: "rgba(43,88,190,0.24)" }
                     : softButtonStyle
                 }
               >
-                {showDifferencesOnly ? "Showing Differences Only" : "Show Differences Only"}
+                {showDifferencesOnly ? "Differences Only ✓" : "Show Differences Only"}
               </button>
 
               <button
                 onClick={() => clearAll()}
-                style={{
-                  ...softButtonStyle,
-                  background: "rgba(83,20,26,0.34)",
-                  color: "#ffd5da",
-                }}
+                style={{ ...softButtonStyle, background: "rgba(83,20,26,0.34)", color: "#ffd5da" }}
               >
                 Clear All
               </button>
