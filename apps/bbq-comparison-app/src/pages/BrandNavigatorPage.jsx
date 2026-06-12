@@ -251,8 +251,8 @@ export default function BrandNavigatorPage() {
   const isLogos = currentStep.layout === "logos";
   const hasNavRows = isLogos && resolvedOptions.some((o) => familyNavRowMap[o.value] != null);
 
-  // Group options into rows (by navRow if set, otherwise one big group)
-  const optionRows = useMemo(() => {
+  // Group options into rows by navRow value (plain derivation — no hook needed)
+  const optionRows = (() => {
     if (!hasNavRows) return [resolvedOptions];
     const groups = {};
     resolvedOptions.forEach((o) => {
@@ -261,7 +261,7 @@ export default function BrandNavigatorPage() {
       groups[row].push(o);
     });
     return Object.keys(groups).sort((a, b) => Number(a) - Number(b)).map((k) => groups[k]);
-  }, [hasNavRows, resolvedOptions, familyNavRowMap]);
+  })();
 
   const cols = isLogos
     ? Math.min(resolvedOptions.length, 3)
