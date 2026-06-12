@@ -20,11 +20,8 @@ const WARN_MS = 60000;        // show countdown in last 60 seconds
 function doReset() {
   try {
     clearAll();
+    localStorage.clear();
     sessionStorage.clear();
-    localStorage.removeItem("bbq_compare_items");
-    localStorage.removeItem("bbqCompareItems");
-    localStorage.removeItem("compareItems");
-    localStorage.removeItem("bbq-comparison-store");
   } catch (_) {}
   window.location.replace("/");
 }
