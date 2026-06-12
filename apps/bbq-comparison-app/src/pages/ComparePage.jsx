@@ -9,7 +9,6 @@ import {
   clearAll,
 } from "../state/comparisonStore";
 import { useCatalog } from "../context/CatalogContext";
-import useIdleReset from "../hooks/useIdleReset";
 
 function formatPriceDisplay(value) {
   if (value === null || value === undefined) return "Request Pricing";
@@ -557,11 +556,6 @@ function CompareRemoveCard({ onRemove }) {
 
 export default function ComparePage() {
   const navigate = useNavigate();
-
-  useIdleReset(60000, 5000, () => {
-    clearAll();
-    navigate("/", { replace: true });
-  });
 
   const { brands, variants, specs, assets, loading, error } = useCatalog();
 

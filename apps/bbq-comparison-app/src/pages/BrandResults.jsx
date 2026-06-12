@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams, useSearchParams, useLocation } from "react-router-dom";
 import { useCatalog } from "../context/CatalogContext";
 import { getState, subscribe, removeItem, addItem, isSelected } from "../state/comparisonStore";
-import useIdleReset from "../hooks/useIdleReset";
 
 function normalizeId(value) {
   return String(value || "")
@@ -672,7 +671,6 @@ function getCollectionMeta({ routeBrandId, brandSlug, selectedBrand, searchParam
 function BrandResults() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isIdleFading } = useIdleReset(60000, 5000);
   const { brandSlug = "" } = useParams();
   const [searchParams] = useSearchParams();
   const routeBrandId = normalizeId(brandSlug);
@@ -1168,7 +1166,7 @@ function BrandResults() {
 
   return (
     <main className="brand-results-screen">
-      <div className={`brand-results-page-fade ${isIdleFading ? "is-idle-fading" : ""}`}>
+      <div className="brand-results-page-fade">
       <div className="ambient-light ambient-light-1" />
       <div className="ambient-light ambient-light-2" />
       <div className="ambient-light ambient-light-3" />

@@ -2,7 +2,6 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import useIdleReset from "../hooks/useIdleReset";
 import { useCatalog } from "../context/CatalogContext";
 import { addItem, removeItem, isSelected, getState, subscribe } from "../state/comparisonStore";
 
@@ -666,7 +665,6 @@ export default function ProductDetail() {
   const { productId, variantId } = useParams();
   const resolvedProductId = productId || variantId || "";
   const navigate = useNavigate();
-  const { isIdleFading } = useIdleReset(60000, 5000);
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -854,7 +852,7 @@ export default function ProductDetail() {
 
   return (
     <main className="brand-results-screen">
-      <div className={`brand-results-page-fade ${isIdleFading ? "is-idle-fading" : ""}`}>
+      <div className="brand-results-page-fade">
         <div className="ambient-light ambient-light-1" />
         <div className="ambient-light ambient-light-2" />
         <div className="ambient-light ambient-light-3" />

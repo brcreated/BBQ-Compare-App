@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useIdleReset from "../hooks/useIdleReset";
-import AboutModal from "../components/AboutModal";
 
 const brandLogos = [
   { id: "abs", name: "ABS", file: "abs-logo.png" },
@@ -47,9 +45,6 @@ const fuelOptions = [
 
 export default function DiscoveryHub() {
   const navigate = useNavigate();
-  const { isIdleFading } = useIdleReset(60000, 5000);
-  const [isAboutOpen, setIsAboutOpen] = useState(false);
-
   const brandScrollRef = useRef(null);
   const isResettingRef = useRef(false);
   const dragStateRef = useRef({
@@ -331,24 +326,10 @@ export default function DiscoveryHub() {
               View All
             </button>
 
-            <button
-              type="button"
-              className="split-action-button interactive-button secondary"
-              onClick={() => setIsAboutOpen(true)}
-            >
-              <span className="button-sheen" />
-              About
-            </button>
           </div>
         </section>
       </section>
 
-      <div
-        className={`idle-fade-overlay ${isIdleFading ? "idle-fade-overlay-visible" : ""}`}
-        aria-hidden="true"
-      />
-
-      <AboutModal isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
 
       <style>{`
         .discovery-hub-screen {
@@ -730,20 +711,6 @@ export default function DiscoveryHub() {
           box-shadow: 0 18px 38px rgba(0, 0, 0, 0.28);
         }
 
-        .idle-fade-overlay {
-          position: fixed;
-          inset: 0;
-          z-index: 999;
-          pointer-events: none;
-          opacity: 0;
-          background:
-            radial-gradient(circle at center, rgba(7, 10, 15, 0.12) 0%, rgba(7, 10, 15, 0.42) 55%, rgba(5, 8, 12, 0.78) 100%);
-          transition: opacity 1200ms ease;
-        }
-
-        .idle-fade-overlay-visible {
-          opacity: 1;
-        }
 
         @keyframes ambientFloat {
           0%, 100% {

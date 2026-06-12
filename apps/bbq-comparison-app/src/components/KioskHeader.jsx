@@ -5,15 +5,16 @@ import { getState, subscribe } from "../state/comparisonStore";
 export const HEADER_H = 68;
 
 const HOME_PATHS = new Set(["/", "/discover"]);
-const HEADER_HIDDEN_PATHS = new Set(["/"]);  // start screen gets no header
+const HEADER_HIDDEN_PATHS = new Set(["/"]);
 
 const navBtnStyle = {
   background: "none", border: "1px solid rgba(255,255,255,0.1)",
-  color: "rgba(180,200,240,0.8)",
-  borderRadius: 12, padding: "10px 20px",
-  fontSize: 14, fontWeight: 700, cursor: "pointer",
+  color: "rgba(180,200,240,0.85)",
+  borderRadius: 12, padding: "12px 24px",
+  fontSize: 15, fontWeight: 700, cursor: "pointer",
   transition: "all 200ms ease",
   whiteSpace: "nowrap",
+  minHeight: 44,
 };
 
 export default function KioskHeader({ isWarning, secondsLeft, onStartOver }) {
@@ -37,7 +38,7 @@ export default function KioskHeader({ isWarning, secondsLeft, onStartOver }) {
       height: HEADER_H, zIndex: 9990,
       display: "flex", alignItems: "center",
       justifyContent: "space-between",
-      padding: "0 16px",
+      padding: "0 20px",
       gap: 12,
       background: "rgba(6,9,16,0.94)",
       backdropFilter: "blur(20px)",
@@ -46,44 +47,25 @@ export default function KioskHeader({ isWarning, secondsLeft, onStartOver }) {
       boxShadow: "0 4px 24px rgba(0,0,0,0.32)",
     }}>
 
-      {/* Left: back (conditional) + logo */}
-      <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
+      {/* Left: back (conditional) */}
+      <div style={{ display: "flex", alignItems: "center", flexShrink: 0, minWidth: 100 }}>
         {showBack && (
           <button
             onClick={() => navigate(-1)}
             style={{
               ...navBtnStyle,
-              display: "flex", alignItems: "center", gap: 6,
-              padding: "10px 16px",
+              display: "flex", alignItems: "center", gap: 8,
+              padding: "12px 20px",
             }}
           >
-            <span style={{ fontSize: 16, lineHeight: 1 }}>←</span>
+            <span style={{ fontSize: 18, lineHeight: 1 }}>←</span>
             Back
           </button>
         )}
-
-        <button
-          onClick={() => navigate("/discover")}
-          style={{
-            background: "none", border: "none", cursor: "pointer",
-            display: "flex", alignItems: "center", gap: 10,
-            padding: "8px 4px",
-          }}
-        >
-          <div style={{
-            width: 36, height: 36, borderRadius: 10,
-            background: "linear-gradient(135deg, rgba(255,140,0,0.9), rgba(220,60,0,0.85))",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 18, boxShadow: "0 4px 14px rgba(255,100,0,0.35)",
-            flexShrink: 0,
-          }}>
-            🔥
-          </div>
-        </button>
       </div>
 
       {/* Center nav */}
-      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <button onClick={() => navigate("/brands")} style={navBtnStyle}>
           Browse Brands
         </button>
@@ -93,7 +75,7 @@ export default function KioskHeader({ isWarning, secondsLeft, onStartOver }) {
       </div>
 
       {/* Right: compare badge + start over */}
-      <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0, minWidth: 100, justifyContent: "flex-end" }}>
 
         {compareCount > 0 && (
           <button
@@ -106,19 +88,20 @@ export default function KioskHeader({ isWarning, secondsLeft, onStartOver }) {
               border: "1px solid rgba(117,163,255,0.35)",
               color: "#fff",
               borderRadius: 12,
-              padding: "10px 18px",
-              fontSize: 14, fontWeight: 700,
+              padding: "12px 20px",
+              fontSize: 15, fontWeight: 700,
               cursor: "pointer",
               boxShadow: "0 4px 16px rgba(43,88,190,0.3)",
               transition: "all 200ms ease",
               whiteSpace: "nowrap",
+              minHeight: 44,
             }}
           >
             <span style={{
               background: "rgba(255,255,255,0.22)",
-              borderRadius: 6, padding: "2px 7px",
-              fontSize: 13, fontWeight: 900,
-              minWidth: 20, textAlign: "center",
+              borderRadius: 6, padding: "2px 8px",
+              fontSize: 14, fontWeight: 900,
+              minWidth: 22, textAlign: "center",
             }}>
               {compareCount}
             </span>
@@ -137,18 +120,19 @@ export default function KioskHeader({ isWarning, secondsLeft, onStartOver }) {
               : "1px solid rgba(255,255,255,0.1)",
             color: isWarning ? "#fff" : "rgba(180,200,240,0.65)",
             borderRadius: 12,
-            padding: "10px 18px",
-            fontSize: 14, fontWeight: 700,
+            padding: "12px 20px",
+            fontSize: 15, fontWeight: 700,
             cursor: "pointer",
             display: "flex", alignItems: "center", gap: 8,
             transition: "all 250ms ease",
             boxShadow: isWarning ? "0 4px 18px rgba(248,81,73,0.4)" : "none",
-            minWidth: isWarning ? 168 : "auto",
+            minWidth: isWarning ? 178 : "auto",
+            minHeight: 44,
             justifyContent: "center",
             whiteSpace: "nowrap",
           }}
         >
-          <span style={{ fontSize: 16 }}>↺</span>
+          <span style={{ fontSize: 17 }}>↺</span>
           {isWarning ? `Returning in ${secondsLeft}s` : "Start Over"}
         </button>
       </div>
