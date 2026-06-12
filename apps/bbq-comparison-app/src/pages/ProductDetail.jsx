@@ -1091,46 +1091,48 @@ export default function ProductDetail() {
                       {product?.name || family?.name || "Product"}
                     </h1>
 
-                    {configGroup.length > 0 && (
-                      <div style={{ marginTop: 14, marginBottom: 4, display: "flex", gap: 8, flexWrap: "wrap" }}>
-                        {/* Current product tab */}
-                        <button
-                          style={{
-                            padding: "9px 18px", borderRadius: 999, cursor: "default",
-                            border: "1px solid rgba(245,158,11,0.55)",
-                            background: "rgba(245,158,11,0.14)",
-                            color: "#f5c06a", fontSize: 14, fontWeight: 700,
-                          }}
-                        >
-                          {product.configLabel || product.name}
-                        </button>
-                        {configGroup.map((cfg) => (
-                          <button
-                            key={cfg.id}
-                            onClick={() => navigate(`/product/${cfg.slug || cfg.id}`)}
-                            style={{
-                              padding: "9px 18px", borderRadius: 999, cursor: "pointer",
-                              border: "1px solid rgba(255,255,255,0.14)",
-                              background: "rgba(255,255,255,0.04)",
-                              color: "rgba(255,255,255,0.75)", fontSize: 14, fontWeight: 600,
-                              transition: "border-color 0.15s, background 0.15s, color 0.15s",
-                            }}
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.borderColor = "rgba(245,158,11,0.4)";
-                              e.currentTarget.style.background = "rgba(245,158,11,0.08)";
-                              e.currentTarget.style.color = "#f5c06a";
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.borderColor = "rgba(255,255,255,0.14)";
-                              e.currentTarget.style.background = "rgba(255,255,255,0.04)";
-                              e.currentTarget.style.color = "rgba(255,255,255,0.75)";
-                            }}
-                          >
-                            {cfg.configLabel || cfg.name}
-                          </button>
-                        ))}
-                      </div>
-                    )}
+                    {configGroup.length > 0 && (() => {
+                      // Stable order: primary first, then alphabetical — never reorders on click
+                      const allConfigs = [product, ...configGroup].sort((a, b) => {
+                        if (a.isConfigPrimary && !b.isConfigPrimary) return -1;
+                        if (!a.isConfigPrimary && b.isConfigPrimary) return 1;
+                        return (a.configLabel || a.name || "").localeCompare(b.configLabel || b.name || "");
+                      });
+                      return (
+                        <div style={{ marginTop: 14, marginBottom: 4, display: "flex", gap: 8, flexWrap: "wrap" }}>
+                          {allConfigs.map((cfg) => {
+                            const isCurrent = cfg.id === product.id;
+                            return (
+                              <button
+                                key={cfg.id}
+                                onClick={isCurrent ? undefined : () => navigate(`/product/${cfg.slug || cfg.id}`)}
+                                style={{
+                                  padding: "9px 18px", borderRadius: 999,
+                                  cursor: isCurrent ? "default" : "pointer",
+                                  border: isCurrent ? "1px solid rgba(245,158,11,0.55)" : "1px solid rgba(255,255,255,0.14)",
+                                  background: isCurrent ? "rgba(245,158,11,0.14)" : "rgba(255,255,255,0.04)",
+                                  color: isCurrent ? "#f5c06a" : "rgba(255,255,255,0.75)",
+                                  fontSize: 14, fontWeight: isCurrent ? 700 : 600,
+                                  transition: "border-color 0.15s, background 0.15s, color 0.15s",
+                                }}
+                                onMouseEnter={isCurrent ? undefined : (e) => {
+                                  e.currentTarget.style.borderColor = "rgba(245,158,11,0.4)";
+                                  e.currentTarget.style.background = "rgba(245,158,11,0.08)";
+                                  e.currentTarget.style.color = "#f5c06a";
+                                }}
+                                onMouseLeave={isCurrent ? undefined : (e) => {
+                                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.14)";
+                                  e.currentTarget.style.background = "rgba(255,255,255,0.04)";
+                                  e.currentTarget.style.color = "rgba(255,255,255,0.75)";
+                                }}
+                              >
+                                {cfg.configLabel || cfg.name}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      );
+                    })()}
 
                     {(() => {
                       const sale = computeActiveSale(product) || computeFamilySale(family, product);
