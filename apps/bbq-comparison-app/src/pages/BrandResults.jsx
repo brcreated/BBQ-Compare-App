@@ -946,6 +946,22 @@ function BrandResults() {
       const primary = variantGroup.find((v) => v.isConfigPrimary) || variantGroup[0];
       const variantId = getVariantId(primary);
 
+      // Expand group with config siblings that were stripped from filteredVariants
+      // (non-primary config variants) so allInstallations/allFuelOptions is complete
+      const seenIds = new Set(variantGroup.map((v) => getVariantId(v)));
+      const configGroupIds = new Set(variantGroup.map((v) => v.configGroupId).filter(Boolean));
+      const expandedGroup = [...variantGroup];
+      if (configGroupIds.size > 0) {
+        variants.forEach((v) => {
+          if (!isActiveRecord(v)) return;
+          if (seenIds.has(getVariantId(v))) return;
+          if (v.configGroupId && configGroupIds.has(v.configGroupId)) {
+            expandedGroup.push(v);
+            seenIds.add(getVariantId(v));
+          }
+        });
+      }
+
       const bestAsset = pickBestAssetForVariant(variantId, assets);
       const filePath = getAssetFilePath(bestAsset);
       let imageUrl = "";
@@ -960,7 +976,7 @@ function BrandResults() {
       }
 
       // Price range: collect all prices across every variant + their pricingMatrix rows
-      const allPriceNums = variantGroup.flatMap((v) => {
+      const allPriceNums = expandedGroup.flatMap((v) => {
         const nums = [];
         const direct = findVariantPriceNumber(v, specMap);
         if (direct && direct > 0) nums.push(direct);
@@ -995,7 +1011,7 @@ function BrandResults() {
       };
       const allFuelOptions = [
         ...new Set(
-          variantGroup.flatMap((v) => {
+          expandedGroup.flatMap((v) => {
             const opts = findVariantFuelOptions(v, specMap);
             const matrix = Array.isArray(v.pricingMatrix) ? v.pricingMatrix : [];
             const matrixFuels = matrix.map((r) => r.fuelType).filter(Boolean).map(normalizeMatrixFuel);
@@ -1004,9 +1020,9 @@ function BrandResults() {
         ),
       ].filter(Boolean);
 
-      // Union of install options across all variants in the family
+      // Union of install options across all variants in the family (including config siblings)
       const allInstallations = [
-        ...new Set(variantGroup.map((v) => findVariantInstallation(v, specMap)).filter(Boolean)),
+        ...new Set(expandedGroup.map((v) => findVariantInstallation(v, specMap)).filter(Boolean)),
       ];
 
       const cookingArea = findVariantCookingArea(primary, specMap);
@@ -1046,7 +1062,7 @@ function BrandResults() {
         })(),
       };
     });
-  }, [filteredVariants, assets, assetBaseUrl, familyMap, brandMap, specMap, brands]);
+  }, [filteredVariants, variants, assets, assetBaseUrl, familyMap, brandMap, specMap, brands]);
 
   const fuelOptions = useMemo(() => {
     const values = Array.from(

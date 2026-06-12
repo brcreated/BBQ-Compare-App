@@ -1,6 +1,6 @@
 // src/App.jsx
 import React, { useEffect, useRef, useState } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import useAppUpdateManager from "./hooks/useAppUpdateManager";
 import WelcomeScreen from "./pages/WelcomeScreen";
 import DiscoveryHub from "./pages/DiscoveryHub";
@@ -18,15 +18,6 @@ import { clearAll } from "./state/comparisonStore";
 const IDLE_MS = 300000;
 const WARN_MS = 60000;
 
-function doReset() {
-  try {
-    clearAll();
-    localStorage.clear();
-    sessionStorage.clear();
-  } catch (_) {}
-  window.location.replace("/?_r=" + Date.now());
-}
-
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -36,6 +27,16 @@ function ScrollToTop() {
 }
 
 function AppShell() {
+  const navigate = useNavigate();
+
+  function doReset() {
+    try {
+      clearAll();
+      sessionStorage.clear();
+    } catch (_) {}
+    navigate("/", { replace: true });
+  }
+
   const lastActivityRef = useRef(Date.now());
   const [secondsLeft, setSecondsLeft] = useState(IDLE_MS / 1000);
   const isWarning = secondsLeft <= WARN_MS / 1000;
@@ -53,12 +54,6 @@ function AppShell() {
     lastActivityRef.current = Date.now();
   }
 
-  // Strip reset param silently on mount
-  useEffect(() => {
-    if (window.location.search.includes("_r=")) {
-      window.history.replaceState(null, "", "/");
-    }
-  }, []);
 
   useEffect(() => {
     const markActivity = () => { lastActivityRef.current = Date.now(); };
