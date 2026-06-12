@@ -950,10 +950,10 @@ function BrandResults() {
   }, [variants, familyMap, routeBrandId]);
 
   const productCards = useMemo(() => {
-    // Group filteredVariants by familyId so each family shows as one card
+    // Group by configGroupId (fuel/config pairs share one card) or individual variantId
     const familyGroups = new Map();
     filteredVariants.forEach((variant) => {
-      const key = getFamilyId(variant) || getVariantId(variant);
+      const key = variant.configGroupId || getVariantId(variant);
       if (!familyGroups.has(key)) familyGroups.set(key, []);
       familyGroups.get(key).push(variant);
     });
