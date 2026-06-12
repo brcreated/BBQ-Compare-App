@@ -552,12 +552,16 @@ function SpecsTab({ variantId, specs, addSpec, updateSpec, removeSpec }) {
 // ── Images tab ───────────────────────────────────────────────────────────────
 
 function ImagesTab({ variantId, brandId, assets, addAsset, updateAsset, removeAsset, assetBaseUrl }) {
-  const variantAssets = assets
-    .filter((a) => a.variantId === variantId || a.entityId === variantId)
+  const allVariantAssets = assets.filter((a) => a.variantId === variantId || a.entityId === variantId);
+  const heroAsset = allVariantAssets.find((a) => a.imageType === "hero" || a.imageType === "main");
+  const galleryAssets = allVariantAssets
+    .filter((a) => a.imageType !== "hero" && a.imageType !== "main")
     .sort((a, b) => (a.sortOrder ?? 999) - (b.sortOrder ?? 999));
 
-  const fileRef = useRef();
-  const [uploading, setUploading] = useState(false);
+  const heroRef = useRef();
+  const galleryRef = useRef();
+  const [uploadingHero, setUploadingHero] = useState(false);
+  const [uploadingGallery, setUploadingGallery] = useState(false);
   const { addToast } = useToastStore();
 
   function imgUrl(asset) {
@@ -567,37 +571,63 @@ function ImagesTab({ variantId, brandId, assets, addAsset, updateAsset, removeAs
     return fp ? `${base}/${fp}` : null;
   }
 
-  async function handleUpload(e) {
-    const files = Array.from(e.target.files);
-    if (!files.length) return;
-    setUploading(true);
+  function makeAsset(result, imageType, sortOrder) {
+    return {
+      id: `${variantId}_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+      entityType: "variant",
+      entityId: variantId,
+      variantId,
+      brandId: brandId || "",
+      familyId: "",
+      colorId: "",
+      imageType,
+      fileName: result.filename,
+      filePath: result.filePath,
+      sourceUrl: "",
+      altText: "",
+      sortOrder,
+      isActive: true,
+    };
+  }
+
+  async function handleHeroUpload(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingHero(true);
     try {
-      for (const file of files) {
-        const result = await api.uploadImage(file, brandId, variantId);
-        const newAsset = {
-          id: `${variantId}_${Date.now()}`,
-          entityType: "variant",
-          entityId: variantId,
-          variantId,
-          brandId: brandId || "",
-          familyId: "",
-          colorId: "",
-          imageType: "gallery",
-          fileName: result.filename,
-          filePath: result.filePath,
-          sourceUrl: "",
-          sourcePage: "",
-          altText: "",
-          sortOrder: variantAssets.length + 1,
-          isActive: true,
-        };
-        addAsset(newAsset);
+      // Remove existing hero first
+      if (heroAsset) {
+        if (heroAsset.filePath) await api.deleteImage(heroAsset.filePath);
+        removeAsset(heroAsset.id);
       }
-      addToast(`${files.length} image${files.length > 1 ? "s" : ""} uploaded`);
+      const result = await api.uploadImage(file, brandId, variantId);
+      addAsset(makeAsset(result, "hero", 0));
+      addToast("Hero image uploaded");
     } catch (err) {
       addToast(err.message, "error");
     } finally {
-      setUploading(false);
+      setUploadingHero(false);
+      e.target.value = "";
+    }
+  }
+
+  async function handleGalleryUpload(e) {
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
+    setUploadingGallery(true);
+    try {
+      let nextOrder = galleryAssets.length > 0
+        ? Math.max(...galleryAssets.map((a) => a.sortOrder ?? 0)) + 1
+        : 1;
+      for (const file of files) {
+        const result = await api.uploadImage(file, brandId, variantId);
+        addAsset(makeAsset(result, "gallery", nextOrder++));
+      }
+      addToast(`${files.length} gallery image${files.length > 1 ? "s" : ""} uploaded`);
+    } catch (err) {
+      addToast(err.message, "error");
+    } finally {
+      setUploadingGallery(false);
       e.target.value = "";
     }
   }
@@ -606,86 +636,138 @@ function ImagesTab({ variantId, brandId, assets, addAsset, updateAsset, removeAs
     try {
       if (asset.filePath) await api.deleteImage(asset.filePath);
       removeAsset(asset.id);
+      // Re-sequence gallery after deletion
+      if (asset.imageType !== "hero" && asset.imageType !== "main") {
+        const remaining = galleryAssets
+          .filter((a) => a.id !== asset.id)
+          .sort((a, b) => (a.sortOrder ?? 999) - (b.sortOrder ?? 999));
+        remaining.forEach((a, i) => updateAsset(a.id, { sortOrder: i + 1 }));
+      }
       addToast("Image removed");
     } catch (err) {
       addToast(err.message, "error");
     }
   }
 
-  const IMAGE_TYPES = ["hero", "gallery", "main", "detail", "lifestyle"];
-  const smallInput = { background: "rgba(9,13,20,0.8)", border: "1px solid rgba(117,163,255,0.16)", borderRadius: 5, padding: "5px 8px", color: "#e7edf7", fontSize: 11, outline: "none", boxSizing: "border-box" };
-
   return (
-    <div>
-      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 16 }}>
-        <input type="file" ref={fileRef} accept="image/*" multiple onChange={handleUpload} style={{ display: "none" }} />
-        <button
-          onClick={() => fileRef.current?.click()}
-          disabled={uploading}
-          className="btn-primary"
-          style={{ fontSize: 13, opacity: uploading ? 0.6 : 1, cursor: uploading ? "not-allowed" : "pointer" }}
-        >
-          {uploading ? "Uploading…" : "Upload Images"}
-        </button>
+    <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+
+      {/* ── Hero Image ── */}
+      <div>
+        <div style={{ fontSize: 11, fontWeight: 700, color: "#7aa3f5", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 12 }}>
+          Hero Image
+        </div>
+        <input type="file" ref={heroRef} accept="image/*" onChange={handleHeroUpload} style={{ display: "none" }} />
+        {heroAsset ? (
+          <div style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
+            <div style={{ width: 200, height: 150, borderRadius: 10, overflow: "hidden", background: "rgba(9,13,20,0.8)", border: "1px solid rgba(117,163,255,0.2)", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              {imgUrl(heroAsset)
+                ? <img src={imgUrl(heroAsset)} alt="Hero" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                : <span style={{ color: "rgba(180,200,240,0.3)", fontSize: 32 }}>▦</span>
+              }
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              <div style={{ fontSize: 12, color: "rgba(180,200,240,0.5)" }}>{heroAsset.fileName}</div>
+              <input
+                type="text"
+                value={heroAsset.altText || ""}
+                onChange={(e) => updateAsset(heroAsset.id, { altText: e.target.value })}
+                placeholder="Alt text…"
+                className="field-input"
+                style={{ fontSize: 12, width: 240 }}
+              />
+              <div style={{ display: "flex", gap: 8 }}>
+                <button
+                  onClick={() => heroRef.current?.click()}
+                  disabled={uploadingHero}
+                  className="btn-ghost"
+                  style={{ fontSize: 12, padding: "6px 14px" }}
+                >
+                  {uploadingHero ? "Uploading…" : "Replace"}
+                </button>
+                <button onClick={() => handleDelete(heroAsset)} className="btn-danger" style={{ fontSize: 12, padding: "6px 12px" }}>✕ Remove</button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <button
+            onClick={() => heroRef.current?.click()}
+            disabled={uploadingHero}
+            style={{
+              width: "100%", padding: "32px 20px", borderRadius: 12, cursor: "pointer",
+              background: "rgba(76,117,219,0.05)", border: "2px dashed rgba(117,163,255,0.25)",
+              color: "rgba(117,163,255,0.7)", fontSize: 14, fontWeight: 600,
+              display: "flex", flexDirection: "column", alignItems: "center", gap: 8,
+            }}
+          >
+            <span style={{ fontSize: 28 }}>+</span>
+            {uploadingHero ? "Uploading…" : "Upload Hero Image"}
+            <span style={{ fontSize: 11, color: "rgba(180,200,240,0.4)", fontWeight: 400 }}>The main product image shown on cards and at the top of the product page</span>
+          </button>
+        )}
       </div>
 
-      {variantAssets.length === 0 ? (
-        <div style={{ color: "rgba(180,200,240,0.5)", fontSize: 14, textAlign: "center", padding: "40px 0" }}>
-          No images yet. Upload some above.
+      {/* ── Gallery Images ── */}
+      <div>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "#7aa3f5", textTransform: "uppercase", letterSpacing: "0.12em" }}>
+            Gallery Images {galleryAssets.length > 0 && <span style={{ color: "rgba(180,200,240,0.4)", fontWeight: 400, textTransform: "none", letterSpacing: 0 }}>({galleryAssets.length})</span>}
+          </div>
+          <input type="file" ref={galleryRef} accept="image/*" multiple onChange={handleGalleryUpload} style={{ display: "none" }} />
+          <button
+            onClick={() => galleryRef.current?.click()}
+            disabled={uploadingGallery}
+            className="btn-primary"
+            style={{ fontSize: 12, padding: "7px 16px", opacity: uploadingGallery ? 0.6 : 1 }}
+          >
+            {uploadingGallery ? "Uploading…" : "+ Add Photos"}
+          </button>
         </div>
-      ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 16 }}>
-          {variantAssets.map((asset) => {
-            const url = imgUrl(asset);
-            return (
-              <div key={asset.id} style={{ background: "linear-gradient(180deg, rgba(15,23,36,0.88), rgba(9,14,24,0.92))", border: "1px solid rgba(117,163,255,0.14)", borderRadius: 10, overflow: "hidden" }}>
-                <div style={{ background: "rgba(9,13,20,0.8)", height: 160, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-                  {url ? (
-                    <img src={url} alt={asset.altText || asset.fileName} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
-                  ) : (
-                    <span style={{ color: "rgba(180,200,240,0.3)", fontSize: 32 }}>▦</span>
-                  )}
-                </div>
-                <div style={{ padding: "10px 12px" }}>
-                  <div style={{ fontSize: 11, color: "rgba(180,200,240,0.5)", marginBottom: 8, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{asset.fileName}</div>
-                  <div style={{ marginBottom: 8 }}>
-                    <select
-                      value={asset.imageType || "gallery"}
-                      onChange={(e) => updateAsset(asset.id, { imageType: e.target.value })}
-                      style={{ ...smallInput, width: "100%" }}
+
+        {galleryAssets.length === 0 ? (
+          <div style={{ color: "rgba(180,200,240,0.4)", fontSize: 13, textAlign: "center", padding: "24px 0", border: "1px dashed rgba(117,163,255,0.15)", borderRadius: 10 }}>
+            No gallery photos yet.
+          </div>
+        ) : (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: 12 }}>
+            {galleryAssets.map((asset, index) => {
+              const url = imgUrl(asset);
+              return (
+                <div key={asset.id} style={{ background: "rgba(9,13,20,0.8)", border: "1px solid rgba(117,163,255,0.14)", borderRadius: 10, overflow: "hidden" }}>
+                  <div style={{ position: "relative" }}>
+                    <div style={{ background: "rgba(9,13,20,0.9)", height: 130, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+                      {url
+                        ? <img src={url} alt={asset.altText || asset.fileName} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                        : <span style={{ color: "rgba(180,200,240,0.3)", fontSize: 28 }}>▦</span>
+                      }
+                    </div>
+                    <div style={{ position: "absolute", top: 6, left: 6, background: "rgba(0,0,0,0.7)", borderRadius: 5, padding: "2px 7px", fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.7)" }}>
+                      #{index + 1}
+                    </div>
+                    <button
+                      onClick={() => handleDelete(asset)}
+                      style={{ position: "absolute", top: 6, right: 6, background: "rgba(248,81,73,0.85)", border: "none", borderRadius: 5, width: 24, height: 24, cursor: "pointer", color: "#fff", fontSize: 12, display: "flex", alignItems: "center", justifyContent: "center" }}
                     >
-                      {IMAGE_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
-                    </select>
+                      ✕
+                    </button>
                   </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
-                    <label style={{ fontSize: 11, color: "rgba(180,200,240,0.5)" }}>Order:</label>
+                  <div style={{ padding: "8px 10px" }}>
                     <input
-                      type="number"
-                      value={asset.sortOrder ?? ""}
-                      onChange={(e) => updateAsset(asset.id, { sortOrder: e.target.value === "" ? null : Number(e.target.value) })}
-                      style={{ ...smallInput, width: 60 }}
+                      type="text"
+                      value={asset.altText || ""}
+                      onChange={(e) => updateAsset(asset.id, { altText: e.target.value })}
+                      placeholder="Alt text…"
+                      className="field-input"
+                      style={{ fontSize: 11, width: "100%" }}
                     />
                   </div>
-                  <input
-                    type="text"
-                    value={asset.altText || ""}
-                    onChange={(e) => updateAsset(asset.id, { altText: e.target.value })}
-                    placeholder="Alt text…"
-                    style={{ ...smallInput, width: "100%", marginBottom: 8 }}
-                  />
-                  <button
-                    onClick={() => handleDelete(asset)}
-                    className="btn-danger"
-                    style={{ width: "100%", padding: "6px 0", fontSize: 12 }}
-                  >
-                    Remove
-                  </button>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+              );
+            })}
+          </div>
+        )}
+      </div>
+
     </div>
   );
 }
