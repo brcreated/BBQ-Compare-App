@@ -189,8 +189,15 @@ export default function BrandNavigatorPage() {
       });
     }
 
-    // Sort alphabetically by label
-    return options.sort((a, b) => a.label.localeCompare(b.label));
+    // Sort by family sortOrder, then alphabetically
+    return options.sort((a, b) => {
+      const famA = families.find((f) => (f.id || f.familyId || f.family_id) === a.value);
+      const famB = families.find((f) => (f.id || f.familyId || f.family_id) === b.value);
+      const orderA = famA?.sortOrder ?? 999;
+      const orderB = famB?.sortOrder ?? 999;
+      if (orderA !== orderB) return orderA - orderB;
+      return a.label.localeCompare(b.label);
+    });
   }, [currentStep, brand, variants, families]);
 
   // Use dynamically computed options for dynamic_families, otherwise use step's static options
@@ -198,10 +205,11 @@ export default function BrandNavigatorPage() {
     ? (dynamicFamilyOptions ?? [])
     : (currentStep?.options ?? []);
 
-  // Build logo map for logo-layout steps
-  const familyLogoMap = useMemo(() => {
-    if (!currentStep || currentStep.layout !== "logos") return {};
-    const map = {};
+  // Build logo map + navRow map for logo-layout steps
+  const { familyLogoMap, familyNavRowMap } = useMemo(() => {
+    if (!currentStep || currentStep.layout !== "logos") return { familyLogoMap: {}, familyNavRowMap: {} };
+    const logoMap = {};
+    const rowMap = {};
     for (const opt of resolvedOptions) {
       const match = nid(opt.familyMatch || opt.value);
       const family = families.find((f) => {
@@ -217,9 +225,10 @@ export default function BrandNavigatorPage() {
         return et === "family" && eid === fid &&
           ["logo", "hero", "main"].includes(a.imageType || a.image_type || "");
       });
-      if (fa) map[opt.value] = resolveAsset(fa.filePath || fa.file_path);
+      if (fa) logoMap[opt.value] = resolveAsset(fa.filePath || fa.file_path);
+      if (family.navRow != null) rowMap[opt.value] = family.navRow;
     }
-    return map;
+    return { familyLogoMap: logoMap, familyNavRowMap: rowMap };
   }, [currentStep, resolvedOptions, families, assets]);
 
   const crumbs = config ? buildBreadcrumb(config, params) : [];
@@ -239,7 +248,22 @@ export default function BrandNavigatorPage() {
     return <BrandResults />;
   }
 
-  const cols = currentStep.layout === "logos"
+  const isLogos = currentStep.layout === "logos";
+  const hasNavRows = isLogos && resolvedOptions.some((o) => familyNavRowMap[o.value] != null);
+
+  // Group options into rows (by navRow if set, otherwise one big group)
+  const optionRows = useMemo(() => {
+    if (!hasNavRows) return [resolvedOptions];
+    const groups = {};
+    resolvedOptions.forEach((o) => {
+      const row = familyNavRowMap[o.value] ?? 999;
+      if (!groups[row]) groups[row] = [];
+      groups[row].push(o);
+    });
+    return Object.keys(groups).sort((a, b) => Number(a) - Number(b)).map((k) => groups[k]);
+  }, [hasNavRows, resolvedOptions, familyNavRowMap]);
+
+  const cols = isLogos
     ? Math.min(resolvedOptions.length, 3)
     : Math.min(resolvedOptions.length, 2);
 
@@ -289,12 +313,36 @@ export default function BrandNavigatorPage() {
       }}>
         {resolvedOptions.length === 0 ? (
           <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 16 }}>Loading…</div>
+        ) : hasNavRows ? (
+          <div style={{ display: "flex", flexDirection: "column", gap: 20, maxWidth: 940, width: "100%" }}>
+            {optionRows.map((row, ri) => (
+              <div key={ri} style={{
+                display: "grid",
+                gridTemplateColumns: `repeat(${Math.min(row.length, 3)}, 1fr)`,
+                gap: 20,
+                justifyItems: "center",
+                maxWidth: Math.min(row.length, 3) * 300 + Math.min(row.length - 1, 2) * 20,
+                margin: "0 auto",
+                width: "100%",
+              }}>
+                {row.map((option) => (
+                  <OptionCard
+                    key={option.value}
+                    option={option}
+                    layout={currentStep.layout}
+                    logoUrl={familyLogoMap[option.value]}
+                    onClick={() => handleSelect(option)}
+                  />
+                ))}
+              </div>
+            ))}
+          </div>
         ) : (
           <div style={{
             display: "grid",
             gridTemplateColumns: `repeat(${cols}, 1fr)`,
             gap: 20,
-            maxWidth: currentStep.layout === "logos" ? 940 : 680,
+            maxWidth: isLogos ? 940 : 680,
             width: "100%",
           }}>
             {resolvedOptions.map((option) => (

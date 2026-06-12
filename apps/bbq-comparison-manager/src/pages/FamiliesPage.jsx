@@ -30,7 +30,7 @@ function Field({ label, value, onChange, type = "text", placeholder = "", disabl
   );
 }
 
-const EMPTY_FAMILY = { id: "", brandId: "", name: "", description: "", sortOrder: null, isActive: true, salePercent: null, saleEnd: "" };
+const EMPTY_FAMILY = { id: "", brandId: "", name: "", description: "", sortOrder: null, navRow: null, isActive: true, salePercent: null, saleEnd: "" };
 
 function FamilyForm({ initial, isNew, brands, onSave, onCancel }) {
   const [form, setForm] = useState(initial);
@@ -94,6 +94,33 @@ function FamilyForm({ initial, isNew, brands, onSave, onCancel }) {
           style={{ resize: "vertical" }}
         />
       </div>
+      {/* Sort / Nav Row */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
+        <div>
+          <label style={labelStyle}>Sort Order</label>
+          <input
+            type="number"
+            min={1}
+            value={form.sortOrder ?? ""}
+            onChange={(e) => set("sortOrder", e.target.value === "" ? null : Number(e.target.value))}
+            placeholder="e.g. 1"
+            className="field-input"
+          />
+        </div>
+        <div>
+          <label style={labelStyle}>Navigator Row (optional)</label>
+          <input
+            type="number"
+            min={1}
+            value={form.navRow ?? ""}
+            onChange={(e) => set("navRow", e.target.value === "" ? null : Number(e.target.value))}
+            placeholder="e.g. 1, 2, 3…"
+            className="field-input"
+          />
+          <div style={{ fontSize: 10, color: "rgba(180,200,240,0.35)", marginTop: 3 }}>Groups families into rows on the selector screen</div>
+        </div>
+      </div>
+
       {/* Sale pricing */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
         <div>
@@ -136,7 +163,7 @@ function FamilyForm({ initial, isNew, brands, onSave, onCancel }) {
   );
 }
 
-function FamilyPhotoModal({ family, assets, assetBaseUrl, addAsset, removeAsset, onClose }) {
+function FamilyPhotoModal({ family, assets, assetBaseUrl, addAsset, updateAsset, removeAsset, onClose }) {
   const fileRef = useRef();
   const [uploading, setUploading] = useState(false);
   const { addToast } = useToastStore();
@@ -193,6 +220,18 @@ function FamilyPhotoModal({ family, assets, assetBaseUrl, addAsset, removeAsset,
     }
   }
 
+  async function handleMove(asset, direction) {
+    const idx = familyAssets.findIndex((a) => a.id === asset.id);
+    const targetIdx = idx + direction;
+    if (targetIdx < 0 || targetIdx >= familyAssets.length) return;
+    const reordered = [...familyAssets];
+    [reordered[idx], reordered[targetIdx]] = [reordered[targetIdx], reordered[idx]];
+    reordered.forEach((a, i) => {
+      updateAsset(a.id, { sortOrder: i, imageType: i === 0 ? "hero" : "gallery" });
+    });
+    await useDataStore.getState().saveDataset("assets");
+  }
+
   return (
     <Modal title={`Photos — ${family.name}`} onClose={onClose} width={600}>
       <input
@@ -225,8 +264,22 @@ function FamilyPhotoModal({ family, assets, assetBaseUrl, addAsset, removeAsset,
                   : <span style={{ color: "rgba(180,200,240,0.3)", fontSize: 28 }}>▦</span>
                 }
               </div>
-              <div style={{ fontSize: 10, color: "rgba(180,200,240,0.35)", marginTop: 4, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                {asset.imageType === "hero" ? "🌟 Hero" : "Gallery"} · {asset.fileName}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 4, gap: 4 }}>
+                <div style={{ fontSize: 10, color: "rgba(180,200,240,0.35)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flex: 1 }}>
+                  {asset.imageType === "hero" ? "🌟 Hero" : "Gallery"}
+                </div>
+                <div style={{ display: "flex", gap: 2, flexShrink: 0 }}>
+                  <button
+                    onClick={() => handleMove(asset, -1)}
+                    disabled={familyAssets.indexOf(asset) === 0}
+                    style={{ width: 22, height: 22, borderRadius: 5, border: "1px solid rgba(117,163,255,0.2)", background: "rgba(117,163,255,0.08)", color: familyAssets.indexOf(asset) === 0 ? "rgba(180,200,240,0.2)" : "rgba(117,163,255,0.8)", cursor: familyAssets.indexOf(asset) === 0 ? "default" : "pointer", fontSize: 10, display: "flex", alignItems: "center", justifyContent: "center" }}
+                  >◀</button>
+                  <button
+                    onClick={() => handleMove(asset, 1)}
+                    disabled={familyAssets.indexOf(asset) === familyAssets.length - 1}
+                    style={{ width: 22, height: 22, borderRadius: 5, border: "1px solid rgba(117,163,255,0.2)", background: "rgba(117,163,255,0.08)", color: familyAssets.indexOf(asset) === familyAssets.length - 1 ? "rgba(180,200,240,0.2)" : "rgba(117,163,255,0.8)", cursor: familyAssets.indexOf(asset) === familyAssets.length - 1 ? "default" : "pointer", fontSize: 10, display: "flex", alignItems: "center", justifyContent: "center" }}
+                  >▶</button>
+                </div>
               </div>
               <button
                 onClick={() => handleDelete(asset)}
@@ -261,7 +314,7 @@ export default function FamiliesPage() {
   const {
     brands, families, variants, assets, assetBaseUrl, loading, loadAll,
     addFamily, updateFamily, removeFamily,
-    addAsset, removeAsset,
+    addAsset, updateAsset, removeAsset,
     saveDataset,
   } = useDataStore();
   const { addToast } = useToastStore();
@@ -422,8 +475,18 @@ export default function FamiliesPage() {
                         borderRadius: 10,
                       }}>
                         {/* Sort controls */}
-                        <div style={{ display: "flex", flexDirection: "column", gap: 2, flexShrink: 0 }}>
+                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, flexShrink: 0 }}>
                           <button onClick={() => moveFamily(fam.id, fam.brandId, -1)} disabled={grouped[fam.brandId]?.indexOf(fam) === 0} style={{ width: 24, height: 20, borderRadius: 4, border: "1px solid rgba(117,163,255,0.15)", background: "rgba(117,163,255,0.08)", color: grouped[fam.brandId]?.indexOf(fam) === 0 ? "rgba(180,200,240,0.2)" : "rgba(117,163,255,0.8)", cursor: grouped[fam.brandId]?.indexOf(fam) === 0 ? "default" : "pointer", fontSize: 9, display: "flex", alignItems: "center", justifyContent: "center" }}>▲</button>
+                          <input
+                            type="number"
+                            min={1}
+                            value={fam.sortOrder ?? ""}
+                            onChange={(e) => updateFamily(fam.id, { sortOrder: e.target.value === "" ? null : Number(e.target.value) })}
+                            onBlur={() => saveDataset("families")}
+                            onKeyDown={(e) => { if (e.key === "Enter") { e.target.blur(); } }}
+                            title="Sort order — edit directly"
+                            style={{ width: 36, height: 22, borderRadius: 4, border: "1px solid rgba(117,163,255,0.2)", background: "rgba(9,14,24,0.8)", color: "rgba(180,200,240,0.7)", fontSize: 11, textAlign: "center", outline: "none", padding: 0 }}
+                          />
                           <button onClick={() => moveFamily(fam.id, fam.brandId, 1)} disabled={grouped[fam.brandId]?.indexOf(fam) === grouped[fam.brandId]?.length - 1} style={{ width: 24, height: 20, borderRadius: 4, border: "1px solid rgba(117,163,255,0.15)", background: "rgba(117,163,255,0.08)", color: grouped[fam.brandId]?.indexOf(fam) === grouped[fam.brandId]?.length - 1 ? "rgba(180,200,240,0.2)" : "rgba(117,163,255,0.8)", cursor: grouped[fam.brandId]?.indexOf(fam) === grouped[fam.brandId]?.length - 1 ? "default" : "pointer", fontSize: 9, display: "flex", alignItems: "center", justifyContent: "center" }}>▼</button>
                         </div>
 
@@ -496,6 +559,7 @@ export default function FamiliesPage() {
           assets={assets}
           assetBaseUrl={assetBaseUrl}
           addAsset={addAsset}
+          updateAsset={updateAsset}
           removeAsset={removeAsset}
           onClose={() => setPhotoFamily(null)}
         />
