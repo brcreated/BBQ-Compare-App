@@ -2,8 +2,6 @@
 
 import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import useIdleReset from "../hooks/useIdleReset";
-
 const brandLogos = [
   { id: "abs", name: "ABS", file: "abs-logo.png" },
   { id: "alfa", name: "Alfa", file: "alfa-logo.png" },
@@ -48,8 +46,6 @@ const fuelOptions = [
 
 export default function DiscoveryHub() {
   const navigate = useNavigate();
-  const { isIdleFading } = useIdleReset({ timeout: 300000 });
-
   const brandScrollRef = useRef(null);
   const isResettingRef = useRef(false);
   const dragStateRef = useRef({
@@ -352,7 +348,7 @@ export default function DiscoveryHub() {
       </section>
 
       <div
-        className={`idle-fade-overlay ${isIdleFading ? "idle-fade-overlay-visible" : ""}`}
+        className="idle-fade-overlay"
         aria-hidden="true"
       />
 

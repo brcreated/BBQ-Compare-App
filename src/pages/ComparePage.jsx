@@ -9,8 +9,6 @@ import {
   clearAll,
 } from "../state/comparisonStore";
 import { useCatalog } from "../context/CatalogContext";
-import useIdleReset from "../hooks/useIdleReset";
-
 const PAGE_FONT =
   'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
 
@@ -550,7 +548,7 @@ function RemoveRowButton({ onRemove }) {
 export default function ComparePage() {
   const navigate = useNavigate();
 
-  useIdleReset({ timeout: 300000, onReset: () => { clearAll(); navigate("/", { replace: true }); } });
+
 
   const { brands, variants, specs, assets, loading, error } = useCatalog();
 

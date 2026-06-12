@@ -3,8 +3,6 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useCatalog } from "../context/CatalogContext";
 import BrandResults from "./BrandResults";
 import { getBrandNavigator, buildBreadcrumb } from "../config/brandNavigators";
-import useIdleReset from "../hooks/useIdleReset";
-import { clearAll } from "../state/comparisonStore";
 
 const ASSET_BASE = import.meta.env.VITE_ASSET_BASE_URL || "";
 
@@ -104,8 +102,6 @@ export default function BrandNavigatorPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { brands, families, variants, assets } = useCatalog();
-
-  useIdleReset({ timeout: 300000, onReset: () => { clearAll(); navigate("/", { replace: true }); } });
 
   const brandId = nid(brandSlug);
   const config = getBrandNavigator(brandSlug);

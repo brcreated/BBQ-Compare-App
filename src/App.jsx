@@ -15,7 +15,7 @@ import AboutPage from "./pages/AboutPage";
 import { clearAll } from "./state/comparisonStore";
 
 const IDLE_MS = 300000;       // 5 minutes total
-const WARN_MS = 60000;        // show countdown in last 60 seconds
+const WARN_MS = 60000;        // show dim overlay in last 60 seconds
 
 function doReset() {
   try {
@@ -23,13 +23,18 @@ function doReset() {
     localStorage.clear();
     sessionStorage.clear();
   } catch (_) {}
-  window.location.replace("/");
+  // Force a true hard reload — adding timestamp ensures browser treats it as new URL
+  window.location.href = window.location.origin + "/";
 }
 
 function AppShell() {
   const lastActivityRef = useRef(Date.now());
   const [secondsLeft, setSecondsLeft] = useState(IDLE_MS / 1000);
   const isWarning = secondsLeft <= WARN_MS / 1000;
+
+  function doStay() {
+    lastActivityRef.current = Date.now();
+  }
 
   useEffect(() => {
     const markActivity = () => { lastActivityRef.current = Date.now(); };
@@ -70,21 +75,68 @@ function AppShell() {
 
   return (
     <>
+      {/* Full-screen dim overlay — appears in last 60 seconds */}
+      {isWarning && (
+        <div
+          onClick={doStay}
+          style={{
+            position: "fixed", inset: 0, zIndex: 99997,
+            background: "rgba(4,7,12,0.88)",
+            backdropFilter: "blur(14px)",
+            WebkitBackdropFilter: "blur(14px)",
+            display: "flex", flexDirection: "column",
+            alignItems: "center", justifyContent: "center",
+            gap: 18,
+            animation: "fadeInOverlay 500ms ease",
+          }}
+        >
+          <div style={{
+            fontSize: 13, fontWeight: 700, letterSpacing: "0.18em",
+            textTransform: "uppercase", color: "rgba(180,200,240,0.5)",
+          }}>
+            Returning to start screen in
+          </div>
+
+          <div style={{
+            fontSize: 100, fontWeight: 900, color: "#fff",
+            lineHeight: 1,
+            fontVariantNumeric: "tabular-nums",
+            textShadow: "0 0 60px rgba(248,81,73,0.5)",
+            animation: secondsLeft <= 10 ? "pulseWarn 0.8s ease-in-out infinite" : "none",
+          }}>
+            {secondsLeft}
+          </div>
+
+          <button
+            onClick={(e) => { e.stopPropagation(); doStay(); }}
+            style={{
+              marginTop: 12,
+              background: "linear-gradient(135deg, rgba(43,88,190,0.95), rgba(28,56,130,0.9))",
+              border: "1px solid rgba(117,163,255,0.4)",
+              color: "#fff",
+              borderRadius: 18,
+              padding: "18px 52px",
+              fontSize: 18, fontWeight: 700,
+              cursor: "pointer",
+              boxShadow: "0 8px 40px rgba(43,88,190,0.45), 0 0 0 1px rgba(117,163,255,0.15)",
+              backdropFilter: "blur(8px)",
+              letterSpacing: "0.02em",
+            }}
+          >
+            I'm Still Here
+          </button>
+
+          <div style={{ fontSize: 12, color: "rgba(180,200,240,0.3)", marginTop: 4 }}>
+            Tap anywhere to continue browsing
+          </div>
+        </div>
+      )}
+
       {/* Start Over button — always visible bottom-right */}
       <div style={{
         position: "fixed", right: 20, bottom: 20, zIndex: 99999,
         display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6,
       }}>
-        {isWarning && (
-          <div style={{
-            background: "rgba(248,81,73,0.92)", color: "#fff",
-            padding: "6px 14px", borderRadius: 10, fontSize: 13, fontWeight: 700,
-            boxShadow: "0 4px 16px rgba(248,81,73,0.4)",
-            animation: "pulseWarn 1s ease-in-out infinite",
-          }}>
-            Resetting in {secondsLeft}s
-          </div>
-        )}
         <button
           onClick={doReset}
           style={{
@@ -110,7 +162,11 @@ function AppShell() {
       <style>{`
         @keyframes pulseWarn {
           0%, 100% { opacity: 1; transform: scale(1); }
-          50% { opacity: 0.85; transform: scale(1.03); }
+          50% { opacity: 0.75; transform: scale(1.06); }
+        }
+        @keyframes fadeInOverlay {
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
       `}</style>
 
