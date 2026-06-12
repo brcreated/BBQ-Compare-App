@@ -335,6 +335,7 @@ function KeySpecsSection({ form, setForm }) {
         <Field label="Grate Material" value={form.grateMaterial} onChange={(v) => set("grateMaterial", v)} placeholder="e.g. Stainless Steel, Cast Iron" />
         <Field label="Body Material" value={form.bodyMaterial} onChange={(v) => set("bodyMaterial", v)} placeholder="e.g. 304 Stainless Steel" />
         <Field label="Made In" value={form.madeIn} onChange={(v) => set("madeIn", v)} placeholder="e.g. USA" />
+      </Grid>
     </div>
   );
 }
