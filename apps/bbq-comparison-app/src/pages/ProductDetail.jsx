@@ -506,7 +506,8 @@ function buildTopCards(variant, specs) {
   const fuel =
     normalizeText(variant?.fuelType) ||
     normalizeText(variant?.fuel_type) ||
-    specValue(specs, ["fuel_type", "fuel", "primary_fuel"]);
+    specValue(specs, ["fuel_type", "fuel", "primary_fuel"]) ||
+    (variant?.supportsWood ? "wood" : "");
 
   // Dimensions: W × D × H from variant fields first, then specs
   const wRaw = normalizeText(variant?.productWidth  || variant?.product_width)  || specValue(specs, ["product_width",  "overall_width",  "width"]);

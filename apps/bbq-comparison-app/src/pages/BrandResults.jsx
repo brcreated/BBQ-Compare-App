@@ -553,6 +553,9 @@ function findVariantFuelOptions(variant, specMap) {
       variant?.supports_ng
     )
   );
+  const supportsWoodDirect = isTruthyFlag(
+    pickFirst(variant?.supportsWood, variant?.supports_wood)
+  );
 
   const variantId = getVariantId(variant);
   const specs = specMap.get(variantId) || [];
@@ -598,11 +601,11 @@ function findVariantFuelOptions(variant, specMap) {
   }
 
   if (normalizedFuel.includes("pellet")) return ["Pellet"];
-  if (normalizedFuel.includes("charcoal") && normalizedFuel.includes("wood")) {
+  if (normalizedFuel.includes("charcoal") && (normalizedFuel.includes("wood") || supportsWoodDirect)) {
     return ["Charcoal", "Wood"];
   }
-  if (normalizedFuel.includes("charcoal")) return ["Charcoal"];
-  if (normalizedFuel.includes("wood")) return ["Wood"];
+  if (normalizedFuel.includes("charcoal")) return supportsWoodDirect ? ["Charcoal", "Wood"] : ["Charcoal"];
+  if (supportsWoodDirect || normalizedFuel.includes("wood")) return ["Wood"];
   if (normalizedFuel.includes("griddle")) return ["Griddle"];
   if (normalizedFuel.includes("pizza")) return ["Pizza Oven"];
 

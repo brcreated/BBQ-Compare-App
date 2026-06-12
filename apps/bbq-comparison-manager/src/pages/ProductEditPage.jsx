@@ -264,6 +264,7 @@ function FuelInstallSection({ form, setForm }) {
         <CheckCard label="Propane" icon="🔥" checked={!!form.supportsPropane} onChange={(v) => setWithInstallSync("supportsPropane", v)} />
         <CheckCard label="Natural Gas" icon="⚡" checked={!!form.supportsNaturalGas} onChange={(v) => setWithInstallSync("supportsNaturalGas", v)} />
         <CheckCard label="Charcoal" icon="⚫" checked={!!form.supportsCharcoal} onChange={(v) => setWithInstallSync("supportsCharcoal", v)} />
+        <CheckCard label="Wood" icon="🪓" checked={!!form.supportsWood} onChange={(v) => setWithInstallSync("supportsWood", v)} />
       </div>
 
       <SectionHeader title="Installation" />
