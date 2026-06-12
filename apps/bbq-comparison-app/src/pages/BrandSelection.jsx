@@ -232,17 +232,6 @@ export default function BrandSelection() {
       <div className="ambient-grid" />
 
       <section className="brand-selection-shell">
-        <div className="brand-selection-topbar">
-          <button
-            type="button"
-            className="home-button interactive-button"
-            onClick={() => navigate("/discover")}
-          >
-            <span className="button-sheen" />
-            Home
-          </button>
-        </div>
-
         <section className="brand-hero">
           <div className="brand-hero-copy">
             <div className="brand-selection-eyebrow">Showroom Navigation</div>

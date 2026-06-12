@@ -699,13 +699,6 @@ export default function ComparePage() {
           <div style={{ fontSize: 16, color: "#c7d5f5", marginBottom: 24 }}>
             {typeof error === "string" ? error : "Unable to load comparison catalog."}
           </div>
-          <button
-            onClick={() => navigate("/discover")}
-            className="compare-top-button"
-            style={primaryButtonStyle}
-          >
-            Home
-          </button>
         </div>
       </main>
     );
@@ -762,19 +755,11 @@ export default function ComparePage() {
 
           <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
             <button
-              onClick={() => navigate("/discover")}
+              onClick={() => navigate("/brands")}
               className="compare-top-button"
               style={{ ...primaryButtonStyle, minWidth: 180 }}
             >
-              Home
-            </button>
-
-            <button
-              onClick={() => navigate("/brands")}
-              className="compare-top-button"
-              style={{ ...softButtonStyle, minWidth: 180 }}
-            >
-              Brands
+              Browse Brands
             </button>
           </div>
         </div>
@@ -792,45 +777,6 @@ export default function ComparePage() {
       <div className="ambient-light ambient-light-3" />
 
       <div style={containerStyle}>
-        <section
-          style={{
-            ...panelStyle,
-            padding: 18,
-            marginBottom: 18,
-            position: "sticky",
-            top: 0,
-            zIndex: 200,
-            background:
-              "linear-gradient(180deg, rgba(10,13,18,0.96) 0%, rgba(10,13,18,0.90) 72%, rgba(10,13,18,0.84) 100%)",
-          }}
-        >
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
-            <button
-              onClick={() => navigate("/discover")}
-              className="compare-top-button"
-              style={softButtonStyle}
-            >
-              Home
-            </button>
-
-            <button
-              onClick={() => navigate("/brands")}
-              className="compare-top-button"
-              style={softButtonStyle}
-            >
-              Brands
-            </button>
-
-            <button
-              onClick={() => navigate(-1)}
-              className="compare-top-button"
-              style={softButtonStyle}
-            >
-              Back
-            </button>
-          </div>
-        </section>
-
         <section
           style={{
             ...panelStyle,

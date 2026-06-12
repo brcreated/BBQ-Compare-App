@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams, useSearchParams, useLocation } from "react-router-dom";
 import { useCatalog } from "../context/CatalogContext";
 import { getState, subscribe, removeItem, addItem, isSelected } from "../state/comparisonStore";
-import AboutModal from "../components/AboutModal";
 import useIdleReset from "../hooks/useIdleReset";
 
 function normalizeId(value) {
@@ -697,7 +696,6 @@ function BrandResults() {
   const [selectedSize, setSelectedSize] = useState("All");
   const [selectedPrice, setSelectedPrice] = useState("All");
   const [selectedBrandFilter, setSelectedBrandFilter] = useState("All");
-  const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [compareState, setCompareState] = useState(getState());
 
   const assetBaseUrl = import.meta.env.VITE_ASSET_BASE_URL || "";
@@ -1176,53 +1174,6 @@ function BrandResults() {
       <div className="ambient-light ambient-light-3" />
 
       <section className="brand-results-shell">
-        <div className="brand-results-topbar brand-results-sticky-topbar">
-  <div
-    style={{
-      display: "flex",
-      gap: 12,
-      alignItems: "center",
-      flexWrap: "wrap",
-    }}
-  >
-    <button
-      type="button"
-      className="other-button interactive-button"
-      onClick={() => navigate("/")}
-    >
-      <span className="button-sheen" />
-      Start Over
-    </button>
-
-    <button
-      type="button"
-      className="other-button interactive-button"
-      onClick={() => navigate("/brands")}
-    >
-      <span className="button-sheen" />
-      Brands
-    </button>
-
-    <button
-      type="button"
-      className="other-button interactive-button"
-      onClick={() => setIsAboutOpen(true)}
-    >
-      <span className="button-sheen" />
-      About
-    </button>
-
-    <button
-      type="button"
-      className="back-button interactive-button"
-      onClick={() => navigate(-1)}
-    >
-      <span className="button-sheen" />
-      Back
-    </button>
-  </div>
-</div>
-
         <header className="brand-results-header interactive-panel">
           <div className="brand-results-header-content">
             {brandLogoUrl ? (
@@ -2261,11 +2212,6 @@ function BrandResults() {
       )}
 
       </div>
-
-      <AboutModal
-        isOpen={isAboutOpen}
-        onClose={() => setIsAboutOpen(false)}
-      />
     </main>
   );
 }

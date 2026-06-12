@@ -2,7 +2,6 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import AboutModal from "../components/AboutModal";
 import useIdleReset from "../hooks/useIdleReset";
 import { useCatalog } from "../context/CatalogContext";
 import { addItem, removeItem, isSelected, getState, subscribe } from "../state/comparisonStore";
@@ -690,7 +689,6 @@ export default function ProductDetail() {
   } = useCatalog();
 
   const [compareState, setCompareState] = useState(() => getState());
-  const [isAboutOpen, setIsAboutOpen] = useState(false);
 
   useEffect(() => {
     return subscribe((nextState) => {
@@ -862,53 +860,6 @@ export default function ProductDetail() {
         <div className="ambient-light ambient-light-3" />
 
         <section className="brand-results-shell">
-          <div className="brand-results-topbar brand-results-sticky-topbar">
-            <div
-              style={{
-                display: "flex",
-                gap: 12,
-                alignItems: "center",
-                flexWrap: "wrap",
-              }}
-            >
-              <button
-                type="button"
-                className="back-button interactive-button"
-                onClick={() => navigate("/discover")}
-              >
-                <span className="button-sheen" />
-                Home
-              </button>
-
-              <button
-                type="button"
-                className="back-button interactive-button"
-                onClick={() => navigate("/brands")}
-              >
-                <span className="button-sheen" />
-                Brands
-              </button>
-
-              <button
-                type="button"
-                className="back-button interactive-button"
-                onClick={() => setIsAboutOpen(true)}
-              >
-                <span className="button-sheen" />
-                About
-              </button>
-
-              <button
-                type="button"
-                className="back-button interactive-button"
-                onClick={() => navigate(-1)}
-              >
-                <span className="button-sheen" />
-                Back
-              </button>
-            </div>
-          </div>
-
           {loading ? (
             <div style={{ ...glassCardStyle, padding: 32, textAlign: "center" }}>Loading product…</div>
           ) : error ? (
@@ -1620,10 +1571,6 @@ export default function ProductDetail() {
         ) : null}
       </div>
 
-      <AboutModal
-              isOpen={isAboutOpen}
-              onClose={() => setIsAboutOpen(false)}
-            />
     </main>
   );
 }
